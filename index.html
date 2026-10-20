@@ -1,0 +1,1138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GVO Sound">
+<meta property="og:title" content="GVO Sound | Recording, Photo and Podcast Studio in Annapolis, MD">
+<meta property="og:description" content="Recording, photo and podcast studios at 109 Gibralter Ave, Annapolis. Engineer and mixing included.">
+<meta property="og:image" content="/img/sound_room.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#07060a">
+<title>GVO Sound Studios</title>
+<meta name="description" id="metaDesc" content="Recording, photo and podcast studios at 109 Gibralter Ave, Annapolis, MD. Engineer and mixing included. Open until 3AM Friday through Sunday.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":["RecordingStudio","LocalBusiness"],"@id":"https://www.gvosound.com/#business","name":"GVO Sound","legalName":"GVO Sound LLC","url":"https://www.gvosound.com","telephone":"+1-443-292-6753","email":"gvosoundllc@gmail.com","foundingDate":"2020","priceRange":"$50-$720",
+"address":{"@type":"PostalAddress","streetAddress":"109 Gibralter Ave","addressLocality":"Annapolis","addressRegion":"MD","postalCode":"21401","addressCountry":"US"},
+"geo":{"@type":"GeoCoordinates","latitude":38.983098,"longitude":-76.529526},
+"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"10:00","closes":"00:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday","Sunday"],"opens":"10:00","closes":"03:00"}],
+"sameAs":["https://www.instagram.com/gvo.sound/","https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA","https://www.facebook.com/profile.php?id=100092699790819"]}
+</script>
+<script type="application/ld+json" id="ldPage">{}</script>
+<style>
+/* Layout: a small multi-page site run as views in one file. Shared header, phone bottom bar and footer; a home view that previews everything; room pages built from one template that each end in the same booking desk; a shop grid with product pages. Single dark look by design: GVO black, white line logo, booth lavender, garment-tag red. */
+:root{
+  --ink:#07060a;
+  --ink-2:#0e0c13;
+  --panel:#17141e;
+  --line:#2b2635;
+  --bone:#f3f0ea;
+  --mute:#9e98aa;
+  --lav:#b9b2ff;
+  --lav-deep:#6f68c9;
+  --lav-ink:#120f26;
+  --tag:#e4342c;
+  --ok:#86dba3;
+  --display:"Archivo","Arial Black",Impact,sans-serif;
+  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:4px;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --bar:0px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--ink);color:var(--bone);font:16px/1.6 var(--body);margin:0;overflow-x:hidden;padding-bottom:var(--bar)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+.skip{position:fixed;left:16px;top:-60px;z-index:200;background:var(--lav);color:var(--lav-ink);padding:10px 14px;border-radius:var(--r);font:700 .8rem var(--mono);transition:top .2s}
+.skip:focus{top:calc(12px + env(safe-area-inset-top,0px))}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;line-height:.9;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(2.2rem,6vw,4.6rem)}
+h3{font-size:1.2rem;letter-spacing:0}
+.eyebrow{font:600 .72rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--lav);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
+.lede{color:var(--mute);max-width:58ch;margin:0;font-size:1.05rem}
+.prose{max-width:62ch;color:#d4cfd9;font-size:1.05rem}
+.prose p{margin:0 0 14px}
+section{padding-block:clamp(60px,9vw,116px);position:relative}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:18px 40px;margin-bottom:clamp(26px,4vw,44px)}
+.sec-head>.hd{display:grid;gap:16px;min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:var(--r);padding:14px 22px;font:700 .8rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:transform .25s var(--ease),background .25s,color .25s,border-color .25s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn-lav{background:var(--lav);color:var(--lav-ink)}
+.btn-lav:hover{background:var(--bone)}
+.btn-ghost{background:transparent;color:var(--bone);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--bone)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.mark{--logo:url(data:image/png;base64,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QOMQ6rUDCKAAAAigAHXtuB3udBMQQAEK6/A78QACKACXgq4TUkAABRAOlxE+AQEUoAChDkAABWgbQu9/uCKAAArA1NvwQicggAI0FP1WvI8KAAIoQENOKgEEUIChnDICCKAAAAigALX9dgo6+ja82/qAAArAMn79CBBAAQBAAAWIZ+Vtc6efgAAKwPIQCiCAAgCAAAowzu2Pmf+GE1RAAAUgZBA2CoAACsA/nGICCKAAACTxZQgA/uvxFvjI004npwBOQAGESQABFAAAARSAHzkFBRBAAcIGzKN/yyOYAAEUoDFhEEAABRBCAQRQgN4hdORtemEXEEABGMKXlQAEUAAABFCAvJxwAgigAOn4/CcggAIwhNNRAAEUYEqIFDQBBFAAAARQAAAEUACmcVseQAAFOOX2x8y/b5QBARSAtznxBBBAAcJz+gkIoABc4hQUQAAFAEAABajPSSiAAApw2dHPawqfAAIowPIQCoAACiDMAgigAAAIoAAAIIACACCAAgCAAAqwhi8PAQigAAAIoAC84hQVEEABED4BBFAAIRJAAAVACAUQQAEAEEABAEAABQBAAAVoxudGAQEUAAAEUIA8nGgCCKAAAAigALUdPQV1WgoggAIMcb/f70YBQAAFAEAABajpyK11t98BBFCA5SEUAAEUAIDVG3ZDADDe45eSnIwC/JsTUAAAlvofYsiVAqqxZAAAAAAASUVORK5CYII=);display:inline-block;background:var(--bone);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat;aspect-ratio:672/507}
+.link{color:var(--lav);font:600 .74rem var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+.link:hover{color:var(--bone)}
+
+/* intro + progress */
+.progress{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--lav);z-index:70}
+.intro{position:fixed;inset:0;z-index:150;background:var(--ink);display:grid;place-items:center;pointer-events:none;animation:introOut .7s var(--ease) 1.5s forwards}
+.intro .mark{width:min(320px,60vw);animation:powerOn 1.5s steps(1,end) forwards}
+@keyframes powerOn{0%{opacity:0}12%{opacity:1}16%{opacity:.1}24%{opacity:1}28%{opacity:.25}34%,100%{opacity:1;filter:drop-shadow(0 0 18px rgba(185,178,255,.75))}}
+@keyframes introOut{to{opacity:0;visibility:hidden}}
+
+/* header */
+header.top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+header.top.solid,body:not([data-view="home"]) header.top{background:rgba(7,6,10,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.nav{display:flex;align-items:center;gap:22px;height:72px}
+.nav .logo{display:flex;align-items:center;text-decoration:none}
+.nav .logo .mark{width:62px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav ul a{text-decoration:none;font:600 .72rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);transition:color .2s;padding-block:6px;border-bottom:1px solid transparent}
+.nav ul a:hover{color:var(--bone)}
+.nav ul a[aria-current="page"]{color:var(--bone);border-color:var(--lav)}
+.cart-btn{background:none;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;display:flex;gap:8px;align-items:center;font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.cart-count{background:var(--tag);color:#fff;border-radius:3px;font:700 .7rem/1 var(--mono);padding:3px 6px;transition:transform .3s var(--ease)}
+.cart-count.bump{transform:scale(1.35)}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:var(--r);height:40px;padding:0 12px;font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+@media (max-width:960px){.nav ul{display:none}.menu-btn{display:block}.nav .cart-btn{margin-left:auto}.nav .book-top{display:none}}
+.sheet{position:fixed;inset:0;z-index:85;background:var(--ink);padding:calc(90px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;align-content:start;gap:4px;animation:fade .3s var(--ease)}
+.sheet a{font:900 2.1rem/1.15 var(--display);font-stretch:120%;text-transform:uppercase;text-decoration:none;padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.sheet a small{font:600 .7rem var(--mono);color:var(--mute);letter-spacing:.1em}
+.sheet .x{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px))}
+@keyframes fade{from{opacity:0}}
+
+/* phone bottom bar */
+.bbar{display:none}
+@media (max-width:760px){
+  :root{--bar:calc(72px + env(safe-area-inset-bottom,0px))}
+  .bbar{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:55;background:rgba(7,6,10,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .bbar .btn{padding:14px 10px}
+}
+
+/* views */
+main{min-height:60vh}
+.view{animation:viewIn .55s var(--ease)}
+@keyframes viewIn{from{opacity:.001;transform:translateY(14px)}}
+.crumbs{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0;font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:8px;color:var(--line)}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{color:var(--bone)}
+
+/* home hero */
+.hero{min-height:min(860px,100svh);display:grid;align-items:end;padding-block:120px 0;overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;inset:0;z-index:-2}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;transform:scale(1.06);animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{to{transform:scale(1.14) translate(-1.5%,-1%)}}
+.hero-dim{position:absolute;inset:0;z-index:-1;background:radial-gradient(420px circle at var(--mx,62%) var(--my,38%),rgba(7,6,10,.05),rgba(7,6,10,.72) 62%),linear-gradient(180deg,rgba(7,6,10,.55) 0%,rgba(7,6,10,.25) 35%,rgba(7,6,10,.94) 88%,var(--ink) 100%)}
+.hero-inner{display:grid;gap:28px;padding-bottom:28px}
+.status{display:inline-flex;align-items:center;gap:10px;font:600 .72rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(243,240,234,.2);background:rgba(7,6,10,.5);backdrop-filter:blur(6px);border-radius:40px;padding:9px 14px;color:var(--mute);justify-self:start}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mute)}
+.status.open{color:var(--bone)}
+.status.open .dot{background:var(--tag);animation:rec 1.6s infinite}
+@keyframes rec{0%,100%{box-shadow:0 0 0 0 rgba(228,52,44,.7)}60%{box-shadow:0 0 0 9px rgba(228,52,44,0)}}
+.hero h1{font-size:clamp(3.4rem,12.5vw,11.5rem);line-height:.82;letter-spacing:-.025em}
+.hero h1 .l{display:block;overflow:hidden}
+.hero h1 .l span{display:block;animation:rise 1s var(--ease) both}
+.hero h1 .l:nth-child(2) span{animation-delay:.12s;color:transparent;-webkit-text-stroke:2px var(--lav)}
+.hero h1 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@keyframes rise{from{transform:translateY(102%)}to{transform:none}}
+.hero-row{display:grid;grid-template-columns:1.1fr 1fr;gap:28px 56px;align-items:end}
+@media (max-width:900px){.hero-row{grid-template-columns:1fr}}
+.hero-row p{margin:0;color:#d7d2dc;font-size:1.1rem;max-width:46ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.deck{border:1px solid rgba(243,240,234,.16);background:rgba(14,12,19,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:var(--r);padding:16px;display:grid;gap:14px;min-width:0}
+.deck-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+#viz{display:block;width:100%;height:96px}
+.vu{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font:600 .66rem var(--mono);color:var(--mute)}
+.vu-bar{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--lav-deep) 0 62%,var(--lav) 62% 82%,var(--tag) 82%);-webkit-mask:linear-gradient(90deg,#000 var(--lvl,8%),rgba(0,0,0,.15) var(--lvl,8%));mask:linear-gradient(90deg,#000 var(--lvl,8%),rgba(0,0,0,.15) var(--lvl,8%))}
+.play{display:flex;align-items:center;gap:10px;background:var(--bone);color:var(--ink);border:0;border-radius:40px;padding:8px 14px 8px 8px;font:700 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.play i{width:26px;height:26px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
+.play i::before{content:"";border-left:8px solid var(--bone);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+.play[aria-pressed="true"] i::before{border:0;width:8px;height:9px;margin:0;background:linear-gradient(90deg,var(--bone) 0 3px,transparent 3px 5px,var(--bone) 5px)}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);padding-top:12px}
+.specs div{display:grid;gap:4px}
+.specs div+div{border-left:1px solid var(--line);padding-left:12px}
+.specs b{font:900 1.5rem/1 var(--display);font-stretch:110%}
+.specs small{font:.62rem/1.3 var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+.marquee{border-block:1px solid var(--line);overflow:hidden;background:var(--ink-2)}
+.track{display:flex;width:max-content;animation:scroll 38s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.track span{display:flex;align-items:center;gap:28px;padding:18px 28px 18px 0;font:800 1.05rem/1 var(--display);font-stretch:125%;text-transform:uppercase;white-space:nowrap}
+.track .mark{width:30px;background:var(--lav)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* room accordion (home) */
+.rooms{display:flex;gap:10px;height:600px}
+.room{position:relative;flex:1;min-width:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--panel);transition:flex .7s var(--ease);cursor:pointer}
+.room[aria-expanded="true"]{flex:3.2;cursor:default}
+.room img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease),filter .7s}
+.room[aria-expanded="false"] img{filter:grayscale(1) brightness(.5)}
+.room:hover img{transform:scale(1.04)}
+.room::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,6,10,.15),rgba(7,6,10,.2) 30%,rgba(7,6,10,.94))}
+.room-label{position:absolute;left:20px;bottom:20px;z-index:2;display:grid;gap:8px;transition:opacity .4s}
+.room-label small{font:600 .68rem var(--mono);letter-spacing:.14em;color:var(--lav);text-transform:uppercase}
+.room-label b{font:900 1.7rem/.95 var(--display);font-stretch:110%;text-transform:uppercase}
+.room[aria-expanded="true"] .room-label{opacity:0}
+.room-body{position:absolute;inset:auto 0 0 0;z-index:2;padding:clamp(20px,3vw,36px);display:grid;grid-template-columns:1.25fr 1fr;gap:20px 36px;align-items:end;opacity:0;transform:translateY(20px);transition:opacity .5s .25s,transform .6s .25s var(--ease);pointer-events:none}
+.room[aria-expanded="true"] .room-body{opacity:1;transform:none;pointer-events:auto}
+.room-body>div{display:grid;gap:14px;min-width:0}
+.room-body h3{font-size:clamp(2rem,4vw,3.2rem);font-stretch:125%}
+.room-body p{margin:0;color:#d4cfd9;max-width:46ch}
+.room-body .row{display:flex;flex-wrap:wrap;gap:10px}
+.mini-rates{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.mini-rates div{background:rgba(7,6,10,.78);padding:12px;display:grid;gap:2px}
+.mini-rates b{font:900 1.35rem/1 var(--display)}
+.mini-rates small{font:.62rem var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+@media (max-width:900px){
+  .rooms{flex-direction:column;height:auto}
+  .room{flex:none;height:96px;transition:height .6s var(--ease)}
+  .room[aria-expanded="true"]{flex:none;height:600px}
+  .room-body{grid-template-columns:1fr}
+}
+
+/* booth reel */
+.reel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px;scrollbar-width:none;cursor:grab;overscroll-behavior-x:contain}
+.reel::-webkit-scrollbar{display:none}
+.reel.drag{cursor:grabbing;scroll-snap-type:none}
+.shot{flex:0 0 clamp(230px,26vw,330px);scroll-snap-align:start;position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:9/11;max-width:100%;background:var(--panel);margin:0}
+.shot.wide{flex-basis:clamp(300px,44vw,560px);aspect-ratio:auto}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);pointer-events:none;user-select:none}
+.shot:hover img{transform:scale(1.05)}
+.shot figcaption{position:absolute;left:12px;bottom:12px;font:600 .64rem var(--mono);letter-spacing:.12em;text-transform:uppercase;background:rgba(7,6,10,.7);padding:6px 9px;border-radius:3px}
+.reel-nav{display:flex;gap:8px}
+.reel-nav button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:none;font-size:1.1rem;transition:border-color .2s,background .2s}
+.reel-nav button:hover{border-color:var(--bone);background:var(--panel)}
+.reels-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:24px}
+.reels-list a{background:var(--ink);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-decoration:none;transition:background .2s}
+.reels-list a:hover{background:var(--panel)}
+.reels-list b{font:800 1rem var(--display);font-stretch:110%;text-transform:uppercase}
+.reels-list small{font:.66rem var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.1em}
+.reels-list .pl{width:30px;height:30px;border-radius:50%;border:1px solid var(--lav);display:grid;place-items:center;flex:none}
+.reels-list .pl::before{content:"";border-left:7px solid var(--lav);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+
+/* team */
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:none;border:1px solid var(--line);border-radius:40px;padding:9px 16px;font:600 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);transition:all .2s}
+.chip:hover{color:var(--bone);border-color:var(--mute)}
+.chip[aria-pressed="true"]{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.team{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,44vw),1fr));gap:14px}
+.member{position:relative;border-radius:var(--r);overflow:hidden;background:var(--panel);aspect-ratio:5/6;max-width:100%;transition:opacity .4s,transform .4s var(--ease);margin:0}
+.member.dim{opacity:.18;transform:scale(.97)}
+.member img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .5s,transform .8s var(--ease)}
+.member:hover img{filter:none;transform:scale(1.04)}
+.member .mk{position:absolute;inset:0;display:grid;place-items:center;background:var(--ink-2)}
+.member .mk .mark{width:58%;background:var(--lav)}
+.member .cap{position:absolute;inset:auto 0 0;padding:44px 14px 14px;background:linear-gradient(180deg,transparent,rgba(7,6,10,.94));display:grid;gap:4px}
+.member .cap b{font:900 1.1rem/1 var(--display);font-stretch:110%;text-transform:uppercase}
+.member .cap span{font:.64rem var(--mono);color:var(--lav);text-transform:uppercase;letter-spacing:.1em}
+.member .cap a{font:.74rem var(--mono);color:var(--mute);text-decoration:none;justify-self:start}
+.member .cap a:hover{color:var(--bone)}
+.member .owner{position:absolute;top:12px;left:12px;font:700 .6rem/1 var(--mono);letter-spacing:.12em;background:var(--tag);color:#fff;padding:5px 7px;border-radius:2px;text-transform:uppercase}
+.quote{margin:44px 0 0;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;max-width:880px}
+.quote .mark{width:64px;background:var(--lav);margin-top:8px}
+.quote blockquote{margin:0;font:700 clamp(1.2rem,2.3vw,1.7rem)/1.3 var(--body)}
+.quote cite{display:block;margin-top:12px;font:600 .7rem var(--mono);letter-spacing:.12em;color:var(--mute);font-style:normal;text-transform:uppercase}
+
+/* page hero (inner pages) */
+.phero{position:relative;isolation:isolate;padding-block:calc(120px + env(safe-area-inset-top,0px)) clamp(40px,6vw,72px);min-height:min(640px,82svh);display:grid;align-items:end;overflow:hidden}
+.phero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;animation:drift 26s ease-in-out infinite alternate}
+.phero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(7,6,10,.7),rgba(7,6,10,.35) 40%,rgba(7,6,10,.96) 92%,var(--ink))}
+.phero .wrap{display:grid;gap:22px;width:100%}
+.phero h1{font-size:clamp(2.6rem,8vw,7rem);line-height:.86;max-width:14ch}
+.phero p{margin:0;max-width:52ch;color:#d7d2dc;font-size:1.1rem}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(243,240,234,.16);border-radius:var(--r);background:rgba(7,6,10,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin-top:10px}
+.facts div{padding:14px 16px;display:grid;gap:4px}
+.facts div+div{border-left:1px solid var(--line)}
+.facts b{font:900 1.5rem/1 var(--display);font-stretch:110%}
+.facts small{font:.64rem/1.3 var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+@media (max-width:760px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--line)}}
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.split>*{min-width:0}
+.incl{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.incl li{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:start}
+.incl li::before{content:"";width:12px;height:12px;margin-top:6px;border:2px solid var(--lav);border-radius:50%}
+.rate-card{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2)}
+.rate-card h3{padding:16px 18px;border-bottom:1px solid var(--line);font-size:1rem;display:flex;justify-content:space-between;gap:12px}
+.rate-card h3 small{font:600 .66rem var(--mono);color:var(--mute);letter-spacing:.08em}
+.rates{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.94rem}
+.rates th{font:600 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);text-align:left;padding:10px 18px;border-bottom:1px solid var(--line)}
+.rates td{padding:11px 18px;border-bottom:1px solid var(--line)}
+.rates tr:last-child td{border-bottom:0}
+.rates td:nth-child(n+2),.rates th:nth-child(n+2){text-align:right;font-family:var(--mono)}
+.rates tr.best td{color:var(--lav)}
+.rates tbody tr{cursor:pointer;transition:background .2s}
+.rates tbody tr:hover{background:var(--panel)}
+.rate-foot{padding:14px 18px;border-top:1px solid var(--line);font-size:.82rem;color:var(--mute)}
+.gear{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.gear li{font:500 .76rem var(--mono);border:1px solid var(--line);background:var(--ink-2);border-radius:3px;padding:6px 9px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:10px}
+.gallery figure{margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:var(--panel)}
+.gallery figure:first-child{grid-column:span 2;grid-row:span 2}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.gallery figure:hover img{transform:scale(1.05)}
+@media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px}}
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:18px 0;display:flex;justify-content:space-between;gap:20px;font-weight:600;font-size:1.05rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 1.4rem/1 var(--mono);color:var(--lav);transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 18px;color:#cfcad6;max-width:64ch}
+.other-rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.oroom{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/10;max-width:100%;text-decoration:none;display:block;border:1px solid var(--line)}
+.oroom img{width:100%;height:100%;object-fit:cover;filter:grayscale(.6) brightness(.6);transition:filter .5s,transform .8s var(--ease)}
+.oroom:hover img{filter:none;transform:scale(1.05)}
+.oroom div{position:absolute;left:18px;bottom:16px;display:grid;gap:6px}
+.oroom b{font:900 1.5rem/1 var(--display);font-stretch:115%;text-transform:uppercase}
+.oroom small{font:600 .66rem var(--mono);letter-spacing:.12em;color:var(--lav);text-transform:uppercase}
+
+/* booking desk */
+.desk-sec{background:var(--ink-2)}
+.desk{display:grid;grid-template-columns:1.45fr 1fr;gap:20px;align-items:start}
+@media (max-width:1000px){.desk{grid-template-columns:1fr}}
+.steps{border:1px solid var(--line);border-radius:var(--r);background:var(--ink);min-width:0;overflow:hidden}
+.step{padding:24px clamp(16px,3vw,30px);border-bottom:1px solid var(--line);display:grid;gap:16px}
+.step:last-child{border-bottom:0}
+.step-h{display:flex;gap:14px;align-items:baseline}
+.step-h .n{font:600 .7rem/1 var(--mono);color:var(--lav)}
+.step-h .done{margin-left:auto;font:600 .66rem var(--mono);color:var(--ok);letter-spacing:.08em;text-transform:uppercase}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.opt{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:0;overflow:hidden;display:grid;transition:border-color .2s,transform .25s var(--ease)}
+.opt:hover{transform:translateY(-2px)}
+.opt .ph{height:76px;overflow:hidden}
+.opt .ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(.7) brightness(.8);transition:filter .3s}
+.opt[aria-pressed="true"] .ph img{filter:none}
+.opt .tx{padding:11px 13px;display:grid;gap:2px}
+.opt small{color:var(--mute);font-size:.78rem}
+.opt[aria-pressed="true"]{border-color:var(--lav);box-shadow:inset 0 0 0 1px var(--lav)}
+.opt.plain .tx{padding:13px}
+.fader-top{display:flex;justify-content:space-between;align-items:baseline}
+.fader-top b{font:900 2.6rem/1 var(--display);font-stretch:115%}
+.fader-top span{font:600 1.05rem var(--mono);color:var(--lav)}
+input[type=range]{width:100%;accent-color:var(--lav);height:28px}
+.ticks{display:flex;justify-content:space-between;font:.66rem var(--mono);color:var(--mute)}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.day{flex:0 0 66px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 0;display:grid;gap:3px;text-align:center;position:relative}
+.day small{font:.62rem var(--mono);color:var(--mute);text-transform:uppercase}
+.day b{font:900 1.5rem/1 var(--display)}
+.day.late::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:var(--tag);border-radius:2px}
+.day[aria-pressed="true"]{background:var(--lav);color:var(--lav-ink);border-color:var(--lav)}
+.day[aria-pressed="true"] small{color:var(--lav-ink)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.slot{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:9px 0;font:600 .82rem var(--mono);transition:border-color .2s}
+.slot:hover:not(:disabled){border-color:var(--mute)}
+.slot:disabled{opacity:.28;text-decoration:line-through;cursor:not-allowed}
+.slot[aria-pressed="true"]{background:var(--lav);color:var(--lav-ink);border-color:var(--lav)}
+.legend{font-size:.78rem;color:var(--mute);display:flex;gap:18px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:2px;background:var(--tag);vertical-align:middle;margin-right:6px}
+.addons{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.addon{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:0;text-align:left;overflow:hidden;display:grid;grid-template-columns:62px 1fr;align-items:center;transition:border-color .2s}
+.addon img{width:62px;height:72px;object-fit:cover;background:#fff}
+.addon .tx{padding:8px 10px;display:grid;gap:2px;font-size:.82rem;line-height:1.25}
+.addon .tx span{font:.72rem var(--mono);color:var(--lav)}
+.addon[aria-pressed="true"]{border-color:var(--lav);box-shadow:inset 0 0 0 1px var(--lav)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.fields{grid-template-columns:1fr}}
+.fields label{display:grid;gap:6px;font:600 .66rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.fields input,.fields select,.fields textarea{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px;color:var(--bone);font:400 .95rem var(--body);width:100%;text-transform:none;letter-spacing:0}
+.fields input:focus,.fields select:focus,.fields textarea:focus{border-color:var(--lav);outline:none}
+.fields .full{grid-column:1/-1}
+.ticket{position:sticky;top:calc(env(safe-area-inset-top,0px) + 92px);border-radius:var(--r);background:var(--bone);color:var(--ink);overflow:hidden;box-shadow:0 30px 60px -30px rgba(185,178,255,.35)}
+.t-head{position:relative;height:130px;overflow:hidden}
+.t-head img{width:100%;height:100%;object-fit:cover}
+.t-head::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,6,10,.1),rgba(7,6,10,.75))}
+.t-head div{position:absolute;left:20px;bottom:16px;z-index:2;color:var(--bone);display:grid;gap:6px}
+.t-head small{font:600 .64rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--lav)}
+.t-head b{font:900 1.6rem/1 var(--display);font-stretch:115%;text-transform:uppercase}
+.ticket dl{margin:0;padding:16px 20px;display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:.9rem}
+.ticket dt{color:#6b6475}
+.ticket dd{margin:0;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.perf{height:0;border-top:2px dashed #cfc9d6;margin:0 14px;position:relative}
+.perf::before,.perf::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--ink-2)}
+.perf::before{left:-24px}.perf::after{right:-24px}
+.tot{padding:16px 20px;display:grid;gap:6px;font-variant-numeric:tabular-nums;font-size:.9rem}
+.tot div{display:flex;justify-content:space-between;gap:10px}
+.tot .due{font:900 1.5rem/1 var(--display);font-stretch:110%;padding-top:8px;border-top:1px solid #dcd6e0;margin-top:4px}
+.act{padding:0 20px 20px;display:grid;gap:10px}
+.act .btn-lav{background:var(--ink);color:var(--bone)}
+.act .btn-lav:hover{background:var(--lav-deep)}
+.fine{font-size:.74rem;color:#6b6475;margin:0}
+.steps .fine,.drawer .fine,.dark-fine{color:var(--mute)}
+.barcode{height:34px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px,var(--ink) 8px 11px,transparent 11px 12px);opacity:.85}
+.confirm{padding:24px 20px;display:grid;gap:12px;text-align:center}
+.confirm .code{font:600 1.3rem var(--mono);letter-spacing:.14em}
+.confirm b{font:900 1.9rem/1 var(--display);font-stretch:115%;text-transform:uppercase}
+.quote-form{border:1px solid var(--line);border-radius:var(--r);background:var(--ink);padding:clamp(18px,3vw,30px);display:grid;gap:18px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+
+/* shop */
+.shop-hero{position:relative;border-radius:var(--r);overflow:hidden;height:clamp(240px,34vw,420px);margin-bottom:28px}
+.shop-hero img{width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+.shop-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,6,10,.9),rgba(7,6,10,.2) 70%)}
+.shop-hero div{position:absolute;left:clamp(18px,4vw,44px);top:50%;transform:translateY(-50%);z-index:2;display:grid;gap:14px;max-width:540px}
+.rack{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(230px,42vw),1fr));gap:18px 14px}
+.prod{display:grid;gap:12px;align-content:start;text-decoration:none}
+.prod .pic{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:var(--r);overflow:hidden;background:#ece9e4}
+.prod .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s,transform .9s var(--ease)}
+.prod .pic img.b{opacity:0}
+.prod:hover .pic img.b{opacity:1}
+.prod:hover .pic img{transform:scale(1.04)}
+.badge{position:absolute;top:10px;left:10px;z-index:2;font:700 .6rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:6px 8px;border-radius:2px;background:var(--ink);color:var(--bone)}
+.badge.sale{background:var(--tag);color:#fff}
+.prod .meta{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.prod .name{font-weight:600;line-height:1.3;font-size:.95rem;display:grid;gap:2px}
+.prod .cols{font:.66rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.nophoto{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:10px;background:var(--panel)}
+.nophoto .mark{width:46%;background:var(--line)}
+.nophoto small{font:600 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.opt-row{display:grid;gap:10px}
+.sz:disabled{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+.sz.c{min-width:0;padding:10px 12px;font-family:var(--body);font-weight:600}
+.stock{font:600 .7rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ok)}
+.stock.low{color:var(--tag)}
+.addon select{grid-column:1/-1;margin:0 8px 8px;background:var(--ink);border:1px solid var(--line);color:var(--bone);border-radius:3px;padding:6px;font:.74rem var(--body)}
+.price{font:500 .88rem var(--mono);white-space:nowrap;text-align:right}
+.price s{color:var(--mute);display:block;font-size:.76rem}
+.price .now{color:var(--tag)}
+.pdp{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,64px);align-items:start}
+@media (max-width:900px){.pdp{grid-template-columns:1fr}}
+.pdp>*{min-width:0}
+.pdp-gal{display:grid;grid-template-columns:72px 1fr;gap:10px}
+.pdp-th{display:grid;gap:8px;align-content:start}
+.pdp-th button{padding:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#ece9e4;aspect-ratio:4/5}
+.pdp-th button[aria-pressed="true"]{border-color:var(--lav);box-shadow:0 0 0 1px var(--lav)}
+.pdp-th img{width:100%;height:100%;object-fit:cover}
+.pdp-main{aspect-ratio:4/5;max-width:100%;border-radius:var(--r);overflow:hidden;background:#ece9e4;position:relative;cursor:zoom-in}
+.pdp-main img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease)}
+.pdp-main.zoom img{transform:scale(1.8)}
+.pdp-info{display:grid;gap:20px;position:sticky;top:110px}
+.pdp-info h1{font-size:clamp(2rem,4.4vw,3.4rem);line-height:.92}
+.pdp-price{font:600 1.4rem var(--mono)}
+.pdp-price s{color:var(--mute);font-size:1rem;margin-right:10px}
+.pdp-price .now{color:var(--tag)}
+.sizes{display:flex;flex-wrap:wrap;gap:8px}
+.sz{min-width:52px;padding:12px 10px;font:700 .8rem var(--mono);background:var(--panel);border:1px solid var(--line);border-radius:3px}
+.sz[aria-pressed="true"]{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.ful{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ful button{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:grid;gap:2px}
+.ful button small{color:var(--mute);font-size:.78rem}
+.ful button[aria-pressed="true"]{border-color:var(--lav);box-shadow:inset 0 0 0 1px var(--lav)}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(7,6,10,.7);backdrop-filter:blur(4px);z-index:80}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--ink-2);border-left:1px solid var(--line);z-index:81;display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px);animation:slide .45s var(--ease)}
+@keyframes slide{from{transform:translateX(100%)}}
+.drawer-h{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line)}
+.drawer-h h3{font-size:1.4rem}
+.x{background:none;border:1px solid var(--line);border-radius:var(--r);width:38px;height:38px}
+.lines{overflow:auto;padding:6px 22px;display:grid;align-content:start}
+.line{display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.line img{width:60px;height:74px;object-fit:cover;border-radius:3px;background:#ece9e4}
+.line small{color:var(--mute);font:.7rem var(--mono)}
+.qty{display:flex;align-items:center;gap:8px;font:.85rem var(--mono)}
+.qty button{width:28px;height:28px;border:1px solid var(--line);background:var(--panel);border-radius:3px}
+.empty{color:var(--mute);padding:40px 0;text-align:center;display:grid;gap:14px;justify-items:center}
+.empty .mark{width:90px;background:var(--line)}
+.drawer-f{padding:18px 22px;border-top:1px solid var(--line);display:grid;gap:8px;font-variant-numeric:tabular-nums;font-size:.92rem}
+.drawer-f div{display:flex;justify-content:space-between}
+.drawer-f .big{font:900 1.4rem var(--display);font-stretch:110%}
+
+/* door + footer */
+.door{display:grid;grid-template-columns:1.1fr 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+@media (max-width:900px){.door{grid-template-columns:1fr}}
+.door-ph{position:relative;min-height:360px}
+.door-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.door-info{padding:clamp(22px,4vw,44px);display:grid;gap:26px;background:var(--ink-2);align-content:start}
+.door-info h3{font-size:.95rem;font-stretch:110%;margin-bottom:10px;color:var(--lav)}
+.addr{font:700 1.5rem/1.2 var(--display);font-stretch:110%;text-transform:uppercase;margin:0}
+.hours{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.9rem}
+.hours td{padding:7px 0;border-bottom:1px solid var(--line)}
+.hours td:last-child{text-align:right;font-family:var(--mono);font-size:.82rem}
+.hours tr.today td{color:var(--lav)}
+.hours tr.today td:first-child::after{content:" · today";font:.68rem var(--mono)}
+.copy{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.copy span{user-select:all}
+.copy button{background:none;border:1px solid var(--line);border-radius:3px;font:.66rem var(--mono);letter-spacing:.08em;padding:5px 9px;color:var(--mute);text-transform:uppercase}
+.copy button:hover{color:var(--bone);border-color:var(--mute)}
+.finale{padding-block:clamp(70px,11vw,130px) 10px;display:grid;gap:30px;justify-items:center;text-align:center}
+.finale .mark{width:min(240px,50vw);filter:drop-shadow(0 0 30px rgba(185,178,255,.35))}
+.slogan{font:900 clamp(2rem,6.2vw,5.4rem)/.92 var(--display);font-stretch:125%;text-transform:uppercase;margin:0;letter-spacing:-.02em}
+.slogan span{display:block}
+.slogan span:nth-child(2){color:transparent;-webkit-text-stroke:1.5px var(--lav)}
+footer.site{border-top:1px solid var(--line);background:var(--ink-2);padding-block:48px 28px;margin-top:40px}
+.fgrid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px}
+@media (max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
+.fgrid h4{font:600 .66rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--lav);margin:0 0 14px}
+.fgrid ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.92rem}
+.fgrid a{text-decoration:none;color:#d4cfd9}
+.fgrid a:hover{color:var(--bone)}
+.fgrid .mark{width:80px;margin-bottom:14px}
+.fgrid address{font-style:normal;color:#d4cfd9;font-size:.92rem;line-height:1.6}
+.fbase{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;margin-top:36px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font:.7rem var(--mono);letter-spacing:.04em}
+
+/* build notes */
+.note{border:1px dashed var(--lav);border-radius:var(--r);background:rgba(185,178,255,.06);padding:14px 16px;font-size:.88rem;margin-top:24px;max-width:84ch}
+.note b{font:600 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lav);display:block;margin-bottom:6px}
+.seo{font:.78rem/1.55 var(--mono);display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin-top:8px}
+.seo dt{color:var(--mute)}
+.seo dd{margin:0;overflow-wrap:anywhere}
+.notes-toggle{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + var(--bar) + env(safe-area-inset-bottom,0px));z-index:54;background:var(--bone);color:var(--ink);border:0;border-radius:40px;padding:10px 14px;font:700 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+@media (max-width:760px){.notes-toggle{bottom:calc(var(--bar) + 12px)}}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + var(--bar) + env(safe-area-inset-bottom,0px));background:var(--lav);color:var(--lav-ink);font:700 .78rem var(--mono);letter-spacing:.04em;padding:12px 18px;border-radius:40px;z-index:90;max-width:calc(100% - 32px);text-align:center;animation:pop .35s var(--ease)}
+@keyframes pop{from{transform:translate(-50%,14px);opacity:0}}
+
+@supports (animation-timeline:view()){
+  .rv{animation:rvIn linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+  @keyframes rvIn{from{transform:translateY(40px)}to{transform:none}}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .intro{display:none}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="intro" aria-hidden="true"><span class="mark"></span></div>
+<div class="progress" id="progress"></div>
+
+<header class="top" id="topbar">
+  <div class="wrap nav">
+    <a class="logo" href="#" data-route="home" aria-label="GVO Sound home"><span class="mark"></span></a>
+    <nav aria-label="Main"><ul>
+      <li><a href="#recording-studio">Recording</a></li>
+      <li><a href="#photo-studio">Photo</a></li>
+      <li><a href="#podcast-studio">Podcast</a></li>
+      <li><a href="#shop">Shop</a></li>
+    </ul></nav>
+    <button class="cart-btn" id="openCart" type="button" aria-label="Open bag">Bag <span class="cart-count" id="cartCount">0</span></button>
+    <button class="menu-btn" id="openMenu" type="button" aria-expanded="false">Menu</button>
+    <a class="btn btn-lav book-top" href="#book">Book</a>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" hidden>
+  <button class="x" id="closeMenu" type="button" aria-label="Close menu">✕</button>
+  <a href="#recording-studio">Recording <small>From $150</small></a>
+  <a href="#photo-studio">Photo <small>From $50</small></a>
+  <a href="#podcast-studio">Podcast <small>Quote</small></a>
+  <a href="#shop">Shop <small>Apparel</small></a>
+  <a href="#book">Book a session <small>→</small></a>
+</div>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fgrid">
+      <div><span class="mark"></span>
+        <address>GVO Sound LLC<br>109 Gibralter Ave<br>Annapolis, MD 21401<br>(443) 292-6753</address>
+      </div>
+      <div><h4>Studios</h4><ul><li><a href="#recording-studio">Recording studio</a></li><li><a href="#photo-studio">Photo studio</a></li><li><a href="#podcast-studio">Podcast and video</a></li><li><a href="#book">Book a session</a></li></ul></div>
+      <div><h4>Shop</h4><ul><li><a href="#shop">All apparel</a></li><li><a href="#product-world-tour-cheetah-hoodie">Cheetah Hoodie</a></li><li><a href="#product-gvo-x-ace-distressed-tee">GVO x Ace Tee</a></li><li><a href="#product-gvo-beanie">GVO Beanie</a></li></ul></div>
+      <div><h4>Follow</h4><ul><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
+    </div>
+    <div class="fbase"><span>GVO Sound LLC · Annapolis, MD · Est. 2020</span><span>Demo build. Photos from gvosound.com.</span></div>
+  </div>
+</footer>
+
+<nav class="bbar" aria-label="Quick actions">
+  <a class="btn btn-ghost" href="sms:+14432541482">Text us</a>
+  <a class="btn btn-lav" href="#book">Book a session</a>
+</nav>
+
+<button class="notes-toggle" id="notesToggle" type="button" aria-pressed="false">Build notes</button>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Bag">
+  <div class="drawer-h"><h3>Your bag</h3><button class="x" id="closeCart" type="button" aria-label="Close bag">✕</button></div>
+  <div class="lines" id="lines"></div>
+  <div class="drawer-f" id="cartFoot"></div>
+</aside>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const m2=n=>'$'+n.toFixed(2), m0=n=>'$'+(Number.isInteger(n)?n:n.toFixed(2));
+const TAX=0.06, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let notesOn=false;
+const SITE='https://www.gvosound.com';
+
+/* ================= data ================= */
+const REC={2:150,3:210,4:260,5:325,6:360,7:420,8:480,9:540,10:600,11:660,12:720};
+const PHOTO={1:50,2:100,3:135,4:180,5:200};
+const HOURS={0:[10,27],1:[10,24],2:[10,24],3:[10,24],4:[10,24],5:[10,27],6:[10,27]};
+const DAYN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const TEAM=[
+ {n:'Cory McGhee',r:'Owner / CEO',ig:'flawlessbreezyy',img:'t_cory',g:'all',own:1},
+ {n:'JCX Beats',r:'Engineer · Producer',ig:'jcxbeats_',img:'t_jcx',g:'rec'},
+ {n:'Nelly AEXO',r:'Engineer · Producer',ig:'vvsaexo',img:'t_nelly',g:'rec'},
+ {n:'Mooki',r:'Sound engineer',ig:'mooki2x',g:'rec'},
+ {n:'Boob Black',r:'Sound engineer',ig:'boobiecaldwell',img:'t_boob',g:'rec'},
+ {n:'Dym Archives',r:'Photographer',ig:'dymarchives',img:'t_dym',g:'photo'},
+ {n:'Smooth',r:'Photographer',ig:'smoozus',img:'t_smooth',g:'photo'},
+ {n:'Spain',r:'Photographer',ig:'spain_15',img:'t_spain',g:'photo'},
+ {n:'Bob Almighty',r:'Video · Content',ig:'bobalmighty',img:'t_bob',g:'pod'},
+ {n:'KingMAG Prod',r:'Video · Content',ig:'kingmagprod',img:'t_mike',g:'pod'},
+ {n:'Skandle',r:'Video · Content',ig:'skandlethetruth',g:'pod'}
+];
+/* Live store snapshot: every visible, in-stock product on gvosound.com as of Oct 20, 2026. av = in-stock variant combos. */
+const PRODUCTS=[{"id":"gvo-x-ace-distressed-tee","n":"GVO x Ace Distressed Tee","p":40,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["S","M","L","XL"],"img":["p_gvo-x-ace-distressed-tee_0","p_gvo-x-ace-distressed-tee_1","p_gvo-x-ace-distressed-tee_2"],"flag":"New"},{"id":"prove-a-point-tee","n":"Prove A Point Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","M","L","XL","2XL","3XL"],"img":["p_lose-a-point-tee_0","p_lose-a-point-tee_1"],"s":21,"flag":"Restocked"},{"id":"world-tour-tee-white","n":"World Tour Tee, White","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_world-tour-tee-1_0","p_world-tour-tee-1_1"],"flag":"New"},{"id":"world-tour-tee-black","n":"World Tour Tee, Black","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["4XL","3XL","2XL","XL","L","M","S","XS"],"img":["p_world-tour-tee_0"],"flag":"Restocked"},{"id":"gvo-muscle-tee","n":"GVO Muscle Tee","p":35,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_gvo-muscle-tee_0","p_gvo-muscle-tee_1","p_gvo-muscle-tee_2"],"flag":"New"},{"id":"no-art-for-today-tee","n":"No Art For Today Tee","p":55,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_no-art-for-today-tee_0"],"flag":"New"},{"id":"pain-is-temporary-dirtbike-jersey","n":"Pain Is Temporary Dirtbike Jersey","p":65,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_pain-is-temporary-hockey-tee_0","p_pain-is-temporary-hockey-tee_1"],"flag":"New"},{"id":"world-tour-cheetah-hoodie","n":"World Tour Cheetah Hoodie","p":100,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["M","L","XL","2XL"],"img":["p_world-tour-cheetah-hoodie_0","p_world-tour-cheetah-hoodie_1","p_world-tour-cheetah-hoodie_2"],"flag":"New"},{"id":"gvo-skater-shorts","n":"GVO Skater Shorts","p":30,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["S","M","L","XL","2XL"],"img":["p_gvo-shorts_0","p_gvo-shorts_1","p_gvo-shorts_2"],"flag":"New"},{"id":"gvo-golf-set-shorts","n":"GVO Golf Set, Shorts","p":25,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shirts_0","p_golf-shirts_1","p_golf-shirts_2"],"flag":"New"},{"id":"gvo-golf-set-shirt","n":"GVO Golf Set, Shirt","p":30,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shorts_0","p_golf-shorts_1","p_golf-shorts_2"],"flag":"New"},{"id":"collective-set-shirt","n":"The Collective Set, Shirt","p":25,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_tee_0","p_tee_1","p_tee_2"],"flag":"New"},{"id":"collective-set-pants","n":"The Collective Set, Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_pants_0","p_pants_1","p_pants_2"],"flag":"New"},{"id":"never-see-the-haters-here-tee","n":"Never See The Haters Here! Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","S","2XL","3XL"],"img":["p_never-see-the-haters-here-tee_0"],"s":21},{"id":"music-is-a-drug-long-sleeve","n":"Music Is A Drug Long Sleeve","p":35.99,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["2XL","XL","L","S"],"img":["p_music-is-a-drug_0","p_music-is-a-drug_1","p_music-is-a-drug_2"],"s":25.19},{"id":"no-deadbeats-oversized-pink","n":"No Deadbeats Oversized Tee, Pink","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Pink"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Pink/M","Pink/L","Pink/XL","Pink/2XL"],"img":["p_no-deadbeats-oversized_0","p_no-deadbeats-oversized_1"],"s":21},{"id":"no-deadbeats-oversized-grey","n":"No Deadbeats Oversized Tee, Grey","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Grey"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Grey/S"],"img":["p_no-deadbeats-oversized-1_0","p_no-deadbeats-oversized-1_1"],"s":21},{"id":"world-tour-cozy-hoodie","n":"World Tour Cozy Hoodie","p":45,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Navy","Light Blue","Olive"]}],"av":["L/Light Blue","XL/Light Blue","2XL/Pink"],"img":["p_world-tour-cozy-set_0","p_world-tour-cozy-set_1","p_world-tour-cozy-set_2"],"s":30},{"id":"world-tour-cozy-pants","n":"World Tour Cozy Pants","p":40,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Light Blue","Navy Blue","Olive"]}],"av":["L/Pink","L/Light Blue","XL/Pink","XL/Light Blue","2XL/Pink","2XL/Light Blue","2XL/Navy Blue"],"img":["p_world-tour-cozy-pants_0","p_world-tour-cozy-pants_1","p_world-tour-cozy-pants_2"],"s":16.99},{"id":"worker-jacket","n":"Worker Jacket","p":75,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Tan","Purple","Cream","Black"]}],"av":["S/Tan","S/Purple","S/Cream","L/Tan","L/Purple","L/Cream","L/Black","XL/Tan","XL/Purple","XL/Cream","XL/Black"],"img":["p_worker-jacket_0","p_worker-jacket_1","p_worker-jacket_2"],"s":52.5},{"id":"world-tour-tracksuit-jacket","n":"World Tour Tracksuit Jacket","p":85,"cat":"Cold weather","o":[{"t":"Size","v":["M","L","XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["M/Black","M/Gray","L/Black","L/Gray"],"img":["p_world-tour-tracksuit_0"],"s":59.5},{"id":"world-tour-tracksuit-pants","n":"World Tour Tracksuit Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Black","Gray","White"]}],"av":["M/Gray","L/Black","L/Gray","XL/White"],"img":["p_world-tour-tracksuit-pants_0","p_world-tour-tracksuit-pants_1","p_world-tour-tracksuit-pants_2"],"s":45.5},{"id":"gvo-bodysuit","n":"GVO Bodysuit","p":35,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Navy","Black","Grey","Beige","Khaki","Brown"]}],"av":["S/Navy","S/Black","S/Grey","S/Beige","S/Khaki","S/Brown","M/Navy","M/Black","M/Grey","M/Beige","M/Khaki","L/Navy","L/Black","L/Grey","L/Beige","L/Khaki"],"img":["p_gvo-bodysuit_0","p_gvo-bodysuit_1"],"s":24.5},{"id":"gvo-body-set-top","n":"GVO Body Set, Top","p":15,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","M/Grey","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-body-set-bottoms","n":"GVO Body Set, Bottoms","p":15,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-beanie","n":"GVO Beanie","p":10,"cat":"Headwear","o":[{"t":"Color","v":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown","Black"]}],"av":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown"],"img":["p_gvo-beanie_0","p_gvo-beanie_1","p_gvo-beanie_2"],"s":7}];
+const unit=p=>p.s||p.p;
+const prodById=id=>PRODUCTS.find(p=>p.id===id);
+const vLabel=(p,v)=>v&&v!=='-'?v.split('/').join(' · '):'One size';
+const firstAvail=p=>p.av[0]||'-';
+/* seasonal: holiday photo special runs Nov 1 to Dec 31 */
+const SEASON={from:[11,1],to:[12,31]};let forceSeason=false;
+function inSeason(){if(forceSeason)return true;const d=nowET(),md=(d.getMonth()+1)*100+d.getDate();return md>=SEASON.from[0]*100+SEASON.from[1]&&md<=SEASON.to[0]*100+SEASON.to[1]}
+const live=list=>list.filter(x=>!(x[2]==='season'&&!inSeason()));
+
+const ROOMS={
+ 'recording-studio':{k:'rec',short:'Recording',img:'sound_room',
+  title:'Recording Studio in Annapolis, MD | Engineer and Mix Included | GVO Sound',
+  desc:'Book a recording session at GVO Sound, 109 Gibralter Ave, Annapolis. Engineer and mixing included. 2 to 12 hour sessions from $150. Open until 3AM Fri–Sun.',
+  h1:'Recording studio in Annapolis',
+  lede:'Every session books an engineer, and the mix is in the rate. Bring your lyrics and your beats. Leave with the record.',
+  facts:[['$150','2-hour session'],['$60/hr','At 6 hours and up'],['3AM','Close, Fri–Sun'],['5','People max']],
+  about:['GVO Sound has recorded artists in Annapolis since 2020. Sessions run in a treated control room with an isolated vocal booth, and an engineer sits with you from the first take to the bounce.','Sessions book in blocks from 2 to 12 hours. Longer blocks drop the hourly rate, and every block includes your engineer and the mix.'],
+  incl:['Engineer for the full session','Mixing included in the rate','Isolated vocal booth','Room for up to 5 people','Book JCX Beats, Mooki or Nelly AEXO by name'],
+  gear:['Iso vocal booth','Argosy console desk','4 studio monitors','Dual-screen DAW station','Large-diaphragm condenser'],
+  rates:Object.entries(REC).map(([h,p])=>[+h,p]),
+  rateNote:'MD sales tax 6% added at checkout. $50 non-refundable deposit holds your slot.',
+  gallery:[['s_artist1','Vocal booth'],['s_mic','Booth mic'],['s_artist2','Tracking'],['booth_dark','Iso booth'],['s_artist4','Playback']],
+  team:'rec',
+  faq:[
+   ['Is mixing included?','Yes. Every recording session includes your engineer and mixing.'],
+   ['Is there a deposit?','A $50 non-refundable deposit is due when you book. It holds your time slot.'],
+   ['How many people can come?','Up to 5 people per session, including the artist. Everyone waits in reception until your engineer comes to get you.'],
+   ['What happens if I\'m late?','Your session starts at the time you booked and ends on time. If nobody is booked after you, you can ask your engineer for more time at the regular rate.'],
+   ['Who keeps my files?','You do. Collect your files before your session ends.'],
+   ['Can I smoke in the studio?','No smoking. Vape pens are fine.'],
+   ['What is the cancellation policy?','Cancel or move your session at least 24 hours ahead. Later cancellations and missed sessions are charged part or all of the session.']
+  ]},
+ 'photo-studio':{k:'photo',short:'Photo',img:'photo_cyc',
+  title:'Photo Studio Rental in Annapolis, MD | From $50/hr | GVO Sound',
+  desc:'Rent a lit, soundproofed photo studio in Annapolis from $50 an hour. Strobes, RGB lights, backdrops and mirrors included. Book a GVO photographer or bring your own.',
+  h1:'Photo studio rental in Annapolis',
+  lede:'A lit, soundproofed room for portraits, product and promo. Rent the room by the hour, or book a GVO photographer with it.',
+  facts:[['$50','Per hour'],['1–5 hrs','Rental blocks'],['6','Lights on set'],['$150','Holiday shoot + 20 edits','season'],['Optional','GVO photographer','off']],
+  about:['The photo studio shares the building with the recording rooms at 109 Gibralter Ave. It is soundproofed, so a shoot runs without noise from the hall, and it comes lit and ready.','Rates cover the room and the gear. Want someone behind the camera? Book Dym Archives or Smooth with your session, or bring your own photographer.'],
+  incl:['2 Neewer flash strobes','2 Neewer continuous strobes','2 GVM RGB lights with Bluetooth','5-in-1 reflector: white, black, gold, silver','1 backdrop color of your choice','Mirrors and a white product box'],
+  gear:['Flash strobes','Continuous strobes','RGB lights','Reflector','Color backdrops','Product box'],
+  rates:Object.entries(PHOTO).map(([h,p])=>[+h,p]),
+  rateNote:'Room rental only. Extra backdrop colors cost more. MD sales tax 6% added at checkout.',
+  extra:{season:1,n:'Holiday photoshoot special',p:150,d:'1-hour shoot with a GVO photographer, 20 edited photos, 2–5 day turnaround. Extra time is $20 per 30 minutes.'},
+  gallery:[['photo_cyc','The set'],['t_dym','Dym Archives'],['t_smooth','Smooth'],['t_spain','Spain'],['t_cory','Portrait']],
+  team:'photo',
+  faq:[
+   ['Does the rental include a photographer?','No. Rates are for the room and the gear. Book Dym Archives or Smooth, or bring your own photographer.'],
+   ['How many backdrops do I get?','One backdrop color is included. Extra colors cost more.'],
+   ['How fast do I get edited photos?','The holiday special delivers 20 edited photos in 2 to 5 days.','season'],
+   ['Can I add time during the shoot?','Extra time on the holiday special is $20 per 30 minutes, when nobody is booked after you.','season'],
+   ['What is the cancellation policy?','Cancel or move your session at least 24 hours ahead. Later cancellations and missed sessions are charged part or all of the session.']
+  ]},
+ 'podcast-studio':{k:'pod',short:'Podcast',img:'pod_set',
+  title:'Podcast and Video Studio in Annapolis, MD | GVO Sound',
+  desc:'Record your podcast, social content or commercial at GVO Sound in Annapolis. Multi-camera set, in-house video producers, launch on every platform. Request a quote.',
+  h1:'Podcast and video studio in Annapolis',
+  lede:'Podcasts, social content and commercials, shot and cut in house by GVO\'s video team. Every project gets its own quote.',
+  facts:[['3','Producers on staff'],['Multi','Camera set'],['7','Days a week'],['Quote','Per project']],
+  about:['The podcast set sits in the main studio at 109 Gibralter Ave, with seating for guests, cameras on stands and the GVO wall behind you.','Bob Almighty, KingMAG Prod and Skandle produce, shoot and edit. Tell us what you\'re making and the team calls you back with a quote.'],
+  incl:['Experienced producers','Video production','Launch on multiple platforms','Studio rentals seven days a week','Licensed professionals'],
+  gear:['Multi-cam set','Guest seating','Podcast mics','Video editing'],
+  gallery:[['pod_set','The set'],['pod_2','On camera'],['pod_3','Guests'],['t_bob','Bob Almighty'],['t_mike','KingMAG Prod']],
+  team:'pod',
+  faq:[
+   ['How is podcast work priced?','Every project is quoted. Send a request and the team calls you back.'],
+   ['Do you shoot video?','Yes. Video production is part of every package.'],
+   ['Can you publish the episodes?','The team can launch your show on multiple platforms.'],
+   ['What else do you produce?','Social media content and commercials.']
+  ]}
+};
+
+/* ================= helpers ================= */
+function nowET(){const f=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const g=t=>+f.find(x=>x.type===t).value;return new Date(g('year'),g('month')-1,g('day'),g('hour')%24,g('minute'))}
+function fmtH(h){h=((h%24)+24)%24;return h===0?'12AM':(h%12||12)+(h<12?'AM':'PM')}
+function openState(){const n=nowET(),h=n.getHours()+n.getMinutes()/60,d=n.getDay(),[o,c]=HOURS[d],pc=HOURS[(d+6)%7][1];if(h>=o&&h<Math.min(c,24))return{open:1,close:c};if(pc>24&&h<pc-24)return{open:1,close:pc};return{open:0,opens:o}}
+const statusTxt=()=>{const s=openState();return s.open?'Studio open now · until '+fmtH(s.close):'Closed now · opens '+fmtH(s.opens)};
+const hoursRows=()=>{const t=nowET().getDay();return [1,2,3,4,5,6,0].map(d=>`<tr class="${d===t?'today':''}"><td>${DAYN[d]}</td><td>${fmtH(HOURS[d][0])} – ${fmtH(HOURS[d][1])}</td></tr>`).join('')};
+const imgT=(f,alt,lazy=1,cls='')=>`<img src="img/${f}.webp" alt="${alt}"${lazy?' loading="lazy"':''}${cls?` class="${cls}"`:''}>`;
+const note=(t,h)=>`<div class="note"${notesOn?'':' hidden'}><b>${t}</b>${h}</div>`;
+function seoNote(meta){return note('SEO · this page',`<dl class="seo"><dt>URL</dt><dd>${SITE}${meta.path}</dd><dt>Title</dt><dd>${meta.title} <span style="color:var(--mute)">(${meta.title.length} chars)</span></dd><dt>Meta</dt><dd>${meta.desc} <span style="color:var(--mute)">(${meta.desc.length} chars)</span></dd><dt>H1</dt><dd>${meta.h1}</dd><dt>Schema</dt><dd>${meta.schema}</dd></dl>`)}
+const crumbs=list=>`<ol class="crumbs" aria-label="Breadcrumb">${list.map(([l,h],i)=>i<list.length-1?`<li><a href="${h}">${l}</a></li>`:`<li aria-current="page">${l}</li>`).join('')}</ol>`;
+const prodCard=p=>{const badge=p.s?`<span class="badge sale">${Math.round((1-p.s/p.p)*100)}% off</span>`:p.flag?`<span class="badge">${p.flag}</span>`:'';const colors=(p.o.find(o=>o.t==='Color')||{v:[]}).v.length;
+ return `<a class="prod rv" href="#product-${p.id}"><div class="pic">${badge}${p.img.length?imgT(p.img[0],p.n)+(p.img[1]?imgT(p.img[1],'',1,'b'):''):'<div class="nophoto"><span class="mark"></span><small>Photo coming</small></div>'}</div><div class="meta"><span class="name">${p.n}${colors>1?`<small class="cols">${colors} colors</small>`:''}</span><span class="price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</span></div></a>`};
+const memberCard=m=>`<figure class="member" data-g="${m.g}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span><a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a></figcaption></figure>`;
+const doorHTML=()=>`<div class="door rv"><div class="door-ph">${imgT('lobby','GVO reception area with leather chairs')}</div><div class="door-info">
+ <div><h3>Pull up</h3><p class="addr">109 Gibralter Ave<br>Annapolis, MD 21401</p><p style="margin:12px 0 0"><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Open in Maps →</a></p></div>
+ <div><h3>Hours</h3><table class="hours">${hoursRows()}</table></div>
+ <div><h3>Reach the studio</h3><div class="copy"><span>(443) 292-6753</span><button type="button" data-copy="(443) 292-6753">Copy</button></div><div class="copy"><span>Text bookings · (443) 254-1482</span><button type="button" data-copy="(443) 254-1482">Copy</button></div><div class="copy"><span>gvosoundllc@gmail.com</span><button type="button" data-copy="gvosoundllc@gmail.com">Copy</button></div></div>
+</div></div>`;
+
+/* ================= views ================= */
+function viewHome(){
+ return `<div class="view" data-v="home">
+ <section class="hero" id="hero">
+  <div class="hero-bg"><img src="img/sound_room.webp" alt="GVO control room with the GVO bat logo on the screens, studio monitors and a console desk" fetchpriority="high"></div>
+  <div class="hero-dim"></div>
+  <div class="wrap hero-inner">
+   <span class="status" id="status"><span class="dot"></span><span class="st">${statusTxt()}</span></span>
+   <h1><span class="sr">GVO Sound, recording studio in Annapolis, MD. </span><span class="l" aria-hidden="true"><span>Your Vision.</span></span><span class="l" aria-hidden="true"><span>Your Sound.</span></span></h1>
+   <div class="hero-row">
+    <div><p>Recording, photo and podcast studios on Gibralter Ave in Annapolis. An engineer sits in on every music session, and the mix is in the rate.</p>
+     <div class="ctas"><a class="btn btn-lav" href="#book">Book a session</a><a class="btn btn-ghost" href="#recording-studio">See the studio</a></div></div>
+    <div class="deck">
+     <div class="deck-top"><span>Control room · Monitor A</span><button class="play" id="play" type="button" aria-pressed="false"><i></i><span id="playLbl">Play the room</span></button></div>
+     <canvas id="viz" aria-hidden="true"></canvas>
+     <div class="vu"><span>L</span><span class="vu-bar" id="vuL"></span><span id="db">-∞ dB</span></div>
+     <div class="vu"><span>R</span><span class="vu-bar" id="vuR"></span><span>88 BPM</span></div>
+     <div class="specs"><div><b>$75</b><small>Per hour, 2-hr session</small></div><div><b>3AM</b><small>Close, Fri–Sun</small></div><div><b>5</b><small>People per session</small></div></div>
+    </div>
+   </div>
+   ${seoNote(META.home)}
+  </div>
+ </section>
+ <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+ <section id="rooms"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three rooms · one address</span><h2>The rooms</h2></div><p class="lede">Recording books in 2 to 12 hours. The photo studio books in 1 to 5. Podcast and content work starts with a quote.</p></div>
+  <div class="rooms" id="roomsEl">${Object.entries(ROOMS).map(([slug,r],i)=>`<div class="room" role="button" tabindex="0" aria-expanded="${i===0}" data-slug="${slug}">
+   ${imgT(r.img,'')}
+   <div class="room-label"><small>Room 0${i+1} · ${r.short}</small><b>${r.h1.replace(' in Annapolis','')}</b></div>
+   <div class="room-body"><div><span class="eyebrow">Room 0${i+1} · ${r.short}</span><h3>${r.h1.replace(' in Annapolis','')}</h3><p>${r.lede}</p></div>
+    <div><div class="mini-rates">${r.facts.slice(0,3).map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}</div>
+    <div class="row"><a class="btn btn-lav" href="#${slug}">See the ${r.short.toLowerCase()} studio</a>${r.k!=='pod'?`<a class="btn btn-ghost" href="#book" data-preset="${r.k}">Book</a>`:''}</div></div></div></div>`).join('')}</div>
+ </div></section>
+ <section id="booth" style="padding-top:0"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO sounds</span><h2>In the booth</h2></div><div class="reel-nav"><button type="button" data-reel="-1" aria-label="Scroll back">←</button><button type="button" data-reel="1" aria-label="Scroll forward">→</button></div></div>
+  <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session'],['r_2','Live take']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}"><img src="img/${f}.webp" alt="${c} at GVO Sound" loading="lazy" draggable="false"><figcaption>${c}</figcaption></figure>`).join('')}</div>
+  <div class="reels-list">${[['Flawless','Promo'],['Local','Reel'],['Will','Reel'],['TMC','Reel'],['Lex','Reel']].map(([a,b])=>`<a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener"><div><b>${a}</b><br><small>${b} · watch on YouTube</small></div><span class="pl"></span></a>`).join('')}</div>
+ </div></section>
+ <section id="team" style="background:var(--ink-2)"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Behind the glass</span><h2>The team</h2></div><div class="filters" id="teamFilters"></div></div>
+  <div class="team" id="teamGrid">${TEAM.map(memberCard).join('')}</div>
+  <figure class="quote rv"><span class="mark"></span><div><blockquote>Amazing full service sound studio, and photography studio. Great athleisurewear as well. The owner Cory aka Flawless is one of the most genuine, dedicated, hard working and community oriented business owners in the region.</blockquote><cite>MyCityM · posted on gvosound.com</cite></div></figure>
+ </div></section>
+ <section><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO apparel</span><h2>The rack</h2></div><a class="btn btn-ghost" href="#shop">Shop all ${PRODUCTS.length} pieces</a></div>
+  <div class="rack">${['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','worker-jacket','gvo-beanie'].map(id=>prodCard(prodById(id))).join('')}</div>
+ </div></section>
+ <section style="padding-bottom:0"><div class="wrap">${doorHTML()}
+  <div class="finale"><span class="mark"></span><p class="slogan"><span>Book The Room.</span><span>Bring The Material.</span><span>Leave With The Mix.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
+ </div></section>
+ </div>`;
+}
+
+function factsOf(r){return r.facts.filter(f=>f[2]==='season'?inSeason():f[2]==='off'?!inSeason():true)}
+function viewRoom(slug){
+ const r=ROOMS[slug],others=Object.entries(ROOMS).filter(([s])=>s!==slug);
+ const team=TEAM.filter(m=>m.g===r.team);
+ const best=r.rates?Math.min(...r.rates.map(([h,p])=>p/h)):0;
+ return `<div class="view" data-v="${slug}">
+ <section class="phero">${imgT(r.img,`${r.short} studio at GVO Sound, Annapolis`,0)}
+  <div class="wrap">${crumbs([['Home','#'],[r.h1.replace(' in Annapolis',''),'']])}
+   <h1>${r.h1}</h1><p>${r.lede}</p>
+   <div class="ctas" style="margin:0">${r.k==='pod'?'<a class="btn btn-lav" href="#desk">Request a quote</a>':'<a class="btn btn-lav" href="#desk">Book this room</a>'}<a class="btn btn-ghost" href="#faq">Questions</a></div>
+   <div class="facts">${factsOf(r).map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}</div>
+   ${seoNote(META[slug])}
+   ${r.k==='photo'?note('Seasonal package','The holiday photoshoot special shows from Nov 1 to Dec 31 and hides itself the rest of the year, here and in the booking desk. <button type="button" class="chip" data-season style="margin-top:10px">'+(forceSeason?'Back to today':'Preview holiday season')+'</button>'):''}
+  </div>
+ </section>
+ <section><div class="wrap split">
+  <div style="display:grid;gap:26px"><span class="eyebrow">The room</span><div class="prose">${r.about.map(p=>`<p>${p}</p>`).join('')}</div>
+   <div><h3 style="margin-bottom:12px">What's included</h3><ul class="incl">${r.incl.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+   <ul class="gear" aria-label="Gear">${r.gear.map(g=>`<li>${g}</li>`).join('')}</ul></div>
+  <div style="display:grid;gap:14px">
+   ${r.rates?`<div class="rate-card rv"><h3>Rates <small>Tap a row to book it</small></h3><table class="rates"><thead><tr><th>Length</th><th>Per hour</th><th>Session</th></tr></thead><tbody>${r.rates.map(([h,p])=>`<tr class="${p/h===best?'best':''}" data-hrs="${h}" tabindex="0"><td>${h} ${h===1?'hour':'hours'}</td><td>$${Math.round(p/h)}</td><td>$${p}</td></tr>`).join('')}</tbody></table><div class="rate-foot">${r.rateNote}</div></div>`:''}
+   ${r.extra&&inSeason()?`<div class="rate-card rv"><h3>${r.extra.n} <small>$${r.extra.p}</small></h3><div class="rate-foot" style="border:0;color:#d4cfd9">${r.extra.d}</div></div>`:''}
+   ${r.k==='pod'?`<div class="rate-card"><h3>How it works</h3><table class="rates"><tbody><tr><td>1. Send a request below</td><td></td><td></td></tr><tr><td>2. The team calls you back</td><td></td><td></td></tr><tr><td>3. Get your quote and book</td><td></td><td></td></tr></tbody></table></div>`:''}
+  </div>
+ </div></section>
+ <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${imgT(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
+ <section style="background:var(--ink-2)"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
+  <div class="team">${team.map(memberCard).join('')}</div>
+ </div></section>
+ <section id="faq"><div class="wrap split">
+  <div class="hd" style="display:grid;gap:16px;align-content:start"><span class="eyebrow">Before you book</span><h2>Questions</h2><p class="lede">Still stuck? Text the studio at (443) 254-1482.</p></div>
+  <div class="faq">${live(r.faq).map(([q,a],i)=>`<details${i===0?' open':''}><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
+ </div></section>
+ <section class="desk-sec" id="desk"><div class="wrap">
+  <div class="sec-head"><div class="hd"><span class="eyebrow">${r.k==='pod'?'Start a project':'Booking desk'}</span><h2>${r.k==='pod'?'Request a quote':'Book the room'}</h2></div><p class="lede">${r.k==='pod'?'Tell us what you\'re making. The team calls you back.':'Real rates, real hours. Your time starts at the slot you pick.'}</p></div>
+  <div data-desk="${r.k}"></div>
+ </div></section>
+ <section style="padding-bottom:0"><div class="wrap">
+  <div class="sec-head"><div class="hd"><span class="eyebrow">Same address</span><h2>Other rooms</h2></div></div>
+  <div class="other-rooms">${others.map(([s,o])=>`<a class="oroom" href="#${s}">${imgT(o.img,'')}<div><small>${o.facts[0][0]} · ${o.facts[0][1]}</small><b>${o.h1.replace(' in Annapolis','')}</b></div></a>`).join('')}</div>
+  <div style="margin-top:56px">${doorHTML()}</div>
+ </div></section>
+ </div>`;
+}
+
+function viewBook(){
+ return `<div class="view" data-v="book"><section class="desk-sec" style="padding-top:calc(130px + env(safe-area-inset-top,0px))"><div class="wrap">
+  ${crumbs([['Home','#'],['Book a session','']])}
+  <div class="sec-head" style="margin-top:20px"><div class="hd"><span class="eyebrow">Booking desk</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">Book a session</h1></div><p class="lede">Recording or photo. Pick a room, a length and a start time. A $50 deposit holds it.</p></div>
+  ${seoNote(META.book)}
+  <div data-desk="all"></div>
+  <p class="dark-fine" style="margin-top:20px;font-size:.85rem">Podcast or video project? <a class="link" href="#podcast-studio">Request a quote</a></p>
+ </div></section></div>`;
+}
+
+function viewShop(){
+ return `<div class="view" data-v="shop"><section style="padding-top:calc(110px + env(safe-area-inset-top,0px))"><div class="wrap">
+  ${crumbs([['Home','#'],['Shop','']])}
+  <div class="shop-hero" style="margin-top:18px">${imgT('lounge','GVO apparel racks and shelves in the studio lounge under a painted mural',0)}<div><span class="eyebrow">GVO apparel</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">The rack</h1><p class="lede" style="color:#d7d2dc">Made by the studio, sold in the lounge. Ship it, or pick it up at your next session.</p></div></div>
+  ${seoNote(META.shop)}
+  <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
+  <div class="rack" id="rack"></div>
+ </div></section></div>`;
+}
+
+function viewProduct(id){
+ const p=prodById(id);if(!p)return viewShop();
+ const rel=PRODUCTS.filter(x=>x.id!==id&&x.cat===p.cat).slice(0,4);
+ const gal=p.img.length?`<div class="pdp-th">${p.img.map((f,i)=>`<button type="button" aria-pressed="${i===0}" data-img="${f}" aria-label="View photo ${i+1}">${imgT(f,'',0)}</button>`).join('')}</div><div class="pdp-main" id="pdpMain">${imgT(p.img[0],p.n,0)}</div>`:`<div></div><div class="pdp-main" style="cursor:default"><div class="nophoto"><span class="mark"></span><small>Photo coming</small></div></div>`;
+ return `<div class="view" data-v="product"><section style="padding-top:calc(110px + env(safe-area-inset-top,0px))"><div class="wrap">
+  ${crumbs([['Home','#'],['Shop','#shop'],[p.n,'']])}
+  <div class="pdp" style="margin-top:22px">
+   <div class="pdp-gal">${gal}</div>
+   <div class="pdp-info">
+    <span class="eyebrow">${p.cat}${p.flag?' · '+p.flag:''}</span>
+    <h1>${p.n}</h1>
+    <div class="pdp-price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</div>
+    <p class="lede">Designed by GVO Sound in Annapolis and sold in the studio lounge at 109 Gibralter Ave.</p>
+    <div id="pdpOpts" class="opt-row"></div>
+    <span class="stock" id="pdpStock"></span>
+    <div><h3 style="font-size:.8rem;margin-bottom:10px">Get it</h3><div class="ful" id="pdpFul"><button type="button" aria-pressed="true" data-ful="ship"><b>Ship it</b><small>Free over $75</small></button><button type="button" aria-pressed="false" data-ful="pickup"><b>Pick up at GVO</b><small>Free, at your session</small></button></div></div>
+    <button type="button" class="btn btn-lav" id="pdpAdd">Add to bag · ${m2(unit(p))}</button>
+    ${seoNote(META['product-'+id])}
+   </div>
+  </div>
+  ${rel.length?`<div style="margin-top:80px"><div class="sec-head"><div class="hd"><span class="eyebrow">More ${p.cat.toLowerCase()}</span><h2>Pair it</h2></div><a class="btn btn-ghost" href="#shop">Back to the rack</a></div><div class="rack">${rel.map(prodCard).join('')}</div></div>`:''}
+ </div></section></div>`;
+}
+
+/* ================= SEO meta per route ================= */
+const META={
+ home:{path:'/',title:'GVO Sound | Recording, Photo and Podcast Studio in Annapolis, MD',desc:'Recording, photo and podcast studios at 109 Gibralter Ave, Annapolis, MD. Engineer and mixing included. Open until 3AM Friday through Sunday.',h1:'GVO Sound, recording studio in Annapolis, MD (visually: Your Vision. Your Sound.)',schema:'RecordingStudio + LocalBusiness, hours, geo'},
+ book:{path:'/book',title:'Book a Studio Session | GVO Sound, Annapolis MD',desc:'Book recording or photo studio time at GVO Sound in Annapolis. Pick your room, length, engineer and start time. $50 deposit holds your slot.',h1:'Book a session',schema:'BreadcrumbList, ReserveAction'},
+ shop:{path:'/shop',title:'GVO Apparel | Tees, Hoodies and Sets | GVO Sound Shop',desc:'Shop GVO Sound apparel: World Tour tees, the Cheetah hoodie, the Worker Jacket and more. Ship it or pick it up at the studio in Annapolis.',h1:'The rack',schema:'BreadcrumbList, ItemList of Product'}
+};
+Object.entries(ROOMS).forEach(([s,r])=>META[s]={path:'/'+s,title:r.title,desc:r.desc,h1:r.h1,schema:'Service + Offer catalog, FAQPage, BreadcrumbList'});
+PRODUCTS.forEach(p=>META['product-'+p.id]={path:'/shop/'+p.id,title:`${p.n} | GVO Sound Apparel`,desc:`${p.n} by GVO Sound, ${m2(unit(p))}. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.`,h1:p.n,schema:'Product + Offer, BreadcrumbList'});
+
+function ldFor(route){
+ const bc=items=>({"@type":"BreadcrumbList","itemListElement":items.map(([n,u],i)=>({"@type":"ListItem","position":i+1,"name":n,"item":SITE+u}))});
+ if(ROOMS[route]){const r=ROOMS[route];return{"@context":"https://schema.org","@graph":[
+  {"@type":"Service","name":r.h1,"provider":{"@id":SITE+"/#business"},"areaServed":"Annapolis, MD","offers":(r.rates||[]).map(([h,p])=>({"@type":"Offer","name":`${h} hour session`,"price":p,"priceCurrency":"USD"}))},
+  {"@type":"FAQPage","mainEntity":live(r.faq).map(([q,a])=>({"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}}))},
+  bc([['Home','/'],[r.h1,'/'+route]])]}}
+ if(route.startsWith('product-')){const p=prodById(route.slice(8));if(p)return{"@context":"https://schema.org","@graph":[{"@type":"Product","name":p.n,"brand":{"@type":"Brand","name":"GVO Sound"},"image":p.img[0]?`${SITE}/img/${p.img[0]}.webp`:undefined,"offers":{"@type":"Offer","price":unit(p),"priceCurrency":"USD","availability":"https://schema.org/InStock"}},bc([['Home','/'],['Shop','/shop'],[p.n,'/shop/'+p.id]])]}}
+ if(route==='book')return{"@context":"https://schema.org","@graph":[bc([['Home','/'],['Book a session','/book']]),{"@type":"ReserveAction","target":SITE+'/book',"object":{"@id":SITE+'/#business'}}]};
+ if(route==='shop')return{"@context":"https://schema.org","@type":"ItemList","itemListElement":PRODUCTS.map((p,i)=>({"@type":"ListItem","position":i+1,"url":`${SITE}/shop/${p.id}`}))};
+ return{};
+}
+
+/* ================= router ================= */
+const main=$('#main');let route='home',cleanup=[];
+function parse(){const h=decodeURIComponent(location.hash.slice(1));if(!h)return'home';if(ROOMS[h]||h==='book'||h==='shop'||h.startsWith('product-'))return h;return null}
+function render(r,opts={}){
+ cleanup.forEach(f=>f());cleanup=[];
+ route=r;document.body.dataset.view=r.startsWith('product-')?'product':r;
+ const html=r==='home'?viewHome():ROOMS[r]?viewRoom(r):r==='book'?viewBook():r==='shop'?viewShop():viewProduct(r.slice(8));
+ const swap=()=>{main.innerHTML=html;wire(r);};
+ if(document.startViewTransition&&!reduce&&!opts.first)document.startViewTransition(swap);else swap();
+ const m=META[r]||META.home;document.title=m.title;$('#metaDesc').setAttribute('content',m.desc);$('#ldPage').textContent=JSON.stringify(ldFor(r));
+ $$('header nav a').forEach(a=>{if(a.getAttribute('href')==='#'+(r.startsWith('product-')?'shop':r))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+ if(!opts.keep)window.scrollTo({top:0,behavior:'instant'});
+ closeMenu();
+}
+addEventListener('hashchange',()=>{
+ const h=location.hash.slice(1);
+ const r=parse();
+ if(r!==null){if(r!==route)render(r);else if(!h)window.scrollTo({top:0,behavior:'smooth'})}
+ else{const el=document.getElementById(h);if(el)el.scrollIntoView({behavior:reduce?'auto':'smooth'})}
+});
+/* in-page anchors like #desk #faq shouldn't change route */
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-season]')){forceSeason=!forceSeason;if(!inSeason()&&B.room==='holiday')B.room='photo';render(route,{keep:true});toast(forceSeason?'Showing the site as it looks Nov 1 to Dec 31':'Back to today');return}
+ const a=e.target.closest('a[href^="#"]');if(!a)return;
+ const h=a.getAttribute('href').slice(1);
+ if(a.dataset.preset){pendingPreset=a.dataset.preset}
+ if(h==='')return;
+ if(!ROOMS[h]&&h!=='book'&&h!=='shop'&&!h.startsWith('product-')){const el=document.getElementById(h);if(el){e.preventDefault();el.scrollIntoView({behavior:reduce?'auto':'smooth'})}}
+ else if(h==='book'&&ROOMS[route]&&ROOMS[route].k!=='pod'&&!a.dataset.preset&&$('#desk')){e.preventDefault();$('#desk').scrollIntoView({behavior:reduce?'auto':'smooth'})}
+});
+let pendingPreset=null;
+
+/* ================= wiring per view ================= */
+function wire(r){
+ $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
+ if(r==='home')wireHome();
+ if(ROOMS[r])wireRoom(r);
+ const deskEl=$('[data-desk]',main);
+ if(deskEl){const k=deskEl.dataset.desk;if(k==='pod')mountQuote(deskEl);else mountDesk(deskEl,k==='all'?(pendingPreset||B.room):k)}
+ pendingPreset=null;
+ if(r==='shop')wireShop();
+ if(r.startsWith('product-'))wireProduct(r.slice(8));
+}
+
+/* home */
+let audio=null;
+function wireHome(){
+ const hero=$('#hero');
+ hero.addEventListener('pointermove',e=>{const b=hero.getBoundingClientRect();hero.style.setProperty('--mx',((e.clientX-b.left)/b.width*100)+'%');hero.style.setProperty('--my',((e.clientY-b.top)/b.height*100)+'%')});
+ const words=['Now booking','Open until 3AM Fri–Sun','Engineer and mix included','Recording · Photo · Podcast','109 Gibralter Ave, Annapolis','Est. 2020'];
+ const seg=words.map(w=>`<span>${w}<i class="mark"></i></span>`).join('');$('#track').innerHTML=seg+seg;
+ startViz();
+ // accordion
+ const rooms=$('#roomsEl');
+ rooms.addEventListener('click',e=>{if(e.target.closest('a'))return;const el=e.target.closest('.room');if(el&&el.getAttribute('aria-expanded')!=='true')$$('.room',rooms).forEach(x=>x.setAttribute('aria-expanded',x===el))});
+ rooms.addEventListener('keydown',e=>{const el=e.target.closest('.room');if(el&&e.target===el&&(e.key==='Enter'||e.key===' ')){e.preventDefault();el.click()}});
+ // reel
+ const reel=$('#reel');
+ $$('[data-reel]',main).forEach(b=>b.onclick=()=>reel.scrollBy({left:reel.clientWidth*.8*b.dataset.reel,behavior:'smooth'}));
+ let dx=null,sl=0;
+ reel.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;dx=e.clientX;sl=reel.scrollLeft;reel.classList.add('drag');reel.setPointerCapture(e.pointerId)});
+ reel.addEventListener('pointermove',e=>{if(dx!==null)reel.scrollLeft=sl-(e.clientX-dx)});
+ const end=()=>{dx=null;reel.classList.remove('drag')};reel.addEventListener('pointerup',end);reel.addEventListener('pointercancel',end);
+ // team filter
+ const TF=[['all','Everyone'],['rec','Engineers'],['photo','Photographers'],['pod','Video']];let tf='all';
+ const rTF=()=>{$('#teamFilters').innerHTML=TF.map(([k,l])=>`<button type="button" class="chip" aria-pressed="${k===tf}" data-k="${k}">${l}</button>`).join('');$$('.member',$('#teamGrid')).forEach(el=>el.classList.toggle('dim',tf!=='all'&&el.dataset.g!==tf&&el.dataset.g!=='all'))};
+ $('#teamFilters').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){tf=b.dataset.k;rTF()}});rTF();
+ const iv=setInterval(()=>{const s=$('#status');if(!s)return;const st=openState();s.classList.toggle('open',!!st.open);$('.st',s).textContent=statusTxt()},60000);
+ const s=$('#status');s.classList.toggle('open',!!openState().open);
+ cleanup.push(()=>clearInterval(iv));
+}
+
+/* beat + viz */
+const A={ac:null,an:null,data:null,playing:false,timer:0,step:0,next:0,master:null,noise:null,raf:0};
+const BPM=88,S16=60/BPM/4;
+const KICK=[1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0],SNR=[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1],HAT=[1,0,1,0,1,0,1,1,1,0,1,0,1,0,1,0],BASS=[43,0,0,0,0,0,0,43,0,0,46,0,0,0,41,0];
+function initAudio(){const ac=A.ac=new(window.AudioContext||window.webkitAudioContext)();A.master=ac.createGain();A.master.gain.value=.7;A.an=ac.createAnalyser();A.an.fftSize=256;A.data=new Uint8Array(A.an.frequencyBinCount);A.master.connect(A.an);A.an.connect(ac.destination);A.noise=ac.createBuffer(1,ac.sampleRate*.5,ac.sampleRate);const c=A.noise.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}
+function kick(t){const ac=A.ac,o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(42,t+.18);g.gain.setValueAtTime(1,t);g.gain.exponentialRampToValueAtTime(.001,t+.45);o.connect(g);g.connect(A.master);o.start(t);o.stop(t+.5)}
+function nz(t,d,f,type,v){const ac=A.ac,s=ac.createBufferSource();s.buffer=A.noise;const fl=ac.createBiquadFilter();fl.type=type;fl.frequency.value=f;const g=ac.createGain();g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);s.connect(fl);fl.connect(g);g.connect(A.master);s.start(t);s.stop(t+d+.02)}
+function snare(t){nz(t,.2,1800,'bandpass',.7);const ac=A.ac,o=ac.createOscillator(),g=ac.createGain();o.frequency.value=190;g.gain.setValueAtTime(.35,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(A.master);o.start(t);o.stop(t+.15)}
+function bass(t,n){const ac=A.ac,o=ac.createOscillator(),g=ac.createGain(),f=ac.createBiquadFilter();o.type='sawtooth';o.frequency.value=440*Math.pow(2,(n-69)/12);f.type='lowpass';f.frequency.value=420;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.28,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+S16*5);o.connect(f);f.connect(g);g.connect(A.master);o.start(t);o.stop(t+S16*6)}
+function sched(){while(A.next<A.ac.currentTime+.12){const i=A.step%16,t=A.next+(i%2?S16*.18:0);if(KICK[i])kick(t);if(SNR[i])snare(t);if(HAT[i])nz(t,i%4===3?.12:.04,8000,'highpass',.22);if(BASS[i])bass(t,BASS[i]);A.next+=S16;A.step++}}
+function stopBeat(){if(A.playing){A.playing=false;clearInterval(A.timer)}}
+function startViz(){
+ const cv=$('#viz');let cx,cw,ch;
+ const size=()=>{const r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);cv.width=r.width*d;cv.height=r.height*d;cx=cv.getContext('2d');cx.setTransform(d,0,0,d,0,0);cw=r.width;ch=r.height};
+ size();addEventListener('resize',size);
+ const btn=$('#play');
+ const sync=()=>{btn.setAttribute('aria-pressed',A.playing);$('#playLbl').textContent=A.playing?'Stop':'Play the room'};sync();
+ btn.onclick=async()=>{if(!A.ac)initAudio();if(A.ac.state==='suspended')await A.ac.resume();if(A.playing)stopBeat();else{A.playing=true;A.step=0;A.next=A.ac.currentTime+.05;A.timer=setInterval(sched,25)}sync();if(reduce)loop()};
+ let tt=0,alive=true;
+ function loop(){
+  if(!alive)return;cx.clearRect(0,0,cw,ch);
+  const n=Math.max(24,Math.floor(cw/7));let lvl=0;if(A.playing)A.an.getByteFrequencyData(A.data);
+  for(let i=0;i<n;i++){let v;if(A.playing){v=A.data[Math.floor(i/n*A.data.length*.8)]/255;lvl+=v}else v=.08+.06*Math.sin(i*.35+tt)+.04*Math.sin(i*.11-tt*.7);const h=Math.max(2,v*ch*.95);cx.fillStyle=v>.78?'#e4342c':v>.55?'#b9b2ff':'#4a4470';cx.fillRect(i*7,(ch-h)/2,4,h)}
+  const L=A.playing?Math.min(100,lvl/n*190):6;$('#vuL').style.setProperty('--lvl',L+'%');$('#vuR').style.setProperty('--lvl',(A.playing?Math.max(0,L-4+Math.random()*8):5)+'%');$('#db').textContent=A.playing?(-18+L/5).toFixed(1)+' dB':'-∞ dB';
+  tt+=.03;if(!reduce||A.playing)A.raf=requestAnimationFrame(loop);
+ }
+ loop();
+ cleanup.push(()=>{alive=false;cancelAnimationFrame(A.raf);removeEventListener('resize',size);stopBeat()});
+}
+
+/* room page */
+function wireRoom(slug){
+ const r=ROOMS[slug];
+ $$('.rates tbody tr[data-hrs]',main).forEach(tr=>{const go=()=>{const k=B.room==='holiday'&&r.k==='photo'?'photo':r.k;B.hrs=+tr.dataset.hrs;setBookRoom(k,B.room===k);B.slot=null;B.done=null;renderBook();$('#desk').scrollIntoView({behavior:reduce?'auto':'smooth'});toast(`${tr.dataset.hrs}-hour session loaded. Pick a start time.`)};tr.onclick=go;tr.onkeydown=e=>{if(e.key==='Enter')go()}});
+}
+
+/* ================= booking desk (one shared state) ================= */
+const B={room:'rec',hrs:2,staff:'any',day:null,slot:null,add:new Map(),done:null,scope:'all'};
+const BROOMS=[{k:'rec',n:'Recording session',s:'Engineer and mix included',img:'s_artist2'},{k:'photo',n:'Photo studio',s:'Room, lights, 1 backdrop',img:'photo_cyc'},{k:'holiday',n:'Holiday photo special',s:'1 hr, photographer, 20 edits',img:'t_dym'}];
+const ADDONS=['gvo-beanie','world-tour-tee-black','prove-a-point-tee','world-tour-cozy-hoodie'];
+const addOf=id=>[...B.add.values()].find(x=>x.id===id);
+let D=null;
+const DESK_HTML=`<div class="desk"><div class="steps">
+ <div class="step" data-step="room"><div class="step-h"><span class="n">01</span><h3>Room</h3></div><div class="opts" data-el="rooms"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num>02</span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num>03</span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num>04</span><h3>Date and start</h3><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num>05</span><h3>Wear the session</h3></div><p class="fine">Add merch and it's bagged at the front desk when you arrive. One checkout.</p><div class="addons" data-el="addons"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num>06</span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
+  <label>Name or artist name<input id="f-name" autocomplete="name" placeholder="Lex"></label>
+  <label>Mobile for text confirm<input id="f-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label>
+  <label>Email<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
+  <label>People coming<select id="f-ppl"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+  <label class="full">What are you working on?<textarea id="f-notes" rows="2" placeholder="Two songs, beats on a USB"></textarea></label></form></div>
+</div><aside class="ticket" data-el="ticket" aria-live="polite"></aside></div>`;
+function mountDesk(host,k){
+ host.innerHTML=DESK_HTML;D={};$$('[data-el]',host).forEach(el=>D[el.dataset.el]=el);D.host=host;
+ B.scope=host.dataset.desk;
+ const fixed=B.scope!=='all';
+ if(fixed){$('[data-step="room"]',host).hidden=true;$$('[data-num]',host).forEach((n,i)=>n.textContent='0'+(i+1))}
+ const keepRoom=(B.scope==='photo'&&(B.room==='photo'||B.room==='holiday'))||B.room===k;
+ setBookRoom(keepRoom?B.room:k,true);
+ D.rooms.onclick=e=>{const b=e.target.closest('[data-room]');if(b)setBookRoom(b.dataset.room)};
+ D.staff.onclick=e=>{const b=e.target.closest('[data-staff]');if(b){B.staff=b.dataset.staff;renderBook()}};
+ D.days.onclick=e=>{const b=e.target.closest('[data-day]');if(b){B.day=b.dataset.day;renderBook()}};
+ D.slots.onclick=e=>{const b=e.target.closest('[data-slot]');if(b&&!b.disabled){B.slot=+b.dataset.slot;renderBook()}};
+ D.addons.onclick=e=>{if(e.target.closest('select'))return;const b=e.target.closest('[data-add]');if(b){const id=b.dataset.add,cur=addOf(id);if(cur)B.add.delete(id+'|'+cur.v);else{const v=firstAvail(prodById(id));B.add.set(id+'|'+v,{id,v,q:1})}renderBook()}};
+ D.addons.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.addon')){e.preventDefault();e.target.click()}};
+ D.addons.onchange=e=>{const s=e.target.closest('select');if(!s)return;const id=s.dataset.id,cur=addOf(id);if(cur){B.add.delete(id+'|'+cur.v);B.add.set(id+'|'+s.value,{id,v:s.value,q:cur.q})}renderBook()};
+ D.hrs.oninput=e=>{B.hrs=+e.target.value;renderBook()};
+ D.form.onsubmit=e=>e.preventDefault();
+}
+function setBookRoom(k,keep){
+ if(k==='holiday'&&!inSeason())k='photo';
+ if(!keep||B.room!==k){B.staff='any';B.slot=null;B.done=null}
+ B.room=k;
+ if(!staffList().some(x=>x.k===B.staff))B.staff='any';
+ if(!D)return;
+ const r=D.hrs;
+ if(k==='rec'){r.min=2;r.max=12;r.disabled=false;B.hrs=Math.min(12,Math.max(2,B.hrs))}
+ else if(k==='photo'){r.min=1;r.max=5;r.disabled=false;B.hrs=Math.min(5,Math.max(1,B.hrs))}
+ else{r.min=1;r.max=1;B.hrs=1;r.disabled=true}
+ r.value=B.hrs;renderBook();
+}
+const price=()=>B.room==='rec'?REC[B.hrs]:B.room==='photo'?PHOTO[B.hrs]:150;
+function staffList(){
+ if(B.room==='rec')return[{k:'any',n:'First available',s:'Any engineer'},{k:'JCX Beats',n:'JCX Beats',s:'Engineer · Producer',img:'t_jcx'},{k:'Mooki',n:'Mooki Mixed It',s:'Sound engineer'},{k:'Nelly AEXO',n:'Nelly AEXO',s:'Engineer · Producer',img:'t_nelly'}];
+ const ph=[{k:'Dym Archives',n:'Dym Archives',s:'Photographer',img:'t_dym'},{k:'Smooth',n:'Smooth',s:'Photographer',img:'t_smooth'}];
+ return B.room==='photo'?[{k:'any',n:'No photographer',s:'Bringing my own'},...ph]:[{k:'any',n:'First available',s:'Any photographer'},...ph];
+}
+function taken(key,h){let s=0;for(const c of key+':'+h)s=(s*31+c.charCodeAt(0))>>>0;return s%5===0}
+const keyOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function days(){const out=[],n=nowET();n.setHours(0,0,0,0);for(let i=0;i<14;i++){const d=new Date(n);d.setDate(n.getDate()+i);out.push(d)}return out}
+function slotsFor(d){const[o,c]=HOURS[d.getDay()],now=nowET(),res=[];for(let h=o;h+B.hrs<=c;h++){const st=new Date(d);st.setHours(h);res.push({h,dis:st-now<3600e3||taken(keyOf(d)+B.room,h)})}return res}
+const opt=(o,attr,on)=>`<button type="button" class="opt${o.img?'':' plain'}" aria-pressed="${on}" ${attr}="${o.k}">${o.img?`<div class="ph">${imgT(o.img,'')}</div>`:''}<div class="tx"><b>${o.n}</b><small>${o.s}</small></div></button>`;
+function renderBook(){
+ if(!D||!D.host.isConnected)return;
+ const roomsShown=(B.scope==='photo'?BROOMS.filter(r=>r.k!=='rec'):BROOMS).filter(r=>r.k!=='holiday'||inSeason());
+ if(B.scope==='photo')$('[data-step="room"]',D.host).hidden=false;
+ if(B.scope==='photo')$$('[data-num]',D.host).forEach((n,i)=>n.textContent='0'+(i+2));
+ D.rooms.innerHTML=roomsShown.map(r=>opt(r,'data-room',B.room===r.k)).join('');
+ const mn=+D.hrs.min,mx=+D.hrs.max;
+ D.hrsOut.textContent=B.hrs+(B.hrs===1?' hr':' hrs');D.rateOut.textContent='$'+price();
+ D.ticks.innerHTML=mn===mx?'<span>Fixed 1-hour shoot</span>':Array.from({length:mx-mn+1},(_,i)=>`<span>${mn+i}</span>`).join('');
+ D.staffHead.textContent=B.room==='rec'?'Engineer':'Photographer';
+ D.staff.innerHTML=staffList().map(s=>opt(s,'data-staff',B.staff===s.k)).join('');
+ const ds=days();if(!B.day||!ds.some(d=>keyOf(d)===B.day))B.day=keyOf(ds[0]);
+ D.days.innerHTML=ds.map(d=>`<button type="button" class="day${HOURS[d.getDay()][1]>24?' late':''}" aria-pressed="${B.day===keyOf(d)}" data-day="${keyOf(d)}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString('en-US',{month:'short'})}</small></button>`).join('');
+ const sl=slotsFor(ds.find(d=>keyOf(d)===B.day));
+ if(B.slot!==null&&!sl.some(s=>s.h===B.slot&&!s.dis))B.slot=null;
+ D.slots.innerHTML=sl.length?sl.map(s=>`<button type="button" class="slot" ${s.dis?'disabled':''} aria-pressed="${B.slot===s.h}" data-slot="${s.h}">${fmtH(s.h)}</button>`).join(''):'<p class="fine">No start times left today for a session this long. Try a shorter session or another day.</p>';
+ D.whenDone.hidden=B.slot===null;
+ const ids=[...new Set([...ADDONS,...[...B.add.values()].map(x=>x.id)])];
+ D.addons.innerHTML=ids.map(id=>{const p=prodById(id),cur=addOf(id);return `<div class="addon" role="button" tabindex="0" aria-pressed="${!!cur}" data-add="${id}">${p.img[0]?imgT(p.img[0],''):'<span></span>'}<div class="tx">${p.n}<span>${m0(unit(p))}${cur&&cur.q>1?' × '+cur.q:''}</span></div>${cur&&p.av.length>1?`<select data-id="${id}" aria-label="${p.n} option">${p.av.map(v=>`<option value="${v}"${v===cur.v?' selected':''}>${vLabel(p,v)}</option>`).join('')}</select>`:''}</div>`}).join('');
+ renderTicket();
+}
+function renderTicket(){
+ const tk=D.ticket,room=BROOMS.find(r=>r.k===B.room);
+ const head=`<div class="t-head">${imgT(room.k==='rec'?'sound_room':room.k==='photo'?'photo_cyc':'t_dym','')}<div><small>Session ticket · GVO Sound</small><b>${room.n}</b></div></div>`;
+ if(B.done){
+  tk.innerHTML=head+`<div class="confirm"><span class="eyebrow" style="justify-content:center;color:var(--lav-deep)">Booked</span><b>See you at GVO</b><div class="code">${B.done.code}</div><p class="fine">${B.done.line}<br>A text confirmation goes to ${B.done.phone}. Move or cancel 24 hours out to keep your deposit.</p><div class="barcode"></div><button type="button" class="btn btn-ghost" data-again style="color:var(--ink);border-color:#cfc9d6">Book another</button><p class="fine">Demo only. No booking was made and no card was charged.</p></div>`;
+  $('[data-again]',tk).onclick=()=>{B.done=null;B.slot=null;B.add.clear();renderBook()};return;
+ }
+ const p=price(),merch=[...B.add.values()].reduce((a,x)=>a+unit(prodById(x.id))*x.q,0),mcount=[...B.add.values()].reduce((a,x)=>a+x.q,0);
+ const tax=(p+merch)*TAX,total=p+merch+tax,dep=Math.min(50,p*(1+TAX)),today=dep+merch*(1+TAX);
+ const d=new Date(B.day+'T12:00:00');
+ const when=B.slot!==null?`${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} · ${fmtH(B.slot)}–${fmtH(B.slot+B.hrs)}`:'Pick a start time';
+ tk.innerHTML=head+`<dl><dt>Length</dt><dd>${B.hrs} ${B.hrs===1?'hour':'hours'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffList().find(s=>s.k===B.staff).n}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
+ <div class="perf"></div>
+ <div class="tot"><div><span>Session</span><span>${m2(p)}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}<div><span>MD sales tax 6%</span><span>${m2(tax)}</span></div><div><span>Total</span><span>${m2(total)}</span></div><div class="due"><span>Due today</span><span>${m2(today)}</span></div><p class="fine">$50 non-refundable deposit holds the slot${merch?', merch is paid now':''}. ${m2(total-today)} is due at the studio.</p></div>
+ <div class="act"><button type="button" class="btn btn-lav" data-pay ${B.slot===null?'disabled':''}>${B.slot===null?'Choose a start time':'Pay '+m2(today)}</button><p class="fine">Apple Pay, Google Pay, card or Afterpay.</p></div>`;
+ $('[data-pay]',tk).onclick=()=>{
+  const name=$('#f-name').value.trim(),phone=$('#f-phone').value.trim();
+  if(!name||!phone){toast('Add your name and mobile in the last step first');$('#f-name').focus();return}
+  B.done={code:'GVO-'+Math.random().toString(36).slice(2,7).toUpperCase(),phone,line:`${name} · ${d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}, ${fmtH(B.slot)} to ${fmtH(B.slot+B.hrs)}`};
+  renderTicket();toast('Session booked');
+ };
+}
+
+/* podcast quote form */
+function mountQuote(host){
+ const types=['Podcast','Social media content','Commercial','Other'];let t='Podcast';
+ host.innerHTML=`<div class="desk"><form class="quote-form" novalidate id="qform">
+  <div><h3 style="font-size:.8rem;margin-bottom:10px">What are you making?</h3><div class="seg" id="qtype"></div></div>
+  <div class="fields"><label>Name<input id="q-name" autocomplete="name" placeholder="Your name or show name"></label><label>Phone<input id="q-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label><label class="full">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com"></label><label class="full">Tell us about it<textarea id="q-notes" rows="4" placeholder="Weekly show, 2 hosts and a guest, want clips for Instagram"></textarea></label></div>
+  <button type="submit" class="btn btn-lav" style="justify-self:start">Send request</button>
+  <p class="fine">Demo form. Nothing is sent.</p></form>
+  <aside class="ticket"><div class="t-head">${imgT('pod_set','')}<div><small>Podcast and video</small><b>Quoted per project</b></div></div><dl><dt>Producers</dt><dd>Bob Almighty, KingMAG Prod, Skandle</dd><dt>Studio</dt><dd>Seven days a week</dd><dt>Reply</dt><dd>A call back from the team</dd></dl><div class="act"><p class="fine">Prefer to text? (443) 254-1482</p></div></aside></div>`;
+ const rT=()=>$('#qtype').innerHTML=types.map(x=>`<button type="button" class="chip" aria-pressed="${x===t}" data-t="${x}">${x}</button>`).join('');rT();
+ $('#qtype').onclick=e=>{const b=e.target.closest('[data-t]');if(b){t=b.dataset.t;rT()}};
+ $('#qform').onsubmit=e=>{e.preventDefault();if(!$('#q-name').value.trim()||!$('#q-phone').value.trim()){toast('Add your name and phone so the team can call you');return}e.target.innerHTML=`<div style="display:grid;gap:14px"><span class="eyebrow">Request received</span><h3 style="font-size:2rem">Talk soon</h3><p class="lede">The GVO video team will call ${$('#q-phone')?.value||'you'} about your ${t.toLowerCase()} project. Demo only, nothing was sent.</p></div>`;toast('Request sent')};
+}
+
+/* shop */
+const CATS=['All','Shirts','Cold weather','Bottoms','Headwear','Sale'];let cat='All';
+function wireShop(){
+ const r=()=>{$('#shopFilters').innerHTML=CATS.map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const list=PRODUCTS.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));$('#shopCount').textContent=list.length+' of '+PRODUCTS.length+' pieces · live store, Oct 20';$('#rack').innerHTML=list.map(prodCard).join('')};
+ $('#shopFilters').onclick=e=>{const b=e.target.closest('[data-cat]');if(b){cat=b.dataset.cat;r()}};r();
+}
+function wireProduct(id){
+ const p=prodById(id);if(!p)return;let ful='ship';
+ const sel=firstAvail(p).split('/');
+ const isAv=arr=>p.av.includes(arr.join('/'));
+ function draw(){
+  $('#pdpOpts').innerHTML=p.o.map((o,oi)=>o.v.length<2&&o.t==='Color'?'':`<div><h3 style="font-size:.8rem;margin-bottom:10px">${o.t}${o.t==='Color'?` <span style="color:var(--mute);font:500 .72rem var(--mono);text-transform:none;letter-spacing:0">· ${sel[oi]}</span>`:''}</h3><div class="sizes">${o.v.map(v=>{const trial=sel.slice();trial[oi]=v;const any=p.av.some(a=>a.split('/')[oi]===v);const ok=isAv(trial);return `<button type="button" class="sz${o.t==='Color'?' c':''}" aria-pressed="${sel[oi]===v}" data-oi="${oi}" data-v="${v}" ${any?'':'disabled'} ${!ok&&any?'style="opacity:.55"':''}>${v}</button>`}).join('')}</div></div>`).join('');
+  const ok=isAv(sel);const st=$('#pdpStock');
+  const count=p.av.length,total=p.o.reduce((a,o)=>a*o.v.length,1);
+  st.textContent=ok?(count<=total/3?'In stock · few sizes left':'In stock'):'This combination is sold out';st.classList.toggle('low',!ok||count<=total/3);
+  const btn=$('#pdpAdd');btn.disabled=!ok;btn.textContent=ok?'Add to bag · '+m2(unit(p)):'Sold out';
+ }
+ draw();
+ $('#pdpOpts').onclick=e=>{const b=e.target.closest('[data-oi]');if(!b||b.disabled)return;const oi=+b.dataset.oi;sel[oi]=b.dataset.v;if(!isAv(sel)){const fix=p.av.map(a=>a.split('/')).find(a=>a[oi]===sel[oi]);if(fix)fix.forEach((v,i)=>sel[i]=v)}draw()};
+ $$('.pdp-th button',main).forEach(b=>b.onclick=()=>{$$('.pdp-th button',main).forEach(x=>x.setAttribute('aria-pressed',x===b));$('#pdpMain img').src=`img/${b.dataset.img}.webp`});
+ const pm=$('#pdpMain img')&&$('#pdpMain');
+ if(pm){pm.onclick=()=>pm.classList.toggle('zoom');pm.onmousemove=e=>{const r=pm.getBoundingClientRect();$('img',pm).style.transformOrigin=`${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`};pm.onmouseleave=()=>pm.classList.remove('zoom')}
+ $('#pdpFul').onclick=e=>{const b=e.target.closest('[data-ful]');if(b){ful=b.dataset.ful;$$('#pdpFul button').forEach(x=>x.setAttribute('aria-pressed',x===b))}};
+ $('#pdpAdd').onclick=()=>{if(isAv(sel))addToBag(id,sel.join('/'),ful)};
+}
+
+/* ================= bag ================= */
+let cart=[];try{cart=JSON.parse(localStorage.getItem('gvo-bag2')||'[]').filter(l=>prodById(l.id))}catch(e){cart=[]}
+const save=()=>{try{localStorage.setItem('gvo-bag2',JSON.stringify(cart))}catch(e){}};
+function addToBag(id,v,ful){const p=prodById(id),l=cart.find(x=>x.id===id&&x.v===v);l?l.q++:cart.push({id,v,q:1,ful});save();renderCart(true);toast(`Added ${p.n} · ${vLabel(p,v)}${ful==='pickup'?' · pickup at GVO':''}`)}
+function renderCart(bump){
+ const c=$('#cartCount');c.textContent=cart.reduce((a,l)=>a+l.q,0);
+ if(bump){c.classList.add('bump');setTimeout(()=>c.classList.remove('bump'),300)}
+ if(!cart.length){$('#lines').innerHTML='<div class="empty"><span class="mark"></span>Your bag is empty.<a class="btn btn-ghost" href="#shop">Browse the rack</a></div>';$('#cartFoot').innerHTML='';return}
+ let sub=0;
+ $('#lines').innerHTML=cart.map((l,i)=>{const p=prodById(l.id),u=unit(p);sub+=u*l.q;return `<div class="line">${p.img[0]?imgT(p.img[0],''):'<div class="nophoto" style="position:static;width:60px;height:74px;border-radius:3px"><span class="mark"></span></div>'}<div><a href="#product-${p.id}" style="font-weight:600;font-size:.9rem;line-height:1.3;text-decoration:none">${p.n}</a><br><small>${vLabel(p,l.v)} · ${m2(u)}${l.ful==='pickup'?' · pickup':''}</small></div><div class="qty"><button type="button" data-dec="${i}" aria-label="Remove one">−</button>${l.q}<button type="button" data-inc="${i}" aria-label="Add one">+</button></div></div>`}).join('');
+ const allPick=cart.every(l=>l.ful==='pickup'),ship=allPick||sub>=75?0:7.99,tax=sub*TAX;
+ $('#cartFoot').innerHTML=`<div><span>Subtotal</span><span>${m2(sub)}</span></div><div><span>${allPick?'Pickup at GVO':'Shipping'+(sub>=75?'':' · free at $75')}</span><span>${ship?m2(ship):'Free'}</span></div><div><span>Tax 6%</span><span>${m2(tax)}</span></div><div class="big"><span>Total</span><span>${m2(sub+ship+tax)}</span></div><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px">Check out</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button><p class="fine">Demo checkout. No payment is taken.</p>`;
+ $('#checkout').onclick=()=>{cart=[];save();renderCart();toast('Order placed. Demo only, nothing was charged.')};
+ $('#pickup').onclick=()=>{cart.forEach(l=>{const c=B.add.get(l.id+'|'+l.v);B.add.set(l.id+'|'+l.v,{id:l.id,v:l.v,q:(c?c.q:0)+l.q})});cart=[];save();renderCart();closeCart();if(route==='book')renderBook();location.hash='book';toast('Your bag moved to your session ticket. Pick a time.')};
+}
+$('#lines').addEventListener('click',e=>{const d=e.target.closest('[data-dec]'),i=e.target.closest('[data-inc]');if(d){const k=+d.dataset.dec;if(!--cart[k].q)cart.splice(k,1)}else if(i)cart[+i.dataset.inc].q++;else{if(e.target.closest('a'))closeCart();return}save();renderCart()});
+function openCart(){$('#drawer').hidden=false;$('#scrim').hidden=false;$('#closeCart').focus()}
+function closeCart(){$('#drawer').hidden=true;$('#scrim').hidden=true}
+$('#openCart').onclick=openCart;$('#closeCart').onclick=closeCart;$('#scrim').onclick=closeCart;
+
+/* ================= menu, chrome, misc ================= */
+function openMenu(){$('#sheet').hidden=false;$('#openMenu').setAttribute('aria-expanded','true');$('#closeMenu').focus()}
+function closeMenu(){$('#sheet').hidden=true;$('#openMenu').setAttribute('aria-expanded','false')}
+$('#openMenu').onclick=openMenu;$('#closeMenu').onclick=closeMenu;$('#sheet').addEventListener('click',e=>{if(e.target.closest('a'))closeMenu()});
+addEventListener('keydown',e=>{if(e.key==='Escape'){closeCart();closeMenu()}});
+const bar=$('#topbar'),prog=$('#progress');
+const onScroll=()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;bar.classList.toggle('solid',y>40);prog.style.transform=`scaleX(${h>0?y/h:0})`};
+addEventListener('scroll',onScroll,{passive:true});
+let tto;function toast(m){const t=$('#toast');t.hidden=true;void t.offsetWidth;t.textContent=m;t.hidden=false;clearTimeout(tto);tto=setTimeout(()=>t.hidden=true,2800)}
+function copy(b){const v=b.dataset.copy;const sel=()=>{const s=b.previousElementSibling,r=document.createRange();r.selectNodeContents(s);getSelection().removeAllRanges();getSelection().addRange(r);toast('Selected. Copy it with your keyboard.')};if(navigator.clipboard)navigator.clipboard.writeText(v).then(()=>toast('Copied '+v)).catch(sel);else sel()}
+$('#notesToggle').onclick=e=>{notesOn=!notesOn;e.currentTarget.setAttribute('aria-pressed',notesOn);e.currentTarget.textContent=notesOn?'Hide notes':'Build notes';$$('.note').forEach(n=>n.hidden=!notesOn);if(notesOn&&!$('.note:not([hidden])'))toast('No notes on this view')};
+
+/* boot */
+renderCart();
+const first=parse();
+render(first===null?'home':first,{first:true});
+onScroll();
+})();
+</script>
+
+</body>
+</html>
