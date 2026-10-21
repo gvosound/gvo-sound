@@ -1009,6 +1009,12 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 @keyframes rqp{to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){.rq-s{transition:none}}
 /* ---- podcast page: episode shot at GVO ---- */
+.how-link{display:block;text-decoration:none;color:inherit;transition:border-color .25s,transform .3s var(--ease)}
+.how-link:hover{border-color:var(--lav);transform:translateY(-2px)}
+.how-link h3 small{color:var(--lav)}
+.how-cta{display:block;padding:14px 18px;border-top:1px solid var(--line);font:700 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lav-ink);background:var(--lav)}
+.how-link:hover .how-cta{background:var(--bone)}
+
 .ytv{margin:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2)}
 .ytv-p{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;background:#000;cursor:pointer}
 .ytv-p img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s}
@@ -1378,7 +1384,7 @@ function viewHome(){
   </div></section>
  <section class="reviews"><div class="wrap">
   <div class="rq rv" id="rq" aria-roledescription="carousel" aria-label="Reviews">
-   <span class="eyebrow">Heard at GVO</span>
+   <span class="eyebrow">${GOOG.rating} on Google · ${GOOG.count} reviews</span>
    <div class="rq-stage">${RQ.map(([k,p],i)=>{const v=REVIEWS[k];return `<figure class="rq-s${i?'':' on'}" id="rq${i}" role="tabpanel" aria-hidden="${!!i}"><p class="pull">“${p}”</p><figcaption><span class="pull-by">${v.n}</span><span class="rq-r">${v.g?GIC+stars()+' Google review':v.r}</span></figcaption></figure>`}).join('')}</div>
    <div class="rq-nav" role="tablist">${RQ.map(([k],i)=>`<button type="button" role="tab" aria-selected="${!i}" aria-controls="rq${i}" data-rq="${i}"><span>${REVIEWS[k].n}</span><i></i></button>`).join('')}</div>
   </div>
@@ -1416,7 +1422,7 @@ function viewRoom(slug){
   <div style="display:grid;gap:14px">
    ${r.rates?`<div class="rate-card rv"><h3>Rates <small>Tap a row to book it</small></h3><table class="rates"><thead><tr><th>Length</th><th>Per hour</th><th>Session</th></tr></thead><tbody>${r.rates.map(([h,p])=>`<tr class="${p/h===best?'best':''}" data-hrs="${h}" tabindex="0"><td>${h} ${h===1?'hour':'hours'}</td><td>$${Math.round(p/h)}</td><td>$${p}</td></tr>`).join('')}</tbody></table><div class="rate-foot">${r.rateNote}</div></div>`:''}
    ${r.extra&&inSeason()?`<div class="rate-card rv"><h3>${r.extra.n} <small>$${r.extra.p}</small></h3><div class="rate-foot" style="border:0;color:#d4cfd9">${r.extra.d}</div></div>`:''}
-   ${r.k==='pod'?`<div class="rate-card"><h3>How it works</h3><table class="rates"><tbody><tr><td>1. Send a request below</td><td></td><td></td></tr><tr><td>2. The team calls you back</td><td></td><td></td></tr><tr><td>3. Get your quote and book</td><td></td><td></td></tr></tbody></table></div>
+   ${r.k==='pod'?`<a class="rate-card how-link" href="#desk"><h3>How it works</h3><table class="rates"><tbody><tr><td>1. Send a request below</td><td></td><td></td></tr><tr><td>2. The team calls you back</td><td></td><td></td></tr><tr><td>3. Get your quote and book</td><td></td><td></td></tr></tbody></table><span class="how-cta">Request a quote →</span></a>
    <figure class="ytv rv"><button type="button" class="ytv-p" data-yt="Pe17A8f9T4w" aria-label="Play Platform 16¾, Episode 1 with Young Dylan and Dee">${imgT('y_platform','Platform 16¾ podcast set at GVO Sound with Young Dylan and Dee')}<span class="ytv-b" aria-hidden="true"></span><span class="ytv-d">52:06</span></button><figcaption><span class="eyebrow">Shot in this room</span><b>Platform 16¾, Ep. 1: Young Dylan</b><small>With Dee · 4.5K views on YouTube</small><a class="link" href="https://www.youtube.com/watch?v=Pe17A8f9T4w" target="_blank" rel="noopener">Watch on YouTube →</a></figcaption></figure>`:''}
   </div>
  </div></section>
@@ -2117,11 +2123,12 @@ $('#notesToggle').onclick=e=>{notesOn=!notesOn;e.currentTarget.setAttribute('ari
    1. logo powers on  2. the logo's bat comes alive and lifts off  3. a swarm in three depths (far, mid, near)
    peels out from behind the logo  4. the page fades in and the bat lands on the header logo. */
 const BAT_PATH='M200,510 Q180,434 129,422 Q102,365 46,377 Q134,306 11,252 Q82,196 9,137 Q79,74 81,12 C88,130 140,195 200,202 C260,195 312,130 319,12 Q321,74 391,137 Q318,196 389,252 Q266,306 354,377 Q298,365 271,422 Q220,434 200,510 Z';
-const BAT_V='M152,214 L186,214 L200,252 L214,214 L248,214 L200,306 Z';
+/* the V is cut straight from the logo artwork, placed where it sits on the logo's bat */
+const BAT_V='data:image/png;base64,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';
 function batIntro(){
  const intro=$('.intro');if(!intro||reduce||!Element.prototype.animate)return;
  intro.style.animation='introOut .8s var(--ease) 2.6s forwards';
- const SVG=`<svg viewBox="-10 -10 420 540" aria-hidden="true"><path d="${BAT_PATH}"/><path class="v" d="${BAT_V}"/></svg>`;
+ const SVG=`<svg viewBox="-10 -10 420 540" aria-hidden="true"><path d="${BAT_PATH}"/><image href="${BAT_V}" x="116" y="146" width="178" height="204" preserveAspectRatio="none"/></svg>`;
  const layer=document.createElement('div');layer.className='bats';layer.setAttribute('aria-hidden','true');document.body.appendChild(layer);
  const vw=innerWidth,vh=innerHeight,small=vw<700;
  const mk=(w,lead)=>{const b=document.createElement('div');b.className='bat'+(lead?' lead still':'');b.style.setProperty('--w',w+'px');
