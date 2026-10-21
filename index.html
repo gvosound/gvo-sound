@@ -1803,7 +1803,7 @@ const DESK_HTML=`<div class="desk"><div class="steps">
   <label>Email<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
   <label>People coming<select id="f-ppl"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
   <label class="full"><span data-el="notesLbl">What are you working on?</span><textarea id="f-notes" rows="2" placeholder="Two songs, beats on a USB"></textarea></label></form></div>
- <div class="step step-opt" data-step="merch"><div class="step-h"><span class="n opt">Optional</span><h3>Add merch</h3><span class="opt-skip">Not required to book</span></div><p class="fine">Want to wear the session? Pick anything here and it's bagged at the front desk when you arrive. Same checkout.</p><div class="addons" data-el="addons"></div></div>
+ <div class="step" data-step="merch"><div class="step-h"><h3>Add merch</h3></div><p class="fine">Want to wear the session? Pick anything here and it's bagged at the front desk when you arrive. Same checkout.</p><div class="addons" data-el="addons"></div></div>
 </div><aside class="ticket" data-el="ticket" aria-live="polite"></aside></div>`;
 function mountDesk(host,k){
  host.innerHTML=DESK_HTML;D={};$$('[data-el]',host).forEach(el=>D[el.dataset.el]=el);D.host=host;
