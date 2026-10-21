@@ -844,6 +844,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .ev-i{display:grid;gap:6px;min-width:0}
 .ev-i h3{font-size:clamp(1.15rem,2.2vw,1.6rem);line-height:1.05;margin:0}
 .ev-i p{margin:0;color:var(--mute);font-size:.92rem}
+.ev-i p.ev-lu{color:#d7d2dc}
 .ev-go{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--lav);text-decoration:none;transition:all .2s}
 .ev-go:hover{border-color:var(--lav);background:rgba(185,178,255,.1)}
 .ev.up{padding:22px;border:1px solid rgba(185,178,255,.4);border-radius:var(--r);background:linear-gradient(135deg,rgba(185,178,255,.1),transparent 60%),var(--ink-2);margin-bottom:12px}
@@ -1023,6 +1024,7 @@ const SESS=[
 /* Events: from GVO SOUND EVENTS on Eventbrite (organizer 72154308173), checked Oct 21, 2026. Newest first. */
 const EVB='https://www.eventbrite.com/e/';
 const EVENTS=[
+ {t:'Trick or Freak! Halloween Costume Party',d:'2026-10-31',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-trick-or-freak-halloween-costume-party-tickets-2002808913374',k:'Halloween',lu:'DJ Mo @moxlloyd · Hosted by @flawlessbreezyy, @moxlloyd and @rvre.form_ · MC @dmanspop1128',x:'Costumes encouraged, not required.'},
  {t:'R&B & Vibes: AAC Homecoming',d:'2026-09-19',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-aac-homecoming-tickets-1999025510113',k:'R&B & Vibes'},
  {t:'Skyline: All White Affair',d:'2026-08-29',tm:'8 PM – 2 AM',v:'Rooftop',a:'1818 Maryland Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-skyline-all-white-affair-tickets-1996918289359',k:'Rooftop'},
  {t:'Downroad vs. Uproad: Lovers Meet Vibes',d:'2026-07-10',tm:'9:30 PM – 2 AM',v:'',a:'4314 Curtis Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-downroad-vs-uproad-lovers-meet-vibes-tickets-1991275409353',k:'Battle'},
@@ -1319,7 +1321,7 @@ function viewMusic(slug){
  </div>`;
 }
 
-function evRow(e,big){const d=evDate(e);return `<article class="ev${big?' up':''}${e.sample?' sample':''} rv"><div class="ev-date"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b><small>${MON[d.getMonth()]} ${d.getFullYear()}</small></div><div class="ev-i"><span class="eyebrow">${e.sample?'Sample listing · ':''}${e.k}</span><h3>${e.t}</h3><p>${[e.v&&e.v!=='Rooftop'?e.v:'',e.v==='Rooftop'||!e.v?(e.v==='Rooftop'?'Rooftop, ':'')+e.a:'',e.c,e.tm].filter(Boolean).join(' · ')}</p></div>${big?(e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${EVB+e.u}" target="_blank" rel="noopener">Tickets</a>`):`<a class="ev-go" href="${EVB+e.u}" target="_blank" rel="noopener" aria-label="${e.t} on Eventbrite">↗</a>`}</article>`}
+function evRow(e,big){const d=evDate(e);return `<article class="ev${big?' up':''}${e.sample?' sample':''} rv"><div class="ev-date"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b><small>${MON[d.getMonth()]} ${d.getFullYear()}</small></div><div class="ev-i"><span class="eyebrow">${e.sample?'Sample listing · ':''}${e.k}${big&&!e.sample?(()=>{const t=nowET();t.setHours(0,0,0,0);const n=Math.round((evDate(e)-t)/864e5);return ' · '+(n===0?'Tonight':n===1?'Tomorrow':'In '+n+' days')})():''}</span><h3>${e.t}</h3>${big&&e.lu?`<p class="ev-lu">${e.lu}${e.x?' · '+e.x:''}</p>`:''}<p>${[e.v&&e.v!=='Rooftop'?e.v:'',e.v==='Rooftop'||!e.v?(e.v==='Rooftop'?'Rooftop, ':'')+e.a:'',e.c,e.tm].filter(Boolean).join(' · ')}</p></div>${big?(e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${EVB+e.u}" target="_blank" rel="noopener">Tickets</a>`):`<a class="ev-go" href="${EVB+e.u}" target="_blank" rel="noopener" aria-label="${e.t} on Eventbrite">↗</a>`}</article>`}
 function viewEvents(){
  const up=evUp(),past=evPast(),cities=new Set(EVENTS.map(e=>e.c)).size;
  return `<div class="view" data-v="events">
@@ -1329,7 +1331,7 @@ function viewEvents(){
    <div class="evhero-t"><span class="eyebrow">GVO Sound Events</span><h1><span>R&amp;B Nights.</span><span>Rooftops.</span><span>County vs. City.</span></h1>
     <p class="lede">GVO throws parties across Anne Arundel County and Baltimore. Tickets run through Eventbrite, and every date drops on <a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">@${IG.events}</a> first.</p>
     <div class="ctas" style="margin:0"><a class="btn btn-lav" href="#inquire">Work with GVO Events</a><a class="btn btn-ghost" href="${igUrl(IG.events)}" target="_blank" rel="noopener">${IGIC}@${IG.events}</a></div></div>
-   <div class="facts ev-facts"><div><b>${EVENTS.length}</b><small>Nights since Aug 2025</small></div><div><b>${cities}</b><small>Cities</small></div><div><b>2AM</b><small>Last call</small></div></div>
+   <div class="facts ev-facts"><div><b>${evPast().length}</b><small>Nights since Aug 2025</small></div><div><b>${cities}</b><small>Cities</small></div><div><b>2AM</b><small>Last call</small></div></div>
   </div>
   ${seoNote(META.events)}
  </div></section>
