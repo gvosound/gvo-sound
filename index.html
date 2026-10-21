@@ -1025,11 +1025,12 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 /* ---- intro bats: the V in GVO is a bat ---- */
 .bats{position:fixed;inset:0;z-index:160;pointer-events:none;overflow:hidden}
 .bat{position:absolute;left:0;top:0;width:var(--w,40px);will-change:transform,opacity}
-.bat svg{display:block;width:100%;height:auto;overflow:visible;animation:flap var(--f,.16s) ease-in-out infinite alternate;transform-origin:50% 40%}
-.bat path{fill:var(--ink);stroke:var(--bone);stroke-width:3;stroke-linejoin:round}
-.bat .v{fill:none;stroke:var(--lav);stroke-width:3.5;stroke-linecap:round}
+.bat svg{display:block;width:100%;height:auto;overflow:visible;animation:flap var(--f,.16s) cubic-bezier(.45,0,.55,1) infinite alternate;transform-origin:50% 45%}
+.bat path{fill:var(--ink);stroke:var(--bone);stroke-width:var(--sw,12);stroke-linejoin:miter;stroke-miterlimit:10}
+.bat.still svg{animation:none}
+.bat .v{fill:none;stroke:var(--lav);stroke-width:var(--sw,12);stroke-linejoin:miter}
 .bat.lead path{stroke:var(--lav)}
-@keyframes flap{to{transform:scaleX(.6) scaleY(1.05)}}
+@keyframes flap{0%{transform:scaleX(1) scaleY(1)}100%{transform:scaleX(.55) scaleY(1.04) translateY(-2%)}}
 .logo.landed .mark{animation:landGlow 1.1s var(--ease)}
 @keyframes landGlow{0%{filter:drop-shadow(0 0 0 rgba(185,178,255,0))}35%{filter:drop-shadow(0 0 14px rgba(185,178,255,.95))}100%{filter:drop-shadow(0 0 0 rgba(185,178,255,0))}}
 </style>
@@ -2111,46 +2112,55 @@ let tto;function toast(m){const t=$('#toast');t.hidden=true;void t.offsetWidth;t
 function copy(b){const v=b.dataset.copy;const sel=()=>{const s=b.previousElementSibling,r=document.createRange();r.selectNodeContents(s);getSelection().removeAllRanges();getSelection().addRange(r);toast('Selected. Copy it with your keyboard.')};if(navigator.clipboard)navigator.clipboard.writeText(v).then(()=>toast('Copied '+v)).catch(sel);else sel()}
 $('#notesToggle').onclick=e=>{notesOn=!notesOn;e.currentTarget.setAttribute('aria-pressed',notesOn);e.currentTarget.textContent=notesOn?'Hide notes':'Build notes';$$('.note').forEach(n=>n.hidden=!notesOn);if(notesOn&&!$('.note:not([hidden])'))toast('No notes on this view')};
 
-/* intro bats: the V in GVO is a bat. Slow, readable choreography (about 3.5s, first visit per session):
-   1. logo powers on  2. bats peel out from behind it and glide away  3. the V bat lifts off, hovers,
-   then flies up into the header logo as the page fades in. */
+/* intro bats: the V in GVO is a bat, traced from the logo itself.
+   Choreography (about 4s, first visit per session):
+   1. logo powers on  2. the logo's bat comes alive and lifts off  3. a swarm in three depths (far, mid, near)
+   peels out from behind the logo  4. the page fades in and the bat lands on the header logo. */
+const BAT_PATH='M200,510 Q180,434 129,422 Q102,365 46,377 Q134,306 11,252 Q82,196 9,137 Q79,74 81,12 C88,130 140,195 200,202 C260,195 312,130 319,12 Q321,74 391,137 Q318,196 389,252 Q266,306 354,377 Q298,365 271,422 Q220,434 200,510 Z';
+const BAT_V='M152,214 L186,214 L200,252 L214,214 L248,214 L200,306 Z';
 function batIntro(){
  const intro=$('.intro');if(!intro||reduce||!Element.prototype.animate)return;
- intro.style.animation='introOut .8s var(--ease) 2.5s forwards';
- const SVG='<svg viewBox="0 0 120 80" aria-hidden="true"><path d="M60,78 L54,64 Q50,56 42,58 Q36,48 28,52 Q22,42 14,46 Q12,36 4,30 Q22,20 38,22 Q46,16 48,2 Q54,18 60,24 Q66,18 72,2 Q74,16 82,22 Q98,20 116,30 Q108,36 106,46 Q98,42 92,52 Q84,48 78,58 Q70,56 66,64 Z"/><path class="v" d="M51,32 L60,50 L69,32"/></svg>';
+ intro.style.animation='introOut .8s var(--ease) 2.6s forwards';
+ const SVG=`<svg viewBox="-10 -10 420 540" aria-hidden="true"><path d="${BAT_PATH}"/><path class="v" d="${BAT_V}"/></svg>`;
  const layer=document.createElement('div');layer.className='bats';layer.setAttribute('aria-hidden','true');document.body.appendChild(layer);
  const vw=innerWidth,vh=innerHeight,small=vw<700;
- const mk=(w,f,lead)=>{const b=document.createElement('div');b.className='bat'+(lead?' lead':'');b.style.setProperty('--w',w+'px');b.style.setProperty('--f',f+'s');b.innerHTML=SVG;b.style.opacity=0;layer.appendChild(b);return b};
- const m=$('.mark',intro).getBoundingClientRect(),cx=m.left+m.width/2,cy=m.top+m.height*.45;
- const T0=1250;
- /* swarm: fixed, symmetric flight plan so it reads as intentional */
- const plan=small?[[-150,.9,46],[-120,1,34],[-60,1.05,38],[-30,.95,52],[200,.9,30]]:[[-160,1,64],[-135,1.1,44],[-112,.95,36],[-68,.95,36],[-45,1.1,44],[-20,1,64],[150,.9,30],[30,.9,30]];
+ const mk=(w,lead)=>{const b=document.createElement('div');b.className='bat'+(lead?' lead still':'');b.style.setProperty('--w',w+'px');
+  b.style.setProperty('--f',(.11+w/900).toFixed(3)+'s');            // big bats beat slower
+  b.style.setProperty('--sw',Math.max(9,Math.min(26,640/w)).toFixed(1)); // keep the outline weight readable at every size
+  if(!lead){if(w<=26){b.style.filter='blur(.4px)';b.dataset.o=.55}else if(w>=110){b.style.filter='blur(1.2px)';b.dataset.o=.92}else b.dataset.o=1}
+  b.innerHTML=SVG;b.style.opacity=0;layer.appendChild(b);return b};
+ const m=$('.mark',intro).getBoundingClientRect(),cx=m.left+m.width/2,cy=m.top+m.height*.5;
+ const T0=1300;
+ /* swarm in three depths: [angle, distance, width]. far = small and slow, near = big and fast */
+ const plan=small?[[-155,1,84],[-128,1,22],[-102,1,44],[-70,1,16],[-38,1,30],[-18,1.05,104],[160,.9,20],[24,.9,36]]
+  :[[-162,1,128],[-142,1.1,44],[-122,.95,22],[-104,1,66],[-82,1.05,16],[-62,.95,86],[-40,1.1,28],[-16,1,150],[158,.9,20],[26,.95,40],[-92,1.15,34]];
  let pending=plan.length+1;const done=()=>{if(--pending<=0)layer.remove()};
  plan.forEach(([deg,dist,w],i)=>{
-  const b=mk(w,.2+(i%3)*.03),a=deg*Math.PI/180,D=Math.hypot(vw,vh)*.62*dist;
-  const x0=cx-w/2+Math.cos(a)*m.width*.18,y0=cy-w*.33+Math.sin(a)*m.height*.18;
-  const x1=cx-w/2+Math.cos(a)*D,y1=cy-w*.33+Math.sin(a)*D*.75;
-  const xm=cx-w/2+Math.cos(a)*D*.45,ym=cy-w*.33+Math.sin(a)*D*.45*.75-40;
-  const tilt=Math.cos(a)>0?12:-12;
-  b.animate([{transform:`translate(${x0}px,${y0}px) scale(.35)`,opacity:0},{transform:`translate(${x0+(xm-x0)*.25}px,${y0+(ym-y0)*.25-6}px) scale(.85) rotate(${tilt*.4}deg)`,opacity:1,offset:.18},{transform:`translate(${xm}px,${ym}px) scale(1) rotate(${tilt}deg)`,opacity:1,offset:.55},{transform:`translate(${x1}px,${y1}px) scale(1.1) rotate(${tilt*1.3}deg)`,opacity:0}],{duration:2600,delay:T0+i*110,easing:'cubic-bezier(.25,.6,.35,1)',fill:'both'}).onfinish=()=>{b.remove();done()};
+  const b=mk(w),a=deg*Math.PI/180,near=w>=100,far=w<=26;
+  const D=Math.hypot(vw,vh)*.6*dist*(near?1.15:far?.8:1);
+  const h=w*1.3,ox=-w/2,oy=-h/2;
+  const x0=cx+ox+Math.cos(a)*m.width*.16,y0=cy+oy+Math.sin(a)*m.height*.2;
+  const xm=cx+ox+Math.cos(a)*D*.42,ym=cy+oy+Math.sin(a)*D*.42*.7-(far?20:50);
+  const x1=cx+ox+Math.cos(a)*D,y1=cy+oy+Math.sin(a)*D*.7;
+  const tilt=(Math.cos(a)>0?1:-1)*(near?8:14),o=+b.dataset.o;
+  const dur=near?2300:far?3200:2700;
+  b.animate([{transform:`translate(${x0}px,${y0}px) scale(.3)`,opacity:0},{transform:`translate(${x0+(xm-x0)*.3}px,${y0+(ym-y0)*.3-8}px) scale(.8) rotate(${tilt*.4}deg)`,opacity:o,offset:.2},{transform:`translate(${xm}px,${ym}px) scale(1) rotate(${tilt}deg)`,opacity:o,offset:.55},{transform:`translate(${(xm+x1)/2}px,${(ym+y1)/2+10}px) scale(1.04) rotate(${tilt*1.2}deg)`,opacity:o*.8,offset:.8},{transform:`translate(${x1}px,${y1}px) scale(1.1) rotate(${tilt*1.4}deg)`,opacity:0}],
+   {duration:dur,delay:T0+250+i*95,easing:'cubic-bezier(.22,.55,.3,1)',fill:'both'}).onfinish=()=>{b.remove();done()};
  });
- /* the lead bat: lifts off the V, hovers, then flies into the header logo */
- const vs=m.width*.62,vx=cx-vs/2,vy=m.top-m.height*.02;
- const lb=mk(vs,.24,1);lb.style.transformOrigin='0 0';
- $('.mark',intro).animate([{opacity:1},{opacity:.22}],{duration:700,delay:T0+250,fill:'forwards',easing:'ease-out'});
- const go=()=>{
-  const hm=$('header .logo .mark');const h=hm?hm.getBoundingClientRect():{left:24,top:16,width:60,height:46};
-  const hs=h.width*.62,hx=h.left+h.width/2-hs/2,hy=h.top-h.height*.02,sc=hs/vs;
-  const lift=[{transform:`translate(${vx}px,${vy}px) scale(1)`,opacity:0},{transform:`translate(${vx}px,${vy-18}px) scale(1)`,opacity:1,offset:.3},{transform:`translate(${vx}px,${vy-30}px) scale(1)`,opacity:1,offset:.65},{transform:`translate(${vx}px,${vy-22}px) scale(1)`,opacity:1}];
-  const fly=[{transform:`translate(${vx}px,${vy-22}px) scale(1)`},{transform:`translate(${vx+(hx-vx)*.35+vw*.06}px,${vy-22+(hy-vy)*.45-30}px) scale(${.55+sc*.45}) rotate(-8deg)`,offset:.45},{transform:`translate(${hx}px,${hy}px) scale(${sc}) rotate(0deg)`}];
-  lb.animate(lift,{duration:1250,delay:T0+150,easing:'ease-in-out',fill:'forwards'}).onfinish=()=>{
-   lb.animate(fly,{duration:1300,easing:'cubic-bezier(.55,0,.25,1)',fill:'forwards'}).onfinish=()=>{
-    const lg=$('header .logo');if(lg){lg.classList.add('landed');setTimeout(()=>lg.classList.remove('landed'),1200)}
-    lb.animate([{opacity:1},{opacity:0}],{duration:350,fill:'forwards'}).onfinish=()=>{lb.remove();done()};
-   };
+ /* the lead bat sits exactly on the logo's bat, comes alive, lifts off and lands on the header logo */
+ const fit=r=>{const w=r.width*.6;return{w,x:r.left+r.width/2-w/2-w*10/400,y:r.top+r.height*.004-w*22/400}};
+ const L=fit(m);const lb=mk(L.w,1);lb.style.transformOrigin='0 0';
+ lb.animate([{transform:`translate(${L.x}px,${L.y}px)`,opacity:0},{transform:`translate(${L.x}px,${L.y}px)`,opacity:1}],{duration:250,delay:T0-150,fill:'forwards'});
+ $('.mark',intro).animate([{opacity:1},{opacity:.18}],{duration:600,delay:T0+100,fill:'forwards',easing:'ease-out'});
+ setTimeout(()=>lb.classList.remove('still'),T0+150);
+ const hm=$('header .logo .mark');
+ lb.animate([{transform:`translate(${L.x}px,${L.y}px) scale(1)`},{transform:`translate(${L.x}px,${L.y-26}px) scale(1)`,offset:.55},{transform:`translate(${L.x}px,${L.y-34}px) scale(1)`}],{duration:1150,delay:T0+150,easing:'ease-in-out',fill:'forwards'}).onfinish=()=>{
+  const H=fit(hm?hm.getBoundingClientRect():{left:24,top:16,width:60,height:46}),sc=H.w/L.w;
+  lb.animate([{transform:`translate(${L.x}px,${L.y-34}px) scale(1)`},{transform:`translate(${L.x+(H.x-L.x)*.35+vw*.05}px,${L.y-34+(H.y-L.y)*.5-30}px) scale(${.5+sc*.5}) rotate(-7deg)`,offset:.45},{transform:`translate(${H.x}px,${H.y}px) scale(${sc}) rotate(0deg)`}],{duration:1350,easing:'cubic-bezier(.55,0,.25,1)',fill:'forwards'}).onfinish=()=>{
+   lb.classList.add('still');const lg=$('header .logo');if(lg){lg.classList.add('landed');setTimeout(()=>lg.classList.remove('landed'),1200)}
+   lb.animate([{opacity:1},{opacity:0}],{duration:420,delay:120,fill:'forwards'}).onfinish=()=>{lb.remove();done()};
   };
  };
- go();
 }
 /* boot */
 try{if(sessionStorage.getItem('gvo-intro'))$('.intro')?.remove();else sessionStorage.setItem('gvo-intro','1')}catch(e){}
