@@ -642,6 +642,29 @@ section{padding-block:clamp(52px,7vw,92px)}
 .hero-vid{display:none;width:100%;height:100%;object-fit:cover}
 @media (max-width:760px){.hero-vid{display:block}.hero-bg img{display:none}.hero-bg .hero-vid{animation:none}}
 @media (prefers-reduced-motion:reduce){.hero-vid{display:none!important}.hero-bg img{display:block!important}}
+
+/* ---- reviews ---- */
+.reviews{padding-top:clamp(52px,7vw,92px)}
+.rev-head{display:grid;gap:14px;margin-bottom:clamp(24px,3vw,40px)}
+.pull{margin:0;font:900 clamp(2rem,5vw,4rem)/.95 var(--display);font-stretch:115%;text-transform:uppercase;letter-spacing:-.01em;text-wrap:balance}
+.pull-by{font:600 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lav)}
+.rev-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.rev{margin:0;border:1px solid var(--line);border-radius:var(--r);background:var(--ink-2);padding:22px;display:grid;gap:16px}
+.rev .mark{width:40px;background:var(--lav)}
+.rev blockquote{margin:0;font-size:1.02rem;line-height:1.6;color:#e4dfe8}
+.rev figcaption{display:grid;gap:2px;border-top:1px solid var(--line);padding-top:12px}
+.rev figcaption b{font:800 1rem var(--display);font-stretch:110%;text-transform:uppercase}
+.rev figcaption span{font:600 .75rem var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.rev-one{margin-top:22px;max-width:760px}
+.rev-one .rev{grid-template-columns:auto 1fr;align-items:start;column-gap:20px}
+.rev-one .rev .mark{grid-row:span 2;margin-top:6px}
+@media (max-width:900px){
+  .rev-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));padding-bottom:6px}
+  .rev-grid::-webkit-scrollbar{display:none}
+  .rev-grid .rev{flex:0 0 min(84%,360px);scroll-snap-align:start}
+  .rev-one .rev{grid-template-columns:1fr}
+  .rev-one .rev .mark{grid-row:auto}
+}
 </style>
 </head>
 <body>
@@ -734,6 +757,12 @@ const TEAM=[
 /* Live store snapshot: every visible, in-stock product on gvosound.com as of Oct 20, 2026. av = in-stock variant combos. */
 const PRODUCTS=[{"id":"gvo-x-ace-distressed-tee","n":"GVO x Ace Distressed Tee","p":40,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["S","M","L","XL"],"img":["p_gvo-x-ace-distressed-tee_0","p_gvo-x-ace-distressed-tee_1","p_gvo-x-ace-distressed-tee_2"],"flag":"New"},{"id":"prove-a-point-tee","n":"Prove A Point Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","M","L","XL","2XL","3XL"],"img":["p_lose-a-point-tee_0","p_lose-a-point-tee_1"],"s":21,"flag":"Restocked"},{"id":"world-tour-tee-white","n":"World Tour Tee, White","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_world-tour-tee-1_0","p_world-tour-tee-1_1"],"flag":"New"},{"id":"world-tour-tee-black","n":"World Tour Tee, Black","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["4XL","3XL","2XL","XL","L","M","S","XS"],"img":["p_world-tour-tee_0"],"flag":"Restocked"},{"id":"gvo-muscle-tee","n":"GVO Muscle Tee","p":35,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_gvo-muscle-tee_0","p_gvo-muscle-tee_1","p_gvo-muscle-tee_2"],"flag":"New"},{"id":"no-art-for-today-tee","n":"No Art For Today Tee","p":55,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_no-art-for-today-tee_0"],"flag":"New"},{"id":"pain-is-temporary-dirtbike-jersey","n":"Pain Is Temporary Dirtbike Jersey","p":65,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_pain-is-temporary-hockey-tee_0","p_pain-is-temporary-hockey-tee_1"],"flag":"New"},{"id":"world-tour-cheetah-hoodie","n":"World Tour Cheetah Hoodie","p":100,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["M","L","XL","2XL"],"img":["p_world-tour-cheetah-hoodie_0","p_world-tour-cheetah-hoodie_1","p_world-tour-cheetah-hoodie_2"],"flag":"New"},{"id":"gvo-skater-shorts","n":"GVO Skater Shorts","p":30,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["S","M","L","XL","2XL"],"img":["p_gvo-shorts_0","p_gvo-shorts_1","p_gvo-shorts_2"],"flag":"New"},{"id":"gvo-golf-set-shorts","n":"GVO Golf Set, Shorts","p":25,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shirts_0","p_golf-shirts_1","p_golf-shirts_2"],"flag":"New"},{"id":"gvo-golf-set-shirt","n":"GVO Golf Set, Shirt","p":30,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shorts_0","p_golf-shorts_1","p_golf-shorts_2"],"flag":"New"},{"id":"collective-set-shirt","n":"The Collective Set, Shirt","p":25,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_tee_0","p_tee_1","p_tee_2"],"flag":"New"},{"id":"collective-set-pants","n":"The Collective Set, Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_pants_0","p_pants_1","p_pants_2"],"flag":"New"},{"id":"never-see-the-haters-here-tee","n":"Never See The Haters Here! Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","S","2XL","3XL"],"img":["p_never-see-the-haters-here-tee_0"],"s":21},{"id":"music-is-a-drug-long-sleeve","n":"Music Is A Drug Long Sleeve","p":35.99,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["2XL","XL","L","S"],"img":["p_music-is-a-drug_0","p_music-is-a-drug_1","p_music-is-a-drug_2"],"s":25.19},{"id":"no-deadbeats-oversized-pink","n":"No Deadbeats Oversized Tee, Pink","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Pink"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Pink/M","Pink/L","Pink/XL","Pink/2XL"],"img":["p_no-deadbeats-oversized_0","p_no-deadbeats-oversized_1"],"s":21},{"id":"no-deadbeats-oversized-grey","n":"No Deadbeats Oversized Tee, Grey","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Grey"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Grey/S"],"img":["p_no-deadbeats-oversized-1_0","p_no-deadbeats-oversized-1_1"],"s":21},{"id":"world-tour-cozy-hoodie","n":"World Tour Cozy Hoodie","p":45,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Navy","Light Blue","Olive"]}],"av":["L/Light Blue","XL/Light Blue","2XL/Pink"],"img":["p_world-tour-cozy-set_0","p_world-tour-cozy-set_1","p_world-tour-cozy-set_2"],"s":30},{"id":"world-tour-cozy-pants","n":"World Tour Cozy Pants","p":40,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Light Blue","Navy Blue","Olive"]}],"av":["L/Pink","L/Light Blue","XL/Pink","XL/Light Blue","2XL/Pink","2XL/Light Blue","2XL/Navy Blue"],"img":["p_world-tour-cozy-pants_0","p_world-tour-cozy-pants_1","p_world-tour-cozy-pants_2"],"s":16.99},{"id":"worker-jacket","n":"Worker Jacket","p":75,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Tan","Purple","Cream","Black"]}],"av":["S/Tan","S/Purple","S/Cream","L/Tan","L/Purple","L/Cream","L/Black","XL/Tan","XL/Purple","XL/Cream","XL/Black"],"img":["p_worker-jacket_0","p_worker-jacket_1","p_worker-jacket_2"],"s":52.5},{"id":"world-tour-tracksuit-jacket","n":"World Tour Tracksuit Jacket","p":85,"cat":"Cold weather","o":[{"t":"Size","v":["M","L","XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["M/Black","M/Gray","L/Black","L/Gray"],"img":["p_world-tour-tracksuit_0"],"s":59.5},{"id":"world-tour-tracksuit-pants","n":"World Tour Tracksuit Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Black","Gray","White"]}],"av":["M/Gray","L/Black","L/Gray","XL/White"],"img":["p_world-tour-tracksuit-pants_0","p_world-tour-tracksuit-pants_1","p_world-tour-tracksuit-pants_2"],"s":45.5},{"id":"gvo-bodysuit","n":"GVO Bodysuit","p":35,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Navy","Black","Grey","Beige","Khaki","Brown"]}],"av":["S/Navy","S/Black","S/Grey","S/Beige","S/Khaki","S/Brown","M/Navy","M/Black","M/Grey","M/Beige","M/Khaki","L/Navy","L/Black","L/Grey","L/Beige","L/Khaki"],"img":["p_gvo-bodysuit_0","p_gvo-bodysuit_1"],"s":24.5},{"id":"gvo-body-set-top","n":"GVO Body Set, Top","p":15,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","M/Grey","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-body-set-bottoms","n":"GVO Body Set, Bottoms","p":15,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-beanie","n":"GVO Beanie","p":10,"cat":"Headwear","o":[{"t":"Color","v":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown","Black"]}],"av":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown"],"img":["p_gvo-beanie_0","p_gvo-beanie_1","p_gvo-beanie_2"],"s":7}];
 const unit=p=>p.s||p.p;
+const REVIEWS={
+ william:{q:'My first time at GVO and the studio had Great Energy and absolutely incredible talent to work with and produced exactly how I envisioned my song ending up. 100% recommend any artist going here!',n:'William Marsters Jr.',r:'Recording artist'},
+ nyia:{q:'GVO Sounds Studios is an awesome multifaceted makers space. You can record music, learn how to make music, take photos, buy clothing, and a lot more. The owner and his colleagues are amazing. They always provide excellent service at GVO Sounds Studio.',n:'Nyia C',r:'Client'},
+ mycitym:{q:'Amazing full service sound studio, and photography studio. Great athleisurewear as well. The owner Cory aka Flawless is one of the most genuine, dedicated, hard working and community oriented business owners in the region.',n:'MyCityM',r:'Client'}
+};
+const revCard=k=>{const v=REVIEWS[k];return `<figure class="rev rv"><span class="mark"></span><blockquote>${v.q}</blockquote><figcaption><b>${v.n}</b><span>${v.r}</span></figcaption></figure>`};
 const prodById=id=>PRODUCTS.find(p=>p.id===id);
 const vLabel=(p,v)=>v&&v!=='-'?v.split('/').join(' · '):'One size';
 const firstAvail=p=>p.av[0]||'-';
@@ -777,7 +806,7 @@ const ROOMS={
   rates:Object.entries(PHOTO).map(([h,p])=>[+h,p]),
   rateNote:'Room rental only. Extra backdrop colors cost more. MD sales tax 6% added at checkout.',
   extra:{season:1,n:'Holiday photoshoot special',p:150,d:'1-hour shoot with a GVO photographer, 20 edited photos, 2–5 day turnaround. Extra time is $20 per 30 minutes.'},
-  gallery:[['photo_cyc','The set'],['t_dym','Dym Archives'],['t_smooth','Smooth'],['t_spain','Spain'],['t_cory','Portrait']],
+  gallery:[['photo_black','Black backdrop with RGB lights'],['photo_cyc','White cyc with color backdrops'],['p_gvo-beanie_0','Product shot, GVO Beanie'],['p_world-tour-cozy-set_0','Product shot, World Tour Cozy Hoodie'],['p_no-deadbeats-oversized_0','Product shot, No Deadbeats Tee']],
   team:'photo',
   faq:[
    ['Does the rental include a photographer?','No. Rates are for the room and the gear. Book Dym Archives or Smooth, or bring your own photographer.'],
@@ -876,7 +905,10 @@ function viewHome(){
  <section id="team" style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Behind the glass</span><h2>The team</h2></div><div class="filters" id="teamFilters"></div></div>
   <div class="team" id="teamGrid">${TEAM.map(memberCard).join('')}</div>
-  <figure class="quote rv"><span class="mark"></span><div><blockquote>Amazing full service sound studio, and photography studio. Great athleisurewear as well. The owner Cory aka Flawless is one of the most genuine, dedicated, hard working and community oriented business owners in the region.</blockquote><cite>MyCityM · posted on gvosound.com</cite></div></figure>
+  </div></section>
+ <section class="reviews"><div class="wrap">
+  <div class="rev-head rv"><span class="eyebrow">In their words</span><p class="pull">“Produced exactly how I envisioned my song ending up.”</p><span class="pull-by">William Marsters Jr.</span></div>
+  <div class="rev-grid">${['william','nyia','mycitym'].map(revCard).join('')}</div>
  </div></section>
  <section><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO apparel</span><h2>The rack</h2></div><a class="btn btn-ghost" href="#shop">Shop all ${PRODUCTS.length} pieces</a></div>
@@ -917,6 +949,7 @@ function viewRoom(slug){
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
   <div class="team fit" style="--n:${team.length}">${team.map(memberCard).join('')}</div>
+  ${r.k==='rec'?`<div class="rev-one">${revCard('william')}</div>`:r.k==='photo'?`<div class="rev-one">${revCard('nyia')}</div>`:''}
  </div></section>
  <section id="faq"><div class="wrap split">
   <div class="hd" style="display:grid;gap:16px;align-content:start"><span class="eyebrow">Before you book</span><h2>Questions</h2><p class="lede">Still stuck? Text the studio at (443) 254-1482.</p></div>
