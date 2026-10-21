@@ -921,6 +921,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .btn .ig-ic{margin-right:-2px}
 
 /* travel */
+.trhero h1{font-size:clamp(2.3rem,5vw,4.4rem)}
 .trhero{background:radial-gradient(900px 420px at 85% 0%,rgba(185,178,255,.14),transparent 60%)}
 .cruise{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(22px,4vw,56px);align-items:start}
 .cruise-fl{display:block;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);position:sticky;top:110px}
@@ -1795,6 +1796,7 @@ let pendingPreset=null;
 /* ================= wiring per view ================= */
 function wire(r){
  if(typeof pSync==='function')pSync();
+ updateBar();
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
  wireVideos(main);
  if(r==='home')wireHome();
@@ -2140,7 +2142,7 @@ let deskInView=false,deskIO=null;
 function deskObserve(host){if(deskIO)deskIO.disconnect();if(!('IntersectionObserver' in window))return;deskIO=new IntersectionObserver(es=>{deskInView=es[0].isIntersecting;updateBar()},{rootMargin:'-20% 0px -20% 0px'});deskIO.observe(host);cleanup.push(()=>{deskIO.disconnect();deskInView=false;updateBar()})}
 function updateBar(){
  const bb=$('#bbar');
- if(!deskInView||!D||!D.host.isConnected){if(bb.dataset.mode!=='def'){bb.innerHTML=BAR_DEFAULT;bb.dataset.mode='def'}return}
+ if(!deskInView||!D||!D.host.isConnected){const m='def-'+(route==='travel'?'tr':'x');if(bb.dataset.mode!==m){bb.innerHTML=route==='travel'?BAR_DEFAULT.replace('href="#book">Book a session','href="#plan">Plan a trip'):BAR_DEFAULT;bb.dataset.mode=m}return}
  bb.dataset.mode='desk';
  if(B.done){bb.innerHTML=`<div class="sum">Booked<b>${B.done.code}</b></div><a class="btn btn-ghost" href="#">Back home</a>`;return}
  const t=totals();
