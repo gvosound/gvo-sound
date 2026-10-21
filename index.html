@@ -987,6 +987,9 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .gbadge.lg .stars{font-size:1.1rem}
 .gbadge.lg .g-ic{width:24px;height:24px}
 .rev-g{display:flex;align-items:center;gap:8px}
+.rev-links{display:flex;flex-wrap:wrap;gap:10px 22px}
+.f-rev{display:inline-block;margin-top:14px;font-size:.88rem;color:var(--lav)!important}
+.f-rev:hover{color:var(--bone)!important}
 .rev-more{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;margin-top:22px}
 .f-gvo{margin:14px 0 10px;font:900 1.2rem var(--display);font-stretch:120%;text-transform:uppercase;color:var(--lav)}
 /* ---- review carousel (home) ---- */
@@ -1039,8 +1042,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .logo.landed .mark{animation:landGlow 1.1s var(--ease)}
 @keyframes landGlow{0%{filter:drop-shadow(0 0 0 rgba(243,240,234,0))}35%{filter:drop-shadow(0 0 12px rgba(243,240,234,.8))}100%{filter:drop-shadow(0 0 0 rgba(243,240,234,0))}}
 </style>
-</head>
-<body>
+</head><body>
 
 <a class="skip" href="#main">Skip to content</a>
 <div class="intro" aria-hidden="true"><span class="mark"></span></div>
@@ -1082,6 +1084,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
       <div><span class="mark"></span>
         <p class="f-gvo">Good Vibes Only.</p>
         <address>GVO Sound LLC<br>109 Gibralter Ave<br>Annapolis, MD 21401<br>(443) 292-6753</address>
+        <a class="f-rev" href="https://search.google.com/local/writereview?placeid=ChIJDbG7oHH3t4kRyg4SLB9TxSs" target="_blank" rel="noopener">★ Leave us a Google review</a>
       </div>
       <div><h4>Studios</h4><ul><li><a href="#recording-studio">Recording studio</a></li><li><a href="#photo-studio">Photo studio</a></li><li><a href="#podcast-studio">Podcast and video</a></li><li><a href="#music">Music</a></li><li><a href="#events">Events</a></li><li><a href="#book">Book a session</a></li></ul></div>
       <div><h4>Shop</h4><ul><li><a href="#shop">All apparel</a></li><li><a href="#product-world-tour-cheetah-hoodie">Cheetah Hoodie</a></li><li><a href="#product-gvo-x-ace-distressed-tee">GVO x Ace Tee</a></li><li><a href="#product-gvo-beanie">GVO Beanie</a></li></ul></div>
@@ -1217,7 +1220,7 @@ const REVIEWS={
  kennedy:{q:'I have used the photography studio multiple times! It is always clean and ready to go at booking time! Owner is very flexible with your needs. All times I brought my own photographer and only utilized the space. Equipment is in great condition and available to use! I will be returning!',n:'Kennedy Trusty',r:'Google review',g:1},
  mycitym:{q:'Amazing full service sound studio, and photography studio. Great athleisurewear as well. The owner Cory aka Flawless is one of the most genuine, dedicated, hard working and community oriented business owners in the region.',n:'MyCityM',r:'Client'}
 };
-const GOOG={rating:'5.0',count:47,url:'https://maps.app.goo.gl/wXxp3d9VncWKfWJi9'};
+const GOOG={rating:'5.0',count:47,url:'https://maps.app.goo.gl/wXxp3d9VncWKfWJi9',write:'https://search.google.com/local/writereview?placeid=ChIJDbG7oHH3t4kRyg4SLB9TxSs'};
 const GIC='<svg class="g-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.3-1.6 3.8-5.4 3.8-3.2 0-5.9-2.7-5.9-6s2.7-6 5.9-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.4 14.6 2.4 12 2.4 6.7 2.4 2.4 6.7 2.4 12s4.3 9.6 9.6 9.6c5.5 0 9.2-3.9 9.2-9.4 0-.6-.1-1.1-.2-1.6H12z"/></svg>';
 const stars=()=>'<span class="stars" aria-hidden="true">★★★★★</span>';
 const gBadge=(cls='')=>`<a class="gbadge${cls?' '+cls:''}" href="${GOOG.url}" target="_blank" rel="noopener" aria-label="Rated ${GOOG.rating} out of 5 from ${GOOG.count} Google reviews">${GIC}<b>${GOOG.rating}</b>${stars()}<span>${GOOG.count} Google reviews</span></a>`;
@@ -1387,7 +1390,7 @@ function viewHome(){
    <div class="rq-stage">${RQ.map(([k,p],i)=>{const v=REVIEWS[k];return `<figure class="rq-s${i?'':' on'}" id="rq${i}" role="tabpanel" aria-hidden="${!!i}"><p class="pull">“${p}”</p><figcaption><span class="pull-by">${v.n}</span><span class="rq-r">${v.g?GIC+stars()+' Google review':v.r}</span></figcaption></figure>`}).join('')}</div>
    <div class="rq-nav" role="tablist">${RQ.map(([k],i)=>`<button type="button" role="tab" aria-selected="${!i}" aria-controls="rq${i}" data-rq="${i}"><span>${REVIEWS[k].n}</span><i></i></button>`).join('')}</div>
   </div>
-  <div class="rev-more rv">${gBadge()}<a class="link" href="${GOOG.url}" target="_blank" rel="noopener">Read all ${GOOG.count} on Google →</a></div>
+  <div class="rev-more rv">${gBadge()}<span class="rev-links"><a class="link" href="${GOOG.url}" target="_blank" rel="noopener">Read all ${GOOG.count} on Google →</a><a class="link" href="${GOOG.write}" target="_blank" rel="noopener">Leave a review →</a></span></div>
  </div></section>
  <section><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO apparel</span><h2>The rack</h2></div><a class="btn btn-ghost" href="#shop">Shop all ${PRODUCTS.length} pieces</a></div>
@@ -1433,7 +1436,7 @@ function viewRoom(slug){
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
   <div class="team fit" style="--n:${team.length}">${team.map(memberCard).join('')}</div>
-  <div class="rev-one">${revCard(({rec:'william',photo:'kennedy',pod:'goodnews'})[r.k])}<div class="rev-more">${gBadge()}<a class="link" href="${GOOG.url}" target="_blank" rel="noopener">Read all ${GOOG.count} on Google →</a></div></div>
+  <div class="rev-one">${revCard(({rec:'william',photo:'kennedy',pod:'goodnews'})[r.k])}<div class="rev-more">${gBadge()}<span class="rev-links"><a class="link" href="${GOOG.url}" target="_blank" rel="noopener">Read all ${GOOG.count} on Google →</a><a class="link" href="${GOOG.write}" target="_blank" rel="noopener">Leave a review →</a></span></div></div>
  </div></section>
  <section id="faq"><div class="wrap split">
   <div class="hd" style="display:grid;gap:16px;align-content:start"><span class="eyebrow">Before you book</span><h2>Questions</h2><p class="lede">Still stuck? Text the studio at (443) 254-1482.</p></div>
@@ -2203,5 +2206,5 @@ render(first===null?'home':first,{first:true});
 onScroll();
 })();
 </script>
-</body>
-</html>
+
+</body></html>
