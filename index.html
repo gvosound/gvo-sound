@@ -768,7 +768,16 @@ section{padding-block:clamp(52px,7vw,92px)}
 .heard-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.8fr) minmax(0,1fr);gap:clamp(14px,2vw,28px);align-items:center}
 .heard-mid{aspect-ratio:1;display:grid;place-items:center;text-align:center}
 .heard-mid span{font:600 .7rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
-.heard-mid b{display:block;font:900 clamp(1.8rem,3vw,2.6rem)/1 var(--display);font-stretch:125%;color:var(--bone)}
+.heard-mid>div{display:grid;gap:8px;max-width:70%}
+.heard-mid b{display:block;font:900 clamp(1.3rem,2.2vw,1.9rem)/1 var(--display);font-stretch:115%;color:var(--bone);text-transform:uppercase}
+.hcard .cv{overflow:hidden}
+.pv{position:absolute;right:8px;bottom:8px;width:46px;height:46px;border-radius:50%;border:0;background:var(--bone);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.45);transition:transform .25s var(--ease),background .25s}
+.pv:hover{transform:scale(1.08);background:var(--lav)}
+.pv i{width:0;height:0;border-left:13px solid var(--ink);border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:4px}
+.pv[aria-pressed="true"] i{width:12px;height:14px;border:0;margin:0;background:linear-gradient(90deg,var(--ink) 0 4px,transparent 4px 8px,var(--ink) 8px)}
+.pbar{height:2px;background:var(--line);border-radius:2px;margin:0 0 10px;overflow:hidden}
+.pbar span{display:block;height:100%;width:0;background:var(--lav)}
+.hcard.playing{border-color:var(--lav)}
 .hcard{display:grid;grid-template-columns:minmax(0,120px) 1fr;gap:18px;align-items:center;padding:16px;border-radius:calc(var(--r)*3);border:1px solid rgba(243,240,234,.12);background:rgba(14,12,19,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:border-color .3s,transform .4s var(--ease)}
 .hcard:hover,.hcard:focus-within{border-color:var(--lav);transform:translateY(-3px)}
 .hcard .cv{border-radius:calc(var(--r)*2)}
@@ -875,11 +884,11 @@ const unit=p=>p.s||p.p;
 /* Music: Spotify ids checked Oct 20, 2026. "All platforms" opens a song.link / album.link page that lists every service carrying the release. */
 const SPO='https://open.spotify.com/';
 const REL=[
- {id:'ride-for-me',t:'Ride for Me',a:'David Correy & Flawless Breezyy',c:'c_ride',k:'track',sp:'46EFAEtDZauJRc5V4Q11Jc',tag:'Single'},
+ {id:'ride-for-me',t:'Ride for Me',a:'David Correy & Flawless Breezyy',c:'c_ride',k:'track',sp:'46EFAEtDZauJRc5V4Q11Jc',tag:'Single',pv:'ride'},
  {id:'im-from-the-a',t:"I'M FROM THE A!",a:'Flawless Breezyy',c:'c_froma',k:'album',sp:'64zHn9UlzHifFe735UhdYP',tag:'Single'},
  {id:'wont-change',t:'Wont Change',a:'Flawless Breezyy, Only1BamaBoy',c:'c_wont',k:'album',sp:'7xxu9twRBbVzZyFpj8ea5l',tag:'Single'},
  {id:'you-said',t:'You Said!',a:'Flawless Breezyy, BoobBlack',c:'c_yousaid',k:'album',sp:'4CJvWJFuQVcUW7fgM2h0fP',tag:'Single'},
- {id:'need-to-know',t:'Need to know',a:'A. Brooks & Flawless Breezyy',c:'c_need',k:'album',sp:'2DPjHXoZAXKYbiFMDumEOL',tag:'Single'},
+ {id:'need-to-know',t:'Need to know',a:'A. Brooks & Flawless Breezyy',c:'c_need',k:'album',sp:'2DPjHXoZAXKYbiFMDumEOL',tag:'Single',pv:'need'},
  {id:'savage',t:'Savage!',a:'Flawless Breezyy',c:'c_savage',k:'album',sp:'0YsngE5Rw4PLRHrnwgVOJz',tag:'Single'},
  {id:'sixteen',t:'SIXTEEN',a:'Flawless Breezyy',c:'c_sixteen',k:'album',sp:'2GjLf9BPCE8ed5Y4JhB5rL',tag:'Project'}
 ];
@@ -1104,8 +1113,8 @@ function viewRoom(slug){
   </div>
  </div></section>
  ${r.k==='rec'?`<section class="heard" id="heard"><canvas aria-hidden="true"></canvas><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO Sounds</span><h2>Hear the room</h2><p class="lede">Two records cut on Gibralter Ave. Same booth, same desk you'd book.</p></div></div>
-  <div class="heard-row">${['need-to-know','ride-for-me'].map((id,i)=>{const x=relById(id);return `${i===1?'<div class="heard-mid"><div><span>Tracked at</span><b>GVO</b><span>Annapolis, MD</span></div></div>':''}<div class="hcard rv" data-side="${i?1:-1}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}</span><div><h3>${x.t}</h3><p>${x.a}</p><div class="ln">${ext(spUrl(x),SPIC+'Play on Spotify')}${ext(allUrl(x),'All platforms')}</div></div></div>`}).join('')}</div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO Sounds</span><h2>Hear the room</h2><p class="lede">Two records cut on Gibralter Ave. Same booth, same desk you'd book. Press play on either one.</p></div></div>
+  <div class="heard-row">${['need-to-know','ride-for-me'].map((id,i)=>{const x=relById(id);return `${i===1?'<div class="heard-mid" aria-live="polite"><div><span data-w="k">Preview</span><b data-w="t">Press play</b><span data-w="s">On either song</span></div></div>':''}<div class="hcard rv" data-side="${i?1:-1}" data-pv="${x.pv}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}<button class="pv" type="button" aria-pressed="false" aria-label="Play a preview of ${x.t}"><i></i></button></span><div><h3>${x.t}</h3><p>${x.a}</p><div class="pbar"><span></span></div><div class="ln">${ext(spUrl(x),SPIC+'Full song on Spotify')}${ext(allUrl(x),'All platforms')}</div></div></div>`}).join('')}</div>
  </div></section>`:''}
  <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
@@ -1351,51 +1360,68 @@ function startViz(){
 }
 
 /* room page */
-/* wave field: flowing contour lines + a breathing ring, pulsing at 88 BPM. Runs only on screen. */
+/* wave field: contour lines + a ring that breathe slowly; when a preview plays, both follow the music. Runs only on screen. */
 function mountWave(sec){
- const cv=$('canvas',sec),x=cv.getContext('2d');let W,H,dpr,raf=0,on=false,lean=0,leanT=0,energy=0,energyT=0;
+ const cv=$('canvas',sec),x=cv.getContext('2d');let W,H,dpr,raf=0,on=false;
+ let lean=0,leanT=0,lvl=0,bass=0,bins=null,ac=null,an=null,cur=null,hoverE=0,hoverT=0;
+ const mid=$('.heard-mid',sec),wk=$('[data-w="k"]',sec),wt=$('[data-w="t"]',sec),ws=$('[data-w="s"]',sec);
  const size=()=>{dpr=Math.min(devicePixelRatio||1,2);W=sec.clientWidth;H=sec.clientHeight;cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)};
- const ring=()=>{const m=$('.heard-mid',sec),a=m.getBoundingClientRect(),b=sec.getBoundingClientRect();return{cx:a.left-b.left+a.width/2,cy:a.top-b.top+a.height/2,r:a.width*.42}};
- const BEAT=60/88;
+ const ring=()=>{const a=mid.getBoundingClientRect(),b=sec.getBoundingClientRect();return{cx:a.left-b.left+a.width/2,cy:a.top-b.top+a.height/2,r:a.width*.42}};
+ const audio=new Audio();audio.preload='none';audio.crossOrigin='anonymous';
+ const mmss=v=>`${Math.floor(v/60)}:${String(Math.floor(v%60)).padStart(2,'0')}`;
+ function setIdle(){wk.textContent='Preview';wt.textContent='Press play';ws.textContent='On either song';$$('.hcard',sec).forEach(c=>{c.classList.remove('playing');$('.pv',c).setAttribute('aria-pressed','false');$('.pbar span',c).style.width='0'});cur=null;leanT=0}
+ function play(card){
+  const id=card.dataset.pv,rel=REL.find(r=>r.pv===id);
+  if(cur===card&&!audio.paused){audio.pause();return}
+  if(cur!==card){audio.src=`aud/${id}.mp3`;setIdle();cur=card}
+  try{if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();an=ac.createAnalyser();an.fftSize=256;an.smoothingTimeConstant=.86;ac.createMediaElementSource(audio).connect(an);an.connect(ac.destination);bins=new Uint8Array(an.frequencyBinCount)}if(ac.state==='suspended')ac.resume()}catch(e){an=null}
+  audio.play().then(()=>{card.classList.add('playing');$('.pv',card).setAttribute('aria-pressed','true');$('.pv',card).setAttribute('aria-label','Pause '+rel.t);leanT=+card.dataset.side;wk.textContent='Now playing';wt.textContent=rel.t;start()}).catch(()=>toast('Tap play again to hear it'));
+ }
+ audio.addEventListener('pause',()=>{if(cur){$('.pv',cur).setAttribute('aria-pressed','false');cur.classList.remove('playing');wk.textContent='Paused';leanT=0}});
+ audio.addEventListener('timeupdate',()=>{if(!cur)return;ws.textContent=mmss(audio.currentTime)+' / '+mmss(audio.duration||30);$('.pbar span',cur).style.width=(audio.currentTime/(audio.duration||30)*100)+'%'});
+ audio.addEventListener('ended',setIdle);
+ $$('.hcard',sec).forEach(c=>{$('.pv',c).addEventListener('click',()=>play(c));const s=+c.dataset.side;c.addEventListener('pointerenter',()=>{hoverT=1;if(audio.paused)leanT=s*.5});c.addEventListener('pointerleave',()=>{hoverT=0;if(audio.paused)leanT=0})});
  function draw(ms){
-  const t=ms/1000,ph=(t%BEAT)/BEAT,kick=Math.exp(-ph*5);
-  lean+=(leanT-lean)*.05;energy+=(energyT-energy)*.06;
+  const t=ms/1000;
+  // listen
+  let L=0,B=0;
+  if(an&&!audio.paused){an.getByteFrequencyData(bins);for(let i=0;i<bins.length;i++)L+=bins[i];L/=bins.length*255;for(let i=1;i<8;i++)B+=bins[i];B/=7*255}
+  lvl+=(L-lvl)*.05;bass+=(B-bass)*.04;lean+=(leanT-lean)*.025;hoverE+=(hoverT-hoverE)*.03;
+  const e=Math.min(1,lvl*2.2),g0=.35+hoverE*.25+e;
   x.clearRect(0,0,W,H);
   const R=ring(),N=W<700?9:15,cy=R.cy;
   for(let i=0;i<N;i++){
    const k=i/(N-1)-.5;
    const g=x.createLinearGradient(0,0,W,0);
-   g.addColorStop(0,`rgba(243,240,234,${.10+.14*(1-Math.abs(k))})`);g.addColorStop(.5,'rgba(243,240,234,.03)');g.addColorStop(1,`rgba(185,178,255,${.22+.3*(1-Math.abs(k))})`);
+   g.addColorStop(0,`rgba(243,240,234,${.10+.14*(1-Math.abs(k))+.08*e})`);g.addColorStop(.5,'rgba(243,240,234,.03)');g.addColorStop(1,`rgba(185,178,255,${.22+.3*(1-Math.abs(k))+.12*e})`);
    x.strokeStyle=g;x.lineWidth=1.2;x.beginPath();
    for(let px=-10;px<=W+10;px+=8){
-    const xn=(px-R.cx)/(W/2);                       // -1 left, 1 right
-    const spread=14+46*Math.tanh(Math.abs(xn)*1.6); // lines fan out away from the ring
-    const swell=Math.sin(xn*2.6+t*.55+i*.18)*(36+22*energy)+Math.sin(xn*6.1-t*.9+i*.37)*(6+10*kick*(.6+energy));
-    const pinch=Math.exp(-xn*xn*9);                   // lines tuck behind the ring
-    const y=cy+k*spread*(N/2)*(1-.75*pinch)+swell*(1-.55*pinch)+lean*24*xn;
+    const xn=(px-R.cx)/(W/2);
+    const spread=14+46*Math.tanh(Math.abs(xn)*1.6);
+    const swell=Math.sin(xn*2.2+t*.22+i*.16)*(26+40*bass)*g0+Math.sin(xn*4.3-t*.31+i*.29)*(8+26*e);
+    const pinch=Math.exp(-xn*xn*9);
+    const y=cy+k*spread*(N/2)*(1-.75*pinch)+swell*(1-.55*pinch)+lean*22*xn;
     px<0?x.moveTo(px,y):x.lineTo(px,y);
    }
    x.stroke();
   }
-  // ring
-  const rr=R.r*(1+.04*kick*(.6+energy));
+  const rr=R.r*(1+.05*bass);
   x.save();x.translate(R.cx,R.cy);
   x.fillStyle='rgba(7,6,10,.82)';x.beginPath();x.arc(0,0,rr*1.02,0,Math.PI*2);x.fill();
   const rg=x.createLinearGradient(-rr,-rr,rr,rr);rg.addColorStop(0,'#f3f0ea');rg.addColorStop(1,'#b9b2ff');
-  x.strokeStyle=rg;x.lineWidth=2.4;x.shadowColor='rgba(185,178,255,.55)';x.shadowBlur=18;x.beginPath();
+  x.strokeStyle=rg;x.lineWidth=2.4;x.shadowColor=`rgba(185,178,255,${.45+.4*e})`;x.shadowBlur=16+20*e;x.beginPath();
   for(let a=0;a<=Math.PI*2+.01;a+=Math.PI/90){
-   const n=Math.sin(a*3+t*1.3)*.035+Math.sin(a*5-t*.8+lean)*.025+Math.sin(a*9+t*2.2)*(.012+.03*kick*(.5+energy))+lean*.04*Math.cos(a);
+   const n=Math.sin(a*3+t*.35)*(.03+.03*e)+Math.sin(a*5-t*.27+lean)*.022+Math.sin(a*8+t*.6)*(.006+.05*e)+lean*.035*Math.cos(a);
    const rad=rr*(1+n);const px=Math.cos(a)*rad,py=Math.sin(a)*rad;a===0?x.moveTo(px,py):x.lineTo(px,py);
   }
   x.closePath();x.stroke();x.restore();
-  if(on)raf=requestAnimationFrame(draw);
+  raf=0;if(on&&(!reduce||!audio.paused))raf=requestAnimationFrame(draw);
  }
- size();
- const ro=new ResizeObserver(()=>{size();if(!on)draw(performance.now())});ro.observe(sec);
- $$('.hcard',sec).forEach(c=>{const s=+c.dataset.side;const go=()=>{leanT=s;energyT=1},stop=()=>{leanT=0;energyT=0};c.addEventListener('pointerenter',go);c.addEventListener('pointerleave',stop);c.addEventListener('focusin',go);c.addEventListener('focusout',stop)});
- if(reduce){draw(0);cleanup.push(()=>ro.disconnect());return}
- const io=new IntersectionObserver(([e])=>{on=e.isIntersecting;cancelAnimationFrame(raf);if(on)raf=requestAnimationFrame(draw)},{threshold:0});io.observe(sec);
- cleanup.push(()=>{on=false;cancelAnimationFrame(raf);io.disconnect();ro.disconnect()});
+ const start=()=>{if(on&&!raf)raf=requestAnimationFrame(draw)};
+ size();draw(performance.now());
+ const ro=new ResizeObserver(()=>{size();draw(performance.now())});ro.observe(sec);
+ const io=new IntersectionObserver(([en])=>{on=en.isIntersecting;cancelAnimationFrame(raf);raf=0;if(on&&!reduce)start()},{threshold:0});io.observe(sec);
+ cleanup.push(()=>{on=false;cancelAnimationFrame(raf);io.disconnect();ro.disconnect();audio.pause();audio.src='';if(ac)ac.close()});
 }
 function wireRoom(slug){
  const hd=$('#heard',main);if(hd)mountWave(hd);
