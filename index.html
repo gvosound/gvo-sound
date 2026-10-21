@@ -893,12 +893,65 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 /* travel strip */
 .travel{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin-top:clamp(56px,8vw,90px);padding:14px 18px;border:1px solid var(--line);border-radius:40px;text-decoration:none;transition:border-color .25s}
 .travel:hover{border-color:var(--lav)}
-.travel-ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--ink-2);color:var(--lav)}
+.travel-ic-old{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--ink-2);color:var(--lav)}
 .travel-ic .ig-ic{width:18px;height:18px}
 .travel small{display:block;font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 .travel b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase}
 .travel-h{font:600 .75rem var(--mono);letter-spacing:.08em;color:var(--lav)}
 @media (max-width:520px){.travel{grid-template-columns:auto 1fr;border-radius:var(--r)}.travel-h{grid-column:2}}
+/* events v2: flyer cards, weekend banner, past grid, IG carousel + lightbox */
+.ev-wk{display:flex;align-items:center;gap:16px;padding:14px 18px;margin-bottom:16px;border:1px solid rgba(228,52,44,.45);border-radius:var(--r);background:linear-gradient(90deg,rgba(228,52,44,.16),transparent 70%)}
+.ev-wk .mark{width:46px;flex:none}
+.ev-wk b{display:block;font:900 1.15rem var(--display);font-stretch:115%;text-transform:uppercase}
+.ev-wk small{font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#e9b3b0}
+.evc-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px;margin-bottom:18px}
+.evc{display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2)}
+.evc-f{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:var(--panel)}
+.evc-f img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.evc-f:hover img{transform:scale(1.04)}
+.evc-nf{position:absolute;inset:0;display:grid;place-items:center}.evc-nf .mark{width:40%}
+.evc-d{position:absolute;left:12px;top:12px;display:grid;justify-items:center;background:var(--lav);color:var(--lav-ink);border-radius:var(--r);padding:8px 10px;min-width:54px}
+.evc-d b{font:900 1.5rem/1 var(--display)}
+.evc-d small{font:700 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.evc-i{display:grid;gap:8px;align-content:start;padding:18px}
+.evc-i h3{font-size:clamp(1.2rem,1.9vw,1.5rem);line-height:1;margin:0}
+.evc-i p{margin:0;color:var(--mute);font-size:.92rem}
+.evc-i p.ev-lu{color:#d7d2dc}
+.evc-i .btn{justify-self:start;margin-top:6px}
+.evc.sample{border-style:dashed}
+.evp-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,44vw),1fr));gap:22px 14px}
+.evp{display:grid;gap:10px;text-decoration:none;align-content:start}
+.evp-f{display:block;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;background:var(--panel)}
+.evp-f img{width:100%;height:100%;object-fit:cover;filter:saturate(.75) brightness(.85);transition:filter .5s,transform .9s var(--ease)}
+.evp:hover .evp-f img{filter:none;transform:scale(1.04)}
+.evp-i small{display:block;font:600 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.evp-i b{font-weight:600;line-height:1.25}
+.evp:hover b{color:var(--lav)}
+.ev-empty .eyebrow{margin-bottom:8px}
+.igb-nav{display:flex;gap:8px;align-items:center}
+.igb-nav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--bone)}
+.igb-nav button:hover{border-color:var(--lav)}
+.igb-c{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(200px,1fr);gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+.igb-c::-webkit-scrollbar{display:none}
+@media (min-width:1100px){.igb-c{grid-auto-columns:calc((100% - 40px)/6)}}
+.igb-c a{position:relative;aspect-ratio:1;overflow:hidden;border-radius:var(--r);background:var(--panel);scroll-snap-align:start}
+.igb-more{display:grid!important;place-items:center;align-content:center;gap:10px;text-align:center;border:1px dashed var(--line);background:var(--ink-2)!important;text-decoration:none;font:600 .75rem var(--mono);letter-spacing:.08em;color:var(--mute)}.igb-more .ig-ic{width:28px;height:28px;color:var(--lav)}.igb-more:hover{border-color:var(--lav);color:var(--bone)}
+.igb-c img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s}
+.igb-c a:hover img{transform:scale(1.06);filter:brightness(.7)}
+.igr{position:absolute;right:8px;top:8px;font:700 .6rem var(--mono);letter-spacing:.12em;text-transform:uppercase;background:rgba(7,6,10,.7);backdrop-filter:blur(4px);padding:5px 7px 5px 22px;border-radius:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l9 5-9 5z' fill='%23f3f0ea'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:5px center;background-size:14px}
+@media (max-width:760px){.igb-h{grid-template-columns:1fr}.igb-nav button{display:none}.igb-c{grid-auto-columns:42vw}}
+.iglb{position:fixed;inset:0;z-index:90;background:rgba(7,6,10,.86);backdrop-filter:blur(8px);display:grid;place-items:center;padding:16px}
+.iglb-in{position:relative;width:min(420px,100%);display:grid;gap:12px;justify-items:center}
+.iglb-f{width:100%;height:min(720px,calc(100svh - 120px));border-radius:var(--r);overflow:hidden;background:var(--bone)}
+.iglb-f iframe{width:100%;height:100%;border:0;display:block}
+.iglb .x{position:absolute;top:-6px;right:-6px;transform:translate(0,-100%);background:none;border:0;color:var(--bone);font-size:1.2rem;width:44px;height:44px}
+.travel{grid-template-columns:auto 1fr auto}
+.travel-th{display:flex}
+.travel-th img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--ink);margin-left:-12px}
+.travel-th img:first-child{margin-left:0}
+.travel-s{display:block;color:var(--mute);font-size:.88rem;margin-top:2px}
+.travel b{font-size:1rem}
+@media (max-width:620px){.travel{grid-template-columns:1fr;border-radius:var(--r)}.travel-h{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -965,6 +1018,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 </aside>
 <div class="sim" id="sim" hidden role="dialog" aria-modal="true" aria-label="Checkout"></div>
 <div class="pb" id="pb" hidden role="region" aria-label="Preview player"><span class="cv"><img id="pbImg" alt=""></span><div class="pb-i"><b id="pbT"></b><small id="pbA"></small><div class="pb-p"><span id="pbP"></span></div></div><span class="pb-tm" id="pbTm"></span><button class="pv" type="button" id="pbBtn" data-play="" aria-pressed="false" aria-label="Pause"><i></i></button><a class="pb-sp" id="pbSp" target="_blank" rel="noopener" aria-label="Full song on Spotify"></a><button class="pb-x" type="button" id="pbX" aria-label="Close player">✕</button></div>
+<div class="iglb" id="iglb" hidden role="dialog" aria-modal="true" aria-label="Instagram post"><div class="iglb-in"><button class="x" type="button" id="iglbX" aria-label="Close">✕</button><div class="iglb-f" id="iglbF"></div><a class="btn btn-ghost" id="iglbA" target="_blank" rel="noopener">Open on Instagram ↗</a></div></div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
@@ -1000,12 +1054,12 @@ const unit=p=>p.s||p.p;
 const SPO='https://open.spotify.com/';
 const REL=[
  {id:'ride-for-me',t:'Ride for Me',a:'David Correy & Flawless Breezyy',c:'c_ride',k:'track',sp:'46EFAEtDZauJRc5V4Q11Jc',tag:'Single',pv:'ride'},
- {id:'im-from-the-a',t:"I'M FROM THE A!",a:'Flawless Breezyy',c:'c_froma',k:'album',sp:'64zHn9UlzHifFe735UhdYP',tag:'Single'},
- {id:'wont-change',t:'Wont Change',a:'Flawless Breezyy, Only1BamaBoy',c:'c_wont',k:'album',sp:'7xxu9twRBbVzZyFpj8ea5l',tag:'Single'},
- {id:'you-said',t:'You Said!',a:'Flawless Breezyy, BoobBlack',c:'c_yousaid',k:'album',sp:'4CJvWJFuQVcUW7fgM2h0fP',tag:'Single'},
+ {id:'im-from-the-a',t:"I'M FROM THE A!",a:'Flawless Breezyy',c:'c_froma',k:'album',sp:'64zHn9UlzHifFe735UhdYP',tag:'Single',pv:'froma'},
+ {id:'wont-change',t:'Wont Change',a:'Flawless Breezyy, Only1BamaBoy',c:'c_wont',k:'album',sp:'7xxu9twRBbVzZyFpj8ea5l',tag:'Single',pv:'wont'},
+ {id:'you-said',t:'You Said!',a:'Flawless Breezyy, BoobBlack',c:'c_yousaid',k:'album',sp:'4CJvWJFuQVcUW7fgM2h0fP',tag:'Single',pv:'yousaid'},
  {id:'need-to-know',t:'Need to know',a:'A. Brooks & Flawless Breezyy',c:'c_need',k:'album',sp:'2DPjHXoZAXKYbiFMDumEOL',tag:'Single',pv:'need'},
- {id:'savage',t:'Savage!',a:'Flawless Breezyy',c:'c_savage',k:'album',sp:'0YsngE5Rw4PLRHrnwgVOJz',tag:'Single'},
- {id:'sixteen',t:'SIXTEEN',a:'Flawless Breezyy',c:'c_sixteen',k:'album',sp:'2GjLf9BPCE8ed5Y4JhB5rL',tag:'Project'}
+ {id:'savage',t:'Savage!',a:'Flawless Breezyy',c:'c_savage',k:'album',sp:'0YsngE5Rw4PLRHrnwgVOJz',tag:'Single',pv:'savage'},
+ {id:'sixteen',t:'SIXTEEN',a:'Flawless Breezyy',c:'c_sixteen',k:'album',sp:'2GjLf9BPCE8ed5Y4JhB5rL',tag:'Project',pv:'sixteen'}
 ];
 const FEATURED='ride-for-me';
 const ARTISTS=[
@@ -1024,28 +1078,41 @@ const SESS=[
 /* Events: from GVO SOUND EVENTS on Eventbrite (organizer 72154308173), checked Oct 21, 2026. Newest first. */
 const EVB='https://www.eventbrite.com/e/';
 const EVENTS=[
- {t:'Trick or Freak! Halloween Costume Party',d:'2026-10-31',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-trick-or-freak-halloween-costume-party-tickets-2002808913374',k:'Halloween',lu:'DJ Mo @moxlloyd · Hosted by @flawlessbreezyy, @moxlloyd and @rvre.form_ · MC @dmanspop1128',x:'Costumes encouraged, not required.'},
- {t:'R&B & Vibes: AAC Homecoming',d:'2026-09-19',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-aac-homecoming-tickets-1999025510113',k:'R&B & Vibes'},
- {t:'Skyline: All White Affair',d:'2026-08-29',tm:'8 PM – 2 AM',v:'Rooftop',a:'1818 Maryland Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-skyline-all-white-affair-tickets-1996918289359',k:'Rooftop'},
- {t:'Downroad vs. Uproad: Lovers Meet Vibes',d:'2026-07-10',tm:'9:30 PM – 2 AM',v:'',a:'4314 Curtis Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-downroad-vs-uproad-lovers-meet-vibes-tickets-1991275409353',k:'Battle'},
- {t:'YMCMB vs MMG Night',d:'2026-05-29',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-ymcmb-vs-mmg-night-tickets-1989083321760',k:'Battle'},
- {t:'AAC vs Baltimore Pt. 2: R&B vs. Trap',d:'2026-05-02',tm:'10 PM – 2 AM',v:'',a:'316 Guilford Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-aac-vs-baltimore-pt2-rb-vs-trap-tickets-1986485306025',k:'Battle'},
- {t:'R&B & Vibes / GoGo',d:'2026-04-17',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-gogo-tickets-1986168817399',k:'R&B & Vibes'},
- {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2025-11-28',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-1954612130499',k:'R&B & Vibes'},
- {t:'R&B & Vibes',d:'2025-08-23',tm:'9 PM – 2 AM',v:'Vibe',a:'2072 Somerville Road',c:'Annapolis, MD',u:'gvo-sound-presents-rb-vibes-tickets-1515809199119',k:'R&B & Vibes'}
+ {t:'GVO Sound 4-Year Anniversary: Networking Night',d:'2026-10-30',tm:'6:30 PM – 2 AM',v:'GVO Sound Studios',a:'109 Gibralter Ave',c:'Annapolis, MD',url:'https://posh.vip/e/gvo-sound-anniversary-networking-event',k:'Halloween Weekend · At the studio',fl:'f_anniv',cta:'RSVP',lu:'Free food · Discounted clothing · Discounted pre-booked studio time · Cash bar'},
+ {t:'The Day After: Ravens Watch Party',d:'2026-11-01',tm:'1 PM – 6 PM',v:'Mugshots',a:'31 E Cross St',c:'Baltimore, MD',url:'https://posh.vip/e/the-day-after-ravens-watch-party',k:'Halloween Weekend · Day party',fl:'f_ravens',cta:'RSVP'},
+ {t:'Trick or Freak! Halloween Costume Party',d:'2026-10-31',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-trick-or-freak-halloween-costume-party-tickets-2002808913374',k:'Halloween Weekend',fl:'f_trick',lu:'DJ Mo @moxlloyd · Hosted by @flawlessbreezyy, @moxlloyd and @rvre.form_ · MC @dmanspop1128',x:'Costumes encouraged, not required.'},
+ {t:'R&B & Vibes: AAC Homecoming',d:'2026-09-19',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-aac-homecoming-tickets-1999025510113',fl:'f_aac',k:'R&B & Vibes'},
+ {t:'Skyline: All White Affair',d:'2026-08-29',tm:'8 PM – 2 AM',v:'Rooftop',a:'1818 Maryland Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-skyline-all-white-affair-tickets-1996918289359',fl:'f_skyline',k:'Rooftop'},
+ {t:'Downroad vs. Uproad: Lovers Meet Vibes',d:'2026-07-10',tm:'9:30 PM – 2 AM',v:'',a:'4314 Curtis Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-downroad-vs-uproad-lovers-meet-vibes-tickets-1991275409353',fl:'f_downroad',k:'Battle'},
+ {t:'YMCMB vs MMG Night',d:'2026-05-29',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-ymcmb-vs-mmg-night-tickets-1989083321760',fl:'f_ymcmb',k:'Battle'},
+ {t:'AAC vs Baltimore Pt. 2: R&B vs. Trap',d:'2026-05-02',tm:'10 PM – 2 AM',v:'',a:'316 Guilford Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-aac-vs-baltimore-pt2-rb-vs-trap-tickets-1986485306025',fl:'f_aacbal',k:'Battle'},
+ {t:'R&B & Vibes / GoGo',d:'2026-04-17',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-gogo-tickets-1986168817399',fl:'f_gogo',k:'R&B & Vibes'},
+ {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2025-11-28',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-1954612130499',fl:'f_buddy',k:'R&B & Vibes'},
+ {t:'R&B & Vibes',d:'2025-08-23',tm:'9 PM – 2 AM',v:'Vibe',a:'2072 Somerville Road',c:'Annapolis, MD',u:'gvo-sound-presents-rb-vibes-tickets-1515809199119',fl:'f_rbv',k:'R&B & Vibes'}
 ];
 /* demo only: shows how a new Eventbrite listing lands in the Upcoming slot */
 const EV_SAMPLE={t:'R&B & Vibes',d:'2026-11-27',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'',k:'R&B & Vibes',sample:1};
 let evSample=false;
 const evDate=e=>{const [y,m,d]=e.d.split('-').map(Number);return new Date(y,m-1,d)};
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const evUp=()=>{const t=nowET();t.setHours(0,0,0,0);const l=EVENTS.filter(e=>evDate(e)>=t);return evSample&&!l.length?[EV_SAMPLE]:l.reverse()};
-const evPast=()=>{const t=nowET();t.setHours(0,0,0,0);return EVENTS.filter(e=>evDate(e)<t)};
+const EV_NEXT={t:'All Black Affair',d:'2026-11-27',note:'Save the date. Flyer and tickets drop on @gvosound.events.'};
+const evLink=e=>e.url||(e.u?EVB+e.u:'');
+const evUp=()=>{const t=nowET();t.setHours(0,0,0,0);const l=EVENTS.filter(e=>evDate(e)>=t);l.sort((x,y)=>evDate(x)-evDate(y));return evSample?[...l,EV_SAMPLE]:l};
+const evPast=()=>{const t=nowET();t.setHours(0,0,0,0);return EVENTS.filter(e=>evDate(e)<t).sort((x,y)=>evDate(y)-evDate(x))};
+
+/* Instagram posts pulled Oct 21, 2026 (public profile). id = shortcode; r = reel. Production: Instagram API via the Worker. */
+const IGP={
+ events:[['DesRkpXp0Vd',1,'Crowd at a GVO night, Oct 2026'],['DePQGY2luZP',0,'Halloween Weekend: 3 parties, 1 weekend'],['DYCxmpxhK9h',1,'Sparklers and bottles at a GVO party'],['DeCX1TfsV9_',0,'Trick or Freak flyer'],['DdZY4jPp3-r',1,'Flawless on the mic'],['Ddg6HLfliwq',0,'The GVO crew'],['DcjKlP4Fit9',0,'R&B and Vibes Homecoming flyer'],['DcEKOulRYdJ',1,'Skate night'],['DcO47mziZ-E',0,'Cascade with 88 Events flyer']],
+ clothing:[['Dc6UcDelPr2',0,'World Tour Cheetah Hoodie, on body'],['DdevhIBlM5P',0,'The Collective Set in black'],['Ddj7MPPlLSI',0,'GVO in Times Square'],['Dc6TSQglBOI',0,'Cheetah hoodie, flat lay'],['Ddev183FGD3',0,'The Collective Set, flat lay']],
+ travel:[['Dc7JX4cNj6x','Tokyo'],['Ddrm_vAT4fm','Puerto Rico'],['DWJwUqoN7m1','Boracay'],['DdO6XF3PYcB','Valentine\'s cruise']]
+};
+const igImg=(k,id)=>`ig_${k}_${id.toLowerCase()}`;
+
 const IG={main:'gvo.sound',events:'gvosound.events',clothing:'gvosound.clothing',travel:'gvosound.travel'};
 const igUrl=h=>`https://www.instagram.com/${h}/`;
 const IGIC='<svg viewBox="0 0 24 24" aria-hidden="true" class="ig-ic"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg>';
 /* Instagram band: profile chip + a tile strip that opens the profile. Production swaps the tiles for the latest posts. */
-const igBand=(h,label,line,tiles)=>`<div class="igb rv"><div class="igb-h"><a class="igb-me" href="${igUrl(h)}" target="_blank" rel="noopener"><span class="igb-av"><span><span class="mark"></span></span></span><span><b>@${h}</b><small>${label}</small></span></a><p>${line}</p><a class="btn btn-ghost" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}Follow</a></div><div class="igb-g">${tiles.map(([f,alt])=>`<a href="${igUrl(h)}" target="_blank" rel="noopener" aria-label="${alt}, on Instagram @${h}">${imgT(f,alt)}</a>`).join('')}</div></div>`;
+const igBand=(h,label,line,k)=>`<div class="igb rv"><div class="igb-h"><a class="igb-me" href="${igUrl(h)}" target="_blank" rel="noopener"><span class="igb-av"><span><span class="mark"></span></span></span><span><b>@${h}</b><small>${label}</small></span></a><p>${line}</p><div class="igb-nav"><button type="button" data-igs="-1" aria-label="Scroll back">←</button><button type="button" data-igs="1" aria-label="Scroll forward">→</button><a class="btn btn-ghost" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}Follow</a></div></div><div class="igb-c">${IGP[k].map(([id,r,alt])=>`<a href="https://www.instagram.com/${r?'reel':'p'}/${id}/" target="_blank" rel="noopener" data-ig="${id}" data-igr="${r}" aria-label="${alt}${r?', reel':''}, on Instagram">${imgT(igImg(k==='events'?'ev':'cl',id),alt)}${r?'<span class="igr" aria-hidden="true">Reel</span>':''}</a>`).join('')}<a class="igb-more" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}<span>More on<br>@${h}</span></a></div></div>`;
 const relById=id=>REL.find(x=>x.id===id);
 const spUrl=x=>SPO+x.k+'/'+x.sp;
 const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
@@ -1321,7 +1388,10 @@ function viewMusic(slug){
  </div>`;
 }
 
-function evRow(e,big){const d=evDate(e);return `<article class="ev${big?' up':''}${e.sample?' sample':''} rv"><div class="ev-date"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b><small>${MON[d.getMonth()]} ${d.getFullYear()}</small></div><div class="ev-i"><span class="eyebrow">${e.sample?'Sample listing · ':''}${e.k}${big&&!e.sample?(()=>{const t=nowET();t.setHours(0,0,0,0);const n=Math.round((evDate(e)-t)/864e5);return ' · '+(n===0?'Tonight':n===1?'Tomorrow':'In '+n+' days')})():''}</span><h3>${e.t}</h3>${big&&e.lu?`<p class="ev-lu">${e.lu}${e.x?' · '+e.x:''}</p>`:''}<p>${[e.v&&e.v!=='Rooftop'?e.v:'',e.v==='Rooftop'||!e.v?(e.v==='Rooftop'?'Rooftop, ':'')+e.a:'',e.c,e.tm].filter(Boolean).join(' · ')}</p></div>${big?(e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${EVB+e.u}" target="_blank" rel="noopener">Tickets</a>`):`<a class="ev-go" href="${EVB+e.u}" target="_blank" rel="noopener" aria-label="${e.t} on Eventbrite">↗</a>`}</article>`}
+function evRow(e,big){const d=evDate(e),L=evLink(e);return `<article class="ev${big?' up':''}${e.sample?' sample':''} rv"><div class="ev-date"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b><small>${MON[d.getMonth()]} ${d.getFullYear()}</small></div><div class="ev-i"><span class="eyebrow">${e.sample?'Sample listing · ':''}${e.k}</span><h3>${e.t}</h3><p>${[e.v,e.c,e.tm].filter(Boolean).join(' · ')}</p></div>${big?(e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${L}" target="_blank" rel="noopener">Tickets</a>`):`<a class="ev-go" href="${L}" target="_blank" rel="noopener" aria-label="${e.t} on Eventbrite">↗</a>`}</article>`}
+const evIn=e=>{const t=nowET();t.setHours(0,0,0,0);const n=Math.round((evDate(e)-t)/864e5);return n===0?'Tonight':n===1?'Tomorrow':'In '+n+' days'};
+function evCard(e){const d=evDate(e),L=evLink(e);return `<article class="evc rv${e.sample?' sample':''}"><a class="evc-f" href="${L||'#upcoming'}" ${L?'target="_blank" rel="noopener"':''}>${e.fl?imgT(e.fl,`${e.t} flyer`):'<span class="evc-nf"><span class="mark"></span></span>'}<span class="evc-d"><b>${d.getDate()}</b><small>${MON[d.getMonth()]}</small></span></a><div class="evc-i"><span class="eyebrow">${e.sample?'Sample listing':e.k} · ${evIn(e)}</span><h3>${e.t}</h3><p>${DOW[d.getDay()]} · ${e.tm}<br>${e.v} · ${e.c}</p>${e.lu?`<p class="ev-lu">${e.lu}</p>`:''}${e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${L}" target="_blank" rel="noopener">${e.cta||'Tickets'}</a>`}</div></article>`}
+function evPastCard(e){const d=evDate(e);return `<a class="evp rv" href="${evLink(e)}" target="_blank" rel="noopener"><span class="evp-f">${imgT(e.fl,`${e.t} flyer`)}</span><span class="evp-i"><small>${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} · ${e.c.replace(', MD','')}</small><b>${e.t}</b></span></a>`}
 function viewEvents(){
  const up=evUp(),past=evPast(),cities=new Set(EVENTS.map(e=>e.c)).size;
  return `<div class="view" data-v="events">
@@ -1329,23 +1399,24 @@ function viewEvents(){
   ${crumbs([['Home','#'],['Events','']])}
   <div class="evhero-g">
    <div class="evhero-t"><span class="eyebrow">GVO Sound Events</span><h1><span>R&amp;B Nights.</span><span>Rooftops.</span><span>County vs. City.</span></h1>
-    <p class="lede">GVO throws parties across Anne Arundel County and Baltimore. Tickets run through Eventbrite, and every date drops on <a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">@${IG.events}</a> first.</p>
+    <p class="lede">GVO throws parties across Anne Arundel County and Baltimore. Maryland based, four years in. Tickets run through Eventbrite and Posh, and every date drops on <a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">@${IG.events}</a> first.</p>
     <div class="ctas" style="margin:0"><a class="btn btn-lav" href="#inquire">Work with GVO Events</a><a class="btn btn-ghost" href="${igUrl(IG.events)}" target="_blank" rel="noopener">${IGIC}@${IG.events}</a></div></div>
-   <div class="facts ev-facts"><div><b>${evPast().length}</b><small>Nights since Aug 2025</small></div><div><b>${cities}</b><small>Cities</small></div><div><b>2AM</b><small>Last call</small></div></div>
+   <div class="facts ev-facts"><div><b>${evPast().length+evUp().filter(e=>!e.sample).length}</b><small>Nights since Aug 2025</small></div><div><b>${cities}</b><small>Cities</small></div><div><b>2AM</b><small>Last call</small></div></div>
   </div>
   ${seoNote(META.events)}
  </div></section>
  <section id="upcoming"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">On the calendar</span><h2>Upcoming</h2></div>${note('Upcoming slot','Events list themselves from Eventbrite: a new listing shows here, then moves to Past the morning after. <button type="button" class="chip" data-evsample style="margin-top:10px">'+(evSample?'Back to today':'Preview a new listing')+'</button>')}</div>
-  ${up.length?`<div class="ev-list">${up.map(e=>evRow(e,1)).join('')}</div>`:`<div class="ev-empty rv"><div><h3>Next date drops soon</h3><p>Get the flyer and ticket link the day it goes live.</p></div><form id="evNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Notify me</button></form><a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">Or turn on post alerts @${IG.events} →</a></div>`}
+  ${up.length?`${up.filter(e=>e.k.startsWith('Halloween')).length>1?`<div class="ev-wk rv"><span class="mark"></span><div><b>GVO Weeknd · Halloween</b><small>3 parties, 1 weekend · Oct 30 – Nov 1 · 4 years of GVO</small></div></div>`:''}<div class="evc-g">${up.map(evCard).join('')}</div>`:''}
+  <div class="ev-empty rv"><div><span class="eyebrow">Save the date · ${MON[evDate(EV_NEXT).getMonth()]} ${evDate(EV_NEXT).getDate()}</span><h3>${EV_NEXT.t}</h3><p>${EV_NEXT.note} Get the flyer the day it drops.</p></div><form id="evNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Notify me</button></form></div>
  </div></section>
  <section style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Run it back</span><h2>Past events</h2></div><p class="lede">R&amp;B &amp; Vibes is the flagship. The rest are one-night themes: all-white rooftops, era battles, county against city.</p></div>
-  <div class="ev-list past">${past.map(e=>evRow(e,0)).join('')}</div>
+  <div class="evp-g">${past.map(e=>e.fl?evPastCard(e):evRow(e,0)).join('')}</div>
  </div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
-  ${igBand(IG.events,'GVO Sound Events','Flyers, recaps and the next date, first.',[['r_2','Live take'],['pod_3','The GVO floor'],['s_artist5','On the mic'],['lounge','The lounge'],['s_artist3','Session night'],['booth_dark','After hours']])}
-  ${note('Instagram feed','At launch these tiles pull the latest six posts from @gvosound.events through the Instagram API, refreshed every few hours by the Cloudflare Worker. In the demo they open the profile.')}
+  ${igBand(IG.events,'GVO Sound Events','Maryland based. Distinctive vibe curators. Tap a reel to watch it here.','events')}
+  ${note('Instagram feed','These are real posts from @gvosound.events, saved Oct 21. Reels and posts open in Instagram\'s own player on the page. At launch the row refreshes itself from the Instagram API through the Cloudflare Worker, so new posts show up without anyone touching the site.')}
  </div></section>
  <section class="desk-sec" id="inquire"><div class="wrap">
   <div class="sec-head"><div class="hd"><span class="eyebrow">Partner with us</span><h2>Work with GVO Events</h2></div><p class="lede">DJs, venue owners, promoters, brands and private hosts. Tell us what you have in mind and Cory gets back to you.</p></div>
@@ -1363,7 +1434,7 @@ function viewEvents(){
   ${note('Where inquiries go','Writes a row to the Events table in GVO\'s Airtable, tagged by type, and emails Cory. DJ and venue inquiries land in their own views.')}
  </div></section>
  <section style="padding-top:0;padding-bottom:0"><div class="wrap">
-  <a class="travel rv" href="${igUrl(IG.travel)}" target="_blank" rel="noopener"><span class="travel-ic">${IGIC}</span><span><small>Off the clock</small><b>GVO Travel</b></span><span class="travel-h">@${IG.travel} →</span></a>
+  <a class="travel rv" href="${igUrl(IG.travel)}" target="_blank" rel="noopener"><span class="travel-th">${IGP.travel.map(([id,alt])=>imgT(igImg('tr',id),alt)).join('')}</span><span><small>Off the clock · GVO Travel</small><b>Group and solo trips, 26 countries</b><span class="travel-s">3–5 day escapes and 10+ day journeys. First-time travelers welcome.</span></span><span class="travel-h">@${IG.travel} →</span></a>
   <div class="finale"><span class="mark"></span><p class="slogan"><span>Bring Your</span><span>Vision</span><span>To Life.</span></p><a class="btn btn-lav" href="#inquire">Work with GVO Events</a></div>
  </div></section>
  </div>`;
@@ -1385,7 +1456,7 @@ function viewShop(){
   ${seoNote(META.shop)}
   <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
   <div class="rack" id="rack"></div>
-  <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Drops, restocks and fits from the studio.',[['p_world-tour-cheetah-hoodie_1','World Tour Cheetah Hoodie'],['p_gvo-x-ace-distressed-tee_1','GVO x Ace Distressed Tee'],['p_worker-jacket_1','Worker Jacket'],['p_world-tour-cozy-set_1','World Tour Cozy Set'],['p_gvo-muscle-tee_1','GVO Muscle Tee'],['p_gvo-beanie_1','GVO Beanie']])}</div>
+  <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Good vibes, bold threads. Wear the energy.','clothing')}</div>
  </div></section></div>`;
 }
 
@@ -1433,7 +1504,7 @@ function ldFor(route){
   bc([['Home','/'],[r.h1,'/'+route]])]}}
  if(route.startsWith('product-')){const p=prodById(route.slice(8));if(p)return{"@context":"https://schema.org","@graph":[{"@type":"Product","name":p.n,"brand":{"@type":"Brand","name":"GVO Sound"},"image":p.img[0]?`${SITE}/img/${p.img[0]}.webp`:undefined,"offers":{"@type":"Offer","price":unit(p),"priceCurrency":"USD","availability":"https://schema.org/InStock"}},bc([['Home','/'],['Shop','/shop'],[p.n,'/shop/'+p.id]])]}}
  if(route==='music'||route.startsWith('music/')){const x=relById(route.slice(6));return{"@context":"https://schema.org","@graph":[{"@type":"MusicGroup","name":"Flawless Breezyy","sameAs":[SPO+ARTISTS[0].sp],"track":REL.map(r=>({"@type":"MusicRecording","name":r.t,"byArtist":r.a,"url":spUrl(r)}))},bc(x?[['Home','/'],['Music','/music'],[x.t,'/music/'+x.id]]:[['Home','/'],['Music','/music']])]}}
- if(route==='events'){const all=[...evUp().filter(e=>!e.sample),...evPast()];return{"@context":"https://schema.org","@graph":[{"@type":"ItemList","itemListElement":all.map((e,i)=>({"@type":"ListItem","position":i+1,"item":{"@type":"MusicEvent","name":'GVO Sound Presents: '+e.t,"startDate":e.d,"eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":e.v||e.a,"address":e.a+', '+e.c},"organizer":{"@id":SITE+'/#business'},"url":EVB+e.u}}))},bc([['Home','/'],['Events','/events']])]}}
+ if(route==='events'){const all=[...evUp().filter(e=>!e.sample),...evPast()];return{"@context":"https://schema.org","@graph":[{"@type":"ItemList","itemListElement":all.map((e,i)=>({"@type":"ListItem","position":i+1,"item":{"@type":"MusicEvent","name":'GVO Sound Presents: '+e.t,"startDate":e.d,"eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":e.v||e.a,"address":e.a+', '+e.c},"organizer":{"@id":SITE+'/#business'},"url":evLink(e)}}))},bc([['Home','/'],['Events','/events']])]}}
  if(route==='book')return{"@context":"https://schema.org","@graph":[bc([['Home','/'],['Book a session','/book']]),{"@type":"ReserveAction","target":SITE+'/book',"object":{"@id":SITE+'/#business'}}]};
  if(route==='shop')return{"@context":"https://schema.org","@type":"ItemList","itemListElement":PRODUCTS.map((p,i)=>({"@type":"ListItem","position":i+1,"url":`${SITE}/shop/${p.id}`}))};
  return{};
@@ -1562,6 +1633,12 @@ function pTime(){
 P.au.addEventListener('timeupdate',pTime);
 P.au.addEventListener('ended',()=>{P.au.currentTime=0;pSync()});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
+document.addEventListener('click',e=>{
+ const sb=e.target.closest('[data-igs]');if(sb){const c=sb.closest('.igb').querySelector('.igb-c');c.scrollBy({left:+sb.dataset.igs*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
+ const a=e.target.closest('a[data-ig]');if(a&&!e.metaKey&&!e.ctrlKey){e.preventDefault();const id=a.dataset.ig,r=a.dataset.igr==='1';$('#iglbF').innerHTML=`<iframe src="https://www.instagram.com/${r?'reel':'p'}/${id}/embed/" title="Instagram ${r?'reel':'post'}" allow="autoplay; encrypted-media" loading="lazy"></iframe>`;$('#iglbA').href=a.href;$('#iglb').hidden=false;$('#iglbX').focus();if(!P.au.paused)P.au.pause()}
+});
+const igClose=()=>{$('#iglb').hidden=true;$('#iglbF').innerHTML=''};
+$('#iglbX').addEventListener('click',igClose);$('#iglb').addEventListener('click',e=>{if(e.target.id==='iglb')igClose()});addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#iglb').hidden)igClose()});
 $('#pbX').addEventListener('click',()=>{P.au.pause();P.id=null;pSync()});
 
 /* hero deck bars */
