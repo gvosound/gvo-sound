@@ -304,7 +304,9 @@ main{min-height:60vh}
 .step{padding:24px clamp(16px,3vw,30px);border-bottom:1px solid var(--line);display:grid;gap:16px}
 .step:last-child{border-bottom:0}
 .step-h{display:flex;gap:14px;align-items:baseline}
-.step-h .n{font:600 .7rem/1 var(--mono);color:var(--lav)}
+.step-h{align-items:center}
+.step-h .n,.quote-form .n{flex:none;display:inline-flex;align-items:baseline;gap:5px;padding:6px 11px;border:1px solid rgba(185,178,255,.45);border-radius:40px;background:rgba(185,178,255,.08);font:600 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.step-h .n b,.quote-form .n b{color:var(--lav);font-size:.8rem}
 .step-h .done{margin-left:auto;font:600 .75rem var(--mono);color:var(--ok);letter-spacing:.08em;text-transform:uppercase}
 .opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
 .opt{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:0;overflow:hidden;display:grid;transition:border-color .2s,transform .25s var(--ease)}
@@ -1298,7 +1300,7 @@ function viewHome(){
  <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
 
  <section id="rooms"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three studios · one address</span><h2>The studios</h2></div><p class="lede">Recording books in 2 to 12 hours. The photo studio books in 1 to 5. Podcast and content work starts with a quote.</p></div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three studios · one address</span><h2>The studios</h2></div><p class="lede">Recording: 2–12 hour sessions. Photo: 1–5 hours. Podcast and content: quoted per project.</p></div>
   <div class="rooms" id="roomsEl">${Object.entries(ROOMS).map(([slug,r],i)=>`<div class="room" role="button" tabindex="0" aria-expanded="${i===0}" data-slug="${slug}">
    ${imgT(r.img,'')}
    <div class="room-label"><small>${({rec:'Engineer and mix included',photo:'Lit, soundproofed, ready to shoot',pod:'Podcasts, social, commercials'})[r.k]}</small><b>${r.h1.replace(' in Annapolis','')}</b></div>
@@ -1327,7 +1329,7 @@ function viewHome(){
   </div></section>
  <section class="reviews"><div class="wrap">
   <div class="rq rv" id="rq" aria-roledescription="carousel" aria-label="Reviews">
-   <span class="eyebrow">In their words</span>
+   <span class="eyebrow">Heard at GVO</span>
    <div class="rq-stage">${RQ.map(([k,p],i)=>{const v=REVIEWS[k];return `<figure class="rq-s${i?'':' on'}" id="rq${i}" role="tabpanel" aria-hidden="${!!i}"><p class="pull">“${p}”</p><figcaption><span class="pull-by">${v.n}</span><span class="rq-r">${v.g?GIC+stars()+' Google review':v.r}</span></figcaption></figure>`}).join('')}</div>
    <div class="rq-nav" role="tablist">${RQ.map(([k],i)=>`<button type="button" role="tab" aria-selected="${!i}" aria-controls="rq${i}" data-rq="${i}"><span>${REVIEWS[k].n}</span><i></i></button>`).join('')}</div>
   </div>
@@ -1783,13 +1785,15 @@ const BROOMS=[{k:'pod',n:'Podcast or content',s:'Request a quote',img:'pod_set',
 const ADDONS=['gvo-beanie','world-tour-tee-black','prove-a-point-tee','world-tour-cozy-hoodie'];
 const addOf=id=>[...B.add.values()].find(x=>x.id===id);
 let D=null;
+/* step labels: "Step 2 of 5", counting only the steps showing */
+function numberSteps(host){const st=$$('.step',host).filter(x=>!x.hidden&&$('[data-num]',x));st.forEach((x,i)=>{$('[data-num]',x).innerHTML=`Step <b>${i+1}</b>${st.length>1?` of ${st.length}`:''}`})}
 const DESK_HTML=`<div class="desk"><div class="steps">
- <div class="step" data-step="room"><div class="step-h"><span class="n">01</span><h3>Studio</h3></div><div class="opts" data-el="rooms"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num>02</span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num>03</span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
- <div class="step"><div class="step-h"><span class="n" data-num>04</span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num>05</span><h3>Wear the session</h3></div><p class="fine">Add merch and it's bagged at the front desk when you arrive. One checkout.</p><div class="addons" data-el="addons"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num>06</span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
+ <div class="step" data-step="room"><div class="step-h"><span class="n" data-num></span><h3>Studio</h3></div><div class="opts" data-el="rooms"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Wear the session</h3></div><p class="fine">Add merch and it's bagged at the front desk when you arrive. One checkout.</p><div class="addons" data-el="addons"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
   <label><span>Name or artist name <span class="req">*</span></span><input id="f-name" autocomplete="name" placeholder="Lex" required aria-describedby="e-name"><span class="field-err" id="e-name" hidden>Add the name for the booking</span></label>
   <label><span>Mobile for text confirm <span class="req">*</span></span><input id="f-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142" required aria-describedby="e-phone"><span class="field-err" id="e-phone" hidden>Add a 10-digit mobile number</span></label>
   <label>Email<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
@@ -1800,7 +1804,7 @@ function mountDesk(host,k){
  host.innerHTML=DESK_HTML;D={};$$('[data-el]',host).forEach(el=>D[el.dataset.el]=el);D.host=host;
  B.scope=host.dataset.desk;
  const fixed=B.scope!=='all';
- if(fixed){$('[data-step="room"]',host).hidden=true;$$('[data-num]',host).forEach((n,i)=>n.textContent='0'+(i+1))}
+ if(fixed)$('[data-step="room"]',host).hidden=true;numberSteps(host);
  const keepRoom=(B.scope==='photo'&&(B.room==='photo'||B.room==='holiday'))||B.room===k;
  setBookRoom(keepRoom?B.room:k,true);
  D.rooms.onclick=e=>{const b=e.target.closest('[data-room]');if(!b)return;if(b.dataset.room==='pod'){mountQuote(host,true);return}setBookRoom(b.dataset.room)};
@@ -1845,7 +1849,7 @@ function renderBook(){
  const roomsShown=(B.scope==='photo'?BROOMS.filter(r=>r.k!=='rec'):BROOMS).filter(r=>(r.k!=='holiday'||inSeason())&&(r.k!=='pod'||B.scope==='all'));
  const pod=roomsShown.find(r=>r.k==='pod');if(pod){roomsShown.splice(roomsShown.indexOf(pod),1);roomsShown.push(pod)}
  if(B.scope==='photo')$('[data-step="room"]',D.host).hidden=false;
- if(B.scope==='photo')$$('[data-num]',D.host).forEach((n,i)=>n.textContent='0'+(i+2));
+ numberSteps(D.host);
  D.rooms.innerHTML=roomsShown.map(r=>opt(r,'data-room',B.room===r.k)).join('');
  const mn=+D.hrs.min,mx=+D.hrs.max;
  D.hrsOut.textContent=B.hrs+(B.hrs===1?' hr':' hrs');D.rateOut.textContent='$'+price();
@@ -1981,13 +1985,14 @@ function feed(html){const f=$('#feed');if(!f)return;const d=document.createEleme
 function mountQuote(host,switcher){
  const types=['Podcast','Social media content','Commercial','Other'];let t='Podcast';
  if(switcher)D=null;
- const sw=switcher?`<div class="steps" style="margin-bottom:16px"><div class="step"><div class="step-h"><span class="n">01</span><h3>Studio</h3></div><div class="opts" id="qSwitch">${BROOMS.filter(r=>r.k!=='holiday'||inSeason()).sort((a,b)=>(a.k==='pod')-(b.k==='pod')).map(r=>opt(r,'data-room',r.k==='pod')).join('')}</div></div></div>`:'';
+ const sw=switcher?`<div class="steps" style="margin-bottom:16px"><div class="step"><div class="step-h"><span class="n" data-num></span><h3>Studio</h3></div><div class="opts" id="qSwitch">${BROOMS.filter(r=>r.k!=='holiday'||inSeason()).sort((a,b)=>(a.k==='pod')-(b.k==='pod')).map(r=>opt(r,'data-room',r.k==='pod')).join('')}</div></div></div>`:'';
  host.innerHTML=sw+`<div class="desk"><form class="quote-form" novalidate id="qform">
-  <div><h3 style="font-size:.8rem;margin-bottom:10px">What are you making?</h3><div class="seg" id="qtype"></div></div>
+  <div>${switcher?'<span class="n" style="display:inline-flex;margin-bottom:10px">Step <b>2</b> of 2</span>':''}<h3 style="font-size:.8rem;margin-bottom:10px">What are you making?</h3><div class="seg" id="qtype"></div></div>
   <div class="fields"><label>Name<input id="q-name" autocomplete="name" placeholder="Your name or show name"></label><label>Phone<input id="q-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label><label class="full">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com"></label><label class="full">Tell us about it<textarea id="q-notes" rows="4" placeholder="Weekly show, 2 hosts and a guest, want clips for Instagram"></textarea></label></div>
   <button type="submit" class="btn btn-lav" style="justify-self:start">Send request</button>
   <p class="fine">Demo form. Nothing is sent.</p></form>
   <aside class="ticket"><div class="t-head">${imgT('pod_set','')}<div><small>Podcast and video</small><b>Quoted per project</b></div></div><dl><dt>Producers</dt><dd>Bob Almighty, KingMAG Prod, Skandle</dd><dt>Studio</dt><dd>Seven days a week</dd><dt>Reply</dt><dd>A call back from the team</dd></dl><div class="act"><p class="fine">Prefer to text? (443) 254-1482</p></div></aside></div>`;
+ if(switcher)$$('#qSwitch',host).forEach(()=>{const n=$('[data-num]',host);if(n)n.innerHTML='Step <b>1</b> of 2'});
  const rT=()=>$('#qtype').innerHTML=types.map(x=>`<button type="button" class="chip" aria-pressed="${x===t}" data-t="${x}">${x}</button>`).join('');rT();
  $('#qtype').onclick=e=>{const b=e.target.closest('[data-t]');if(b){t=b.dataset.t;rT()}};
  if(switcher)$('#qSwitch').onclick=e=>{const b=e.target.closest('[data-room]');if(!b||b.dataset.room==='pod')return;B.room=b.dataset.room;mountDesk(host,b.dataset.room)};
