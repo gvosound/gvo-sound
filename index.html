@@ -545,6 +545,38 @@ input[type=range]{height:40px}
 /* phone bottom bar, booking state */
 .bbar .sum{display:grid;gap:2px;align-content:center;font:600 .75rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
 .bbar .sum b{font:900 1.25rem/1 var(--display);color:var(--bone);letter-spacing:0}
+
+/* ---- dead-space pass ---- */
+section{padding-block:clamp(52px,7vw,92px)}
+.sec-head{margin-bottom:clamp(22px,3vw,36px)}
+.hero{min-height:min(780px,94svh)}
+.hero-inner{gap:22px}
+.hero-row{align-items:end}
+.team{grid-template-columns:repeat(auto-fill,minmax(min(168px,44vw),1fr))}
+.team.fit{grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+.quote{margin-top:36px}
+.reels-list{grid-template-columns:repeat(5,1fr)}
+.rack.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.other-rooms{grid-template-columns:repeat(2,minmax(0,1fr))}
+.oroom{aspect-ratio:16/8}
+#faq .hd{position:sticky;top:110px}
+.finale{padding-block:clamp(56px,8vw,96px) 0}
+.desk-sec .sec-head{margin-bottom:24px}
+.phero{padding-bottom:clamp(32px,5vw,56px)}
+@media (max-width:900px){
+  .reels-list{grid-template-columns:1fr}
+  .team.fit{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team.fit[style*="--n:3"] .member:first-child{grid-column:span 2;aspect-ratio:16/11}
+  #teamGrid .member:first-child{grid-column:span 2;aspect-ratio:16/11}
+  .rack.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #faq .hd{position:static}
+}
+@media (max-width:560px){.other-rooms{grid-template-columns:1fr}}
+#teamGrid{grid-template-columns:repeat(6,minmax(0,1fr))}
+#teamGrid .member:first-child{grid-column:span 2;aspect-ratio:auto}
+#teamGrid .member:first-child img{position:absolute;inset:0;object-position:50% 25%}
+@media (max-width:1100px){#teamGrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){#teamGrid{grid-template-columns:repeat(2,minmax(0,1fr))}#teamGrid .member:first-child{aspect-ratio:16/11}}
 </style>
 </head>
 <body>
@@ -771,9 +803,9 @@ function viewHome(){
  </div></section>
  <section><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO apparel</span><h2>The rack</h2></div><a class="btn btn-ghost" href="#shop">Shop all ${PRODUCTS.length} pieces</a></div>
-  <div class="rack">${['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','worker-jacket','gvo-beanie'].map(id=>prodCard(prodById(id))).join('')}</div>
+  <div class="rack four">${['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','worker-jacket','gvo-beanie'].map(id=>prodCard(prodById(id))).join('')}</div>
  </div></section>
- <section style="padding-bottom:0"><div class="wrap">${doorHTML()}
+ <section style="padding-top:0;padding-bottom:0"><div class="wrap">${doorHTML()}
   <div class="finale"><span class="mark"></span><p class="slogan"><span>Book The Room.</span><span>Bring The Material.</span><span>Leave With The Mix.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
  </div></section>
  </div>`;
@@ -807,7 +839,7 @@ function viewRoom(slug){
  <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${imgT(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
-  <div class="team">${team.map(memberCard).join('')}</div>
+  <div class="team fit" style="--n:${team.length}">${team.map(memberCard).join('')}</div>
  </div></section>
  <section id="faq"><div class="wrap split">
   <div class="hd" style="display:grid;gap:16px;align-content:start"><span class="eyebrow">Before you book</span><h2>Questions</h2><p class="lede">Still stuck? Text the studio at (443) 254-1482.</p></div>
@@ -847,7 +879,7 @@ function viewShop(){
 
 function viewProduct(id){
  const p=prodById(id);if(!p)return viewShop();
- const rel=PRODUCTS.filter(x=>x.id!==id&&x.cat===p.cat).slice(0,4);
+ const rel=[...PRODUCTS.filter(x=>x.id!==id&&x.cat===p.cat),...PRODUCTS.filter(x=>x.id!==id&&x.cat!==p.cat&&x.img.length)].slice(0,4);
  const gal=p.img.length?`<div class="pdp-th">${p.img.map((f,i)=>`<button type="button" aria-pressed="${i===0}" data-img="${f}" aria-label="View photo ${i+1}">${imgT(f,'',0)}</button>`).join('')}</div><div class="pdp-main" id="pdpMain">${imgT(p.img[0],p.n,0)}</div>`:`<div></div><div class="pdp-main" style="cursor:default"><div class="nophoto"><span class="mark"></span><small>Photo coming</small></div></div>`;
  return `<div class="view" data-v="product"><section style="padding-top:calc(110px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Shop','#shop'],[p.n,'']])}
@@ -865,7 +897,7 @@ function viewProduct(id){
     ${seoNote(META['product-'+id])}
    </div>
   </div>
-  ${rel.length?`<div style="margin-top:80px"><div class="sec-head"><div class="hd"><span class="eyebrow">More ${p.cat.toLowerCase()}</span><h2>Pair it</h2></div><a class="btn btn-ghost" href="#shop">Back to the rack</a></div><div class="rack">${rel.map(prodCard).join('')}</div></div>`:''}
+  ${rel.length?`<div style="margin-top:80px"><div class="sec-head"><div class="hd"><span class="eyebrow">From the rack</span><h2>Pair it</h2></div><a class="btn btn-ghost" href="#shop">Back to the rack</a></div><div class="rack four">${rel.map(prodCard).join('')}</div></div>`:''}
  </div></section></div>`;
 }
 
@@ -1019,7 +1051,7 @@ const DESK_HTML=`<div class="desk"><div class="steps">
   <label><span>Mobile for text confirm <span class="req">*</span></span><input id="f-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142" required aria-describedby="e-phone"><span class="field-err" id="e-phone" hidden>Add a 10-digit mobile number</span></label>
   <label>Email<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
   <label>People coming<select id="f-ppl"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
-  <label class="full">What are you working on?<textarea id="f-notes" rows="2" placeholder="Two songs, beats on a USB"></textarea></label></form></div>
+  <label class="full"><span data-el="notesLbl">What are you working on?</span><textarea id="f-notes" rows="2" placeholder="Two songs, beats on a USB"></textarea></label></form></div>
 </div><aside class="ticket" data-el="ticket" aria-live="polite"></aside></div>`;
 function mountDesk(host,k){
  host.innerHTML=DESK_HTML;D={};$$('[data-el]',host).forEach(el=>D[el.dataset.el]=el);D.host=host;
@@ -1080,6 +1112,7 @@ function renderBook(){
  if(B.slot!==null&&!sl.some(s=>s.h===B.slot&&!s.dis))B.slot=null;
  D.slots.innerHTML=sl.length?sl.map(s=>`<button type="button" class="slot" ${s.dis?'disabled':''} aria-pressed="${B.slot===s.h}" data-slot="${s.h}">${fmtH(s.h)}</button>`).join(''):'<p class="fine">No start times left today for a session this long. Try a shorter session or another day.</p>';
  D.whenDone.hidden=B.slot===null;
+ const ph=B.room!=='rec';D.notesLbl.textContent=ph?"What's your vision for the shoot?":'What are you working on?';$('#f-notes').placeholder=ph?'Brand portraits, cream backdrop, two outfit changes':'Two songs, beats on a USB';
  const openN=sl.filter(x=>!x.dis).length,dd=new Date(B.day+'T12:00:00');
  D.dayLabel.innerHTML=`${dd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}<span>${openN?openN+' start time'+(openN>1?'s':'')+' open':'Fully booked'}</span>`;
  requestAnimationFrame(()=>{const sel=$('.day[aria-pressed="true"]',D.days);if(sel){const l=sel.offsetLeft-D.days.offsetLeft,w=D.days.clientWidth;if(l<D.days.scrollLeft||l+sel.offsetWidth>D.days.scrollLeft+w)D.days.scrollLeft=Math.max(0,l-16)}});
