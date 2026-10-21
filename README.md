@@ -35,7 +35,7 @@ Every push to `main` redeploys. Other branches get preview URLs.
 | Site | GitHub + Cloudflare Pages | Siani builds, Cory owns |
 | Money and stock | Square: bookings, deposits, merch catalog and inventory, studio register, payouts | Cory (existing account) |
 | Square bridge | Cloudflare Worker holding the Square access token (never in browser code) | Siani |
-| Forms and leads | Podcast quotes, contact, testimonials land in his Gmail and a Google Sheet in his account | Cory |
+| Forms and leads | Airtable base in Cory's name: podcast quotes, contact, testimonials. Automations email each new entry to his Gmail, so he rarely needs to open Airtable. Siani gives him a short tutorial | Cory |
 | Email | Cloudflare Email Routing: hello@gvosound.com forwards to gvosoundllc@gmail.com | Cory |
 
 The checkout demo (Pay button on any booking or bag) walks through each Square call: Web Payments SDK, CreatePayment, CreateBooking, Orders and Inventory, Customers, confirmation.
