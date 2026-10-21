@@ -1723,8 +1723,9 @@ function wireHome(){
    and the hero bars and the recording-page wave read the same analyser. */
 const P={au:new Audio(),ac:null,an:null,data:null,id:null};P.au.preload='none';
 const mmss=v=>`${Math.floor(v/60)}:${String(Math.floor((v||0)%60)).padStart(2,'0')}`;
-function pAnalyser(){if(P.ac)return;try{P.ac=new(window.AudioContext||window.webkitAudioContext)();P.an=P.ac.createAnalyser();P.an.fftSize=256;P.an.smoothingTimeConstant=.84;P.ac.createMediaElementSource(P.au).connect(P.an);P.an.connect(P.ac.destination);P.data=new Uint8Array(P.an.frequencyBinCount)}catch(e){P.an=null}}
+function pAnalyser(){if(P.ac)return;try{P.ac=new(window.AudioContext||window.webkitAudioContext)();P.an=P.ac.createAnalyser();P.an.fftSize=1024;P.an.smoothingTimeConstant=.8;P.ac.createMediaElementSource(P.au).connect(P.an);P.an.connect(P.ac.destination);P.data=new Uint8Array(P.an.frequencyBinCount)}catch(e){P.an=null}}
 const pOn=id=>P.id===id&&!P.au.paused;
+P.wave=null;function pWave(){if(!P.an||P.au.paused)return null;if(!P.wave)P.wave=new Uint8Array(P.an.fftSize);P.an.getByteTimeDomainData(P.wave);return P.wave}
 function pLevel(){if(!P.an||P.au.paused)return null;P.an.getByteFrequencyData(P.data);return P.data}
 function pToggle(id){
  const x=relById(id);if(!x||!x.pv)return;
@@ -1769,7 +1770,7 @@ function startViz(){
  function loop(){
   if(!alive)return;cx.clearRect(0,0,cw,ch);
   const n=Math.max(24,Math.floor(cw/7)),data=P.id===feat?pLevel():null;if(!sm||sm.length!==n)sm=new Float32Array(n);
-  for(let i=0;i<n;i++){const idle=.07+.05*Math.sin(i*.3+tt)+.03*Math.sin(i*.09-tt*.6);const tgt=data?Math.max(idle,Math.pow(data[Math.floor(i/n*data.length*.7)]/255,2.2)*.9):idle;sm[i]+=(tgt-sm[i])*.18;const v=sm[i],h=Math.max(2,v*ch*.95);cx.fillStyle=v>.6?'#b9b2ff':v>.3?'#7d74c9':'#4a4470';cx.fillRect(i*7,(ch-h)/2,4,h)}
+  for(let i=0;i<n;i++){const idle=.07+.05*Math.sin(i*.3+tt)+.03*Math.sin(i*.09-tt*.6);const tgt=data?Math.max(idle,Math.pow(data[Math.min(data.length-1,Math.floor(1+Math.pow(300,i/n)))]/255,2.2)*.95):idle;sm[i]+=(tgt-sm[i])*.18;const v=sm[i],h=Math.max(2,v*ch*.95);cx.fillStyle=v>.6?'#b9b2ff':v>.3?'#7d74c9':'#4a4470';cx.fillRect(i*7,(ch-h)/2,4,h)}
   tt+=.012;raf=requestAnimationFrame(loop);
  }
  if(reduce){loop();cancelAnimationFrame(raf)}else loop();
@@ -1777,51 +1778,77 @@ function startViz(){
  cleanup.push(()=>{alive=false;cancelAnimationFrame(raf);removeEventListener('resize',size)});
 }
 
-/* wave field: contour lines + a ring that breathe slowly; when one of its songs plays, both follow the music. */
+/* "Hear the room" visualizer: draws the preview itself, in real time, from the Web Audio analyser.
+   Three readings of the same signal, all in GVO lavender and bone:
+   1. spectrum contours: the frequency spectrum mirrored out from the centre (bass in the middle, highs at the
+      edges), stacked 14 deep from the last 14 frames, so each line is an echo of the moment before it
+   2. a live oscilloscope line: the actual waveform, sample by sample
+   3. a radial spectrum ringing the centre display
+   When nothing is playing it idles on a quiet synthetic spectrum. */
 function mountWave(sec){
  const cv=$('canvas',sec),x=cv.getContext('2d');let W,H,dpr,raf=0,on=false;
- let lean=0,lvl=0,bass=0,hoverE=0,hoverT=0,hoverS=0;
  const mid=$('.heard-mid',sec),wk=$('[data-w="k"]',sec),wt=$('[data-w="t"]',sec),ws=$('[data-w="s"]',sec);
  const cards=$$('.hcard',sec),ids=cards.map(c=>c.dataset.id);
+ const B=72,N=14,hist=Array.from({length:N},()=>new Float32Array(B)),cur=new Float32Array(B);let hoverE=0,hoverT=0,live=0;
+ const LAV=[185,178,255],BONE=[243,240,234],mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
  const size=()=>{dpr=Math.min(devicePixelRatio||1,2);W=sec.clientWidth;H=sec.clientHeight;cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)};
- const ring=()=>{const a=mid.getBoundingClientRect(),b=sec.getBoundingClientRect();return{cx:a.left-b.left+a.width/2,cy:a.top-b.top+a.height/2,r:a.width*.42}};
+ const ring=()=>{const a=mid.getBoundingClientRect(),b=sec.getBoundingClientRect();return{cx:a.left-b.left+a.width/2,cy:a.top-b.top+a.height/2,r:a.width*.36}};
  const label=()=>{const mine=ids.includes(P.id)&&P.au.currentTime>0;if(!mine){wk.textContent='Preview';wt.textContent='Press play';ws.textContent='On either song';return}wk.textContent=P.au.paused?'Paused':'Now playing';wt.textContent=relById(P.id).t;ws.textContent=mmss(P.au.currentTime)+' / '+mmss(P.au.duration||30)};
  P.au.addEventListener('timeupdate',label);P.au.addEventListener('pause',label);P.au.addEventListener('play',label);label();
- cards.forEach(c=>{const s=+c.dataset.side;c.addEventListener('pointerenter',()=>{hoverT=1;hoverS=s});c.addEventListener('pointerleave',()=>{hoverT=0;hoverS=0})});
+ cards.forEach(c=>{c.addEventListener('pointerenter',()=>hoverT=1);c.addEventListener('pointerleave',()=>hoverT=0)});
+ /* log-spaced bands across ~40 Hz to 16 kHz */
+ const edges=Array.from({length:B+1},(_,i)=>Math.round(1+Math.pow(370,i/B)));
+ function sample(t){
+  const data=ids.includes(P.id)?pLevel():null;live+=((data?1:0)-live)*.06;hoverE+=(hoverT-hoverE)*.04;
+  for(let i=0;i<B;i++){
+   let v=0;
+   if(data){let s=0,n=0;for(let k=edges[i];k<Math.max(edges[i]+1,edges[i+1]);k++){s+=data[k]||0;n++}v=Math.pow(s/n/255,1.6)*(1+i/B*.9)}
+   const idle=.05+.035*Math.sin(t*.5+i*.22)+.025*Math.sin(t*.31-i*.47)+hoverE*.05*Math.sin(t*1.2+i*.6);
+   const target=v*live+idle*(1-live*.85);
+   cur[i]+=(target-cur[i])*(target>cur[i]?.55:.18);   // fast attack, slow release, like a meter
+  }
+  const last=hist.pop();last.set(cur);hist.unshift(last);
+ }
+ const bandAt=(arr,u)=>{const f=u*(B-1),i=Math.floor(f),r=f-i;return arr[i]*(1-r)+(arr[Math.min(B-1,i+1)]||0)*r};
  function draw(ms){
-  const t=ms/1000;
-  let L=0,B=0;const data=ids.includes(P.id)?pLevel():null;
-  if(data){for(let i=0;i<data.length;i++)L+=data[i];L/=data.length*255;for(let i=1;i<8;i++)B+=data[i];B/=7*255}
-  const playSide=data?+cards[ids.indexOf(P.id)].dataset.side:0;
-  lvl+=(L-lvl)*.05;bass+=(B-bass)*.04;lean+=((playSide||hoverS*.5)-lean)*.025;hoverE+=(hoverT-hoverE)*.03;
-  const e=Math.min(1,lvl*2.2),g0=.35+hoverE*.25+e;
+  const t=ms/1000;sample(t);
   x.clearRect(0,0,W,H);
-  const R=ring(),N=W<700?9:15,cy=R.cy;
-  for(let i=0;i<N;i++){
-   const k=i/(N-1)-.5;
-   const g=x.createLinearGradient(0,0,W,0);
-   g.addColorStop(0,`rgba(243,240,234,${.10+.14*(1-Math.abs(k))+.08*e})`);g.addColorStop(.5,'rgba(243,240,234,.03)');g.addColorStop(1,`rgba(185,178,255,${.22+.3*(1-Math.abs(k))+.12*e})`);
-   x.strokeStyle=g;x.lineWidth=1.2;x.beginPath();
-   for(let px=-10;px<=W+10;px+=8){
-    const xn=(px-R.cx)/(W/2);
-    const spread=14+46*Math.tanh(Math.abs(xn)*1.6);
-    const swell=Math.sin(xn*2.2+t*.22+i*.16)*(26+40*bass)*g0+Math.sin(xn*4.3-t*.31+i*.29)*(8+26*e);
-    const pinch=Math.exp(-xn*xn*9);
-    const y=cy+k*spread*(N/2)*(1-.75*pinch)+swell*(1-.55*pinch)+lean*22*xn;
-    px<0?x.moveTo(px,y):x.lineTo(px,y);
+  const R=ring(),cy=R.cy,half=Math.max(R.cx,W-R.cx),amp=Math.min(R.r*1.5,200);
+  /* 1. spectrum contours, oldest (faint, flattest) first */
+  for(let k=N-1;k>=0;k--){
+   const fr=hist[k],q=k/(N-1),scale=1-q*.55,alpha=(1-q)*.85+.08;
+   const col=mix(LAV,BONE,Math.max(0,.6-q)*.9);
+   x.strokeStyle=`rgba(${col},${alpha*(.55+.45*live)})`;x.lineWidth=k===0?1.8:1.1;
+   for(const dir of [-1,1]){
+    x.beginPath();
+    for(let px=0;px<=W;px+=6){
+     const u=Math.min(1,Math.abs(px-R.cx)/half),env=Math.pow(1-u,1.4)*(1-Math.exp(-u*26));
+     const y=cy+dir*(bandAt(fr,u)*amp*scale*env+q*6);
+     px===0?x.moveTo(px,y):x.lineTo(px,y);
+    }
+    x.stroke();
    }
-   x.stroke();
   }
-  const rr=R.r*(1+.05*bass);
-  x.save();x.translate(R.cx,R.cy);
-  x.fillStyle='rgba(7,6,10,.82)';x.beginPath();x.arc(0,0,rr*1.02,0,Math.PI*2);x.fill();
-  const rg=x.createLinearGradient(-rr,-rr,rr,rr);rg.addColorStop(0,'#f3f0ea');rg.addColorStop(1,'#b9b2ff');
-  x.strokeStyle=rg;x.lineWidth=2.4;x.shadowColor=`rgba(185,178,255,${.45+.4*e})`;x.shadowBlur=16+20*e;x.beginPath();
-  for(let a=0;a<=Math.PI*2+.01;a+=Math.PI/90){
-   const n=Math.sin(a*3+t*.35)*(.03+.03*e)+Math.sin(a*5-t*.27+lean)*.022+Math.sin(a*8+t*.6)*(.006+.05*e)+lean*.035*Math.cos(a);
-   const rad=rr*(1+n);const px=Math.cos(a)*rad,py=Math.sin(a)*rad;a===0?x.moveTo(px,py):x.lineTo(px,py);
+  /* 2. oscilloscope: the waveform itself */
+  const wv=ids.includes(P.id)?pWave():null;
+  x.strokeStyle=`rgba(${BONE},${.15+.55*live})`;x.lineWidth=1.4;x.beginPath();
+  for(let px=0;px<=W;px+=3){
+   const u=px/W,sv=wv?(wv[Math.floor(u*(wv.length-1))]-128)/128:Math.sin(u*40+t*2)*.02;
+   const env=Math.sin(Math.PI*u);const y=cy+sv*amp*.55*env;
+   px===0?x.moveTo(px,y):x.lineTo(px,y);
   }
-  x.closePath();x.stroke();x.restore();
+  x.stroke();
+  /* 3. centre: clear the disc, then ring it with the spectrum */
+  const bass=(cur[0]+cur[1]+cur[2]+cur[3])/4,rr=R.r*(1+bass*.08);
+  x.fillStyle='rgba(7,6,10,.94)';x.beginPath();x.arc(R.cx,cy,rr,0,Math.PI*2);x.fill();
+  x.strokeStyle=`rgba(${LAV},${.35+.4*live})`;x.lineWidth=1.5;x.beginPath();x.arc(R.cx,cy,rr,0,Math.PI*2);x.stroke();
+  const SP=96;x.lineCap='round';
+  for(let i=0;i<SP;i++){
+   const ang=i/SP*Math.PI*2-Math.PI/2,u=Math.abs(((i/SP)*2+1)%2-1)*0+ (i<SP/2?i/(SP/2):(SP-i)/(SP/2));   // mirrored: bass at top, highs at bottom
+   const v=bandAt(cur,Math.min(1,u)),len=3+v*R.r*.42;
+   const c=mix(LAV,BONE,Math.min(1,Math.max(0,v*1.6-.5)));x.strokeStyle=`rgba(${c},${.3+.6*Math.min(1,v*1.6)})`;x.lineWidth=1.6;
+   const r0=rr+6;x.beginPath();x.moveTo(R.cx+Math.cos(ang)*r0,cy+Math.sin(ang)*r0);x.lineTo(R.cx+Math.cos(ang)*(r0+len),cy+Math.sin(ang)*(r0+len));x.stroke();
+  }
   raf=0;if(on&&!reduce)raf=requestAnimationFrame(draw);
  }
  size();draw(performance.now());
@@ -1830,7 +1857,6 @@ function mountWave(sec){
  cleanup.push(()=>{on=false;cancelAnimationFrame(raf);io.disconnect();ro.disconnect();P.au.removeEventListener('timeupdate',label);P.au.removeEventListener('pause',label);P.au.removeEventListener('play',label)});
 }
 
-/* room page */
 function wireRoom(slug){
  const hd=$('#heard',main);if(hd)mountWave(hd);
  const r=ROOMS[slug];
