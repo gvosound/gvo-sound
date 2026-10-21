@@ -635,6 +635,13 @@ section{padding-block:clamp(52px,7vw,92px)}
 .sim-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;color:var(--mute);font-size:.85rem}
 .sync{display:inline-flex;align-items:center;gap:8px;font:600 .75rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
 .sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(134,219,163,.18)}
+
+/* ---- live clips ---- */
+.shot video,.gallery video{width:100%;height:100%;object-fit:cover;display:block;background:var(--panel)}
+.shot:hover video,.gallery figure:hover video{transform:scale(1.04);transition:transform .8s var(--ease)}
+.hero-vid{display:none;width:100%;height:100%;object-fit:cover}
+@media (max-width:760px){.hero-vid{display:block}.hero-bg img{display:none}.hero-bg .hero-vid{animation:none}}
+@media (prefers-reduced-motion:reduce){.hero-vid{display:none!important}.hero-bg img{display:block!important}}
 </style>
 </head>
 <body>
@@ -804,6 +811,17 @@ function fmtH(h){h=((h%24)+24)%24;return h===0?'12AM':(h%12||12)+(h<12?'AM':'PM'
 function openState(){const n=nowET(),h=n.getHours()+n.getMinutes()/60,d=n.getDay(),[o,c]=HOURS[d],pc=HOURS[(d+6)%7][1];if(h>=o&&h<Math.min(c,24))return{open:1,close:c};if(pc>24&&h<pc-24)return{open:1,close:pc};return{open:0,opens:o}}
 const statusTxt=()=>{const s=openState();return s.open?'Studio open now · until '+fmtH(s.close):'Closed now · opens '+fmtH(s.opens)};
 const hoursRows=()=>{const t=nowET().getDay();return [1,2,3,4,5,6,0].map(d=>`<tr class="${d===t?'today':''}"><td>${DAYN[d]}</td><td>${fmtH(HOURS[d][0])} – ${fmtH(HOURS[d][1])}</td></tr>`).join('')};
+const VIDS={s_artist1:['v_artist1','s_artist1'],s_artist2:['v_artist2','s_artist2'],s_artist3:['v_artist3','s_artist3'],s_artist4:['v_artist4','s_artist4'],s_artist5:['v_artist5','v_artist5_poster']};
+const media=(f,alt)=>VIDS[f]?`<video class="lv" muted loop playsinline preload="none" poster="img/${VIDS[f][1]}.webp" data-src="vid/${VIDS[f][0]}.mp4" aria-label="${alt}"></video>`:`<img src="img/${f}.webp" alt="${alt}" loading="lazy" draggable="false">`;
+let vidIO=null;
+function wireVideos(root){
+ const vs=$$('video.lv',root);if(!vs.length)return;
+ if(reduce||!('IntersectionObserver' in window))return;
+ if(vidIO)vidIO.disconnect();
+ vidIO=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(!v.dataset.on){v.dataset.on=1;const b=v.dataset.src.replace(/\.mp4$/,'');v.innerHTML=`<source src="${b}.mp4" type="video/mp4"><source src="${b}.webm" type="video/webm">`;v.load()}v.play().catch(()=>{})}else if(!v.paused)v.pause()}),{threshold:.35});
+ vs.forEach(v=>vidIO.observe(v));
+ cleanup.push(()=>vidIO&&vidIO.disconnect());
+}
 const imgT=(f,alt,lazy=1,cls='')=>`<img src="img/${f}.webp" alt="${alt}"${lazy?' loading="lazy"':''}${cls?` class="${cls}"`:''}>`;
 const note=(t,h)=>`<div class="note"${notesOn?'':' hidden'}><b>${t}</b>${h}</div>`;
 function seoNote(meta){return note('SEO · this page',`<dl class="seo"><dt>URL</dt><dd>${SITE}${meta.path}</dd><dt>Title</dt><dd>${meta.title} <span style="color:var(--mute)">(${meta.title.length} chars)</span></dd><dt>Meta</dt><dd>${meta.desc} <span style="color:var(--mute)">(${meta.desc.length} chars)</span></dd><dt>H1</dt><dd>${meta.h1}</dd><dt>Schema</dt><dd>${meta.schema}</dd></dl>`)}
@@ -821,7 +839,7 @@ const doorHTML=()=>`<div class="door rv"><div class="door-ph">${imgT('lobby','GV
 function viewHome(){
  return `<div class="view" data-v="home">
  <section class="hero" id="hero">
-  <div class="hero-bg"><img src="img/sound_room.webp" alt="GVO control room with the GVO bat logo on the screens, studio monitors and a console desk" fetchpriority="high"></div>
+  <div class="hero-bg"><video class="hero-vid" muted loop playsinline preload="none" poster="img/hero_poster.webp" data-src="vid/v_hero.mp4" aria-hidden="true"></video><img src="img/sound_room.webp" alt="GVO control room with the GVO bat logo on the screens, studio monitors and a console desk" fetchpriority="high"></div>
   <div class="hero-dim"></div>
   <div class="wrap hero-inner">
    <span class="status" id="status"><span class="dot"></span><span class="st">${statusTxt()}</span></span>
@@ -852,7 +870,7 @@ function viewHome(){
  </div></section>
  <section id="booth" style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO sounds</span><h2>In the booth</h2></div><div class="reel-nav"><button type="button" data-reel="-1" aria-label="Scroll back">←</button><button type="button" data-reel="1" aria-label="Scroll forward">→</button></div></div>
-  <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session'],['r_2','Live take']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}"><img src="img/${f}.webp" alt="${c} at GVO Sound" loading="lazy" draggable="false"><figcaption>${c}</figcaption></figure>`).join('')}</div>
+  <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session',1],['r_2','Live take']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}">${media(f,c+' at GVO Sound')}<figcaption>${c}</figcaption></figure>`).join('')}</div>
   <div class="reels-list">${[['Flawless','Promo'],['Local','Reel'],['Will','Reel'],['TMC','Reel'],['Lex','Reel']].map(([a,b])=>`<a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener"><div><b>${a}</b><br><small>${b} · watch on YouTube</small></div><span class="pl"></span></a>`).join('')}</div>
  </div></section>
  <section id="team" style="background:var(--ink-2)"><div class="wrap">
@@ -895,7 +913,7 @@ function viewRoom(slug){
    ${r.k==='pod'?`<div class="rate-card"><h3>How it works</h3><table class="rates"><tbody><tr><td>1. Send a request below</td><td></td><td></td></tr><tr><td>2. The team calls you back</td><td></td><td></td></tr><tr><td>3. Get your quote and book</td><td></td><td></td></tr></tbody></table></div>`:''}
   </div>
  </div></section>
- <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${imgT(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
+ <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
   <div class="team fit" style="--n:${team.length}">${team.map(memberCard).join('')}</div>
@@ -1020,6 +1038,7 @@ let pendingPreset=null;
 /* ================= wiring per view ================= */
 function wire(r){
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
+ wireVideos(main);
  if(r==='home')wireHome();
  if(ROOMS[r])wireRoom(r);
  const deskEl=$('[data-desk]',main);
@@ -1037,6 +1056,7 @@ function wireHome(){
  const words=['Now booking','Open until 3AM Fri–Sun','Engineer and mix included','Recording · Photo · Podcast','109 Gibralter Ave, Annapolis','Est. 2020'];
  const seg=words.map(w=>`<span>${w}<i class="mark"></i></span>`).join('');$('#track').innerHTML=seg+seg;
  startViz();
+ const hv=$('.hero-vid',main);if(hv&&!reduce&&matchMedia('(max-width:760px)').matches){hv.innerHTML='<source src="vid/v_hero.mp4" type="video/mp4"><source src="vid/v_hero.webm" type="video/webm">';hv.load();hv.play().catch(()=>{})}
  // accordion
  const rooms=$('#roomsEl');
  rooms.addEventListener('click',e=>{if(e.target.closest('a'))return;const el=e.target.closest('.room');if(el&&el.getAttribute('aria-expanded')!=='true')$$('.room',rooms).forEach(x=>x.setAttribute('aria-expanded',x===el))});
