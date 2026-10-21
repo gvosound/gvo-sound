@@ -201,7 +201,10 @@ main{min-height:60vh}
 .mini-rates small{font:.75rem var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
 @media (max-width:900px){
   .rooms{flex-direction:column;height:auto}
-  .room{flex:none;height:96px;transition:height .6s var(--ease)}
+  .room{flex:none;height:108px;transition:height .6s var(--ease)}
+  .room[aria-expanded="false"] .room-label{left:18px;right:18px;bottom:50%;transform:translateY(50%);gap:0}
+  .room[aria-expanded="false"] .room-label small{display:none}
+  .room[aria-expanded="false"] .room-label b{font-size:clamp(1.25rem,6vw,1.6rem);line-height:1}
   .room[aria-expanded="true"]{flex:none;height:600px}
   .room-body{grid-template-columns:1fr}
 }
