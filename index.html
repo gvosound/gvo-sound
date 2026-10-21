@@ -209,13 +209,6 @@ main{min-height:60vh}
 .reel-nav{display:flex;gap:8px}
 .reel-nav button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:none;font-size:1.1rem;transition:border-color .2s,background .2s}
 .reel-nav button:hover{border-color:var(--bone);background:var(--panel)}
-.reels-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:24px}
-.reels-list a{background:var(--ink);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-decoration:none;transition:background .2s}
-.reels-list a:hover{background:var(--panel)}
-.reels-list b{font:800 1rem var(--display);font-stretch:110%;text-transform:uppercase}
-.reels-list small{font:.75rem var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.1em}
-.reels-list .pl{width:30px;height:30px;border-radius:50%;border:1px solid var(--lav);display:grid;place-items:center;flex:none}
-.reels-list .pl::before{content:"";border-left:7px solid var(--lav);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
 
 /* team */
 .filters{display:flex;gap:8px;flex-wrap:wrap}
@@ -555,7 +548,6 @@ section{padding-block:clamp(52px,7vw,92px)}
 .team{grid-template-columns:repeat(auto-fill,minmax(min(168px,44vw),1fr))}
 .team.fit{grid-template-columns:repeat(var(--n),minmax(0,1fr))}
 .quote{margin-top:36px}
-.reels-list{grid-template-columns:repeat(5,1fr)}
 .rack.four{grid-template-columns:repeat(4,minmax(0,1fr))}
 .other-rooms{grid-template-columns:repeat(2,minmax(0,1fr))}
 .oroom{aspect-ratio:16/8}
@@ -564,7 +556,6 @@ section{padding-block:clamp(52px,7vw,92px)}
 .desk-sec .sec-head{margin-bottom:24px}
 .phero{padding-bottom:clamp(32px,5vw,56px)}
 @media (max-width:900px){
-  .reels-list{grid-template-columns:1fr}
   .team.fit{grid-template-columns:repeat(2,minmax(0,1fr))}
   .team.fit[style*="--n:3"] .member:first-child{grid-column:span 2;aspect-ratio:16/11}
   #teamGrid .member:first-child{grid-column:span 2;aspect-ratio:16/11}
@@ -699,6 +690,75 @@ section{padding-block:clamp(52px,7vw,92px)}
 .reach:hover i{transform:translateX(4px)}
 .staff-note{border-left:2px solid var(--lav);padding:4px 0 4px 12px;color:#cfc9d6!important}
 .door-ph img{object-position:50% 35%}
+/* ---- music ---- */
+.cv{position:relative;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:var(--panel)}
+.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.plat{display:flex;flex-wrap:wrap;gap:10px}
+.plat-note{font:.75rem/1.5 var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase;margin:0}
+.sp-ic{width:16px;height:16px;flex:none}
+/* home strip */
+.np{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(18px,3vw,36px);align-items:start}
+.np-feat{display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:22px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:18px;background:linear-gradient(135deg,rgba(185,178,255,.10),transparent 60%),var(--ink-2)}
+.np-feat h3{font-size:clamp(1.6rem,3vw,2.3rem);line-height:.92;margin:6px 0 6px}
+.np-feat p{margin:0 0 14px;color:#d7d2dc}
+.np-list{display:grid;align-content:start;border-top:1px solid var(--line)}
+.trk{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);text-decoration:none;min-height:64px}
+.trk .cv{width:52px}
+.trk b{display:block;font-weight:600;line-height:1.25}
+.trk small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.trk .go{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:all .2s}
+.trk .go::before{content:"";border-left:8px solid var(--lav);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:3px}
+.trk:hover .go{border-color:var(--lav);background:rgba(185,178,255,.12)}
+.trk:hover b{color:var(--lav)}
+.np-more{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;flex-wrap:wrap}
+@media (max-width:900px){.np{grid-template-columns:1fr}}
+@media (max-width:520px){.np-feat{grid-template-columns:1fr}.np-feat .cv{max-width:240px}}
+/* music page */
+.mhero{position:relative;isolation:isolate;overflow:hidden;padding:calc(110px + env(safe-area-inset-top,0px)) 0 clamp(48px,7vw,90px);border-bottom:1px solid var(--line)}
+.mhero-bg{position:absolute;inset:-15%;z-index:-1;background:center/cover no-repeat;filter:blur(80px) saturate(1.5);opacity:.42;transform:translateZ(0)}
+.mhero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,6,10,.2),var(--ink) 92%)}
+.mfeat{display:grid;grid-template-columns:minmax(0,400px) 1fr;gap:clamp(24px,5vw,64px);align-items:center;margin-top:22px}
+.mfeat .cv{box-shadow:0 30px 90px rgba(0,0,0,.65)}
+.mfeat-info{display:grid;gap:18px;align-content:center}
+.mfeat h1{font-size:clamp(2.6rem,7vw,6rem);line-height:.88;margin:0}
+.mfeat .by{font-size:1.15rem;color:#d7d2dc;margin:0}
+.mfeat .by b{color:var(--bone)}
+@media (max-width:760px){.mfeat{grid-template-columns:1fr}.mfeat .cv{max-width:min(320px,100%)}}
+.cat{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(190px,42vw),1fr));gap:22px 14px}
+.rel{display:grid;gap:10px;align-content:start}
+.rel>a{text-decoration:none;display:grid;gap:10px}
+.rel .cv img{transition:transform .8s var(--ease)}
+.rel>a:hover .cv img{transform:scale(1.05)}
+.rel .cv .on{position:absolute;left:8px;top:8px;font:600 .65rem var(--mono);letter-spacing:.1em;text-transform:uppercase;background:var(--lav);color:var(--lav-ink);padding:5px 7px;border-radius:2px}
+.rel b{font-weight:600;line-height:1.25;display:block}
+.rel small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.rel .ln{display:flex;gap:16px;font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.rel .ln a{color:var(--lav);text-decoration:none;padding-block:6px}
+.rel .ln a:hover{color:var(--bone)}
+.rel[aria-current="true"] .cv{outline:2px solid var(--lav);outline-offset:3px}
+.fam{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:14px}
+.art{display:grid;grid-template-columns:76px 1fr;gap:16px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:14px;background:var(--ink)}
+.art .cv{width:76px;border-radius:50%}
+.art b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase;display:block}
+.art small{color:var(--mute);font-size:.85rem;display:block;margin:2px 0 6px}
+.art a{font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lav);text-decoration:none}
+.submit{border:1px dashed rgba(185,178,255,.45);border-radius:var(--r);padding:clamp(18px,3vw,28px);display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(18px,3vw,36px);margin-top:18px;background:rgba(185,178,255,.04)}
+.submit h3{font-size:clamp(1.4rem,2.6vw,2rem);line-height:.95;margin:0 0 10px}
+.submit p{margin:0;color:var(--mute)}
+.submit form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit input{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;color:var(--bone);font:1rem var(--body,inherit);min-height:48px}
+.submit input:focus{outline:none;border-color:var(--lav)}
+.submit .full{grid-column:1/-1}
+@media (max-width:760px){.submit{grid-template-columns:1fr}.submit form{grid-template-columns:1fr}}
+.sess{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+.sess a{scroll-snap-align:start;display:grid;gap:10px;text-decoration:none}
+.sess .th{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--panel)}
+.sess .th img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
+.sess a:hover .th img{transform:scale(1.05)}
+.sess .th::after{content:"";position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(7,6,10,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l9 5-9 5z' fill='%23b9b2ff'/%3E%3C/svg%3E") center/26px no-repeat;border:1px solid rgba(185,178,255,.6);backdrop-filter:blur(4px)}
+.sess b{font-weight:600}
+.sess small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+@media (min-width:1100px){.cat{grid-template-columns:repeat(7,minmax(0,1fr))}.sess{grid-auto-flow:row;grid-template-columns:repeat(5,1fr);overflow:visible}}
 </style>
 </head>
 <body>
@@ -714,6 +774,7 @@ section{padding-block:clamp(52px,7vw,92px)}
       <li><a href="#recording-studio">Recording</a></li>
       <li><a href="#photo-studio">Photo</a></li>
       <li><a href="#podcast-studio">Podcast</a></li>
+      <li><a href="#music">Music</a></li>
       <li><a href="#shop">Shop</a></li>
     </ul></nav>
     <button class="cart-btn" id="openCart" type="button" aria-label="Open bag">Bag <span class="cart-count" id="cartCount">0</span></button>
@@ -727,6 +788,7 @@ section{padding-block:clamp(52px,7vw,92px)}
   <a href="#recording-studio">Recording <small>From $150</small></a>
   <a href="#photo-studio">Photo <small>From $50</small></a>
   <a href="#podcast-studio">Podcast <small>Quote</small></a>
+  <a href="#music">Music <small>Stream</small></a>
   <a href="#shop">Shop <small>Apparel</small></a>
   <a href="#book">Book a session <small>→</small></a>
 </div>
@@ -741,7 +803,7 @@ section{padding-block:clamp(52px,7vw,92px)}
       </div>
       <div><h4>Studios</h4><ul><li><a href="#recording-studio">Recording studio</a></li><li><a href="#photo-studio">Photo studio</a></li><li><a href="#podcast-studio">Podcast and video</a></li><li><a href="#book">Book a session</a></li></ul></div>
       <div><h4>Shop</h4><ul><li><a href="#shop">All apparel</a></li><li><a href="#product-world-tour-cheetah-hoodie">Cheetah Hoodie</a></li><li><a href="#product-gvo-x-ace-distressed-tee">GVO x Ace Tee</a></li><li><a href="#product-gvo-beanie">GVO Beanie</a></li></ul></div>
-      <div><h4>Follow</h4><ul><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
+      <div><h4>Follow</h4><ul><li><a href="#music">Music</a></li><li><a href="https://open.spotify.com/artist/5eZfmZxf0hNUuC3GERdI2A" target="_blank" rel="noopener">Spotify</a></li><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
     </div>
     <div class="fbase"><span>GVO Sound LLC · Annapolis, MD · Est. 2020</span><span>Demo build. Photos from gvosound.com.</span></div>
   </div>
@@ -791,6 +853,36 @@ const TEAM=[
 /* Live store snapshot: every visible, in-stock product on gvosound.com as of Oct 20, 2026. av = in-stock variant combos. */
 const PRODUCTS=[{"id":"gvo-x-ace-distressed-tee","n":"GVO x Ace Distressed Tee","p":40,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["S","M","L","XL"],"img":["p_gvo-x-ace-distressed-tee_0","p_gvo-x-ace-distressed-tee_1","p_gvo-x-ace-distressed-tee_2"],"flag":"New"},{"id":"prove-a-point-tee","n":"Prove A Point Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","M","L","XL","2XL","3XL"],"img":["p_lose-a-point-tee_0","p_lose-a-point-tee_1"],"s":21,"flag":"Restocked"},{"id":"world-tour-tee-white","n":"World Tour Tee, White","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_world-tour-tee-1_0","p_world-tour-tee-1_1"],"flag":"New"},{"id":"world-tour-tee-black","n":"World Tour Tee, Black","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["4XL","3XL","2XL","XL","L","M","S","XS"],"img":["p_world-tour-tee_0"],"flag":"Restocked"},{"id":"gvo-muscle-tee","n":"GVO Muscle Tee","p":35,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_gvo-muscle-tee_0","p_gvo-muscle-tee_1","p_gvo-muscle-tee_2"],"flag":"New"},{"id":"no-art-for-today-tee","n":"No Art For Today Tee","p":55,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_no-art-for-today-tee_0"],"flag":"New"},{"id":"pain-is-temporary-dirtbike-jersey","n":"Pain Is Temporary Dirtbike Jersey","p":65,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_pain-is-temporary-hockey-tee_0","p_pain-is-temporary-hockey-tee_1"],"flag":"New"},{"id":"world-tour-cheetah-hoodie","n":"World Tour Cheetah Hoodie","p":100,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["M","L","XL","2XL"],"img":["p_world-tour-cheetah-hoodie_0","p_world-tour-cheetah-hoodie_1","p_world-tour-cheetah-hoodie_2"],"flag":"New"},{"id":"gvo-skater-shorts","n":"GVO Skater Shorts","p":30,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["S","M","L","XL","2XL"],"img":["p_gvo-shorts_0","p_gvo-shorts_1","p_gvo-shorts_2"],"flag":"New"},{"id":"gvo-golf-set-shorts","n":"GVO Golf Set, Shorts","p":25,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shirts_0","p_golf-shirts_1","p_golf-shirts_2"],"flag":"New"},{"id":"gvo-golf-set-shirt","n":"GVO Golf Set, Shirt","p":30,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shorts_0","p_golf-shorts_1","p_golf-shorts_2"],"flag":"New"},{"id":"collective-set-shirt","n":"The Collective Set, Shirt","p":25,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_tee_0","p_tee_1","p_tee_2"],"flag":"New"},{"id":"collective-set-pants","n":"The Collective Set, Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_pants_0","p_pants_1","p_pants_2"],"flag":"New"},{"id":"never-see-the-haters-here-tee","n":"Never See The Haters Here! Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","S","2XL","3XL"],"img":["p_never-see-the-haters-here-tee_0"],"s":21},{"id":"music-is-a-drug-long-sleeve","n":"Music Is A Drug Long Sleeve","p":35.99,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["2XL","XL","L","S"],"img":["p_music-is-a-drug_0","p_music-is-a-drug_1","p_music-is-a-drug_2"],"s":25.19},{"id":"no-deadbeats-oversized-pink","n":"No Deadbeats Oversized Tee, Pink","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Pink"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Pink/M","Pink/L","Pink/XL","Pink/2XL"],"img":["p_no-deadbeats-oversized_0","p_no-deadbeats-oversized_1"],"s":21},{"id":"no-deadbeats-oversized-grey","n":"No Deadbeats Oversized Tee, Grey","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Grey"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Grey/S"],"img":["p_no-deadbeats-oversized-1_0","p_no-deadbeats-oversized-1_1"],"s":21},{"id":"world-tour-cozy-hoodie","n":"World Tour Cozy Hoodie","p":45,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Navy","Light Blue","Olive"]}],"av":["L/Light Blue","XL/Light Blue","2XL/Pink"],"img":["p_world-tour-cozy-set_0","p_world-tour-cozy-set_1","p_world-tour-cozy-set_2"],"s":30},{"id":"world-tour-cozy-pants","n":"World Tour Cozy Pants","p":40,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Light Blue","Navy Blue","Olive"]}],"av":["L/Pink","L/Light Blue","XL/Pink","XL/Light Blue","2XL/Pink","2XL/Light Blue","2XL/Navy Blue"],"img":["p_world-tour-cozy-pants_0","p_world-tour-cozy-pants_1","p_world-tour-cozy-pants_2"],"s":16.99},{"id":"worker-jacket","n":"Worker Jacket","p":75,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Tan","Purple","Cream","Black"]}],"av":["S/Tan","S/Purple","S/Cream","L/Tan","L/Purple","L/Cream","L/Black","XL/Tan","XL/Purple","XL/Cream","XL/Black"],"img":["p_worker-jacket_0","p_worker-jacket_1","p_worker-jacket_2"],"s":52.5},{"id":"world-tour-tracksuit-jacket","n":"World Tour Tracksuit Jacket","p":85,"cat":"Cold weather","o":[{"t":"Size","v":["M","L","XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["M/Black","M/Gray","L/Black","L/Gray"],"img":["p_world-tour-tracksuit_0"],"s":59.5},{"id":"world-tour-tracksuit-pants","n":"World Tour Tracksuit Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Black","Gray","White"]}],"av":["M/Gray","L/Black","L/Gray","XL/White"],"img":["p_world-tour-tracksuit-pants_0","p_world-tour-tracksuit-pants_1","p_world-tour-tracksuit-pants_2"],"s":45.5},{"id":"gvo-bodysuit","n":"GVO Bodysuit","p":35,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Navy","Black","Grey","Beige","Khaki","Brown"]}],"av":["S/Navy","S/Black","S/Grey","S/Beige","S/Khaki","S/Brown","M/Navy","M/Black","M/Grey","M/Beige","M/Khaki","L/Navy","L/Black","L/Grey","L/Beige","L/Khaki"],"img":["p_gvo-bodysuit_0","p_gvo-bodysuit_1"],"s":24.5},{"id":"gvo-body-set-top","n":"GVO Body Set, Top","p":15,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","M/Grey","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-body-set-bottoms","n":"GVO Body Set, Bottoms","p":15,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-beanie","n":"GVO Beanie","p":10,"cat":"Headwear","o":[{"t":"Color","v":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown","Black"]}],"av":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown"],"img":["p_gvo-beanie_0","p_gvo-beanie_1","p_gvo-beanie_2"],"s":7}];
 const unit=p=>p.s||p.p;
+/* Music: Spotify ids checked Oct 20, 2026. "All platforms" opens a song.link / album.link page that lists every service carrying the release. */
+const SPO='https://open.spotify.com/';
+const REL=[
+ {id:'ride-for-me',t:'Ride for Me',a:'David Correy & Flawless Breezyy',c:'c_ride',k:'track',sp:'46EFAEtDZauJRc5V4Q11Jc',tag:'Single'},
+ {id:'im-from-the-a',t:"I'M FROM THE A!",a:'Flawless Breezyy',c:'c_froma',k:'album',sp:'64zHn9UlzHifFe735UhdYP',tag:'Single'},
+ {id:'wont-change',t:'Wont Change',a:'Flawless Breezyy, Only1BamaBoy',c:'c_wont',k:'album',sp:'7xxu9twRBbVzZyFpj8ea5l',tag:'Single'},
+ {id:'you-said',t:'You Said!',a:'Flawless Breezyy, BoobBlack',c:'c_yousaid',k:'album',sp:'4CJvWJFuQVcUW7fgM2h0fP',tag:'Single'},
+ {id:'need-to-know',t:'Need to know',a:'A. Brooks & Flawless Breezyy',c:'c_need',k:'album',sp:'2DPjHXoZAXKYbiFMDumEOL',tag:'Single'},
+ {id:'savage',t:'Savage!',a:'Flawless Breezyy',c:'c_savage',k:'album',sp:'0YsngE5Rw4PLRHrnwgVOJz',tag:'Single'},
+ {id:'sixteen',t:'SIXTEEN',a:'Flawless Breezyy',c:'c_sixteen',k:'album',sp:'2GjLf9BPCE8ed5Y4JhB5rL',tag:'Project'}
+];
+const FEATURED='ride-for-me';
+const ARTISTS=[
+ {n:'Flawless Breezyy',r:'Cory McGhee, GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',img:'t_cory'},
+ {n:'BoobBlack',r:'Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',img:'c_boob'},
+ {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',img:'c_need'}
+];
+const SESS=[
+ {y:'xMfY35F94r0',t:"Young Dylan, It's On Me",s:'Live performance',img:'y_dylan'},
+ {y:'pNW2wyC6aXA',t:'Flawless Breezyy',s:'The Garden · Ep. 5',img:'y_flawless'},
+ {y:'esW6O4_sNrQ',t:'TMCTHEDON',s:'The Garden · Ep. 7',img:'y_tmc'},
+ {y:'IAFnpZepA1o',t:'WillThaRapper',s:'The Garden · Ep. 8',img:'y_will'},
+ {y:'8IdhoWf3Z_Q',t:'Lex Bratcher',s:'The Garden · Ep. 11',img:'y_lex'}
+];
+const relById=id=>REL.find(x=>x.id===id);
+const spUrl=x=>SPO+x.k+'/'+x.sp;
+const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
+const SPIC='<svg class="sp-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor" opacity=".18"/><path d="M6.5 9.2c3.8-1.1 8-.8 11.2 1M7.1 12.4c3.1-.9 6.6-.6 9.3.9M7.7 15.4c2.5-.7 5.1-.5 7.3.7" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>';
+const ext=(u,label,cls='')=>`<a ${cls?`class="${cls}" `:''}href="${u}" target="_blank" rel="noopener">${label}</a>`;
+
 const REVIEWS={
  william:{q:'My first time at GVO and the studio had Great Energy and absolutely incredible talent to work with and produced exactly how I envisioned my song ending up. 100% recommend any artist going here!',n:'William Marsters Jr.',r:'Recording artist'},
  nyia:{q:'GVO Sounds Studios is an awesome multifaceted makers space. You can record music, learn how to make music, take photos, buy clothing, and a lot more. The owner and his colleagues are amazing. They always provide excellent service at GVO Sounds Studio.',n:'Nyia C',r:'Client'},
@@ -937,7 +1029,17 @@ function viewHome(){
  <section id="booth" style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO sounds</span><h2>In the booth</h2></div><div class="reel-nav"><button type="button" data-reel="-1" aria-label="Scroll back">←</button><button type="button" data-reel="1" aria-label="Scroll forward">→</button></div></div>
   <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session',1],['r_2','Live take']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}">${media(f,c+' at GVO Sound')}<figcaption>${c}</figcaption></figure>`).join('')}</div>
-  <div class="reels-list">${[['Flawless','Promo'],['Local','Reel'],['Will','Reel'],['TMC','Reel'],['Lex','Reel']].map(([a,b])=>`<a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener"><div><b>${a}</b><br><small>${b} · watch on YouTube</small></div><span class="pl"></span></a>`).join('')}</div>
+ </div></section>
+
+ <section id="stream" style="padding-top:0"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Made at GVO</span><h2>Now streaming</h2></div><a class="btn btn-ghost" href="#music">All music</a></div>
+  ${(()=>{const f=relById(FEATURED);return `<div class="np">
+   <div class="np-feat rv"><a class="cv" href="#music/${f.id}">${imgT(f.c,`${f.t} cover art`)}</a>
+    <div><span class="eyebrow">Out now · ${f.tag}</span><h3>${f.t}</h3><p>${f.a}</p>
+     <div class="plat">${ext(spUrl(f),SPIC+'Spotify','btn btn-lav')}${ext(allUrl(f),'All platforms','btn btn-ghost')}</div></div></div>
+   <div><div class="np-list">${REL.filter(x=>x.id!==f.id).slice(0,4).map(x=>`<a class="trk" href="${spUrl(x)}" target="_blank" rel="noopener" aria-label="Play ${x.t} by ${x.a} on Spotify"><span class="cv">${imgT(x.c,'')}</span><span><b>${x.t}</b><small>${x.a}</small></span><span class="go" aria-hidden="true"></span></a>`).join('')}</div>
+    <div class="np-more"><span class="plat-note">Studio artists: ${ARTISTS.slice(1).map(a=>a.n).join(', ')}</span><a class="link" href="#music">See the catalog and sessions →</a></div></div>
+  </div>`})()}
  </div></section>
  <section id="team" style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Behind the glass</span><h2>The team</h2></div><div class="filters" id="teamFilters"></div></div>
@@ -1004,6 +1106,47 @@ function viewRoom(slug){
  </div>`;
 }
 
+function viewMusic(slug){
+ const f=relById(slug)||relById(FEATURED);
+ const metaKey=relById(slug)?'music/'+f.id:'music';
+ return `<div class="view" data-v="music">
+ <section class="mhero"><div class="mhero-bg" style="background-image:url(img/${f.c}.webp)"></div><div class="wrap">
+  ${crumbs(relById(slug)?[['Home','#'],['Music','#music'],[f.t,'']]:[['Home','#'],['Music','']])}
+  <div class="mfeat">
+   <div class="cv">${imgT(f.c,`${f.t} by ${f.a}, cover art`,0)}</div>
+   <div class="mfeat-info">
+    <span class="eyebrow">Out now · ${f.tag}</span>
+    <h1>${f.t}</h1>
+    <p class="by">by <b>${f.a}</b></p>
+    <div class="plat">${ext(spUrl(f),SPIC+'Listen on Spotify','btn btn-lav')}${ext(allUrl(f),'All platforms','btn btn-ghost')}</div>
+    <p class="plat-note">All platforms opens one link with every app that carries it: Apple Music, Amazon, TIDAL and more.</p>
+    ${seoNote(META[metaKey])}
+    ${note('Ad landing page',`Every release has its own link, like <b>gvosound.com/music/${f.id}</b>. Point an Instagram or TikTok ad there and that song takes this top slot. UTM tags pass through to analytics. New releases are one row in Airtable.`)}
+   </div>
+  </div>
+ </div></section>
+ <section><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Flawless Breezyy · Cory McGhee</span><h2>The catalog</h2></div><p class="lede">Cory owns GVO and records here. Tap a cover to put it up top, or open it straight in your app.</p></div>
+  <div class="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><a href="#music/${x.id}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Playing up top</span>':''}</span><span><b>${x.t}</b><small>${x.a}</small></span></a><div class="ln">${ext(spUrl(x),'Spotify')}${ext(allUrl(x),'All platforms')}</div></div>`).join('')}</div>
+ </div></section>
+ <section style="background:var(--ink-2)"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
+  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${ext(SPO+a.sp,'Follow on Spotify →')}</div></div>`).join('')}</div>
+  <div class="submit rv"><div><span class="eyebrow">Recorded at GVO?</span><h3>Get your song on this page</h3><p>Send the link. Cory reviews every submission before it goes live.</p></div>
+   <form id="subForm" novalidate><input name="artist" placeholder="Artist name" required autocomplete="nickname"><input name="email" type="email" placeholder="Email" required autocomplete="email"><input class="full" name="link" type="url" placeholder="Spotify or Apple Music link" required><button class="btn btn-lav full" type="submit">Submit my release</button></form>
+  </div>
+  ${note('Where submissions go','The form writes a row to the Music table in GVO\'s Airtable and emails Cory. He flips Approved and the release shows here on the next build.')}
+ </div></section>
+ <section><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO Sound Network</span><h2>Watch the sessions</h2></div>${ext('https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA','YouTube channel','btn btn-ghost')}</div>
+  <div class="sess">${SESS.map(v=>`<a href="https://www.youtube.com/watch?v=${v.y}" target="_blank" rel="noopener"><span class="th">${imgT(v.img,`${v.t}, ${v.s}`)}</span><span><b>${v.t}</b><br><small>${v.s}</small></span></a>`).join('')}</div>
+ </div></section>
+ <section style="padding-top:0;padding-bottom:0"><div class="wrap">
+  <div class="finale"><span class="mark"></span><p class="slogan"><span>Record It Here.</span><span>Release It Everywhere.</span><span>Run It Back.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
+ </div></section>
+ </div>`;
+}
+
 function viewBook(){
  return `<div class="view" data-v="book"><section class="desk-sec" style="padding-top:calc(130px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Book a session','']])}
@@ -1053,6 +1196,8 @@ const META={
  book:{path:'/book',title:'Book a Studio Session | GVO Sound, Annapolis MD',desc:'Book recording or photo studio time at GVO Sound in Annapolis. Pick your studio, length, engineer and start time. $50 deposit holds your slot.',h1:'Book a session',schema:'BreadcrumbList, ReserveAction'},
  shop:{path:'/shop',title:'GVO Apparel | Tees, Hoodies and Sets | GVO Sound Shop',desc:'Shop GVO Sound apparel: World Tour tees, the Cheetah hoodie, the Worker Jacket and more. Ship it or pick it up at the studio in Annapolis.',h1:'The rack',schema:'BreadcrumbList, ItemList of Product'}
 };
+META.music={path:'/music',title:'Stream GVO Sound | Flawless Breezyy and Studio Artists',desc:'Stream music recorded at GVO Sound in Annapolis, MD. Flawless Breezyy, BoobBlack, A. Brooks and more on Spotify, Apple Music, Amazon and TIDAL.',h1:'Featured release title (changes per ad link)',schema:'MusicGroup with MusicRecording list, BreadcrumbList'};
+REL.forEach(x=>META['music/'+x.id]={path:'/music/'+x.id,title:`${x.t} by ${x.a} | Stream it | GVO Sound`,desc:`Stream ${x.t} by ${x.a}, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.`,h1:x.t,schema:'MusicRecording, BreadcrumbList'});
 Object.entries(ROOMS).forEach(([s,r])=>META[s]={path:'/'+s,title:r.title,desc:r.desc,h1:r.h1,schema:'Service + Offer catalog, FAQPage, BreadcrumbList'});
 PRODUCTS.forEach(p=>META['product-'+p.id]={path:'/shop/'+p.id,title:`${p.n} | GVO Sound Apparel`,desc:`${p.n} by GVO Sound, ${m2(unit(p))}. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.`,h1:p.n,schema:'Product + Offer, BreadcrumbList'});
 
@@ -1063,6 +1208,7 @@ function ldFor(route){
   {"@type":"FAQPage","mainEntity":live(r.faq).map(([q,a])=>({"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}}))},
   bc([['Home','/'],[r.h1,'/'+route]])]}}
  if(route.startsWith('product-')){const p=prodById(route.slice(8));if(p)return{"@context":"https://schema.org","@graph":[{"@type":"Product","name":p.n,"brand":{"@type":"Brand","name":"GVO Sound"},"image":p.img[0]?`${SITE}/img/${p.img[0]}.webp`:undefined,"offers":{"@type":"Offer","price":unit(p),"priceCurrency":"USD","availability":"https://schema.org/InStock"}},bc([['Home','/'],['Shop','/shop'],[p.n,'/shop/'+p.id]])]}}
+ if(route==='music'||route.startsWith('music/')){const x=relById(route.slice(6));return{"@context":"https://schema.org","@graph":[{"@type":"MusicGroup","name":"Flawless Breezyy","sameAs":[SPO+ARTISTS[0].sp],"track":REL.map(r=>({"@type":"MusicRecording","name":r.t,"byArtist":r.a,"url":spUrl(r)}))},bc(x?[['Home','/'],['Music','/music'],[x.t,'/music/'+x.id]]:[['Home','/'],['Music','/music']])]}}
  if(route==='book')return{"@context":"https://schema.org","@graph":[bc([['Home','/'],['Book a session','/book']]),{"@type":"ReserveAction","target":SITE+'/book',"object":{"@id":SITE+'/#business'}}]};
  if(route==='shop')return{"@context":"https://schema.org","@type":"ItemList","itemListElement":PRODUCTS.map((p,i)=>({"@type":"ListItem","position":i+1,"url":`${SITE}/shop/${p.id}`}))};
  return{};
@@ -1071,17 +1217,18 @@ function ldFor(route){
 /* ================= router ================= */
 const main=$('#main');let route='home',cleanup=[],popNav=false;const scrollMem={};
 let navIdx=0;try{history.scrollRestoration='manual'}catch(e){}addEventListener('popstate',e=>{popNav=!!(e.state&&e.state.gvo!=null)});
-function parse(){const h=decodeURIComponent(location.hash.slice(1));if(!h)return'home';if(ROOMS[h]||h==='book'||h==='shop'||h.startsWith('product-'))return h;return null}
+const isRoute=h=>!!(ROOMS[h]||h==='book'||h==='shop'||h==='music'||h.startsWith('product-')||(h.startsWith('music/')&&relById(h.slice(6))));
+function parse(){const h=decodeURIComponent(location.hash.slice(1)).split('?')[0];if(!h)return'home';return isRoute(h)?h:null}
 function render(r,opts={}){
  cleanup.forEach(f=>f());cleanup=[];
  scrollMem[route]=scrollY;
- route=r;document.body.dataset.view=r.startsWith('product-')?'product':r;
- const html=r==='home'?viewHome():ROOMS[r]?viewRoom(r):r==='book'?viewBook():r==='shop'?viewShop():viewProduct(r.slice(8));
+ route=r;document.body.dataset.view=r.startsWith('product-')?'product':r.startsWith('music')?'music':r;
+ const html=r==='home'?viewHome():ROOMS[r]?viewRoom(r):r==='book'?viewBook():r==='shop'?viewShop():r.startsWith('music')?viewMusic(r.slice(6)):viewProduct(r.slice(8));
  const y0=!opts.keep?(popNav&&scrollMem[r]!=null?scrollMem[r]:0):null;
  const swap=()=>{main.innerHTML=html;wire(r);if(y0!==null){window.scrollTo({top:y0,behavior:'instant'});if(y0)setTimeout(()=>window.scrollTo({top:y0,behavior:'instant'}),80)}};
  if(document.startViewTransition&&!reduce&&!opts.first)document.startViewTransition(swap);else swap();
  const m=META[r]||META.home;document.title=m.title;$('#metaDesc').setAttribute('content',m.desc);$('#ldPage').textContent=JSON.stringify(ldFor(r));
- $$('header nav a').forEach(a=>{if(a.getAttribute('href')==='#'+(r.startsWith('product-')?'shop':r))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+ $$('header nav a').forEach(a=>{if(a.getAttribute('href')==='#'+(r.startsWith('product-')?'shop':r.startsWith('music')?'music':r))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
  popNav=false;
  try{if(!history.state||history.state.gvo==null)history.replaceState({gvo:++navIdx},'')}catch(e){}
  closeMenu();
@@ -1099,7 +1246,7 @@ document.addEventListener('click',e=>{
  const h=a.getAttribute('href').slice(1);
  if(a.dataset.preset){pendingPreset=a.dataset.preset}
  if(h==='')return;
- if(!ROOMS[h]&&h!=='book'&&h!=='shop'&&!h.startsWith('product-')){const el=document.getElementById(h);if(el){e.preventDefault();el.scrollIntoView({behavior:reduce?'auto':'smooth'})}}
+ if(!isRoute(h)){const el=document.getElementById(h);if(el){e.preventDefault();el.scrollIntoView({behavior:reduce?'auto':'smooth'})}}
  else if(h==='book'&&ROOMS[route]&&ROOMS[route].k!=='pod'&&!a.dataset.preset&&$('#desk')){e.preventDefault();$('#desk').scrollIntoView({behavior:reduce?'auto':'smooth'})}
 });
 let pendingPreset=null;
@@ -1109,6 +1256,7 @@ function wire(r){
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
  wireVideos(main);
  if(r==='home')wireHome();
+ if(r.startsWith('music')){const fm=$('#subForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&!x.checkValidity());if(bad){bad.focus();toast(bad.name==='link'?'Paste a full link, starting with https://':'Fill in '+bad.placeholder.toLowerCase());return}fm.reset();toast('Sent. Cory reviews it before it goes live.')})}
  if(ROOMS[r])wireRoom(r);
  const deskEl=$('[data-desk]',main);
  if(deskEl){const k=deskEl.dataset.desk;if(k==='pod')mountQuote(deskEl);else mountDesk(deskEl,k==='all'?(pendingPreset||B.room):k)}
@@ -1471,6 +1619,5 @@ render(first===null?'home':first,{first:true});
 onScroll();
 })();
 </script>
-
 </body>
 </html>

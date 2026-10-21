@@ -4,7 +4,7 @@ Demo build of the new gvosound.com for GVO Sound LLC, 109 Gibralter Ave, Annapol
 
 ## What's here
 
-- `index.html` is the whole demo: homepage, recording, photo and podcast studio pages, booking, shop and product pages. Pages switch by URL hash (`#recording-studio`, `#shop`, `#product-worker-jacket`).
+- `index.html` is the whole demo: homepage, recording, photo and podcast studio pages, booking, music, shop and product pages. Pages switch by URL hash (`#recording-studio`, `#music`, `#music/ride-for-me`, `#shop`, `#product-worker-jacket`).
 - `img/` holds the studio, team and product photos, pulled from the current Wix site and converted to WebP.
 - `robots.txt` and `_headers` keep this preview out of Google. Remove both noindex rules at launch.
 
@@ -26,6 +26,7 @@ Every push to `main` redeploys. Other branches get preview URLs.
 - Catalog is a snapshot of the live Wix store (26 in-stock products, Oct 20, 2026). Production pulls it from Square.
 - Booking and checkout are demo flows. Production writes to the Square Bookings and Payments APIs.
 - The holiday photoshoot special shows Nov 1 to Dec 31 only.
+- Music: each release has its own ad landing link (`/music/<release>`) that puts that song in the top slot. Spotify ids checked Oct 20, 2026; "All platforms" opens song.link / album.link. Artist submissions go to a Music table in Airtable for Cory to approve.
 
 ## System plan
 
