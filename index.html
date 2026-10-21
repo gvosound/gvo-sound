@@ -1434,7 +1434,7 @@ function viewRoom(slug){
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
   <div class="team fit" style="--n:${team.length}">${team.map(memberCard).join('')}</div>
-  ${r.k==='rec'?`<div class="rev-one">${revCard('william')}</div>`:r.k==='photo'?`<div class="rev-one">${revCard('kennedy')}</div>`:''}
+  <div class="rev-one">${revCard(({rec:'william',photo:'kennedy',pod:'goodnews'})[r.k])}<div class="rev-more">${gBadge()}<a class="link" href="${GOOG.url}" target="_blank" rel="noopener">Read all ${GOOG.count} on Google →</a></div></div>
  </div></section>
  <section id="faq"><div class="wrap split">
   <div class="hd" style="display:grid;gap:16px;align-content:start"><span class="eyebrow">Before you book</span><h2>Questions</h2><p class="lede">Still stuck? Text the studio at (443) 254-1482.</p></div>
