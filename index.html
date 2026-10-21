@@ -935,6 +935,8 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .evp-i b{font-weight:600;line-height:1.25}
 .evp:hover b{color:var(--lav)}
 .ev-empty .eyebrow{margin-bottom:8px}
+.ev-follow{grid-column:1/-1;margin:0;color:var(--mute);font-size:.9rem}
+.ctas .btn .ig-ic{width:16px;height:16px}
 .igb-nav{display:flex;gap:8px;align-items:center}
 .igb-nav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--bone)}
 .igb-nav button:hover{border-color:var(--lav)}
@@ -1131,6 +1133,8 @@ const SESS=[
 
 /* Events: from GVO SOUND EVENTS on Eventbrite (organizer 72154308173), checked Oct 21, 2026. Newest first. */
 const EVB='https://www.eventbrite.com/e/';
+const EVB_ORG='https://www.eventbrite.com/o/gvo-sound-studios-cory-mcghee-72154308173';
+const EBIC='<svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 12.4h8.6c.2-2.4-1.6-4.3-4-4.3-2.4 0-4.2 1.8-4.2 4.1 0 2.4 1.8 4.1 4.3 4.1 1.5 0 2.6-.5 3.4-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 const EVENTS=[
  {t:'GVO Sound 4-Year Anniversary: Networking Night',d:'2026-10-30',tm:'6:30 PM – 2 AM',v:'GVO Sound Studios',a:'109 Gibralter Ave',c:'Annapolis, MD',url:'https://posh.vip/e/gvo-sound-anniversary-networking-event',k:'Halloween Weekend · At the studio',fl:'f_anniv',cta:'RSVP',lu:'Free food · Discounted clothing · Discounted pre-booked studio time · Cash bar'},
  {t:'The Day After: Ravens Watch Party',d:'2026-11-01',tm:'1 PM – 6 PM',v:'Mugshots',a:'31 E Cross St',c:'Baltimore, MD',url:'https://posh.vip/e/the-day-after-ravens-watch-party',k:'Halloween Weekend · Day party',fl:'f_ravens',cta:'RSVP'},
@@ -1469,7 +1473,7 @@ function viewEvents(){
   <div class="evhero-g">
    <div class="evhero-t"><span class="eyebrow">GVO Sound Events</span><h1><span>R&amp;B Nights.</span><span>Rooftops.</span><span>County vs. City.</span></h1>
     <p class="lede">GVO throws parties across Anne Arundel County and Baltimore. Maryland based, four years in. Tickets run through Eventbrite and Posh, and every date drops on <a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">@${IG.events}</a> first.</p>
-    <div class="ctas" style="margin:0"><a class="btn btn-lav" href="#inquire">Work with GVO Events</a><a class="btn btn-ghost" href="${igUrl(IG.events)}" target="_blank" rel="noopener">${IGIC}@${IG.events}</a></div></div>
+    <div class="ctas" style="margin:0"><a class="btn btn-lav" href="#inquire">Work with GVO Events</a><a class="btn btn-ghost" href="${igUrl(IG.events)}" target="_blank" rel="noopener">${IGIC}@${IG.events}</a><a class="btn btn-ghost" href="${EVB_ORG}" target="_blank" rel="noopener">${EBIC}Follow on Eventbrite</a></div></div>
    <div class="facts ev-facts"><div><b>${evPast().length+evUp().filter(e=>!e.sample).length}</b><small>Nights since Aug 2025</small></div><div><b>${cities}</b><small>Cities</small></div><div><b>2AM</b><small>Last call</small></div></div>
   </div>
   ${seoNote(META.events)}
@@ -1477,7 +1481,7 @@ function viewEvents(){
  <section id="upcoming"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">On the calendar</span><h2>Upcoming</h2></div>${note('Upcoming slot','Events list themselves from Eventbrite: a new listing shows here, then moves to Past the morning after. <button type="button" class="chip" data-evsample style="margin-top:10px">'+(evSample?'Back to today':'Preview a new listing')+'</button>')}</div>
   ${up.length?`${up.filter(e=>e.k.startsWith('Halloween')).length>1?`<div class="ev-wk rv"><span class="mark"></span><div><b>GVO Weeknd · Halloween</b><small>3 parties, 1 weekend · Oct 30 – Nov 1 · 4 years of GVO</small></div></div>`:''}<div class="evc-g">${up.map(evCard).join('')}</div>`:''}
-  <div class="ev-empty rv"><div><span class="eyebrow">Save the date · ${MON[evDate(EV_NEXT).getMonth()]} ${evDate(EV_NEXT).getDate()}</span><h3>${EV_NEXT.t}</h3><p>${EV_NEXT.note} Get the flyer the day it drops.</p></div><form id="evNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Notify me</button></form></div>
+  <div class="ev-empty rv"><div><span class="eyebrow">Save the date · ${MON[evDate(EV_NEXT).getMonth()]} ${evDate(EV_NEXT).getDate()}</span><h3>${EV_NEXT.t}</h3><p>${EV_NEXT.note} Get the flyer the day it drops.</p></div><form id="evNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Notify me</button></form><p class="ev-follow">Or follow GVO Sound Events on <a class="link" href="${EVB_ORG}" target="_blank" rel="noopener">Eventbrite</a> to get new dates by email, or turn on post alerts at <a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">@${IG.events}</a>.</p></div>
  </div></section>
  <section style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Run it back</span><h2>Past events</h2></div><p class="lede">R&amp;B &amp; Vibes is the flagship. The rest are one-night themes: all-white rooftops, era battles, county against city.</p></div>
