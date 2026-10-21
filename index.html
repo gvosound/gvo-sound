@@ -711,14 +711,6 @@ section{padding-block:clamp(52px,7vw,92px)}
 .np-feat h3{font-size:clamp(1.6rem,3vw,2.3rem);line-height:.92;margin:6px 0 6px}
 .np-feat p{margin:0 0 14px;color:#d7d2dc}
 .np-list{display:grid;align-content:start;border-top:1px solid var(--line)}
-.trk{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);text-decoration:none;min-height:64px}
-.trk .cv{width:52px}
-.trk b{display:block;font-weight:600;line-height:1.25}
-.trk small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
-.trk .go{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:all .2s}
-.trk .go::before{content:"";border-left:8px solid var(--lav);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:3px}
-.trk:hover .go{border-color:var(--lav);background:rgba(185,178,255,.12)}
-.trk:hover b{color:var(--lav)}
 .np-more{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;flex-wrap:wrap}
 @media (max-width:900px){.np{grid-template-columns:1fr}}
 @media (max-width:520px){.np-feat{grid-template-columns:1fr}.np-feat .cv{max-width:240px}}
@@ -795,6 +787,45 @@ section{padding-block:clamp(52px,7vw,92px)}
 .hcard .ln a{color:var(--lav);text-decoration:none;padding-block:6px;display:inline-flex;gap:6px;align-items:center}
 .hcard .ln a:hover{color:var(--bone)}
 @media (max-width:900px){.heard-row{grid-template-columns:1fr}.heard-mid{max-width:220px;justify-self:center;order:-1;width:100%}}
+/* ---- shared preview player ---- */
+.cvw{position:relative}
+.cvw>.pv{position:absolute;right:8px;bottom:8px}
+.pv.lg{width:64px;height:64px;right:14px;bottom:14px}
+.pv.lg i{border-left-width:18px;border-top-width:11px;border-bottom-width:11px;margin-left:6px}
+.pv.lg[aria-pressed="true"] i{width:16px;height:20px;margin:0;background:linear-gradient(90deg,var(--ink) 0 5px,transparent 5px 11px,var(--ink) 11px)}
+.pv[aria-pressed="true"]{background:var(--lav)}
+.trk{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+.trk-play{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:10px 0;min-height:64px;background:none;border:0;color:inherit;text-align:left;font:inherit;text-decoration:none;width:100%;cursor:pointer}
+.trk-play .cv{width:52px}
+.trk-play b{display:block;font-weight:600;line-height:1.25}
+.trk-play small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.trk-play .go{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:all .2s}
+.trk-play .go::before{content:"";border-left:8px solid var(--lav);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:3px}
+.trk-play:hover .go,.trk-play[aria-pressed="true"] .go{border-color:var(--lav);background:rgba(185,178,255,.12)}
+.trk-play[aria-pressed="true"] .go::before{width:9px;height:11px;border:0;margin:0;background:linear-gradient(90deg,var(--lav) 0 3px,transparent 3px 6px,var(--lav) 6px)}
+.trk-play:hover b,.trk-play[aria-pressed="true"] b{color:var(--lav)}
+a.trk-play .go::before{content:"\2197";border:0;margin:0;color:var(--lav);font-size:.95rem}
+.trk-sp{color:var(--mute);display:grid;place-items:center;width:40px;height:40px;border-radius:50%}
+.trk-sp .sp-ic{width:20px;height:20px}
+.trk-sp:hover{color:var(--lav)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pb{position:fixed;z-index:58;left:50%;bottom:16px;transform:translateX(-50%);width:min(560px,calc(100% - 32px));display:grid;grid-template-columns:44px 1fr auto auto auto auto;gap:12px;align-items:center;padding:10px 12px 10px 10px;border:1px solid rgba(185,178,255,.35);border-radius:14px;background:rgba(14,12,19,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 60px rgba(0,0,0,.55);animation:pbIn .45s var(--ease)}
+@keyframes pbIn{from{opacity:0;transform:translate(-50%,16px)}}
+.pb .cv{width:44px;border-radius:6px}
+.pb-i{min-width:0;display:grid;gap:2px}
+.pb-i b{font-weight:600;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb-i small{font:.7rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb-p{height:2px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:4px}
+.pb-p span{display:block;height:100%;width:0;background:var(--lav)}
+.pb-tm{font:600 .7rem var(--mono);color:var(--mute);letter-spacing:.06em}
+.pb .pv{position:static;width:40px;height:40px;box-shadow:none}
+.pb-sp{color:var(--mute);display:grid;place-items:center;width:36px;height:36px}
+.pb-sp .sp-ic{width:20px;height:20px}
+.pb-sp:hover{color:var(--lav)}
+.pb-x{background:none;border:0;color:var(--mute);width:32px;height:32px;font-size:.9rem}
+.pb-x:hover{color:var(--bone)}
+@media (max-width:760px){.pb{bottom:calc(84px + env(safe-area-inset-bottom,0px));grid-template-columns:40px 1fr auto auto}.pb-tm,.pb-sp{display:none}.pb .cv{width:40px}}
+body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 </style>
 </head>
 <body>
@@ -858,6 +889,7 @@ section{padding-block:clamp(52px,7vw,92px)}
   <div class="drawer-f" id="cartFoot"></div>
 </aside>
 <div class="sim" id="sim" hidden role="dialog" aria-modal="true" aria-label="Checkout"></div>
+<div class="pb" id="pb" hidden role="region" aria-label="Preview player"><span class="cv"><img id="pbImg" alt=""></span><div class="pb-i"><b id="pbT"></b><small id="pbA"></small><div class="pb-p"><span id="pbP"></span></div></div><span class="pb-tm" id="pbTm"></span><button class="pv" type="button" id="pbBtn" data-play="" aria-pressed="false" aria-label="Pause"><i></i></button><a class="pb-sp" id="pbSp" target="_blank" rel="noopener" aria-label="Full song on Spotify"></a><button class="pb-x" type="button" id="pbX" aria-label="Close player">✕</button></div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
@@ -917,6 +949,7 @@ const relById=id=>REL.find(x=>x.id===id);
 const spUrl=x=>SPO+x.k+'/'+x.sp;
 const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
 const SPIC='<svg class="sp-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor" opacity=".18"/><path d="M6.5 9.2c3.8-1.1 8-.8 11.2 1M7.1 12.4c3.1-.9 6.6-.6 9.3.9M7.7 15.4c2.5-.7 5.1-.5 7.3.7" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>';
+const pvBtn=(x,cls='')=>x.pv?`<button class="pv${cls?' '+cls:''}" type="button" data-play="${x.id}" aria-pressed="false" aria-label="Play a preview of ${x.t}"><i></i></button>`:'';
 const ext=(u,label,cls='')=>`<a ${cls?`class="${cls}" `:''}href="${u}" target="_blank" rel="noopener">${label}</a>`;
 
 const REVIEWS={
@@ -1041,9 +1074,9 @@ function viewHome(){
      <div class="ctas"><a class="btn btn-lav" href="#book">Book a session</a><a class="btn btn-ghost" href="#recording-studio">See the studio</a></div></div>
     <div class="deck">
      <div class="deck-top"><span>Recorded at GVO</span><a href="#music">All music →</a></div>
-     ${(()=>{const f=relById(FEATURED);return `<div class="dk-trk"><span class="cv">${imgT(f.c,`${f.t} cover art`)}</span><div><b>${f.t}</b><small>${f.a}</small></div><button class="pv" id="play" type="button" aria-pressed="false" aria-label="Play a preview of ${f.t}" data-pv="${f.pv}"><i></i></button></div>`})()}
+     ${(()=>{const f=relById(FEATURED);return `<div class="dk-trk"><span class="cv">${imgT(f.c,`${f.t} cover art`)}</span><div><b>${f.t}</b><small>${f.a}</small></div>${pvBtn(f)}</div>`})()}
      <canvas id="viz" aria-hidden="true"></canvas>
-     <div class="dk-time"><span id="dkT">Tap play for a preview</span><span id="dkD"></span></div>
+     <div class="dk-time" data-feat="${FEATURED}"><span id="dkT">Tap play for a preview</span><span id="dkD"></span></div>
      <div class="specs"><div><b>$75</b><small>Per hour, 2-hr session</small></div><div><b>3AM</b><small>Close, Fri–Sun</small></div><div><b>5</b><small>People per session</small></div></div>
     </div>
    </div>
@@ -1070,10 +1103,10 @@ function viewHome(){
  <section id="stream" style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Made at GVO</span><h2>Now streaming</h2></div><a class="btn btn-ghost" href="#music">All music</a></div>
   ${(()=>{const f=relById(FEATURED);return `<div class="np">
-   <div class="np-feat rv"><a class="cv" href="#music/${f.id}">${imgT(f.c,`${f.t} cover art`)}</a>
+   <div class="np-feat rv"><div class="cvw"><a class="cv" href="#music/${f.id}">${imgT(f.c,`${f.t} cover art`)}</a>${pvBtn(f)}</div>
     <div><span class="eyebrow">Out now · ${f.tag}</span><h3>${f.t}</h3><p>${f.a}</p>
-     <div class="plat">${ext(spUrl(f),SPIC+'Spotify','btn btn-lav')}${ext(allUrl(f),'All platforms','btn btn-ghost')}</div></div></div>
-   <div><div class="np-list">${REL.filter(x=>x.id!==f.id).slice(0,4).map(x=>`<a class="trk" href="${spUrl(x)}" target="_blank" rel="noopener" aria-label="Play ${x.t} by ${x.a} on Spotify"><span class="cv">${imgT(x.c,'')}</span><span><b>${x.t}</b><small>${x.a}</small></span><span class="go" aria-hidden="true"></span></a>`).join('')}</div>
+     <div class="plat">${f.pv?`<button class="btn btn-lav" type="button" data-play="${f.id}" data-lbl="1" aria-pressed="false">Play preview</button>`:''}${ext(spUrl(f),SPIC+'Spotify','btn btn-ghost')}${ext(allUrl(f),'All platforms','btn btn-ghost')}</div></div></div>
+   <div><div class="np-list">${REL.filter(x=>x.id!==f.id).slice(0,4).map(x=>`<div class="trk">${x.pv?`<button class="trk-play" type="button" data-play="${x.id}" aria-pressed="false" aria-label="Play a preview of ${x.t}">`:`<a class="trk-play" href="${spUrl(x)}" target="_blank" rel="noopener">`}<span class="cv">${imgT(x.c,'')}</span><span><b>${x.t}</b><small>${x.a}</small></span><span class="go" aria-hidden="true"></span>${x.pv?'</button>':'</a>'}${ext(spUrl(x),SPIC+'<span class="sr">Open '+x.t+' on Spotify</span>','trk-sp')}</div>`).join('')}</div>
     <div class="np-more"><span class="plat-note">Studio artists: ${ARTISTS.slice(1).map(a=>a.n).join(', ')}</span><a class="link" href="#music">See the catalog and sessions →</a></div></div>
   </div>`})()}
  </div></section>
@@ -1122,7 +1155,7 @@ function viewRoom(slug){
  </div></section>
  ${r.k==='rec'?`<section class="heard" id="heard"><canvas aria-hidden="true"></canvas><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO Sounds</span><h2>Hear the room</h2><p class="lede">Two records cut on Gibralter Ave. Same booth, same desk you'd book. Press play on either one.</p></div></div>
-  <div class="heard-row">${['need-to-know','ride-for-me'].map((id,i)=>{const x=relById(id);return `${i===1?'<div class="heard-mid" aria-live="polite"><div><span data-w="k">Preview</span><b data-w="t">Press play</b><span data-w="s">On either song</span></div></div>':''}<div class="hcard rv" data-side="${i?1:-1}" data-pv="${x.pv}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}<button class="pv" type="button" aria-pressed="false" aria-label="Play a preview of ${x.t}"><i></i></button></span><div><h3>${x.t}</h3><p>${x.a}</p><div class="pbar"><span></span></div><div class="ln">${ext(spUrl(x),SPIC+'Full song on Spotify')}${ext(allUrl(x),'All platforms')}</div></div></div>`}).join('')}</div>
+  <div class="heard-row">${['need-to-know','ride-for-me'].map((id,i)=>{const x=relById(id);return `${i===1?'<div class="heard-mid" aria-live="polite"><div><span data-w="k">Preview</span><b data-w="t">Press play</b><span data-w="s">On either song</span></div></div>':''}<div class="hcard rv" data-side="${i?1:-1}" data-id="${x.id}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}${pvBtn(x)}</span><div><h3>${x.t}</h3><p>${x.a}</p><div class="pbar" data-prog="${x.id}"><span></span></div><div class="ln">${ext(spUrl(x),SPIC+'Full song on Spotify')}${ext(allUrl(x),'All platforms')}</div></div></div>`}).join('')}</div>
  </div></section>`:''}
  <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
@@ -1153,21 +1186,21 @@ function viewMusic(slug){
  <section class="mhero"><div class="mhero-bg" style="background-image:url(img/${f.c}.webp)"></div><div class="wrap">
   ${crumbs(relById(slug)?[['Home','#'],['Music','#music'],[f.t,'']]:[['Home','#'],['Music','']])}
   <div class="mfeat">
-   <div class="cv">${imgT(f.c,`${f.t} by ${f.a}, cover art`,0)}</div>
+   <div class="cv">${imgT(f.c,`${f.t} by ${f.a}, cover art`,0)}${pvBtn(f,"lg")}</div>
    <div class="mfeat-info">
     <span class="eyebrow">Out now · ${f.tag}</span>
     <h1>${f.t}</h1>
     <p class="by">by <b>${f.a}</b></p>
-    <div class="plat">${ext(spUrl(f),SPIC+'Listen on Spotify','btn btn-lav')}${ext(allUrl(f),'All platforms','btn btn-ghost')}</div>
-    <p class="plat-note">All platforms opens one link with every app that carries it: Apple Music, Amazon, TIDAL and more.</p>
+    <div class="plat">${f.pv?`<button class="btn btn-lav" type="button" data-play="${f.id}" data-lbl="1" aria-pressed="false">Play preview</button>`:''}${ext(spUrl(f),SPIC+'Full song on Spotify','btn btn-ghost')}${ext(allUrl(f),'All platforms','btn btn-ghost')}</div>
+    <p class="plat-note">Previews play right here. All platforms opens one link with every app that carries the song: Apple Music, Amazon, TIDAL and more.</p>
     ${seoNote(META[metaKey])}
     ${note('Ad landing page',`Every release has its own link, like <b>gvosound.com/music/${f.id}</b>. Point an Instagram or TikTok ad there and that song takes this top slot. UTM tags pass through to analytics. New releases are one row in Airtable.`)}
    </div>
   </div>
  </div></section>
  <section><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Flawless Breezyy · Cory McGhee</span><h2>The catalog</h2></div><p class="lede">Cory owns GVO and records here. Tap a cover to put it up top, or open it straight in your app.</p></div>
-  <div class="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><a href="#music/${x.id}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Playing up top</span>':''}</span><span><b>${x.t}</b><small>${x.a}</small></span></a><div class="ln">${ext(spUrl(x),'Spotify')}${ext(allUrl(x),'All platforms')}</div></div>`).join('')}</div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Flawless Breezyy · Cory McGhee</span><h2>The catalog</h2></div><p class="lede">Cory owns GVO and records here. Press play for a preview. Tap a cover to feature it up top.</p></div>
+  <div class="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><div class="cvw"><a class="cv" href="#music/${x.id}" aria-label="Feature ${x.t} at the top">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Featured</span>':''}</a>${pvBtn(x)}</div><a href="#music/${x.id}"><span><b>${x.t}</b><small>${x.a}</small></span></a><div class="ln">${ext(spUrl(x),'Spotify')}${ext(allUrl(x),'All platforms')}</div></div>`).join('')}</div>
  </div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
@@ -1293,6 +1326,7 @@ let pendingPreset=null;
 
 /* ================= wiring per view ================= */
 function wire(r){
+ if(typeof pSync==='function')pSync();
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
  wireVideos(main);
  if(r==='home')wireHome();
@@ -1337,59 +1371,75 @@ function wireHome(){
  cleanup.push(()=>clearInterval(iv));
 }
 
-/* hero deck: plays the featured release's preview; the bars follow the song */
-const A={audio:null,ac:null,an:null,data:null,raf:0};
+/* ================= shared preview player =================
+   One audio element for the whole site. Every [data-play] button drives it, it keeps playing across pages,
+   and the hero bars and the recording-page wave read the same analyser. */
+const P={au:new Audio(),ac:null,an:null,data:null,id:null};P.au.preload='none';
+const mmss=v=>`${Math.floor(v/60)}:${String(Math.floor((v||0)%60)).padStart(2,'0')}`;
+function pAnalyser(){if(P.ac)return;try{P.ac=new(window.AudioContext||window.webkitAudioContext)();P.an=P.ac.createAnalyser();P.an.fftSize=256;P.an.smoothingTimeConstant=.84;P.ac.createMediaElementSource(P.au).connect(P.an);P.an.connect(P.ac.destination);P.data=new Uint8Array(P.an.frequencyBinCount)}catch(e){P.an=null}}
+const pOn=id=>P.id===id&&!P.au.paused;
+function pLevel(){if(!P.an||P.au.paused)return null;P.an.getByteFrequencyData(P.data);return P.data}
+function pToggle(id){
+ const x=relById(id);if(!x||!x.pv)return;
+ if(P.id===id){if(P.au.paused)P.au.play().catch(()=>{});else P.au.pause();return}
+ P.id=id;P.au.src=`aud/${x.pv}.mp3`;pAnalyser();if(P.ac&&P.ac.state==='suspended')P.ac.resume();
+ P.au.play().catch(()=>toast('Tap play again to hear it'));pSync();
+}
+function pSync(){
+ const x=relById(P.id);
+ $$('[data-play]').forEach(b=>{const id=b.dataset.play||P.id,on=pOn(id),t=(relById(id)||{}).t||'';b.setAttribute('aria-pressed',on);if(b.dataset.lbl)b.textContent=on?'Pause preview':'Play preview';else if(b.id!=='pbBtn')b.setAttribute('aria-label',(on?'Pause ':'Play a preview of ')+t)});
+ $$('.hcard').forEach(c=>c.classList.toggle('playing',pOn(c.dataset.id)));
+ const bar=$('#pb');if(!x){bar.hidden=true;return}
+ bar.hidden=false;$('#pbImg').src=`img/${x.c}.webp`;$('#pbT').textContent=x.t;$('#pbA').textContent=(P.au.paused?'Paused · ':'Preview · ')+x.a;$('#pbBtn').dataset.play=x.id;$('#pbBtn').setAttribute('aria-pressed',!P.au.paused);$('#pbBtn').setAttribute('aria-label',(P.au.paused?'Play ':'Pause ')+x.t);
+ const sp=$('#pbSp');sp.href=spUrl(x);sp.innerHTML=SPIC;
+ pTime();
+}
+function pTime(){
+ const d=P.au.duration||30,c=P.au.currentTime||0,pct=c/d*100;
+ $('#pbP').style.width=pct+'%';$('#pbTm').textContent=mmss(c)+' / '+mmss(d);
+ $$('[data-prog]').forEach(el=>{$('span',el).style.width=(el.dataset.prog===P.id?pct:0)+'%'});
+ const dk=$('.dk-time');if(dk){const mine=dk.dataset.feat===P.id&&(c>0);$('#dkT').textContent=mine?(P.au.paused?'Paused · ':'Preview · ')+mmss(c):'Tap play for a preview';$('#dkD').textContent=mine?mmss(d):''}
+}
+['play','pause'].forEach(ev=>P.au.addEventListener(ev,pSync));
+P.au.addEventListener('timeupdate',pTime);
+P.au.addEventListener('ended',()=>{P.au.currentTime=0;pSync()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
+$('#pbX').addEventListener('click',()=>{P.au.pause();P.id=null;pSync()});
+
+/* hero deck bars */
 function startViz(){
- const cv=$('#viz'),btn=$('#play');if(!cv||!btn)return;let cx,cw,ch;
+ const cv=$('#viz');if(!cv)return;let cx,cw,ch;const feat=$('.dk-time').dataset.feat;
  const size=()=>{const r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);cv.width=r.width*d;cv.height=r.height*d;cx=cv.getContext('2d');cx.setTransform(d,0,0,d,0,0);cw=r.width;ch=r.height};
  size();addEventListener('resize',size);
- const au=A.audio=new Audio(`aud/${btn.dataset.pv}.mp3`);au.preload='none';
- const t=$('#dkT'),dd=$('#dkD'),mmss=v=>`${Math.floor(v/60)}:${String(Math.floor(v%60)).padStart(2,'0')}`;
- const sync=()=>{const p=!au.paused;btn.setAttribute('aria-pressed',p);if(!p&&!au.currentTime){t.textContent='Tap play for a preview';dd.textContent=''}else if(!p)t.textContent='Paused'};
- au.addEventListener('timeupdate',()=>{t.textContent='Preview · '+mmss(au.currentTime);dd.textContent=mmss(au.duration||30)});
- au.addEventListener('pause',sync);au.addEventListener('ended',()=>{au.currentTime=0;sync()});
- btn.onclick=()=>{if(!au.paused){au.pause();return}
-  try{if(!A.ac){A.ac=new(window.AudioContext||window.webkitAudioContext)();A.an=A.ac.createAnalyser();A.an.fftSize=256;A.an.smoothingTimeConstant=.82;A.ac.createMediaElementSource(au).connect(A.an);A.an.connect(A.ac.destination);A.data=new Uint8Array(A.an.frequencyBinCount)}if(A.ac.state==='suspended')A.ac.resume()}catch(e){}
-  au.play().then(()=>{sync();if(reduce)loop()}).catch(()=>toast('Tap play again to hear it'))};
- let tt=0,alive=true,sm=null;
+ let tt=0,alive=true,sm=null,raf=0;
  function loop(){
   if(!alive)return;cx.clearRect(0,0,cw,ch);
-  const n=Math.max(24,Math.floor(cw/7)),on=!au.paused&&A.an;if(on)A.an.getByteFrequencyData(A.data);if(!sm||sm.length!==n)sm=new Float32Array(n);
-  for(let i=0;i<n;i++){const idle=.07+.05*Math.sin(i*.3+tt)+.03*Math.sin(i*.09-tt*.6);const tgt=on?Math.max(idle,Math.pow(A.data[Math.floor(i/n*A.data.length*.7)]/255,2.2)*.9):idle;sm[i]+=(tgt-sm[i])*.18;const v=sm[i],h=Math.max(2,v*ch*.95);cx.fillStyle=v>.6?'#b9b2ff':v>.3?'#7d74c9':'#4a4470';cx.fillRect(i*7,(ch-h)/2,4,h)}
-  tt+=.012;if(!reduce||on)A.raf=requestAnimationFrame(loop);
+  const n=Math.max(24,Math.floor(cw/7)),data=P.id===feat?pLevel():null;if(!sm||sm.length!==n)sm=new Float32Array(n);
+  for(let i=0;i<n;i++){const idle=.07+.05*Math.sin(i*.3+tt)+.03*Math.sin(i*.09-tt*.6);const tgt=data?Math.max(idle,Math.pow(data[Math.floor(i/n*data.length*.7)]/255,2.2)*.9):idle;sm[i]+=(tgt-sm[i])*.18;const v=sm[i],h=Math.max(2,v*ch*.95);cx.fillStyle=v>.6?'#b9b2ff':v>.3?'#7d74c9':'#4a4470';cx.fillRect(i*7,(ch-h)/2,4,h)}
+  tt+=.012;raf=requestAnimationFrame(loop);
  }
- loop();
- cleanup.push(()=>{alive=false;cancelAnimationFrame(A.raf);removeEventListener('resize',size);au.pause();au.src='';if(A.ac){A.ac.close();A.ac=null}});
+ if(reduce){loop();cancelAnimationFrame(raf)}else loop();
+ pTime();
+ cleanup.push(()=>{alive=false;cancelAnimationFrame(raf);removeEventListener('resize',size)});
 }
 
-/* room page */
-/* wave field: contour lines + a ring that breathe slowly; when a preview plays, both follow the music. Runs only on screen. */
+/* wave field: contour lines + a ring that breathe slowly; when one of its songs plays, both follow the music. */
 function mountWave(sec){
  const cv=$('canvas',sec),x=cv.getContext('2d');let W,H,dpr,raf=0,on=false;
- let lean=0,leanT=0,lvl=0,bass=0,bins=null,ac=null,an=null,cur=null,hoverE=0,hoverT=0;
+ let lean=0,lvl=0,bass=0,hoverE=0,hoverT=0,hoverS=0;
  const mid=$('.heard-mid',sec),wk=$('[data-w="k"]',sec),wt=$('[data-w="t"]',sec),ws=$('[data-w="s"]',sec);
+ const cards=$$('.hcard',sec),ids=cards.map(c=>c.dataset.id);
  const size=()=>{dpr=Math.min(devicePixelRatio||1,2);W=sec.clientWidth;H=sec.clientHeight;cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)};
  const ring=()=>{const a=mid.getBoundingClientRect(),b=sec.getBoundingClientRect();return{cx:a.left-b.left+a.width/2,cy:a.top-b.top+a.height/2,r:a.width*.42}};
- const audio=new Audio();audio.preload='none';audio.crossOrigin='anonymous';
- const mmss=v=>`${Math.floor(v/60)}:${String(Math.floor(v%60)).padStart(2,'0')}`;
- function setIdle(){wk.textContent='Preview';wt.textContent='Press play';ws.textContent='On either song';$$('.hcard',sec).forEach(c=>{c.classList.remove('playing');$('.pv',c).setAttribute('aria-pressed','false');$('.pbar span',c).style.width='0'});cur=null;leanT=0}
- function play(card){
-  const id=card.dataset.pv,rel=REL.find(r=>r.pv===id);
-  if(cur===card&&!audio.paused){audio.pause();return}
-  if(cur!==card){audio.src=`aud/${id}.mp3`;setIdle();cur=card}
-  try{if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();an=ac.createAnalyser();an.fftSize=256;an.smoothingTimeConstant=.86;ac.createMediaElementSource(audio).connect(an);an.connect(ac.destination);bins=new Uint8Array(an.frequencyBinCount)}if(ac.state==='suspended')ac.resume()}catch(e){an=null}
-  audio.play().then(()=>{card.classList.add('playing');$('.pv',card).setAttribute('aria-pressed','true');$('.pv',card).setAttribute('aria-label','Pause '+rel.t);leanT=+card.dataset.side;wk.textContent='Now playing';wt.textContent=rel.t;start()}).catch(()=>toast('Tap play again to hear it'));
- }
- audio.addEventListener('pause',()=>{if(cur){$('.pv',cur).setAttribute('aria-pressed','false');cur.classList.remove('playing');wk.textContent='Paused';leanT=0}});
- audio.addEventListener('timeupdate',()=>{if(!cur)return;ws.textContent=mmss(audio.currentTime)+' / '+mmss(audio.duration||30);$('.pbar span',cur).style.width=(audio.currentTime/(audio.duration||30)*100)+'%'});
- audio.addEventListener('ended',setIdle);
- $$('.hcard',sec).forEach(c=>{$('.pv',c).addEventListener('click',()=>play(c));const s=+c.dataset.side;c.addEventListener('pointerenter',()=>{hoverT=1;if(audio.paused)leanT=s*.5});c.addEventListener('pointerleave',()=>{hoverT=0;if(audio.paused)leanT=0})});
+ const label=()=>{const mine=ids.includes(P.id)&&P.au.currentTime>0;if(!mine){wk.textContent='Preview';wt.textContent='Press play';ws.textContent='On either song';return}wk.textContent=P.au.paused?'Paused':'Now playing';wt.textContent=relById(P.id).t;ws.textContent=mmss(P.au.currentTime)+' / '+mmss(P.au.duration||30)};
+ P.au.addEventListener('timeupdate',label);P.au.addEventListener('pause',label);P.au.addEventListener('play',label);label();
+ cards.forEach(c=>{const s=+c.dataset.side;c.addEventListener('pointerenter',()=>{hoverT=1;hoverS=s});c.addEventListener('pointerleave',()=>{hoverT=0;hoverS=0})});
  function draw(ms){
   const t=ms/1000;
-  // listen
-  let L=0,B=0;
-  if(an&&!audio.paused){an.getByteFrequencyData(bins);for(let i=0;i<bins.length;i++)L+=bins[i];L/=bins.length*255;for(let i=1;i<8;i++)B+=bins[i];B/=7*255}
-  lvl+=(L-lvl)*.05;bass+=(B-bass)*.04;lean+=(leanT-lean)*.025;hoverE+=(hoverT-hoverE)*.03;
+  let L=0,B=0;const data=ids.includes(P.id)?pLevel():null;
+  if(data){for(let i=0;i<data.length;i++)L+=data[i];L/=data.length*255;for(let i=1;i<8;i++)B+=data[i];B/=7*255}
+  const playSide=data?+cards[ids.indexOf(P.id)].dataset.side:0;
+  lvl+=(L-lvl)*.05;bass+=(B-bass)*.04;lean+=((playSide||hoverS*.5)-lean)*.025;hoverE+=(hoverT-hoverE)*.03;
   const e=Math.min(1,lvl*2.2),g0=.35+hoverE*.25+e;
   x.clearRect(0,0,W,H);
   const R=ring(),N=W<700?9:15,cy=R.cy;
@@ -1418,14 +1468,15 @@ function mountWave(sec){
    const rad=rr*(1+n);const px=Math.cos(a)*rad,py=Math.sin(a)*rad;a===0?x.moveTo(px,py):x.lineTo(px,py);
   }
   x.closePath();x.stroke();x.restore();
-  raf=0;if(on&&(!reduce||!audio.paused))raf=requestAnimationFrame(draw);
+  raf=0;if(on&&!reduce)raf=requestAnimationFrame(draw);
  }
- const start=()=>{if(on&&!raf)raf=requestAnimationFrame(draw)};
  size();draw(performance.now());
  const ro=new ResizeObserver(()=>{size();draw(performance.now())});ro.observe(sec);
- const io=new IntersectionObserver(([en])=>{on=en.isIntersecting;cancelAnimationFrame(raf);raf=0;if(on&&!reduce)start()},{threshold:0});io.observe(sec);
- cleanup.push(()=>{on=false;cancelAnimationFrame(raf);io.disconnect();ro.disconnect();audio.pause();audio.src='';if(ac)ac.close()});
+ const io=new IntersectionObserver(([en])=>{on=en.isIntersecting;cancelAnimationFrame(raf);raf=0;if(on&&!reduce)raf=requestAnimationFrame(draw)},{threshold:0});io.observe(sec);
+ cleanup.push(()=>{on=false;cancelAnimationFrame(raf);io.disconnect();ro.disconnect();P.au.removeEventListener('timeupdate',label);P.au.removeEventListener('pause',label);P.au.removeEventListener('play',label)});
 }
+
+/* room page */
 function wireRoom(slug){
  const hd=$('#heard',main);if(hd)mountWave(hd);
  const r=ROOMS[slug];
