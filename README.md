@@ -48,4 +48,5 @@ The checkout demo (Pay button on any booking or bag) walks through each Square c
 - Connect Square (catalog, bookings, payments) and keep the Meta pixel on booking events
 - Transfer gvosound.com to Cloudflare, set up Email Routing to Gmail
 - 301-redirect old Wix URLs: /sound-studio, /photo-studio, /podcast-taping, /category/all-products, /product-page/*
+- Switch og:image and twitter:image from gvo-sound.pages.dev to https://www.gvosound.com/img/og-image.png
 - Cancel Wix only after the domain transfer completes
