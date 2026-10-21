@@ -689,6 +689,16 @@ section{padding-block:clamp(52px,7vw,92px)}
 .door-ph img{object-position:50% 60%}
 .door-info{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 40px}
 @media (max-width:900px){.door-info{grid-template-columns:1fr}}
+
+/* ---- contact links + photographer note ---- */
+.reach{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none;min-height:56px;transition:color .2s}
+.reach small{grid-column:1;font:600 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.reach span{grid-column:1;font-size:1rem;overflow-wrap:anywhere}
+.reach i{grid-column:2;grid-row:1/3;font-style:normal;color:var(--lav);font-size:1.1rem;transition:transform .25s var(--ease)}
+.reach:hover span{color:var(--lav)}
+.reach:hover i{transform:translateX(4px)}
+.staff-note{border-left:2px solid var(--lav);padding:4px 0 4px 12px;color:#cfc9d6!important}
+.door-ph img{object-position:50% 35%}
 </style>
 </head>
 <body>
@@ -882,10 +892,10 @@ const crumbs=list=>`<ol class="crumbs" aria-label="Breadcrumb">${list.map(([l,h]
 const prodCard=p=>{const badge=p.s?`<span class="badge sale">${Math.round((1-p.s/p.p)*100)}% off</span>`:p.flag?`<span class="badge">${p.flag}</span>`:'';const colors=(p.o.find(o=>o.t==='Color')||{v:[]}).v.length;
  return `<a class="prod rv" href="#product-${p.id}"><div class="pic">${badge}${p.img.length?imgT(p.img[0],p.n)+(p.img[1]?imgT(p.img[1],'',1,'b'):''):'<div class="nophoto"><span class="mark"></span><small>Photo coming</small></div>'}</div><div class="meta"><span class="name">${p.n}${colors>1?`<small class="cols">${colors} colors</small>`:''}</span><span class="price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</span></div></a>`};
 const memberCard=m=>`<figure class="member" data-g="${m.g}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span><a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a></figcaption></figure>`;
-const doorHTML=()=>`<div class="door rv"><div class="door-ph">${imgT('lobby','GVO reception area with leather chairs')}</div><div class="door-info">
+const doorHTML=()=>`<div class="door rv"><div class="door-ph">${imgT('pod_3','The GVO studio floor with the GVO logo wall')}</div><div class="door-info">
  <div><h3>Pull up</h3><p class="addr">109 Gibralter Ave<br>Annapolis, MD 21401</p><p style="margin:12px 0 0"><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Open in Maps →</a></p></div>
  <div><h3>Hours</h3><table class="hours">${hoursRows()}</table></div>
- <div><h3>Reach the studio</h3><div class="copy"><span>(443) 292-6753</span><button type="button" data-copy="(443) 292-6753">Copy</button></div><div class="copy"><span>Text bookings · (443) 254-1482</span><button type="button" data-copy="(443) 254-1482">Copy</button></div><div class="copy"><span>gvosoundllc@gmail.com</span><button type="button" data-copy="gvosoundllc@gmail.com">Copy</button></div></div>
+ <div><h3>Reach the studio</h3><a class="reach" href="tel:+14432926753"><small>Call</small><span>(443) 292-6753</span><i>→</i></a><a class="reach" href="sms:+14432541482"><small>Text bookings</small><span>(443) 254-1482</span><i>→</i></a><a class="reach" href="mailto:gvosoundllc@gmail.com"><small>Email</small><span>gvosoundllc@gmail.com</span><i>→</i></a></div>
 </div></div>`;
 
 /* ================= views ================= */
@@ -997,10 +1007,9 @@ function viewRoom(slug){
 function viewBook(){
  return `<div class="view" data-v="book"><section class="desk-sec" style="padding-top:calc(130px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Book a session','']])}
-  <div class="sec-head" style="margin-top:20px"><div class="hd"><span class="eyebrow">Booking desk</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">Book a session</h1></div><p class="lede">Recording or photo. Pick a room, a length and a start time. A $50 deposit holds it.</p></div>
+  <div class="sec-head" style="margin-top:20px"><div class="hd"><span class="eyebrow">Booking desk</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">Book a session</h1></div><p class="lede">Recording, photo, or a quote for podcast and content work. Pick a room, a length and a start time. A $50 deposit holds it.</p></div>
   ${seoNote(META.book)}
   <div data-desk="all"></div>
-  <p class="dark-fine" style="margin-top:20px;font-size:.85rem">Podcast or video project? <a class="link" href="#podcast-studio">Request a quote</a></p>
  </div></section></div>`;
 }
 
@@ -1178,14 +1187,14 @@ function wireRoom(slug){
 
 /* ================= booking desk (one shared state) ================= */
 const B={room:'rec',hrs:2,staff:'any',day:null,slot:null,add:new Map(),done:null,scope:'all'};
-const BROOMS=[{k:'rec',n:'Recording session',s:'Engineer and mix included',img:'s_artist2'},{k:'photo',n:'Photo studio',s:'Room, lights, 1 backdrop',img:'photo_cyc'},{k:'holiday',n:'Holiday photo special',s:'1 hr, photographer, 20 edits',img:'t_dym'}];
+const BROOMS=[{k:'pod',n:'Podcast or content',s:'Request a quote',img:'pod_set',quote:1},{k:'rec',n:'Recording session',s:'Engineer and mix included',img:'s_artist2'},{k:'photo',n:'Photo studio',s:'Room, lights, 1 backdrop',img:'photo_cyc'},{k:'holiday',n:'Holiday photo special',s:'1 hr, photographer, 20 edits',img:'t_dym'}];
 const ADDONS=['gvo-beanie','world-tour-tee-black','prove-a-point-tee','world-tour-cozy-hoodie'];
 const addOf=id=>[...B.add.values()].find(x=>x.id===id);
 let D=null;
 const DESK_HTML=`<div class="desk"><div class="steps">
  <div class="step" data-step="room"><div class="step-h"><span class="n">01</span><h3>Room</h3></div><div class="opts" data-el="rooms"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>02</span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num>03</span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num>03</span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
  <div class="step"><div class="step-h"><span class="n" data-num>04</span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>05</span><h3>Wear the session</h3></div><p class="fine">Add merch and it's bagged at the front desk when you arrive. One checkout.</p><div class="addons" data-el="addons"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>06</span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
@@ -1202,7 +1211,7 @@ function mountDesk(host,k){
  if(fixed){$('[data-step="room"]',host).hidden=true;$$('[data-num]',host).forEach((n,i)=>n.textContent='0'+(i+1))}
  const keepRoom=(B.scope==='photo'&&(B.room==='photo'||B.room==='holiday'))||B.room===k;
  setBookRoom(keepRoom?B.room:k,true);
- D.rooms.onclick=e=>{const b=e.target.closest('[data-room]');if(b)setBookRoom(b.dataset.room)};
+ D.rooms.onclick=e=>{const b=e.target.closest('[data-room]');if(!b)return;if(b.dataset.room==='pod'){mountQuote(host,true);return}setBookRoom(b.dataset.room)};
  D.staff.onclick=e=>{const b=e.target.closest('[data-staff]');if(b){B.staff=b.dataset.staff;renderBook()}};
  D.days.onclick=e=>{const b=e.target.closest('[data-day]');if(b){B.day=b.dataset.day;B.dayPicked=true;renderBook()}};
  D.slots.onclick=e=>{const b=e.target.closest('[data-slot]');if(b&&!b.disabled){B.slot=+b.dataset.slot;renderBook()}};
@@ -1229,7 +1238,7 @@ function setBookRoom(k,keep){
 const price=()=>B.room==='rec'?REC[B.hrs]:B.room==='photo'?PHOTO[B.hrs]:150;
 function staffList(){
  if(B.room==='rec')return[{k:'any',n:'First available',s:'Any engineer'},{k:'JCX Beats',n:'JCX Beats',s:'Engineer · Producer',img:'t_jcx'},{k:'Mooki',n:'Mooki Mixed It',s:'Sound engineer'},{k:'Nelly AEXO',n:'Nelly AEXO',s:'Engineer · Producer',img:'t_nelly'}];
- const ph=[{k:'Dym Archives',n:'Dym Archives',s:'Photographer',img:'t_dym'},{k:'Smooth',n:'Smooth',s:'Photographer',img:'t_smooth'}];
+ const ph=[{k:'Dym Archives',n:'Dym Archives',s:B.room==='photo'?'Rate paid separately':'Included in the $150',img:'t_dym'},{k:'Smooth',n:'Smooth',s:B.room==='photo'?'Rate paid separately':'Included in the $150',img:'t_smooth'}];
  return B.room==='photo'?[{k:'any',n:'No photographer',s:'Bringing my own'},...ph]:[{k:'any',n:'First available',s:'Any photographer'},...ph];
 }
 const BOOKED=new Set();const roomGroup=r=>r==='rec'?'rec':'photo';
@@ -1241,7 +1250,8 @@ function slotsFor(d){const[o,c]=HOURS[d.getDay()],now=nowET(),res=[];for(let h=o
 const opt=(o,attr,on)=>`<button type="button" class="opt${o.img?'':' plain'}" aria-pressed="${on}" ${attr}="${o.k}">${o.img?`<div class="ph">${imgT(o.img,'')}</div>`:''}<div class="tx"><b>${o.n}</b><small>${o.s}</small></div></button>`;
 function renderBook(){
  if(!D||!D.host.isConnected)return;
- const roomsShown=(B.scope==='photo'?BROOMS.filter(r=>r.k!=='rec'):BROOMS).filter(r=>r.k!=='holiday'||inSeason());
+ const roomsShown=(B.scope==='photo'?BROOMS.filter(r=>r.k!=='rec'):BROOMS).filter(r=>(r.k!=='holiday'||inSeason())&&(r.k!=='pod'||B.scope==='all'));
+ const pod=roomsShown.find(r=>r.k==='pod');if(pod){roomsShown.splice(roomsShown.indexOf(pod),1);roomsShown.push(pod)}
  if(B.scope==='photo')$('[data-step="room"]',D.host).hidden=false;
  if(B.scope==='photo')$$('[data-num]',D.host).forEach((n,i)=>n.textContent='0'+(i+2));
  D.rooms.innerHTML=roomsShown.map(r=>opt(r,'data-room',B.room===r.k)).join('');
@@ -1250,6 +1260,8 @@ function renderBook(){
  D.ticks.innerHTML=mn===mx?'<span>Fixed 1-hour shoot</span>':Array.from({length:mx-mn+1},(_,i)=>`<span>${mn+i}</span>`).join('');
  D.staffHead.textContent=B.room==='rec'?'Engineer':'Photographer';
  D.staff.innerHTML=staffList().map(s=>opt(s,'data-staff',B.staff===s.k)).join('');
+ D.staffNote.hidden=B.room==='rec';
+ D.staffNote.textContent=B.room==='photo'?'The photo studio rate is for the room and the gear only. Photographers set their own rates and you pay them separately. Your photographer confirms the price with you before the shoot.':'The holiday special includes the photographer, the 1-hour shoot and 20 edited photos.';
  const ds=days();if(!B.day||!ds.some(d=>keyOf(d)===B.day)||!slotsFor(ds.find(d=>keyOf(d)===B.day)).some(x=>!x.dis)&&B.slot===null&&!B.dayPicked){const f=ds.find(d=>slotsFor(d).some(x=>!x.dis))||ds[0];B.day=keyOf(f)}
  D.days.innerHTML=ds.map(d=>`<button type="button" class="day${HOURS[d.getDay()][1]>24?' late':''}" aria-pressed="${B.day===keyOf(d)}" data-day="${keyOf(d)}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString('en-US',{month:'short'})}</small></button>`).join('');
  const sl=slotsFor(ds.find(d=>keyOf(d)===B.day));
@@ -1275,9 +1287,9 @@ function renderTicket(){
  const {p,merch,mcount,tax,total,today}=totals();
  const d=new Date(B.day+'T12:00:00');
  const when=B.slot!==null?`${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} · ${fmtH(B.slot)}–${fmtH(B.slot+B.hrs)}`:'Pick a start time';
- tk.innerHTML=head+`<dl><dt>Length</dt><dd>${B.hrs} ${B.hrs===1?'hour':'hours'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffList().find(s=>s.k===B.staff).n}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
+ tk.innerHTML=head+`<dl><dt>Length</dt><dd>${B.hrs} ${B.hrs===1?'hour':'hours'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffList().find(s=>s.k===B.staff).n}${B.room==='photo'&&B.staff!=='any'?' · paid separately':''}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
  <div class="perf"></div>
- <div class="tot"><div><span>Session</span><span>${m2(p)}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}<div><span>MD sales tax 6%</span><span>${m2(tax)}</span></div><div><span>Total</span><span>${m2(total)}</span></div><div class="due"><span>Due today</span><span>${m2(today)}</span></div><p class="fine">$50 non-refundable deposit holds the slot${merch?', merch is paid now':''}. ${m2(total-today)} is due at the studio.</p></div>
+ <div class="tot"><div><span>Session</span><span>${m2(p)}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}<div><span>MD sales tax 6%</span><span>${m2(tax)}</span></div><div><span>Total</span><span>${m2(total)}</span></div><div class="due"><span>Due today</span><span>${m2(today)}</span></div><p class="fine">$50 non-refundable deposit holds the slot${merch?', merch is paid now':''}. ${m2(total-today)} is due at the studio.${B.room==='photo'&&B.staff!=='any'?' Photographer fee not included.':''}</p></div>
  <div class="act"><button type="button" class="btn btn-lav" data-pay ${B.slot===null?'disabled':''}>${B.slot===null?'Choose a start time':'Pay '+m2(today)}</button><p class="fine">Apple Pay, Google Pay, card or Afterpay.</p></div>`;
  $('[data-pay]',tk).onclick=()=>{
   const name=$('#f-name').value.trim(),phone=$('#f-phone').value.trim();
@@ -1374,9 +1386,11 @@ function openSim(c){
 function feed(html){const f=$('#feed');if(!f)return;const d=document.createElement('div');d.className='fi';d.innerHTML=html;f.prepend(d)}
 
 /* podcast quote form */
-function mountQuote(host){
+function mountQuote(host,switcher){
  const types=['Podcast','Social media content','Commercial','Other'];let t='Podcast';
- host.innerHTML=`<div class="desk"><form class="quote-form" novalidate id="qform">
+ if(switcher)D=null;
+ const sw=switcher?`<div class="steps" style="margin-bottom:16px"><div class="step"><div class="step-h"><span class="n">01</span><h3>Room</h3></div><div class="opts" id="qSwitch">${BROOMS.filter(r=>r.k!=='holiday'||inSeason()).sort((a,b)=>(a.k==='pod')-(b.k==='pod')).map(r=>opt(r,'data-room',r.k==='pod')).join('')}</div></div></div>`:'';
+ host.innerHTML=sw+`<div class="desk"><form class="quote-form" novalidate id="qform">
   <div><h3 style="font-size:.8rem;margin-bottom:10px">What are you making?</h3><div class="seg" id="qtype"></div></div>
   <div class="fields"><label>Name<input id="q-name" autocomplete="name" placeholder="Your name or show name"></label><label>Phone<input id="q-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label><label class="full">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com"></label><label class="full">Tell us about it<textarea id="q-notes" rows="4" placeholder="Weekly show, 2 hosts and a guest, want clips for Instagram"></textarea></label></div>
   <button type="submit" class="btn btn-lav" style="justify-self:start">Send request</button>
@@ -1384,6 +1398,7 @@ function mountQuote(host){
   <aside class="ticket"><div class="t-head">${imgT('pod_set','')}<div><small>Podcast and video</small><b>Quoted per project</b></div></div><dl><dt>Producers</dt><dd>Bob Almighty, KingMAG Prod, Skandle</dd><dt>Studio</dt><dd>Seven days a week</dd><dt>Reply</dt><dd>A call back from the team</dd></dl><div class="act"><p class="fine">Prefer to text? (443) 254-1482</p></div></aside></div>`;
  const rT=()=>$('#qtype').innerHTML=types.map(x=>`<button type="button" class="chip" aria-pressed="${x===t}" data-t="${x}">${x}</button>`).join('');rT();
  $('#qtype').onclick=e=>{const b=e.target.closest('[data-t]');if(b){t=b.dataset.t;rT()}};
+ if(switcher)$('#qSwitch').onclick=e=>{const b=e.target.closest('[data-room]');if(!b||b.dataset.room==='pod')return;B.room=b.dataset.room;mountDesk(host,b.dataset.room)};
  $('#qform').onsubmit=e=>{e.preventDefault();if(!$('#q-name').value.trim()||!$('#q-phone').value.trim()){toast('Add your name and phone so the team can call you');return}e.target.innerHTML=`<div style="display:grid;gap:14px"><span class="eyebrow">Request received</span><h3 style="font-size:2rem">Talk soon</h3><p class="lede">The GVO video team will call ${$('#q-phone')?.value||'you'} about your ${t.toLowerCase()} project. Demo only, nothing was sent.</p></div>`;toast('Request sent')};
 }
 
