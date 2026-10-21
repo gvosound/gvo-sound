@@ -953,19 +953,6 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .travel b{font-size:1rem}
 @media (max-width:620px){.travel{grid-template-columns:1fr;border-radius:var(--r)}.travel-h{grid-column:auto}}
 /* ---- GVO = Good Vibes Only + Google rating ---- */
-.gvo{padding-block:clamp(64px,9vw,120px);border-bottom:1px solid var(--line);overflow:hidden}
-.gvo-g{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(28px,5vw,72px);align-items:center}
-.gvo-w{margin:0;display:grid;gap:.02em;font:900 clamp(3.2rem,10.5vw,9.5rem)/.86 var(--display);font-stretch:125%;text-transform:uppercase;letter-spacing:-.02em}
-.gvo-w span{display:flex;align-items:baseline;white-space:nowrap}
-.gvo-w b{font-weight:900;color:var(--bone)}
-.gvo-w i{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--lav);display:inline-block;clip-path:inset(0 100% 0 0);transition:clip-path 1.1s var(--ease)}
-.gvo-w span:nth-child(2) i{transition-delay:.18s}.gvo-w span:nth-child(3) i{transition-delay:.36s}
-.gvo.in .gvo-w i{clip-path:inset(0 0 0 0)}
-@media (prefers-reduced-motion:reduce){.gvo-w i{clip-path:none;transition:none}}
-.gvo-t{display:grid;gap:18px;justify-items:start;min-width:0}
-.gvo-t p{margin:0;font-size:clamp(1.1rem,1.6vw,1.35rem);line-height:1.5;color:#d7d2dc;max-width:34ch}
-@media (max-width:860px){.gvo-g{grid-template-columns:1fr}.gvo-w{font-size:clamp(3.2rem,17vw,6rem)}}
-@media (max-width:420px){.gbadge.lg{flex-wrap:wrap;width:auto;border-radius:var(--r)}.gbadge.lg b{font-size:1.3rem}}
 .g-ic{width:18px;height:18px;flex:none}
 .stars{color:#f5b301;letter-spacing:.08em;font-size:.9rem}
 .gbadge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line);border-radius:40px;background:rgba(14,12,19,.7);text-decoration:none;font:600 .75rem var(--mono);letter-spacing:.06em;color:var(--mute);transition:border-color .25s;justify-self:start;width:max-content;max-width:100%}
@@ -1289,10 +1276,6 @@ function viewHome(){
  </section>
  <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
 
- <section class="gvo" id="gvo"><div class="wrap gvo-g">
-  <h2 class="gvo-w" aria-label="GVO: Good Vibes Only"><span><b>G</b><i>ood</i></span><span><b>V</b><i>ibes</i></span><span><b>O</b><i>nly</i></span></h2>
-  <div class="gvo-t rv"><span class="eyebrow">What GVO stands for</span><p>Three letters on the door. One rule in every room. The session, the shoot and the party all run on it.</p>${gBadge('lg')}<small class="dark-fine">From ${GOOG.count} reviews on Google. Artists, parents, photographers and party hosts.</small></div>
- </div></section>
  <section id="rooms"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three studios · one address</span><h2>The studios</h2></div><p class="lede">Recording books in 2 to 12 hours. The photo studio books in 1 to 5. Podcast and content work starts with a quote.</p></div>
   <div class="rooms" id="roomsEl">${Object.entries(ROOMS).map(([slug,r],i)=>`<div class="room" role="button" tabindex="0" aria-expanded="${i===0}" data-slug="${slug}">
@@ -1611,7 +1594,6 @@ function wire(r){
 /* home */
 let audio=null;
 function wireHome(){
- const gv=$('#gvo',main);if(gv){if(reduce||!('IntersectionObserver' in window))gv.classList.add('in');else{const o=new IntersectionObserver(([e])=>{if(e.isIntersecting){gv.classList.add('in');o.disconnect()}},{threshold:.35});o.observe(gv);cleanup.push(()=>o.disconnect())}}
  const hero=$('#hero');
  hero.addEventListener('pointermove',e=>{const b=hero.getBoundingClientRect();hero.style.setProperty('--mx',((e.clientX-b.left)/b.width*100)+'%');hero.style.setProperty('--my',((e.clientY-b.top)/b.height*100)+'%')});
  const words=['Good Vibes Only','Now booking','Open until 3AM Fri–Sun','Engineer and mix included','Recording · Photo · Podcast','109 Gibralter Ave, Annapolis','Est. 2020'];
