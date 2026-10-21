@@ -718,6 +718,9 @@ section{padding-block:clamp(52px,7vw,92px)}
 .np-feat{display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:22px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:18px;background:linear-gradient(135deg,rgba(185,178,255,.10),transparent 60%),var(--ink-2)}
 .np-feat h3{font-size:clamp(1.6rem,3vw,2.3rem);line-height:.92;margin:6px 0 6px}
 .np-feat p{margin:0 0 14px;color:#d7d2dc}
+.np-feat .plat{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.np-feat .plat>:first-child{grid-column:1/-1}
+.np-feat .plat .btn{padding-inline:12px}
 .np-list{display:grid;align-content:start;border-top:1px solid var(--line)}
 .np-more{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;flex-wrap:wrap}
 @media (max-width:900px){.np{grid-template-columns:1fr}}
@@ -733,15 +736,24 @@ section{padding-block:clamp(52px,7vw,92px)}
 .mfeat .by{font-size:1.15rem;color:#d7d2dc;margin:0}
 .mfeat .by b{color:var(--bone)}
 @media (max-width:760px){.mfeat{grid-template-columns:1fr}.mfeat .cv{max-width:min(320px,100%)}}
-.cat{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(190px,42vw),1fr));gap:22px 14px}
-.rel{display:grid;gap:10px;align-content:start}
+.cat{display:grid;grid-auto-flow:column;grid-auto-columns:min(230px,64vw);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 6px 8px;margin:0 -6px}
+.cat::-webkit-scrollbar{display:none}
+.cv{display:block}
+.rel{display:grid;gap:12px;align-content:start;scroll-snap-align:start;min-width:0}
+.rel-t{display:grid;gap:4px;text-decoration:none;min-width:0}
+.rel-t b,.rel-t small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rel-t:hover b{color:var(--lav)}
+.rel .ln span{color:var(--line)}
+.rel .ln .sp-ic{width:14px;height:14px;margin-right:6px;vertical-align:-2px}
+.cat-nav button{display:inline-block}
+@media (max-width:760px){.cat-nav{display:none}}
 .rel>a{text-decoration:none;display:grid;gap:10px}
 .rel .cv img{transition:transform .8s var(--ease)}
 .rel>a:hover .cv img{transform:scale(1.05)}
 .rel .cv .on{position:absolute;left:8px;top:8px;font:600 .65rem var(--mono);letter-spacing:.1em;text-transform:uppercase;background:var(--lav);color:var(--lav-ink);padding:5px 7px;border-radius:2px}
 .rel b{font-weight:600;line-height:1.25;display:block}
 .rel small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
-.rel .ln{display:flex;gap:16px;font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.rel .ln{display:flex;gap:10px;align-items:center;font:600 .68rem var(--mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 .rel .ln a{color:var(--lav);text-decoration:none;padding-block:6px}
 .rel .ln a:hover{color:var(--bone)}
 .rel[aria-current="true"] .cv{outline:2px solid var(--lav);outline-offset:3px}
@@ -767,7 +779,7 @@ section{padding-block:clamp(52px,7vw,92px)}
 .sess .th::after{content:"";position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(7,6,10,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l9 5-9 5z' fill='%23b9b2ff'/%3E%3C/svg%3E") center/26px no-repeat;border:1px solid rgba(185,178,255,.6);backdrop-filter:blur(4px)}
 .sess b{font-weight:600}
 .sess small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
-@media (min-width:1100px){.cat{grid-template-columns:repeat(7,minmax(0,1fr))}.sess{grid-auto-flow:row;grid-template-columns:repeat(5,1fr);overflow:visible}}
+@media (min-width:1100px){.cat{grid-auto-columns:calc((100% - 72px)/5)}.sess{grid-auto-flow:row;grid-template-columns:repeat(5,1fr);overflow:visible}}
 /* ---- recorded here: wave field ---- */
 .heard{position:relative;isolation:isolate;overflow:hidden;padding-block:clamp(70px,9vw,120px)}
 .heard>canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block}
@@ -1119,7 +1131,7 @@ const REL=[
 ];
 const FEATURED='ride-for-me';
 const ARTISTS=[
- {n:'Flawless Breezyy',r:'Cory McGhee, GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',img:'t_cory'},
+ {n:'Flawless Breezyy',r:'GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',img:'t_cory'},
  {n:'BoobBlack',r:'GVO team engineer. Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',img:'c_boob'},
  {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',img:'c_need'}
 ];
@@ -1440,13 +1452,13 @@ function viewMusic(slug){
   </div>
  </div></section>
  <section><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Flawless Breezyy · Cory McGhee</span><h2>The catalog</h2></div><p class="lede">Cory owns GVO and records here. Press play for a preview. Tap a cover to feature it up top.</p></div>
-  <div class="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><div class="cvw"><a class="cv" href="#music/${x.id}" aria-label="Feature ${x.t} at the top">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Featured</span>':''}</a>${pvBtn(x)}</div><a href="#music/${x.id}"><span><b>${x.t}</b><small>${x.a}</small></span></a><div class="ln">${ext(spUrl(x),'Spotify')}${ext(allUrl(x),'All platforms')}</div></div>`).join('')}</div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Flawless Breezyy</span><h2>The catalog</h2><p class="lede">Flawless owns GVO and records here. Press play on any cover for a preview.</p></div><div class="igb-nav cat-nav"><button type="button" data-cats="-1" aria-label="Scroll back">←</button><button type="button" data-cats="1" aria-label="Scroll forward">→</button></div></div>
+  <div class="cat" id="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><div class="cvw"><a class="cv" href="#music/${x.id}" aria-label="Feature ${x.t} at the top">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Featured</span>':''}</a>${pvBtn(x)}</div><a class="rel-t" href="#music/${x.id}"><b>${x.t}</b><small>${x.a}</small></a><div class="ln">${ext(spUrl(x),SPIC+'Spotify')}<span aria-hidden="true">·</span>${ext(allUrl(x),'All platforms')}</div></div>`).join('')}</div>
  </div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
   <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${ext(SPO+a.sp,'Follow on Spotify →')}</div></div>`).join('')}</div>
-  <div class="submit rv"><div><span class="eyebrow">Recorded at GVO?</span><h3>Get your song on this page</h3><p>Send the link. Cory reviews every submission before it goes live.</p></div>
+  <div class="submit rv"><div><span class="eyebrow">Recorded at GVO?</span><h3>Get your song on this page</h3><p>Send the link. Flawless reviews every submission before it goes live.</p></div>
    <form id="subForm" novalidate><input name="artist" placeholder="Artist name" required autocomplete="nickname"><input name="email" type="email" placeholder="Email" required autocomplete="email"><input class="full" name="link" type="url" placeholder="Spotify or Apple Music link" required><button class="btn btn-lav full" type="submit">Submit my release</button></form>
   </div>
   ${note('Where submissions go','The form writes a row to the Music table in GVO\'s Airtable and emails Cory. He flips Approved and the release shows here on the next build.')}
@@ -1492,7 +1504,7 @@ function viewEvents(){
   ${note('Instagram feed','These are real posts from @gvosound.events, saved Oct 21. Reels and posts open in Instagram\'s own player on the page. At launch the row refreshes itself from the Instagram API through the Cloudflare Worker, so new posts show up without anyone touching the site.')}
  </div></section>
  <section class="desk-sec" id="inquire"><div class="wrap">
-  <div class="sec-head"><div class="hd"><span class="eyebrow">Partner with us</span><h2>Work with GVO Events</h2></div><p class="lede">DJs, venue owners, promoters, brands and private hosts. Tell us what you have in mind and Cory gets back to you.</p></div>
+  <div class="sec-head"><div class="hd"><span class="eyebrow">Partner with us</span><h2>Work with GVO Events</h2></div><p class="lede">DJs, venue owners, promoters, brands and private hosts. Tell us what you have in mind and Flawless gets back to you.</p></div>
   <form class="inq" id="inqForm" novalidate>
    <fieldset class="full"><legend>I'm a</legend><div class="filters" id="inqType">${['DJ or artist','Venue owner','Promoter','Brand or sponsor','Private event','Something else'].map((t,i)=>`<button type="button" class="chip" aria-pressed="${i===0}">${t}</button>`).join('')}</div></fieldset>
    <label><span>Name</span><input name="name" required autocomplete="name"></label>
@@ -1629,10 +1641,10 @@ function wire(r){
  if(r==='home')wireHome();
  if(r==='events'){
   const ty=$('#inqType',main);if(ty)ty.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$$('.chip',ty).forEach(x=>x.setAttribute('aria-pressed',x===c))});
-  const fm=$('#inqForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.required&&!x.checkValidity());if(bad){bad.focus();toast('Add your '+(bad.name==='msg'?'details':bad.name));return}const t=$('.chip[aria-pressed="true"]',ty).textContent;fm.reset();toast(`Sent. Cory gets back to you soon. (${t})`)});
+  const fm=$('#inqForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.required&&!x.checkValidity());if(bad){bad.focus();toast('Add your '+(bad.name==='msg'?'details':bad.name));return}const t=$('.chip[aria-pressed="true"]',ty).textContent;fm.reset();toast(`Sent. Flawless gets back to you soon. (${t})`)});
   const nf=$('#evNotify',main);if(nf)nf.addEventListener('submit',e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}nf.reset();toast("You're on the list for the next date")});
  }
- if(r.startsWith('music')){const fm=$('#subForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&!x.checkValidity());if(bad){bad.focus();toast(bad.name==='link'?'Paste a full link, starting with https://':'Fill in '+bad.placeholder.toLowerCase());return}fm.reset();toast('Sent. Cory reviews it before it goes live.')})}
+ if(r.startsWith('music')){const fm=$('#subForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&!x.checkValidity());if(bad){bad.focus();toast(bad.name==='link'?'Paste a full link, starting with https://':'Fill in '+bad.placeholder.toLowerCase());return}fm.reset();toast('Sent. Flawless reviews it before it goes live.')})}
  if(ROOMS[r])wireRoom(r);
  $$('[data-yt]',main).forEach(b=>b.addEventListener('click',()=>{if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)}));
  const deskEl=$('[data-desk]',main);
@@ -1720,6 +1732,7 @@ P.au.addEventListener('timeupdate',pTime);
 P.au.addEventListener('ended',()=>{P.au.currentTime=0;pSync()});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
+ const cb=e.target.closest('[data-cats]');if(cb){const c=$('#cat');if(c)c.scrollBy({left:+cb.dataset.cats*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const sb=e.target.closest('[data-igs]');if(sb){const c=sb.closest('.igb').querySelector('.igb-c');c.scrollBy({left:+sb.dataset.igs*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const a=e.target.closest('a[data-ig]');if(a&&!e.metaKey&&!e.ctrlKey){e.preventDefault();const id=a.dataset.ig,r=a.dataset.igr==='1';$('#iglbF').innerHTML=`<iframe src="https://www.instagram.com/${r?'reel':'p'}/${id}/embed/" title="Instagram ${r?'reel':'post'}" allow="autoplay; encrypted-media" loading="lazy"></iframe>`;$('#iglbA').href=a.href;$('#iglb').hidden=false;$('#iglbX').focus();if(!P.au.paused)P.au.pause()}
 });
