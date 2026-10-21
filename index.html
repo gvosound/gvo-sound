@@ -665,6 +665,30 @@ section{padding-block:clamp(52px,7vw,92px)}
   .rev-one .rev{grid-template-columns:1fr}
   .rev-one .rev .mark{grid-row:auto}
 }
+
+/* ---- hero video (all widths) ---- */
+.hero-vid{display:block;position:absolute;inset:0}
+.hero-bg img{position:absolute;inset:0}
+@media (min-width:761px){.hero-vid{display:none}}
+.hero-reel{display:none;margin:0;position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(243,240,234,.18);box-shadow:0 40px 90px -30px rgba(0,0,0,.8),0 0 0 6px rgba(7,6,10,.35);background:#000;aspect-ratio:9/16;max-width:100%}
+.hero-reel video{width:100%;height:100%;object-fit:cover;display:block}
+.hero-reel figcaption{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;font:600 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(7,6,10,.7);backdrop-filter:blur(6px);padding:7px 10px;border-radius:30px}
+.hero-reel .dot{background:var(--tag);animation:rec 1.6s infinite}
+@media (min-width:980px){
+  .hero-inner{grid-template-columns:minmax(0,1fr) clamp(250px,23vw,340px);align-items:end;column-gap:clamp(28px,4vw,56px)}
+  .hero-main{display:grid;gap:22px;min-width:0}
+  .hero-reel{display:block;align-self:end;margin-bottom:4px}
+  .hero h1{font-size:clamp(3.4rem,7.6vw,8.6rem)}
+  .hero-row{grid-template-columns:1fr 1fr;gap:24px 32px}
+}
+@media (max-width:979px){.hero-main{display:grid;gap:22px;min-width:0}}
+@media (prefers-reduced-motion:reduce){.hero-reel video{display:none}.hero-reel{background:url(img/hero_poster.webp) center/cover}}
+/* ---- door: photo on top, info in three columns ---- */
+.door{grid-template-columns:1fr}
+.door-ph{min-height:0;height:clamp(220px,26vw,340px)}
+.door-ph img{object-position:50% 60%}
+.door-info{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 40px}
+@media (max-width:900px){.door-info{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -871,6 +895,7 @@ function viewHome(){
   <div class="hero-bg"><video class="hero-vid" muted loop playsinline preload="none" poster="img/hero_poster.webp" data-src="vid/v_hero.mp4" aria-hidden="true"></video><img src="img/sound_room.webp" alt="GVO control room with the GVO bat logo on the screens, studio monitors and a console desk" fetchpriority="high"></div>
   <div class="hero-dim"></div>
   <div class="wrap hero-inner">
+   <div class="hero-main">
    <span class="status" id="status"><span class="dot"></span><span class="st">${statusTxt()}</span></span>
    <h1><span class="sr">GVO Sound, recording studio in Annapolis, MD. </span><span class="l" aria-hidden="true"><span>Your Vision.</span></span><span class="l" aria-hidden="true"><span>Your Sound.</span></span></h1>
    <div class="hero-row">
@@ -885,6 +910,8 @@ function viewHome(){
     </div>
    </div>
    ${seoNote(META.home)}
+   </div>
+   <figure class="hero-reel" aria-label="GVO Sound promo video"><video class="reel-vid" muted loop playsinline preload="none" poster="img/hero_poster.webp"></video><figcaption><span class="dot"></span>Now playing · GVO Sound</figcaption></figure>
   </div>
  </section>
  <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
@@ -1089,7 +1116,10 @@ function wireHome(){
  const words=['Now booking','Open until 3AM Fri–Sun','Engineer and mix included','Recording · Photo · Podcast','109 Gibralter Ave, Annapolis','Est. 2020'];
  const seg=words.map(w=>`<span>${w}<i class="mark"></i></span>`).join('');$('#track').innerHTML=seg+seg;
  startViz();
- const hv=$('.hero-vid',main);if(hv&&!reduce&&matchMedia('(max-width:760px)').matches){hv.innerHTML='<source src="vid/v_hero.mp4" type="video/mp4"><source src="vid/v_hero.webm" type="video/webm">';hv.load();hv.play().catch(()=>{})}
+ if(!reduce){const srcs='<source src="vid/v_hero.mp4" type="video/mp4"><source src="vid/v_hero.webm" type="video/webm">';
+  const go=v=>{if(!v||v.dataset.on)return;v.dataset.on=1;v.innerHTML=srcs;v.load();v.play().catch(()=>{})};
+  if(matchMedia('(max-width:760px)').matches)go($('.hero-vid',main));
+  else if(matchMedia('(min-width:980px)').matches)go($('.reel-vid',main))}
  // accordion
  const rooms=$('#roomsEl');
  rooms.addEventListener('click',e=>{if(e.target.closest('a'))return;const el=e.target.closest('.room');if(el&&el.getAttribute('aria-expanded')!=='true')$$('.room',rooms).forEach(x=>x.setAttribute('aria-expanded',x===el))});
