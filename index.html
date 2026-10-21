@@ -305,6 +305,11 @@ main{min-height:60vh}
 .step:last-child{border-bottom:0}
 .step-h{display:flex;gap:14px;align-items:baseline}
 .step-h{align-items:center}
+.step-opt{background:repeating-linear-gradient(135deg,transparent 0 14px,rgba(243,240,234,.015) 14px 28px);border-top:1px dashed var(--line)}
+.step-h .n.opt{border-style:dashed;border-color:var(--line);background:none;color:var(--mute)}
+.opt-skip{margin-left:auto;font:600 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+@media (max-width:560px){.opt-skip{display:none}}
+
 .step-h .n,.quote-form .n{flex:none;display:inline-flex;align-items:baseline;gap:5px;padding:6px 11px;border:1px solid rgba(185,178,255,.45);border-radius:40px;background:rgba(185,178,255,.08);font:600 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
 .step-h .n b,.quote-form .n b{color:var(--lav);font-size:.8rem}
 .step-h .done{margin-left:auto;font:600 .75rem var(--mono);color:var(--ok);letter-spacing:.08em;text-transform:uppercase}
@@ -1792,13 +1797,13 @@ const DESK_HTML=`<div class="desk"><div class="steps">
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Wear the session</h3></div><p class="fine">Add merch and it's bagged at the front desk when you arrive. One checkout.</p><div class="addons" data-el="addons"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
   <label><span>Name or artist name <span class="req">*</span></span><input id="f-name" autocomplete="name" placeholder="Lex" required aria-describedby="e-name"><span class="field-err" id="e-name" hidden>Add the name for the booking</span></label>
   <label><span>Mobile for text confirm <span class="req">*</span></span><input id="f-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142" required aria-describedby="e-phone"><span class="field-err" id="e-phone" hidden>Add a 10-digit mobile number</span></label>
   <label>Email<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
   <label>People coming<select id="f-ppl"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
   <label class="full"><span data-el="notesLbl">What are you working on?</span><textarea id="f-notes" rows="2" placeholder="Two songs, beats on a USB"></textarea></label></form></div>
+ <div class="step step-opt" data-step="merch"><div class="step-h"><span class="n opt">Optional</span><h3>Add merch</h3><span class="opt-skip">Not required to book</span></div><p class="fine">Want to wear the session? Pick anything here and it's bagged at the front desk when you arrive. Same checkout.</p><div class="addons" data-el="addons"></div></div>
 </div><aside class="ticket" data-el="ticket" aria-live="polite"></aside></div>`;
 function mountDesk(host,k){
  host.innerHTML=DESK_HTML;D={};$$('[data-el]',host).forEach(el=>D[el.dataset.el]=el);D.host=host;
