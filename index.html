@@ -991,6 +991,20 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .rq.still .rq-nav button[aria-selected="true"] i::after{animation:none;transform:none}
 @keyframes rqp{to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){.rq-s{transition:none}}
+/* ---- podcast page: episode shot at GVO ---- */
+.ytv{margin:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2)}
+.ytv-p{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;background:#000;cursor:pointer}
+.ytv-p img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s}
+.ytv-p:hover img{transform:scale(1.03);filter:brightness(.8)}
+.ytv-b{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;background:var(--lav);display:grid;place-items:center;box-shadow:0 10px 40px rgba(0,0,0,.5);transition:transform .25s var(--ease)}
+.ytv-b::before{content:"";border-left:20px solid var(--lav-ink);border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:6px}
+.ytv-p:hover .ytv-b{transform:scale(1.08)}
+.ytv-d{position:absolute;right:10px;bottom:10px;font:600 .7rem var(--mono);background:rgba(7,6,10,.8);padding:4px 7px;border-radius:3px}
+.ytv iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+.ytv figcaption{display:grid;gap:6px;padding:16px 18px}
+.ytv figcaption b{font:800 1.15rem var(--display);font-stretch:110%;text-transform:uppercase}
+.ytv figcaption small{color:var(--mute);font-size:.88rem}
+.ytv figcaption .link{justify-self:start;margin-top:4px}
 </style>
 </head>
 <body>
@@ -1372,7 +1386,8 @@ function viewRoom(slug){
   <div style="display:grid;gap:14px">
    ${r.rates?`<div class="rate-card rv"><h3>Rates <small>Tap a row to book it</small></h3><table class="rates"><thead><tr><th>Length</th><th>Per hour</th><th>Session</th></tr></thead><tbody>${r.rates.map(([h,p])=>`<tr class="${p/h===best?'best':''}" data-hrs="${h}" tabindex="0"><td>${h} ${h===1?'hour':'hours'}</td><td>$${Math.round(p/h)}</td><td>$${p}</td></tr>`).join('')}</tbody></table><div class="rate-foot">${r.rateNote}</div></div>`:''}
    ${r.extra&&inSeason()?`<div class="rate-card rv"><h3>${r.extra.n} <small>$${r.extra.p}</small></h3><div class="rate-foot" style="border:0;color:#d4cfd9">${r.extra.d}</div></div>`:''}
-   ${r.k==='pod'?`<div class="rate-card"><h3>How it works</h3><table class="rates"><tbody><tr><td>1. Send a request below</td><td></td><td></td></tr><tr><td>2. The team calls you back</td><td></td><td></td></tr><tr><td>3. Get your quote and book</td><td></td><td></td></tr></tbody></table></div>`:''}
+   ${r.k==='pod'?`<div class="rate-card"><h3>How it works</h3><table class="rates"><tbody><tr><td>1. Send a request below</td><td></td><td></td></tr><tr><td>2. The team calls you back</td><td></td><td></td></tr><tr><td>3. Get your quote and book</td><td></td><td></td></tr></tbody></table></div>
+   <figure class="ytv rv"><button type="button" class="ytv-p" data-yt="Pe17A8f9T4w" aria-label="Play Platform 16¾, Episode 1 with Young Dylan and Dee">${imgT('y_platform','Platform 16¾ podcast set at GVO Sound with Young Dylan and Dee')}<span class="ytv-b" aria-hidden="true"></span><span class="ytv-d">52:06</span></button><figcaption><span class="eyebrow">Shot in this room</span><b>Platform 16¾, Ep. 1: Young Dylan</b><small>With Dee · 4.5K views on YouTube</small><a class="link" href="https://www.youtube.com/watch?v=Pe17A8f9T4w" target="_blank" rel="noopener">Watch on YouTube →</a></figcaption></figure>`:''}
   </div>
  </div></section>
  ${r.k==='rec'?`<section class="heard" id="heard"><canvas aria-hidden="true"></canvas><div class="wrap">
@@ -1615,6 +1630,7 @@ function wire(r){
  }
  if(r.startsWith('music')){const fm=$('#subForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&!x.checkValidity());if(bad){bad.focus();toast(bad.name==='link'?'Paste a full link, starting with https://':'Fill in '+bad.placeholder.toLowerCase());return}fm.reset();toast('Sent. Cory reviews it before it goes live.')})}
  if(ROOMS[r])wireRoom(r);
+ $$('[data-yt]',main).forEach(b=>b.addEventListener('click',()=>{if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)}));
  const deskEl=$('[data-desk]',main);
  if(deskEl){const k=deskEl.dataset.desk;if(k==='pod')mountQuote(deskEl);else mountDesk(deskEl,k==='all'?(pendingPreset||B.room):k)}
  pendingPreset=null;
