@@ -965,6 +965,25 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .rev-g{display:flex;align-items:center;gap:8px}
 .rev-more{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;margin-top:22px}
 .f-gvo{margin:14px 0 10px;font:900 1.2rem var(--display);font-stretch:120%;text-transform:uppercase;color:var(--lav)}
+/* ---- review carousel (home) ---- */
+.rq{display:grid;gap:18px}
+.rq-stage{display:grid}
+.rq-s{grid-area:1/1;margin:0;display:grid;gap:16px;align-content:start;opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .7s var(--ease);pointer-events:none}
+.rq-s.on{opacity:1;transform:none;pointer-events:auto}
+.rq-s figcaption{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.rq-r{display:inline-flex;align-items:center;gap:8px;font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.rq-nav{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+.rq-nav::-webkit-scrollbar{display:none}
+.rq-nav button{flex:1 0 auto;min-width:120px;display:grid;gap:10px;background:none;border:0;padding:10px 0 0;text-align:left;color:var(--mute);font:600 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.rq-nav button span{white-space:nowrap;padding-right:12px}
+.rq-nav button[aria-selected="true"],.rq-nav button:hover{color:var(--bone)}
+.rq-nav i{display:block;height:2px;background:var(--line);position:relative;overflow:hidden}
+.rq-nav i::after{content:"";position:absolute;inset:0;background:var(--lav);transform:scaleX(0);transform-origin:left}
+.rq-nav button[aria-selected="true"] i::after{animation:rqp var(--rqd,7s) linear forwards}
+.rq.paused .rq-nav button[aria-selected="true"] i::after{animation-play-state:paused}
+.rq.still .rq-nav button[aria-selected="true"] i::after{animation:none;transform:none}
+@keyframes rqp{to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.rq-s{transition:none}}
 </style>
 </head>
 <body>
@@ -1146,6 +1165,8 @@ const GOOG={rating:'5.0',count:47,url:'https://maps.app.goo.gl/wXxp3d9VncWKfWJi9
 const GIC='<svg class="g-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.3-1.6 3.8-5.4 3.8-3.2 0-5.9-2.7-5.9-6s2.7-6 5.9-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.4 14.6 2.4 12 2.4 6.7 2.4 2.4 6.7 2.4 12s4.3 9.6 9.6 9.6c5.5 0 9.2-3.9 9.2-9.4 0-.6-.1-1.1-.2-1.6H12z"/></svg>';
 const stars=()=>'<span class="stars" aria-hidden="true">★★★★★</span>';
 const gBadge=(cls='')=>`<a class="gbadge${cls?' '+cls:''}" href="${GOOG.url}" target="_blank" rel="noopener" aria-label="Rated ${GOOG.rating} out of 5 from ${GOOG.count} Google reviews">${GIC}<b>${GOOG.rating}</b>${stars()}<span>${GOOG.count} Google reviews</span></a>`;
+/* home review carousel: [review key, verbatim line from that review] */
+const RQ=[['william','Produced exactly how I envisioned my song ending up.'],['goodnews','Best studio in the DMV!'],['janisse','The engineer was GREAT really patient and calm.'],['kennedy','Always clean and ready to go at booking time!'],['mycitym','Amazing full service sound studio.'],['nyia','They always provide excellent service.']];
 const revCard=k=>{const v=REVIEWS[k];return `<figure class="rev rv">${v.g?`<span class="rev-g">${GIC}${stars()}</span>`:'<span class="mark"></span>'}<blockquote>${v.q}</blockquote><figcaption><b>${v.n}</b><span>${v.r}</span></figcaption></figure>`};
 const prodById=id=>PRODUCTS.find(p=>p.id===id);
 const vLabel=(p,v)=>v&&v!=='-'?v.split('/').join(' · '):'One size';
@@ -1305,8 +1326,11 @@ function viewHome(){
   <div class="team" id="teamGrid">${TEAM.map(memberCard).join('')}</div>
   </div></section>
  <section class="reviews"><div class="wrap">
-  <div class="rev-head rv"><span class="eyebrow">In their words</span><p class="pull">“Produced exactly how I envisioned my song ending up.”</p><span class="pull-by">William Marsters Jr.</span></div>
-  <div class="rev-grid">${['william','goodnews','janisse','kennedy','nyia','mycitym'].map(revCard).join('')}</div>
+  <div class="rq rv" id="rq" aria-roledescription="carousel" aria-label="Reviews">
+   <span class="eyebrow">In their words</span>
+   <div class="rq-stage">${RQ.map(([k,p],i)=>{const v=REVIEWS[k];return `<figure class="rq-s${i?'':' on'}" id="rq${i}" role="tabpanel" aria-hidden="${!!i}"><p class="pull">“${p}”</p><figcaption><span class="pull-by">${v.n}</span><span class="rq-r">${v.g?GIC+stars()+' Google review':v.r}</span></figcaption></figure>`}).join('')}</div>
+   <div class="rq-nav" role="tablist">${RQ.map(([k],i)=>`<button type="button" role="tab" aria-selected="${!i}" aria-controls="rq${i}" data-rq="${i}"><span>${REVIEWS[k].n}</span><i></i></button>`).join('')}</div>
+  </div>
   <div class="rev-more rv">${gBadge()}<a class="link" href="${GOOG.url}" target="_blank" rel="noopener">Read all ${GOOG.count} on Google →</a></div>
  </div></section>
  <section><div class="wrap">
@@ -1594,6 +1618,18 @@ function wire(r){
 /* home */
 let audio=null;
 function wireHome(){
+ const rq=$('#rq',main);if(rq){
+  const sl=$$('.rq-s',rq),bt=$$('[data-rq]',rq);let cur=0,tm=0,paused=false;const D=7000;
+  const go=(n,user)=>{cur=(n+sl.length)%sl.length;sl.forEach((x,i)=>{x.classList.toggle('on',i===cur);x.setAttribute('aria-hidden',i!==cur)});bt.forEach((b,i)=>{b.setAttribute('aria-selected',i===cur);const ii=$('i',b);ii.replaceWith(ii.cloneNode())});if(user)bt[cur].scrollIntoView({block:'nearest',inline:'nearest'});arm()};
+  const arm=()=>{clearTimeout(tm);if(reduce){rq.classList.add('still');return}if(!paused)tm=setTimeout(()=>go(cur+1),D)};
+  bt.forEach((b,i)=>b.addEventListener('click',()=>go(i,1)));
+  const pause=v=>{paused=v;rq.classList.toggle('paused',v);if(v)clearTimeout(tm);else arm()};
+  rq.addEventListener('pointerenter',()=>pause(true));rq.addEventListener('pointerleave',()=>pause(false));
+  rq.addEventListener('focusin',()=>pause(true));rq.addEventListener('focusout',()=>pause(false));
+  let x0=null;rq.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});rq.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1),1);x0=null});
+  const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){if(!paused)arm()}else clearTimeout(tm)});io.observe(rq);
+  cleanup.push(()=>{clearTimeout(tm);io.disconnect()});
+ }
  const hero=$('#hero');
  hero.addEventListener('pointermove',e=>{const b=hero.getBoundingClientRect();hero.style.setProperty('--mx',((e.clientX-b.left)/b.width*100)+'%');hero.style.setProperty('--my',((e.clientY-b.top)/b.height*100)+'%')});
  const words=['Good Vibes Only','Now booking','Open until 3AM Fri–Sun','Engineer and mix included','Recording · Photo · Podcast','109 Gibralter Ave, Annapolis','Est. 2020'];
