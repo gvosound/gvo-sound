@@ -21,7 +21,7 @@
 "address":{"@type":"PostalAddress","streetAddress":"109 Gibralter Ave","addressLocality":"Annapolis","addressRegion":"MD","postalCode":"21401","addressCountry":"US"},
 "geo":{"@type":"GeoCoordinates","latitude":38.983098,"longitude":-76.529526},
 "openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"10:00","closes":"00:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday","Sunday"],"opens":"10:00","closes":"03:00"}],
-"sameAs":["https://www.instagram.com/gvo.sound/","https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA","https://www.facebook.com/profile.php?id=100092699790819"]}
+"sameAs":["https://www.instagram.com/gvo.sound/","https://www.instagram.com/gvosound.events/","https://www.instagram.com/gvosound.clothing/","https://www.instagram.com/gvosound.travel/","https://www.eventbrite.com/o/gvo-sound-studios-cory-mcghee-72154308173","https://open.spotify.com/artist/5eZfmZxf0hNUuC3GERdI2A","https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA","https://www.facebook.com/profile.php?id=100092699790819"]}
 </script>
 <script type="application/ld+json" id="ldPage">{}</script>
 <style>
@@ -101,6 +101,7 @@ header.top.solid,body:not([data-view="home"]) header.top{background:rgba(7,6,10,
 .cart-count{background:var(--tag);color:#fff;border-radius:3px;font:700 .7rem/1 var(--mono);padding:3px 6px;transition:transform .3s var(--ease)}
 .cart-count.bump{transform:scale(1.35)}
 .menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:var(--r);height:40px;padding:0 12px;font:600 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+@media (max-width:1180px){.nav ul{gap:18px}}
 @media (max-width:960px){.nav ul{display:none}.menu-btn{display:block}.nav .cart-btn{margin-left:auto}.nav .book-top{display:none}}
 .sheet{position:fixed;inset:0;z-index:85;background:var(--ink);padding:calc(90px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;align-content:start;gap:4px;animation:fade .3s var(--ease)}
 .sheet a{font:900 2.1rem/1.15 var(--display);font-stretch:120%;text-transform:uppercase;text-decoration:none;padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
@@ -826,6 +827,77 @@ a.trk-play .go::before{content:"\2197";border:0;margin:0;color:var(--lav);font-s
 .pb-x:hover{color:var(--bone)}
 @media (max-width:760px){.pb{bottom:calc(84px + env(safe-area-inset-bottom,0px));grid-template-columns:40px 1fr auto auto}.pb-tm,.pb-sp{display:none}.pb .cv{width:40px}}
 body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
+/* ---- events ---- */
+.evhero{position:relative;isolation:isolate;overflow:hidden;padding:calc(110px + env(safe-area-inset-top,0px)) 0 clamp(44px,6vw,80px);border-bottom:1px solid var(--line);background:radial-gradient(60% 80% at 85% 10%,rgba(185,178,255,.18),transparent 60%),radial-gradient(40% 60% at 10% 100%,rgba(228,52,44,.10),transparent 60%)}
+.evhero-g{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(24px,5vw,64px);align-items:end;margin-top:22px}
+.evhero-t{display:grid;gap:20px}
+.evhero h1{font-size:clamp(2.6rem,7.6vw,6.4rem);line-height:.88;margin:0}
+.evhero h1 span{display:block}
+.evhero h1 span:nth-child(2){color:transparent;-webkit-text-stroke:1.5px var(--lav)}
+.ev-facts{grid-template-columns:repeat(3,1fr)}
+@media (max-width:860px){.evhero-g{grid-template-columns:1fr}}
+.ev-list{display:grid;border-top:1px solid var(--line)}
+.ev{display:grid;grid-template-columns:86px 1fr auto;gap:clamp(14px,3vw,30px);align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.ev-date{display:grid;justify-items:center;gap:2px;border:1px solid var(--line);border-radius:var(--r);padding:10px 6px;background:var(--ink-2)}
+.ev-date b{font:900 1.9rem/1 var(--display);font-stretch:110%}
+.ev-date small{font:600 .65rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.ev-i{display:grid;gap:6px;min-width:0}
+.ev-i h3{font-size:clamp(1.15rem,2.2vw,1.6rem);line-height:1.05;margin:0}
+.ev-i p{margin:0;color:var(--mute);font-size:.92rem}
+.ev-go{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--lav);text-decoration:none;transition:all .2s}
+.ev-go:hover{border-color:var(--lav);background:rgba(185,178,255,.1)}
+.ev.up{padding:22px;border:1px solid rgba(185,178,255,.4);border-radius:var(--r);background:linear-gradient(135deg,rgba(185,178,255,.1),transparent 60%),var(--ink-2);margin-bottom:12px}
+.ev.up .ev-date{background:var(--lav);border-color:var(--lav)}
+.ev.up .ev-date b,.ev.up .ev-date small{color:var(--lav-ink)}
+.ev.sample{border-style:dashed}
+.ev .btn[aria-disabled]{opacity:.5}
+.past .ev .ev-date{opacity:.75}
+@media (max-width:620px){.ev{grid-template-columns:70px 1fr}.ev .btn,.ev-go{grid-column:1/-1;justify-self:start}.ev-go{display:none}.ev-date b{font-size:1.5rem}}
+.ev-empty{display:grid;grid-template-columns:1fr 1.2fr;gap:14px 32px;align-items:center;padding:clamp(18px,3vw,28px);border:1px dashed rgba(185,178,255,.45);border-radius:var(--r);background:rgba(185,178,255,.04)}
+.ev-empty h3{font-size:clamp(1.4rem,2.6vw,2rem);margin:0 0 6px}
+.ev-empty p{margin:0;color:var(--mute)}
+.ev-empty form{display:flex;gap:10px}
+.ev-empty input{flex:1;min-width:0;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;color:var(--bone);font:1rem inherit;min-height:48px}
+.ev-empty input:focus{outline:none;border-color:var(--lav)}
+.ev-empty .link{grid-column:1/-1}
+@media (max-width:760px){.ev-empty{grid-template-columns:1fr}.ev-empty form{flex-direction:column}}
+.inq{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,3vw,30px);background:var(--ink)}
+.inq .full{grid-column:1/-1}
+.inq fieldset{border:0;margin:0;padding:0;display:grid;gap:10px}
+.inq legend,.inq label>span{font:600 .72rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:8px;display:block}
+.inq label{display:grid}
+.inq input,.inq textarea{width:100%;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;color:var(--bone);font:1rem inherit;min-height:48px;resize:vertical}
+.inq input:focus,.inq textarea:focus{outline:none;border-color:var(--lav)}
+.inq-f{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+@media (max-width:860px){.inq{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.inq{grid-template-columns:1fr}}
+/* instagram band */
+.ig-ic{width:16px;height:16px;flex:none}
+.igb{display:grid;gap:18px}
+.igb-h{display:grid;grid-template-columns:auto 1fr auto;gap:12px 22px;align-items:center}
+.igb-me{display:flex;gap:12px;align-items:center;text-decoration:none}
+.igb-av{width:52px;height:52px;border-radius:50%;padding:2px;background:linear-gradient(135deg,var(--lav),var(--tag));display:grid;place-items:center}
+.igb-av>span{width:100%;height:100%;border-radius:50%;background:var(--ink);display:grid;place-items:center}.igb-av .mark{width:72%}
+.igb-me b{display:block;font-weight:700}
+.igb-me small{font:.72rem var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.igb-h p{margin:0;color:var(--mute)}
+.igb-g{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.igb-g a{position:relative;aspect-ratio:1;overflow:hidden;border-radius:var(--r);background:var(--panel)}
+.igb-g img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s}
+.igb-g a:hover img{transform:scale(1.06);filter:brightness(.7)}
+.igb-g a::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='5' fill='none' stroke='%23f3f0ea' stroke-width='1.8'/%3E%3Ccircle cx='12' cy='12' r='4.2' fill='none' stroke='%23f3f0ea' stroke-width='1.8'/%3E%3C/svg%3E") center/28px no-repeat;opacity:0;transition:opacity .3s}
+.igb-g a:hover::after{opacity:1}
+@media (max-width:760px){.igb-h{grid-template-columns:1fr auto}.igb-h p{grid-column:1/-1;order:3}.igb-g{grid-template-columns:repeat(3,1fr)}}
+.btn .ig-ic{margin-right:-2px}
+/* travel strip */
+.travel{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin-top:clamp(56px,8vw,90px);padding:14px 18px;border:1px solid var(--line);border-radius:40px;text-decoration:none;transition:border-color .25s}
+.travel:hover{border-color:var(--lav)}
+.travel-ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--ink-2);color:var(--lav)}
+.travel-ic .ig-ic{width:18px;height:18px}
+.travel small{display:block;font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.travel b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase}
+.travel-h{font:600 .75rem var(--mono);letter-spacing:.08em;color:var(--lav)}
+@media (max-width:520px){.travel{grid-template-columns:auto 1fr;border-radius:var(--r)}.travel-h{grid-column:2}}
 </style>
 </head>
 <body>
@@ -842,6 +914,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
       <li><a href="#photo-studio">Photo</a></li>
       <li><a href="#podcast-studio">Podcast</a></li>
       <li><a href="#music">Music</a></li>
+      <li><a href="#events">Events</a></li>
       <li><a href="#shop">Shop</a></li>
     </ul></nav>
     <button class="cart-btn" id="openCart" type="button" aria-label="Open bag">Bag <span class="cart-count" id="cartCount">0</span></button>
@@ -856,6 +929,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
   <a href="#photo-studio">Photo <small>From $50</small></a>
   <a href="#podcast-studio">Podcast <small>Quote</small></a>
   <a href="#music">Music <small>Stream</small></a>
+  <a href="#events">Events <small>Parties</small></a>
   <a href="#shop">Shop <small>Apparel</small></a>
   <a href="#book">Book a session <small>→</small></a>
 </div>
@@ -868,9 +942,9 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
       <div><span class="mark"></span>
         <address>GVO Sound LLC<br>109 Gibralter Ave<br>Annapolis, MD 21401<br>(443) 292-6753</address>
       </div>
-      <div><h4>Studios</h4><ul><li><a href="#recording-studio">Recording studio</a></li><li><a href="#photo-studio">Photo studio</a></li><li><a href="#podcast-studio">Podcast and video</a></li><li><a href="#book">Book a session</a></li></ul></div>
+      <div><h4>Studios</h4><ul><li><a href="#recording-studio">Recording studio</a></li><li><a href="#photo-studio">Photo studio</a></li><li><a href="#podcast-studio">Podcast and video</a></li><li><a href="#music">Music</a></li><li><a href="#events">Events</a></li><li><a href="#book">Book a session</a></li></ul></div>
       <div><h4>Shop</h4><ul><li><a href="#shop">All apparel</a></li><li><a href="#product-world-tour-cheetah-hoodie">Cheetah Hoodie</a></li><li><a href="#product-gvo-x-ace-distressed-tee">GVO x Ace Tee</a></li><li><a href="#product-gvo-beanie">GVO Beanie</a></li></ul></div>
-      <div><h4>Follow</h4><ul><li><a href="#music">Music</a></li><li><a href="https://open.spotify.com/artist/5eZfmZxf0hNUuC3GERdI2A" target="_blank" rel="noopener">Spotify</a></li><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
+      <div><h4>Follow</h4><ul><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram @gvo.sound</a></li><li><a href="https://www.instagram.com/gvosound.events/" target="_blank" rel="noopener">GVO Events</a></li><li><a href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">GVO Clothing</a></li><li><a href="https://www.instagram.com/gvosound.travel/" target="_blank" rel="noopener">GVO Travel</a></li><li><a href="https://open.spotify.com/artist/5eZfmZxf0hNUuC3GERdI2A" target="_blank" rel="noopener">Spotify</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
     </div>
     <div class="fbase"><span>GVO Sound LLC · Annapolis, MD · Est. 2020</span><span class="by-sc">Demo build by <img src="img/siani-creates.png" alt="Siani Creates" width="35" height="13"></span></div>
   </div>
@@ -945,6 +1019,31 @@ const SESS=[
  {y:'IAFnpZepA1o',t:'WillThaRapper',s:'The Garden · Ep. 8',img:'y_will'},
  {y:'8IdhoWf3Z_Q',t:'Lex Bratcher',s:'The Garden · Ep. 11',img:'y_lex'}
 ];
+
+/* Events: from GVO SOUND EVENTS on Eventbrite (organizer 72154308173), checked Oct 21, 2026. Newest first. */
+const EVB='https://www.eventbrite.com/e/';
+const EVENTS=[
+ {t:'R&B & Vibes: AAC Homecoming',d:'2026-09-19',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-aac-homecoming-tickets-1999025510113',k:'R&B & Vibes'},
+ {t:'Skyline: All White Affair',d:'2026-08-29',tm:'8 PM – 2 AM',v:'Rooftop',a:'1818 Maryland Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-skyline-all-white-affair-tickets-1996918289359',k:'Rooftop'},
+ {t:'Downroad vs. Uproad: Lovers Meet Vibes',d:'2026-07-10',tm:'9:30 PM – 2 AM',v:'',a:'4314 Curtis Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-downroad-vs-uproad-lovers-meet-vibes-tickets-1991275409353',k:'Battle'},
+ {t:'YMCMB vs MMG Night',d:'2026-05-29',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-ymcmb-vs-mmg-night-tickets-1989083321760',k:'Battle'},
+ {t:'AAC vs Baltimore Pt. 2: R&B vs. Trap',d:'2026-05-02',tm:'10 PM – 2 AM',v:'',a:'316 Guilford Avenue',c:'Baltimore, MD',u:'gvo-sound-presents-aac-vs-baltimore-pt2-rb-vs-trap-tickets-1986485306025',k:'Battle'},
+ {t:'R&B & Vibes / GoGo',d:'2026-04-17',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-gogo-tickets-1986168817399',k:'R&B & Vibes'},
+ {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2025-11-28',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-1954612130499',k:'R&B & Vibes'},
+ {t:'R&B & Vibes',d:'2025-08-23',tm:'9 PM – 2 AM',v:'Vibe',a:'2072 Somerville Road',c:'Annapolis, MD',u:'gvo-sound-presents-rb-vibes-tickets-1515809199119',k:'R&B & Vibes'}
+];
+/* demo only: shows how a new Eventbrite listing lands in the Upcoming slot */
+const EV_SAMPLE={t:'R&B & Vibes',d:'2026-11-27',tm:'10 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'',k:'R&B & Vibes',sample:1};
+let evSample=false;
+const evDate=e=>{const [y,m,d]=e.d.split('-').map(Number);return new Date(y,m-1,d)};
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const evUp=()=>{const t=nowET();t.setHours(0,0,0,0);const l=EVENTS.filter(e=>evDate(e)>=t);return evSample&&!l.length?[EV_SAMPLE]:l.reverse()};
+const evPast=()=>{const t=nowET();t.setHours(0,0,0,0);return EVENTS.filter(e=>evDate(e)<t)};
+const IG={main:'gvo.sound',events:'gvosound.events',clothing:'gvosound.clothing',travel:'gvosound.travel'};
+const igUrl=h=>`https://www.instagram.com/${h}/`;
+const IGIC='<svg viewBox="0 0 24 24" aria-hidden="true" class="ig-ic"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg>';
+/* Instagram band: profile chip + a tile strip that opens the profile. Production swaps the tiles for the latest posts. */
+const igBand=(h,label,line,tiles)=>`<div class="igb rv"><div class="igb-h"><a class="igb-me" href="${igUrl(h)}" target="_blank" rel="noopener"><span class="igb-av"><span><span class="mark"></span></span></span><span><b>@${h}</b><small>${label}</small></span></a><p>${line}</p><a class="btn btn-ghost" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}Follow</a></div><div class="igb-g">${tiles.map(([f,alt])=>`<a href="${igUrl(h)}" target="_blank" rel="noopener" aria-label="${alt}, on Instagram @${h}">${imgT(f,alt)}</a>`).join('')}</div></div>`;
 const relById=id=>REL.find(x=>x.id===id);
 const spUrl=x=>SPO+x.k+'/'+x.sp;
 const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
@@ -1220,6 +1319,54 @@ function viewMusic(slug){
  </div>`;
 }
 
+function evRow(e,big){const d=evDate(e);return `<article class="ev${big?' up':''}${e.sample?' sample':''} rv"><div class="ev-date"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b><small>${MON[d.getMonth()]} ${d.getFullYear()}</small></div><div class="ev-i"><span class="eyebrow">${e.sample?'Sample listing · ':''}${e.k}</span><h3>${e.t}</h3><p>${[e.v&&e.v!=='Rooftop'?e.v:'',e.v==='Rooftop'||!e.v?(e.v==='Rooftop'?'Rooftop, ':'')+e.a:'',e.c,e.tm].filter(Boolean).join(' · ')}</p></div>${big?(e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${EVB+e.u}" target="_blank" rel="noopener">Tickets</a>`):`<a class="ev-go" href="${EVB+e.u}" target="_blank" rel="noopener" aria-label="${e.t} on Eventbrite">↗</a>`}</article>`}
+function viewEvents(){
+ const up=evUp(),past=evPast(),cities=new Set(EVENTS.map(e=>e.c)).size;
+ return `<div class="view" data-v="events">
+ <section class="evhero"><div class="wrap">
+  ${crumbs([['Home','#'],['Events','']])}
+  <div class="evhero-g">
+   <div class="evhero-t"><span class="eyebrow">GVO Sound Events</span><h1><span>R&amp;B Nights.</span><span>Rooftops.</span><span>County vs. City.</span></h1>
+    <p class="lede">GVO throws parties across Anne Arundel County and Baltimore. Tickets run through Eventbrite, and every date drops on <a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">@${IG.events}</a> first.</p>
+    <div class="ctas" style="margin:0"><a class="btn btn-lav" href="#inquire">Work with GVO Events</a><a class="btn btn-ghost" href="${igUrl(IG.events)}" target="_blank" rel="noopener">${IGIC}@${IG.events}</a></div></div>
+   <div class="facts ev-facts"><div><b>${EVENTS.length}</b><small>Nights since Aug 2025</small></div><div><b>${cities}</b><small>Cities</small></div><div><b>2AM</b><small>Last call</small></div></div>
+  </div>
+  ${seoNote(META.events)}
+ </div></section>
+ <section id="upcoming"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">On the calendar</span><h2>Upcoming</h2></div>${note('Upcoming slot','Events list themselves from Eventbrite: a new listing shows here, then moves to Past the morning after. <button type="button" class="chip" data-evsample style="margin-top:10px">'+(evSample?'Back to today':'Preview a new listing')+'</button>')}</div>
+  ${up.length?`<div class="ev-list">${up.map(e=>evRow(e,1)).join('')}</div>`:`<div class="ev-empty rv"><div><h3>Next date drops soon</h3><p>Get the flyer and ticket link the day it goes live.</p></div><form id="evNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Notify me</button></form><a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">Or turn on post alerts @${IG.events} →</a></div>`}
+ </div></section>
+ <section style="padding-top:0"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Run it back</span><h2>Past events</h2></div><p class="lede">R&amp;B &amp; Vibes is the flagship. The rest are one-night themes: all-white rooftops, era battles, county against city.</p></div>
+  <div class="ev-list past">${past.map(e=>evRow(e,0)).join('')}</div>
+ </div></section>
+ <section style="background:var(--ink-2)"><div class="wrap">
+  ${igBand(IG.events,'GVO Sound Events','Flyers, recaps and the next date, first.',[['r_2','Live take'],['pod_3','The GVO floor'],['s_artist5','On the mic'],['lounge','The lounge'],['s_artist3','Session night'],['booth_dark','After hours']])}
+  ${note('Instagram feed','At launch these tiles pull the latest six posts from @gvosound.events through the Instagram API, refreshed every few hours by the Cloudflare Worker. In the demo they open the profile.')}
+ </div></section>
+ <section class="desk-sec" id="inquire"><div class="wrap">
+  <div class="sec-head"><div class="hd"><span class="eyebrow">Partner with us</span><h2>Work with GVO Events</h2></div><p class="lede">DJs, venue owners, promoters, brands and private hosts. Tell us what you have in mind and Cory gets back to you.</p></div>
+  <form class="inq" id="inqForm" novalidate>
+   <fieldset class="full"><legend>I'm a</legend><div class="filters" id="inqType">${['DJ or artist','Venue owner','Promoter','Brand or sponsor','Private event','Something else'].map((t,i)=>`<button type="button" class="chip" aria-pressed="${i===0}">${t}</button>`).join('')}</div></fieldset>
+   <label><span>Name</span><input name="name" required autocomplete="name"></label>
+   <label><span>Email</span><input name="email" type="email" required autocomplete="email"></label>
+   <label><span>Phone</span><input name="phone" type="tel" autocomplete="tel"></label>
+   <label><span>Venue, brand or DJ name</span><input name="org"></label>
+   <label><span>Date or month</span><input name="when" placeholder="Optional"></label>
+   <label><span>City</span><input name="city" placeholder="Annapolis, Baltimore…"></label>
+   <label class="full"><span>What do you have in mind?</span><textarea name="msg" rows="4" required placeholder="Room size, the crowd, the vibe, links to your mixes or venue"></textarea></label>
+   <div class="full inq-f"><button class="btn btn-lav" type="submit">Send inquiry</button><span class="dark-fine">Or text (443) 254-1482</span></div>
+  </form>
+  ${note('Where inquiries go','Writes a row to the Events table in GVO\'s Airtable, tagged by type, and emails Cory. DJ and venue inquiries land in their own views.')}
+ </div></section>
+ <section style="padding-top:0;padding-bottom:0"><div class="wrap">
+  <a class="travel rv" href="${igUrl(IG.travel)}" target="_blank" rel="noopener"><span class="travel-ic">${IGIC}</span><span><small>Off the clock</small><b>GVO Travel</b></span><span class="travel-h">@${IG.travel} →</span></a>
+  <div class="finale"><span class="mark"></span><p class="slogan"><span>Bring Your</span><span>Vision</span><span>To Life.</span></p><a class="btn btn-lav" href="#inquire">Work with GVO Events</a></div>
+ </div></section>
+ </div>`;
+}
+
 function viewBook(){
  return `<div class="view" data-v="book"><section class="desk-sec" style="padding-top:calc(130px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Book a session','']])}
@@ -1236,6 +1383,7 @@ function viewShop(){
   ${seoNote(META.shop)}
   <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
   <div class="rack" id="rack"></div>
+  <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Drops, restocks and fits from the studio.',[['p_world-tour-cheetah-hoodie_1','World Tour Cheetah Hoodie'],['p_gvo-x-ace-distressed-tee_1','GVO x Ace Distressed Tee'],['p_worker-jacket_1','Worker Jacket'],['p_world-tour-cozy-set_1','World Tour Cozy Set'],['p_gvo-muscle-tee_1','GVO Muscle Tee'],['p_gvo-beanie_1','GVO Beanie']])}</div>
  </div></section></div>`;
 }
 
@@ -1269,6 +1417,7 @@ const META={
  book:{path:'/book',title:'Book a Studio Session | GVO Sound, Annapolis MD',desc:'Book recording or photo studio time at GVO Sound in Annapolis. Pick your studio, length, engineer and start time. $50 deposit holds your slot.',h1:'Book a session',schema:'BreadcrumbList, ReserveAction'},
  shop:{path:'/shop',title:'GVO Apparel | Tees, Hoodies and Sets | GVO Sound Shop',desc:'Shop GVO Sound apparel: World Tour tees, the Cheetah hoodie, the Worker Jacket and more. Ship it or pick it up at the studio in Annapolis.',h1:'The rack',schema:'BreadcrumbList, ItemList of Product'}
 };
+META.events={path:'/events',title:'GVO Sound Events | R&B & Vibes and Parties in Annapolis and Baltimore',desc:'GVO Sound throws R&B & Vibes, rooftop and battle nights in Glen Burnie, Annapolis and Baltimore. See upcoming dates, past events, and book GVO for your venue or DJ night.',h1:'R&B Nights. Rooftops. County vs. City.',schema:'ItemList of Event (MusicEvent) with Place, BreadcrumbList'};
 META.music={path:'/music',title:'Stream GVO Sound | Flawless Breezyy and Studio Artists',desc:'Stream music recorded at GVO Sound in Annapolis, MD. Flawless Breezyy, BoobBlack, A. Brooks and more on Spotify, Apple Music, Amazon and TIDAL.',h1:'Featured release title (changes per ad link)',schema:'MusicGroup with MusicRecording list, BreadcrumbList'};
 REL.forEach(x=>META['music/'+x.id]={path:'/music/'+x.id,title:`${x.t} by ${x.a} | Stream it | GVO Sound`,desc:`Stream ${x.t} by ${x.a}, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.`,h1:x.t,schema:'MusicRecording, BreadcrumbList'});
 Object.entries(ROOMS).forEach(([s,r])=>META[s]={path:'/'+s,title:r.title,desc:r.desc,h1:r.h1,schema:'Service + Offer catalog, FAQPage, BreadcrumbList'});
@@ -1282,6 +1431,7 @@ function ldFor(route){
   bc([['Home','/'],[r.h1,'/'+route]])]}}
  if(route.startsWith('product-')){const p=prodById(route.slice(8));if(p)return{"@context":"https://schema.org","@graph":[{"@type":"Product","name":p.n,"brand":{"@type":"Brand","name":"GVO Sound"},"image":p.img[0]?`${SITE}/img/${p.img[0]}.webp`:undefined,"offers":{"@type":"Offer","price":unit(p),"priceCurrency":"USD","availability":"https://schema.org/InStock"}},bc([['Home','/'],['Shop','/shop'],[p.n,'/shop/'+p.id]])]}}
  if(route==='music'||route.startsWith('music/')){const x=relById(route.slice(6));return{"@context":"https://schema.org","@graph":[{"@type":"MusicGroup","name":"Flawless Breezyy","sameAs":[SPO+ARTISTS[0].sp],"track":REL.map(r=>({"@type":"MusicRecording","name":r.t,"byArtist":r.a,"url":spUrl(r)}))},bc(x?[['Home','/'],['Music','/music'],[x.t,'/music/'+x.id]]:[['Home','/'],['Music','/music']])]}}
+ if(route==='events'){const all=[...evUp().filter(e=>!e.sample),...evPast()];return{"@context":"https://schema.org","@graph":[{"@type":"ItemList","itemListElement":all.map((e,i)=>({"@type":"ListItem","position":i+1,"item":{"@type":"MusicEvent","name":'GVO Sound Presents: '+e.t,"startDate":e.d,"eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":e.v||e.a,"address":e.a+', '+e.c},"organizer":{"@id":SITE+'/#business'},"url":EVB+e.u}}))},bc([['Home','/'],['Events','/events']])]}}
  if(route==='book')return{"@context":"https://schema.org","@graph":[bc([['Home','/'],['Book a session','/book']]),{"@type":"ReserveAction","target":SITE+'/book',"object":{"@id":SITE+'/#business'}}]};
  if(route==='shop')return{"@context":"https://schema.org","@type":"ItemList","itemListElement":PRODUCTS.map((p,i)=>({"@type":"ListItem","position":i+1,"url":`${SITE}/shop/${p.id}`}))};
  return{};
@@ -1290,13 +1440,13 @@ function ldFor(route){
 /* ================= router ================= */
 const main=$('#main');let route='home',cleanup=[],popNav=false;const scrollMem={};
 let navIdx=0;try{history.scrollRestoration='manual'}catch(e){}addEventListener('popstate',e=>{popNav=!!(e.state&&e.state.gvo!=null)});
-const isRoute=h=>!!(ROOMS[h]||h==='book'||h==='shop'||h==='music'||h.startsWith('product-')||(h.startsWith('music/')&&relById(h.slice(6))));
+const isRoute=h=>!!(ROOMS[h]||h==='book'||h==='shop'||h==='music'||h==='events'||h.startsWith('product-')||(h.startsWith('music/')&&relById(h.slice(6))));
 function parse(){const h=decodeURIComponent(location.hash.slice(1)).split('?')[0];if(!h)return'home';return isRoute(h)?h:null}
 function render(r,opts={}){
  cleanup.forEach(f=>f());cleanup=[];
  scrollMem[route]=scrollY;
  route=r;document.body.dataset.view=r.startsWith('product-')?'product':r.startsWith('music')?'music':r;
- const html=r==='home'?viewHome():ROOMS[r]?viewRoom(r):r==='book'?viewBook():r==='shop'?viewShop():r.startsWith('music')?viewMusic(r.slice(6)):viewProduct(r.slice(8));
+ const html=r==='home'?viewHome():ROOMS[r]?viewRoom(r):r==='book'?viewBook():r==='shop'?viewShop():r==='events'?viewEvents():r.startsWith('music')?viewMusic(r.slice(6)):viewProduct(r.slice(8));
  const y0=!opts.keep?(popNav&&scrollMem[r]!=null?scrollMem[r]:0):null;
  const swap=()=>{main.innerHTML=html;wire(r);if(y0!==null){window.scrollTo({top:y0,behavior:'instant'});if(y0)setTimeout(()=>window.scrollTo({top:y0,behavior:'instant'}),80)}};
  if(document.startViewTransition&&!reduce&&!opts.first)document.startViewTransition(swap);else swap();
@@ -1314,6 +1464,7 @@ addEventListener('hashchange',()=>{
 });
 /* in-page anchors like #desk #faq shouldn't change route */
 document.addEventListener('click',e=>{
+ if(e.target.closest('[data-evsample]')){evSample=!evSample;render(route,{keep:true});toast(evSample?'Showing how a new Eventbrite listing appears':'Back to today');return}
  if(e.target.closest('[data-season]')){forceSeason=!forceSeason;if(!inSeason()&&B.room==='holiday')B.room='photo';render(route,{keep:true});toast(forceSeason?'Showing the site as it looks Nov 1 to Dec 31':'Back to today');return}
  const a=e.target.closest('a[href^="#"]');if(!a)return;
  const h=a.getAttribute('href').slice(1);
@@ -1330,6 +1481,11 @@ function wire(r){
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
  wireVideos(main);
  if(r==='home')wireHome();
+ if(r==='events'){
+  const ty=$('#inqType',main);if(ty)ty.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$$('.chip',ty).forEach(x=>x.setAttribute('aria-pressed',x===c))});
+  const fm=$('#inqForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.required&&!x.checkValidity());if(bad){bad.focus();toast('Add your '+(bad.name==='msg'?'details':bad.name));return}const t=$('.chip[aria-pressed="true"]',ty).textContent;fm.reset();toast(`Sent. Cory gets back to you soon. (${t})`)});
+  const nf=$('#evNotify',main);if(nf)nf.addEventListener('submit',e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}nf.reset();toast("You're on the list for the next date")});
+ }
  if(r.startsWith('music')){const fm=$('#subForm',main);if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&!x.checkValidity());if(bad){bad.focus();toast(bad.name==='link'?'Paste a full link, starting with https://':'Fill in '+bad.placeholder.toLowerCase());return}fm.reset();toast('Sent. Cory reviews it before it goes live.')})}
  if(ROOMS[r])wireRoom(r);
  const deskEl=$('[data-desk]',main);
