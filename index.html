@@ -926,11 +926,11 @@ function viewHome(){
  </section>
  <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
  <section id="rooms"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three rooms · one address</span><h2>The rooms</h2></div><p class="lede">Recording books in 2 to 12 hours. The photo studio books in 1 to 5. Podcast and content work starts with a quote.</p></div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three studios · one address</span><h2>The studios</h2></div><p class="lede">Recording books in 2 to 12 hours. The photo studio books in 1 to 5. Podcast and content work starts with a quote.</p></div>
   <div class="rooms" id="roomsEl">${Object.entries(ROOMS).map(([slug,r],i)=>`<div class="room" role="button" tabindex="0" aria-expanded="${i===0}" data-slug="${slug}">
    ${imgT(r.img,'')}
-   <div class="room-label"><small>Room 0${i+1} · ${r.short}</small><b>${r.h1.replace(' in Annapolis','')}</b></div>
-   <div class="room-body"><div><span class="eyebrow">Room 0${i+1} · ${r.short}</span><h3>${r.h1.replace(' in Annapolis','')}</h3><p>${r.lede}</p></div>
+   <div class="room-label"><small>${({rec:'Engineer and mix included',photo:'Lit, soundproofed, ready to shoot',pod:'Podcasts, social, commercials'})[r.k]}</small><b>${r.h1.replace(' in Annapolis','')}</b></div>
+   <div class="room-body"><div><span class="eyebrow">${({rec:'Engineer and mix included',photo:'Lit, soundproofed, ready to shoot',pod:'Podcasts, social, commercials'})[r.k]}</span><h3>${r.h1.replace(' in Annapolis','')}</h3><p>${r.lede}</p></div>
     <div><div class="mini-rates">${r.facts.slice(0,3).map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}</div>
     <div class="row"><a class="btn btn-lav" href="#${slug}">See the ${r.short.toLowerCase()} studio</a>${r.k!=='pod'?`<a class="btn btn-ghost" href="#book" data-preset="${r.k}">Book</a>`:''}</div></div></div></div>`).join('')}</div>
  </div></section>
@@ -952,7 +952,7 @@ function viewHome(){
   <div class="rack four">${['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','worker-jacket','gvo-beanie'].map(id=>prodCard(prodById(id))).join('')}</div>
  </div></section>
  <section style="padding-top:0;padding-bottom:0"><div class="wrap">${doorHTML()}
-  <div class="finale"><span class="mark"></span><p class="slogan"><span>Book The Room.</span><span>Bring The Material.</span><span>Leave With The Mix.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
+  <div class="finale"><span class="mark"></span><p class="slogan"><span>Book The Studio.</span><span>Bring The Material.</span><span>Leave With The Mix.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
  </div></section>
  </div>`;
 }
@@ -966,14 +966,14 @@ function viewRoom(slug){
  <section class="phero">${imgT(r.img,`${r.short} studio at GVO Sound, Annapolis`,0)}
   <div class="wrap">${crumbs([['Home','#'],[r.h1.replace(' in Annapolis',''),'']])}
    <h1>${r.h1}</h1><p>${r.lede}</p>
-   <div class="ctas" style="margin:0">${r.k==='pod'?'<a class="btn btn-lav" href="#desk">Request a quote</a>':'<a class="btn btn-lav" href="#desk">Book this room</a>'}<a class="btn btn-ghost" href="#faq">Questions</a></div>
+   <div class="ctas" style="margin:0">${r.k==='pod'?'<a class="btn btn-lav" href="#desk">Request a quote</a>':'<a class="btn btn-lav" href="#desk">Book this studio</a>'}<a class="btn btn-ghost" href="#faq">Questions</a></div>
    <div class="facts">${factsOf(r).map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}</div>
    ${seoNote(META[slug])}
    ${r.k==='photo'?note('Seasonal package','The holiday photoshoot special shows from Nov 1 to Dec 31 and hides itself the rest of the year, here and in the booking desk. <button type="button" class="chip" data-season style="margin-top:10px">'+(forceSeason?'Back to today':'Preview holiday season')+'</button>'):''}
   </div>
  </section>
  <section><div class="wrap split">
-  <div style="display:grid;gap:26px"><span class="eyebrow">The room</span><div class="prose">${r.about.map(p=>`<p>${p}</p>`).join('')}</div>
+  <div style="display:grid;gap:26px"><span class="eyebrow">The space</span><div class="prose">${r.about.map(p=>`<p>${p}</p>`).join('')}</div>
    <div><h3 style="margin-bottom:12px">What's included</h3><ul class="incl">${r.incl.map(i=>`<li>${i}</li>`).join('')}</ul></div>
    <ul class="gear" aria-label="Gear">${r.gear.map(g=>`<li>${g}</li>`).join('')}</ul></div>
   <div style="display:grid;gap:14px">
@@ -993,11 +993,11 @@ function viewRoom(slug){
   <div class="faq">${live(r.faq).map(([q,a],i)=>`<details${i===0?' open':''}><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
  </div></section>
  <section class="desk-sec" id="desk"><div class="wrap">
-  <div class="sec-head"><div class="hd"><span class="eyebrow">${r.k==='pod'?'Start a project':'Booking desk'}</span><h2>${r.k==='pod'?'Request a quote':'Book the room'}</h2></div><p class="lede">${r.k==='pod'?'Tell us what you\'re making. The team calls you back.':'Real rates, real hours. Your time starts at the slot you pick.'}</p></div>
+  <div class="sec-head"><div class="hd"><span class="eyebrow">${r.k==='pod'?'Start a project':'Booking desk'}</span><h2>${r.k==='pod'?'Request a quote':'Book this studio'}</h2></div><p class="lede">${r.k==='pod'?'Tell us what you\'re making. The team calls you back.':'Real rates, real hours. Your time starts at the slot you pick.'}</p></div>
   <div data-desk="${r.k}"></div>
  </div></section>
  <section style="padding-bottom:0"><div class="wrap">
-  <div class="sec-head"><div class="hd"><span class="eyebrow">Same address</span><h2>Other rooms</h2></div></div>
+  <div class="sec-head"><div class="hd"><span class="eyebrow">Same address</span><h2>Other studios</h2></div></div>
   <div class="other-rooms">${others.map(([s,o])=>`<a class="oroom" href="#${s}">${imgT(o.img,'')}<div><small>${o.facts[0][0]} · ${o.facts[0][1]}</small><b>${o.h1.replace(' in Annapolis','')}</b></div></a>`).join('')}</div>
   <div style="margin-top:56px">${doorHTML()}</div>
  </div></section>
@@ -1007,7 +1007,7 @@ function viewRoom(slug){
 function viewBook(){
  return `<div class="view" data-v="book"><section class="desk-sec" style="padding-top:calc(130px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Book a session','']])}
-  <div class="sec-head" style="margin-top:20px"><div class="hd"><span class="eyebrow">Booking desk</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">Book a session</h1></div><p class="lede">Recording, photo, or a quote for podcast and content work. Pick a room, a length and a start time. A $50 deposit holds it.</p></div>
+  <div class="sec-head" style="margin-top:20px"><div class="hd"><span class="eyebrow">Booking desk</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">Book a session</h1></div><p class="lede">Recording, photo, or a quote for podcast and content work. Pick a studio, a length and a start time. A $50 deposit holds it.</p></div>
   ${seoNote(META.book)}
   <div data-desk="all"></div>
  </div></section></div>`;
@@ -1050,7 +1050,7 @@ function viewProduct(id){
 /* ================= SEO meta per route ================= */
 const META={
  home:{path:'/',title:'GVO Sound | Recording, Photo and Podcast Studio in Annapolis, MD',desc:'Recording, photo and podcast studios at 109 Gibralter Ave, Annapolis, MD. Engineer and mixing included. Open until 3AM Friday through Sunday.',h1:'GVO Sound, recording studio in Annapolis, MD (visually: Your Vision. Your Sound.)',schema:'RecordingStudio + LocalBusiness, hours, geo'},
- book:{path:'/book',title:'Book a Studio Session | GVO Sound, Annapolis MD',desc:'Book recording or photo studio time at GVO Sound in Annapolis. Pick your room, length, engineer and start time. $50 deposit holds your slot.',h1:'Book a session',schema:'BreadcrumbList, ReserveAction'},
+ book:{path:'/book',title:'Book a Studio Session | GVO Sound, Annapolis MD',desc:'Book recording or photo studio time at GVO Sound in Annapolis. Pick your studio, length, engineer and start time. $50 deposit holds your slot.',h1:'Book a session',schema:'BreadcrumbList, ReserveAction'},
  shop:{path:'/shop',title:'GVO Apparel | Tees, Hoodies and Sets | GVO Sound Shop',desc:'Shop GVO Sound apparel: World Tour tees, the Cheetah hoodie, the Worker Jacket and more. Ship it or pick it up at the studio in Annapolis.',h1:'The rack',schema:'BreadcrumbList, ItemList of Product'}
 };
 Object.entries(ROOMS).forEach(([s,r])=>META[s]={path:'/'+s,title:r.title,desc:r.desc,h1:r.h1,schema:'Service + Offer catalog, FAQPage, BreadcrumbList'});
@@ -1192,7 +1192,7 @@ const ADDONS=['gvo-beanie','world-tour-tee-black','prove-a-point-tee','world-tou
 const addOf=id=>[...B.add.values()].find(x=>x.id===id);
 let D=null;
 const DESK_HTML=`<div class="desk"><div class="steps">
- <div class="step" data-step="room"><div class="step-h"><span class="n">01</span><h3>Room</h3></div><div class="opts" data-el="rooms"></div></div>
+ <div class="step" data-step="room"><div class="step-h"><span class="n">01</span><h3>Studio</h3></div><div class="opts" data-el="rooms"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>02</span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>03</span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
  <div class="step"><div class="step-h"><span class="n" data-num>04</span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
@@ -1389,7 +1389,7 @@ function feed(html){const f=$('#feed');if(!f)return;const d=document.createEleme
 function mountQuote(host,switcher){
  const types=['Podcast','Social media content','Commercial','Other'];let t='Podcast';
  if(switcher)D=null;
- const sw=switcher?`<div class="steps" style="margin-bottom:16px"><div class="step"><div class="step-h"><span class="n">01</span><h3>Room</h3></div><div class="opts" id="qSwitch">${BROOMS.filter(r=>r.k!=='holiday'||inSeason()).sort((a,b)=>(a.k==='pod')-(b.k==='pod')).map(r=>opt(r,'data-room',r.k==='pod')).join('')}</div></div></div>`:'';
+ const sw=switcher?`<div class="steps" style="margin-bottom:16px"><div class="step"><div class="step-h"><span class="n">01</span><h3>Studio</h3></div><div class="opts" id="qSwitch">${BROOMS.filter(r=>r.k!=='holiday'||inSeason()).sort((a,b)=>(a.k==='pod')-(b.k==='pod')).map(r=>opt(r,'data-room',r.k==='pod')).join('')}</div></div></div>`:'';
  host.innerHTML=sw+`<div class="desk"><form class="quote-form" novalidate id="qform">
   <div><h3 style="font-size:.8rem;margin-bottom:10px">What are you making?</h3><div class="seg" id="qtype"></div></div>
   <div class="fields"><label>Name<input id="q-name" autocomplete="name" placeholder="Your name or show name"></label><label>Phone<input id="q-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label><label class="full">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com"></label><label class="full">Tell us about it<textarea id="q-notes" rows="4" placeholder="Weekly show, 2 hosts and a guest, want clips for Instagram"></textarea></label></div>
