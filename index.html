@@ -577,6 +577,64 @@ section{padding-block:clamp(52px,7vw,92px)}
 #teamGrid .member:first-child img{position:absolute;inset:0;object-position:50% 25%}
 @media (max-width:1100px){#teamGrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:700px){#teamGrid{grid-template-columns:repeat(2,minmax(0,1fr))}#teamGrid .member:first-child{aspect-ratio:16/11}}
+
+/* ---- Square integration simulation ---- */
+.sim{position:fixed;inset:0;z-index:120;background:rgba(7,6,10,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow-y:auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fade .3s var(--ease)}
+.sim-in{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+@media (max-width:880px){.sim-in{grid-template-columns:1fr}}
+.sim-head{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sim-head .eyebrow{color:var(--lav)}
+.sim-tag{font:600 .75rem var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px dashed var(--lav);color:var(--lav);padding:6px 10px;border-radius:3px}
+.sheet-pay{background:var(--bone);color:var(--ink);border-radius:6px;overflow:hidden}
+.sp-top{padding:18px 20px;border-bottom:1px solid #dcd6e0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sp-top b{font:900 1.3rem/1 var(--display);font-stretch:115%;text-transform:uppercase}
+.sp-top small{font:600 .75rem var(--mono);color:#6b6475;letter-spacing:.06em;text-transform:uppercase}
+.sp-body{padding:18px 20px;display:grid;gap:14px}
+.sp-lines{display:grid;gap:6px;font-size:.9rem;font-variant-numeric:tabular-nums}
+.sp-lines div{display:flex;justify-content:space-between;gap:10px}
+.sp-lines .t{font:900 1.3rem/1 var(--display);border-top:1px solid #dcd6e0;padding-top:10px;margin-top:4px}
+.wallets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.wallets button{background:#fff;border:1px solid #cfc9d6;border-radius:6px;padding:12px;font:600 .9rem var(--body);color:var(--ink);min-height:46px}
+.wallets button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.card-demo{border:1px solid #cfc9d6;border-radius:6px;background:#fff;padding:12px 14px;display:grid;grid-template-columns:1fr auto auto;gap:14px;font:500 .95rem var(--mono);align-items:center}
+.card-demo small{grid-column:1/-1;font:500 .75rem var(--body);color:#6b6475}
+.sp-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sp-fields input{border:1px solid #cfc9d6;border-radius:6px;padding:12px;font:400 .95rem var(--body);background:#fff;color:var(--ink);width:100%}
+.sp-fields .full{grid-column:1/-1}
+@media (max-width:520px){.sp-fields{grid-template-columns:1fr}}
+.sp-body .btn-pay{background:var(--ink);color:var(--bone);border:0;border-radius:6px;padding:16px;font:700 .85rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.sp-body .btn-pay:disabled{opacity:.5}
+.sp-note{font-size:.8rem;color:#6b6475;margin:0}
+.flow{display:grid;gap:0;padding:4px 20px 18px}
+.flow li{list-style:none;display:grid;grid-template-columns:28px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #e3dee6;opacity:.35;transition:opacity .4s}
+.flow li.on{opacity:1}
+.flow li:last-child{border:0}
+.flow i{width:22px;height:22px;border-radius:50%;border:2px solid #cfc9d6;margin-top:2px;display:grid;place-items:center;font-style:normal;font-size:.75rem;color:#fff;transition:all .3s}
+.flow li.on i{background:var(--lav-deep);border-color:var(--lav-deep)}
+.flow li.on i::before{content:"✓"}
+.flow li.run i{border-color:var(--lav-deep);border-top-color:transparent;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flow b{display:block;font-weight:700}
+.flow p{margin:2px 0 0;font-size:.88rem;color:#4b4552}
+.flow code{display:inline-block;margin-top:6px;font:600 .75rem var(--mono);background:#ece8f0;color:var(--lav-ink);padding:3px 7px;border-radius:3px}
+.phone{background:#000;border-radius:34px;padding:12px;border:1px solid var(--line);box-shadow:0 40px 80px -40px rgba(185,178,255,.4);max-width:380px;width:100%;justify-self:center}
+.phone-scr{background:#121016;border-radius:24px;min-height:min(520px,70vh);padding:16px 14px;display:grid;align-content:start;gap:10px}
+.ph-top{display:flex;justify-content:space-between;align-items:center;font:600 .75rem var(--mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase;padding:0 4px 6px}
+.ph-top b{color:var(--bone);font:700 .95rem var(--body);text-transform:none;letter-spacing:0}
+.feed{display:grid;gap:8px}
+.fi{background:#1d1a24;border:1px solid #2d2836;border-radius:14px;padding:12px;display:grid;gap:4px;animation:feedIn .45s var(--ease)}
+@keyframes feedIn{from{opacity:0;transform:translateY(-10px) scale(.98)}}
+.fi small{font:600 .75rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--lav)}
+.fi b{font-weight:700;font-size:.95rem}
+.fi span{font-size:.85rem;color:#c8c2d2}
+.fi .amt{font:900 1.3rem/1 var(--display);color:var(--ok)}
+.cal{display:grid;grid-template-columns:40px 1fr;gap:0;font:500 .75rem var(--mono);color:var(--mute);margin-top:4px}
+.cal div{height:22px;border-top:1px solid #2d2836}
+.cal .blk{grid-column:2;background:var(--lav);color:var(--lav-ink);border-radius:6px;padding:4px 8px;font:700 .75rem var(--body);height:auto}
+.ph-empty{color:var(--mute);font-size:.85rem;text-align:center;padding:40px 10px}
+.sim-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;color:var(--mute);font-size:.85rem}
+.sync{display:inline-flex;align-items:center;gap:8px;font:600 .75rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(134,219,163,.18)}
 </style>
 </head>
 <body>
@@ -637,6 +695,7 @@ section{padding-block:clamp(52px,7vw,92px)}
   <div class="lines" id="lines"></div>
   <div class="drawer-f" id="cartFoot"></div>
 </aside>
+<div class="sim" id="sim" hidden role="dialog" aria-modal="true" aria-label="Checkout"></div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
@@ -891,7 +950,7 @@ function viewProduct(id){
     <div class="pdp-price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</div>
     <p class="lede">Designed by GVO Sound in Annapolis and sold in the studio lounge at 109 Gibralter Ave.</p>
     <div id="pdpOpts" class="opt-row"></div>
-    <span class="stock" id="pdpStock"></span>
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><span class="stock" id="pdpStock"></span><span class="sync">Stock from Square</span></div>
     <div><h3 style="font-size:.8rem;margin-bottom:10px">Get it</h3><div class="ful" id="pdpFul"><button type="button" aria-pressed="true" data-ful="ship"><b>Ship it</b><small>Free over $75</small></button><button type="button" aria-pressed="false" data-ful="pickup"><b>Pick up at GVO</b><small>Free, at your session</small></button></div></div>
     <button type="button" class="btn btn-lav" id="pdpAdd">Add to bag · ${m2(unit(p))}</button>
     ${seoNote(META['product-'+id])}
@@ -1044,7 +1103,7 @@ const DESK_HTML=`<div class="desk"><div class="steps">
  <div class="step" data-step="room"><div class="step-h"><span class="n">01</span><h3>Room</h3></div><div class="opts" data-el="rooms"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>02</span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>03</span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num>04</span><h3>Date and start</h3><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num>04</span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span><i></i>Open until 3AM</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>05</span><h3>Wear the session</h3></div><p class="fine">Add merch and it's bagged at the front desk when you arrive. One checkout.</p><div class="addons" data-el="addons"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num>06</span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
   <label><span>Name or artist name <span class="req">*</span></span><input id="f-name" autocomplete="name" placeholder="Lex" required aria-describedby="e-name"><span class="field-err" id="e-name" hidden>Add the name for the booking</span></label>
@@ -1090,10 +1149,12 @@ function staffList(){
  const ph=[{k:'Dym Archives',n:'Dym Archives',s:'Photographer',img:'t_dym'},{k:'Smooth',n:'Smooth',s:'Photographer',img:'t_smooth'}];
  return B.room==='photo'?[{k:'any',n:'No photographer',s:'Bringing my own'},...ph]:[{k:'any',n:'First available',s:'Any photographer'},...ph];
 }
+const BOOKED=new Set();const roomGroup=r=>r==='rec'?'rec':'photo';
+function bookedOverlap(day,h,len){for(let x=h;x<h+len;x++)if(BOOKED.has(day+'|'+roomGroup(B.room)+'|'+x))return true;return false}
 function taken(key,h){let s=0;for(const c of key+':'+h)s=(s*31+c.charCodeAt(0))>>>0;return s%5===0}
 const keyOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function days(){const out=[],n=nowET();n.setHours(0,0,0,0);for(let i=0;i<14;i++){const d=new Date(n);d.setDate(n.getDate()+i);out.push(d)}return out}
-function slotsFor(d){const[o,c]=HOURS[d.getDay()],now=nowET(),res=[];for(let h=o;h+B.hrs<=c;h++){const st=new Date(d);st.setHours(h);res.push({h,dis:st-now<3600e3||taken(keyOf(d)+B.room,h)})}return res}
+function slotsFor(d){const[o,c]=HOURS[d.getDay()],now=nowET(),res=[];for(let h=o;h+B.hrs<=c;h++){const st=new Date(d);st.setHours(h);res.push({h,dis:st-now<3600e3||taken(keyOf(d)+B.room,h)||bookedOverlap(keyOf(d),h,B.hrs)})}return res}
 const opt=(o,attr,on)=>`<button type="button" class="opt${o.img?'':' plain'}" aria-pressed="${on}" ${attr}="${o.k}">${o.img?`<div class="ph">${imgT(o.img,'')}</div>`:''}<div class="tx"><b>${o.n}</b><small>${o.s}</small></div></button>`;
 function renderBook(){
  if(!D||!D.host.isConnected)return;
@@ -1140,9 +1201,15 @@ function renderTicket(){
   const bad=[];if(!name)bad.push('f-name');if(phone.replace(/\D/g,'').length!==10)bad.push('f-phone');
   bad.forEach(id=>{const l=$('#'+id).closest('label');l.classList.add('bad');$('.field-err',l).hidden=false});
   if(bad.length){const f=$('#'+bad[0]);f.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});setTimeout(()=>f.focus({preventScroll:true}),350);return}
-  B.done={code:'GVO-'+Math.random().toString(36).slice(2,7).toUpperCase(),phone,line:`${name} · ${d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}, ${fmtH(B.slot)} to ${fmtH(B.slot+B.hrs)}`};
-  renderTicket();updateBar();toast('Session booked');
-  if(innerWidth<1000)tk.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+  const t=totals(),room=BROOMS.find(r=>r.k===B.room),staff=staffList().find(x=>x.k===B.staff).n;
+  const whenL=`${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}, ${fmtH(B.slot)}–${fmtH(B.slot+B.hrs)}`;
+  const items=[...B.add.values()].map(x=>({p:prodById(x.id),v:x.v,q:x.q}));
+  openSim({kind:'booking',name,phone,total:t.today,
+   lines:[['Deposit, '+room.n.toLowerCase(),Math.min(50,t.p*(1+TAX))],...items.map(x=>[x.p.n+(x.q>1?' × '+x.q:''),unit(x.p)*x.q]),...(t.merch?[['Tax on merch',t.merch*TAX]]:[])],
+   due:t.total-t.today,room,staff,whenL,items,
+   onDone:()=>{for(let x=B.slot;x<B.slot+B.hrs;x++)BOOKED.add(B.day+'|'+roomGroup(B.room)+'|'+x);
+    B.done={code:'GVO-'+Math.random().toString(36).slice(2,7).toUpperCase(),phone,line:`${name} · ${d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}, ${fmtH(B.slot)} to ${fmtH(B.slot+B.hrs)}`};
+    B.add.clear();renderTicket();updateBar();if(innerWidth<1000)tk.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}});
  };
  updateBar();
 }
@@ -1160,6 +1227,68 @@ function updateBar(){
  bb.innerHTML=`<div class="sum">Due today<b>${m2(t.today)}</b></div><button type="button" class="btn btn-lav" data-bar>${B.slot===null?'Pick a time':'Review and pay'}</button>`;
  $('[data-bar]',bb).onclick=()=>{const tgt=B.slot===null?D.days:D.ticket;tgt.scrollIntoView({behavior:reduce?'auto':'smooth',block:B.slot===null?'center':'start'})};
 }
+
+/* ================= Square integration simulation ================= */
+const sleep=ms=>new Promise(r=>setTimeout(r,reduce?0:ms));
+function openSim(c){
+ const el=$('#sim');el.hidden=false;document.body.style.overflow='hidden';
+ const isB=c.kind==='booking';
+ const lines=c.lines.map(([n,a])=>`<div><span>${n}</span><span>${a?m2(a):'Free'}</span></div>`).join('');
+ el.innerHTML=`<div class="sim-in">
+  <div class="sim-head"><span class="eyebrow">${isB?'Booking checkout':'Shop checkout'} · how Square handles it</span><span class="sim-tag">Demo · Square sandbox</span></div>
+  <div class="sheet-pay" id="spay">
+   <div class="sp-top"><b>Pay GVO Sound</b><small>Secure checkout by Square</small></div>
+   <div class="sp-body">
+    <div class="sp-lines">${lines}<div class="t"><span>Due today</span><span>${m2(c.total)}</span></div>${isB&&c.due>0?`<div style="color:#6b6475;font-size:.82rem"><span>Due at the studio</span><span>${m2(c.due)}</span></div>`:''}</div>
+    ${isB?'':`<div class="sp-fields"><input id="o-name" placeholder="Name" autocomplete="name"><input id="o-email" type="email" placeholder="Email for receipt" autocomplete="email">${c.ship?'<input class="full" id="o-addr" placeholder="Shipping address" autocomplete="street-address">':''}</div>`}
+    <div class="wallets" role="group" aria-label="Pay with">${['Card','Apple Pay','Google Pay','Afterpay','Cash App Pay'].map((w,i)=>`<button type="button" data-w="${w}" aria-pressed="${i===0}">${w}</button>`).join('')}</div>
+    <div class="card-demo" id="cardDemo"><span>4111 1111 1111 1111</span><span>12/28</span><span>111</span><small>Square's sandbox test card. This demo has no real card field, so nothing you type here could be charged.</small></div>
+    <button type="button" class="btn-pay" id="simPay">Pay ${m2(c.total)}</button>
+    <p class="sp-note">In the live site this box is Square's own payment form. Card numbers go straight to Square and never touch GVO's website.</p>
+   </div>
+  </div>
+  <div class="phone" aria-label="Cory's Square app"><div class="phone-scr"><div class="ph-top"><b>Cory's Square app</b><span>GVO Sound</span></div><div class="feed" id="feed"><p class="ph-empty">Watch this screen when you pay. It shows what lands in GVO's Square account.</p></div></div></div>
+  <div class="sim-foot"><span>Card form, payment, ${isB?'calendar':'orders'} and stock all run on GVO's existing Square account.</span><button type="button" class="btn btn-ghost" id="simClose">Cancel</button></div>
+ </div>`;
+ let wallet='Card';
+ $('.wallets',el).onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;wallet=b.dataset.w;$$('.wallets button',el).forEach(x=>x.setAttribute('aria-pressed',x===b));$('#cardDemo').hidden=wallet!=='Card'};
+ const close=()=>{el.hidden=true;el.innerHTML='';document.body.style.overflow=''};
+ $('#simClose').onclick=close;
+ el.onkeydown=e=>{if(e.key==='Escape'&&!running)close()};
+ let running=false;
+ $('#simPay').focus();
+ $('#simPay').onclick=async()=>{
+  if(!isB){const n=$('#o-name').value.trim(),em=$('#o-email').value.trim(),ad=c.ship?$('#o-addr').value.trim():'ok';if(!n||!/.+@.+\..+/.test(em)||!ad){toast(!n?'Add your name':!ad?'Add a shipping address':'Add an email for the receipt');return}c.name=n;c.email=em}
+  running=true;$('#simClose').hidden=true;
+  const pay=wallet==='Card'?'Visa ending 1111':wallet;
+  const steps=isB?[
+   ['Card secured by Square',`${pay}. Square's form turns the card into a one-time token. GVO's site never sees the number.`,'Web Payments SDK'],
+   ['Deposit charged',`${m2(c.total)} to GVO's Square account${c.items.length?': the $50 deposit plus merch.':'.'}`,'Payments API · CreatePayment',()=>feed(`<small>Payment</small><span class="amt">+${m2(c.total)}</span><span>${c.name} · ${pay}</span>`)],
+   ['Session added to the calendar',`${c.room.n}, ${c.whenL}, ${c.staff}.`,'Bookings API · CreateBooking',()=>feed(`<small>Appointments</small><b>${c.room.n}</b><span>${c.whenL} · ${c.staff}</span><div class="cal"><div>${fmtH(B.slot)}</div><div class="blk">${c.name} · ${c.room.n}</div><div>${fmtH(B.slot+B.hrs)}</div><div></div></div>`)],
+   ...(c.items.length?[['Merch pulled from stock',c.items.map(x=>`${x.p.n} (${vLabel(x.p,x.v)})${x.q>1?' × '+x.q:''}`).join(', ')+'. One stock count covers the studio and the website.','Orders + Inventory API',()=>feed(`<small>Inventory</small>${c.items.map(x=>`<span>${x.p.n} · ${vLabel(x.p,x.v)} <b style="color:var(--tag)">−${x.q}</b></span>`).join('')}<span>Bagged for pickup at the session</span>`)]]:[]),
+   ['Customer saved',`${c.name} · ${c.phone} added to GVO's customer list.`,'Customers API',()=>feed(`<small>Customers</small><b>${c.name}</b><span>${c.phone} · first booking</span>`)],
+   ['Confirmation text sent',`To ${c.phone}, with the 24-hour cancellation policy.`,'Text confirmation',()=>feed(`<small>Text sent</small><span>"You're booked at GVO Sound, ${c.whenL}. 109 Gibralter Ave."</span>`)]
+  ]:[
+   ['Card secured by Square',`${pay}. Square's form turns the card into a one-time token. GVO's site never sees the number.`,'Web Payments SDK'],
+   ['Order created',c.items.map(x=>`${x.p.n} (${vLabel(x.p,x.v)})${x.q>1?' × '+x.q:''}`).join(', ')+(c.ship?'. Ship to customer.':'. Pickup at GVO.'),'Orders API · CreateOrder',()=>feed(`<small>Orders</small><b>${c.ship?'To ship':'Ready for pickup'}</b><span>${c.name} · ${c.items.reduce((a,x)=>a+x.q,0)} item${c.items.reduce((a,x)=>a+x.q,0)>1?'s':''}</span>`)],
+   ['Payment charged',`${m2(c.total)} to GVO's Square account.`,'Payments API · CreatePayment',()=>feed(`<small>Payment</small><span class="amt">+${m2(c.total)}</span><span>${c.name} · ${pay}</span>`)],
+   ['Stock updated','Square lowers the count for each size and color. The studio register sees the same numbers.','Inventory API',()=>feed(`<small>Inventory</small>${c.items.map(x=>`<span>${x.p.n} · ${vLabel(x.p,x.v)} <b style="color:var(--tag)">−${x.q}</b></span>`).join('')}`)],
+   ['Receipt emailed',`To ${c.email}.`,'Square receipt',()=>feed(`<small>Customers</small><b>${c.name}</b><span>${c.email} · receipt sent</span>`)]
+  ];
+  $('#spay').innerHTML=`<div class="sp-top"><b>${isB?'Booking':'Order'} in progress</b><small>${m2(c.total)} · ${pay}</small></div><ol class="flow" id="flow">${steps.map(([t,d,api])=>`<li><i></i><div><b>${t}</b><p>${d}</p><code>${api}</code></div></li>`).join('')}</ol>`;
+  $('#feed').innerHTML='';
+  const narrow=innerWidth<880;if(narrow)$('.phone',el).scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+  const lis=$$('#flow li');
+  for(let i=0;i<steps.length;i++){lis[i].classList.add('run');await sleep(750);lis[i].classList.remove('run');lis[i].classList.add('on');if(steps[i][3])steps[i][3]()}
+  await sleep(300);
+  $('#spay').insertAdjacentHTML('beforeend',`<div class="sp-body" style="border-top:1px solid #dcd6e0"><p class="sp-note" style="color:var(--ink);font-size:.9rem"><b>Done.</b> ${isB?'The booking and the payment are two records in Square, matched by name and time.':'The order waits in Square until Cory marks it shipped or picked up.'} Money lands in GVO's bank the next business day.</p><button type="button" class="btn-pay" id="simDone">${isB?'See the confirmation':'Back to the site'}</button></div>`);
+  running=false;
+  $('#simDone').onclick=()=>{close();c.onDone&&c.onDone();toast(isB?'Session booked':'Order placed')};
+  if(narrow)$('#simDone').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+  $('#simDone').focus({preventScroll:true});
+ };
+}
+function feed(html){const f=$('#feed');if(!f)return;const d=document.createElement('div');d.className='fi';d.innerHTML=html;f.prepend(d)}
 
 /* podcast quote form */
 function mountQuote(host){
@@ -1212,8 +1341,10 @@ function renderCart(bump){
  let sub=0;
  $('#lines').innerHTML=cart.map((l,i)=>{const p=prodById(l.id),u=unit(p);sub+=u*l.q;return `<div class="line">${p.img[0]?imgT(p.img[0],''):'<div class="nophoto" style="position:static;width:60px;height:74px;border-radius:3px"><span class="mark"></span></div>'}<div><a href="#product-${p.id}" style="font-weight:600;font-size:.9rem;line-height:1.3;text-decoration:none">${p.n}</a><br><small>${vLabel(p,l.v)} · ${m2(u)}${l.ful==='pickup'?' · pickup':''}</small></div><div class="qty"><button type="button" data-dec="${i}" aria-label="Remove one">−</button>${l.q}<button type="button" data-inc="${i}" aria-label="Add one">+</button></div></div>`}).join('');
  const allPick=cart.every(l=>l.ful==='pickup'),ship=allPick||sub>=75?0:7.99,tax=sub*TAX;
- $('#cartFoot').innerHTML=`<div><span>Subtotal</span><span>${m2(sub)}</span></div><div><span>${allPick?'Pickup at GVO':'Shipping'+(sub>=75?'':' · free at $75')}</span><span>${ship?m2(ship):'Free'}</span></div><div><span>Tax 6%</span><span>${m2(tax)}</span></div><div class="big"><span>Total</span><span>${m2(sub+ship+tax)}</span></div><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px">Check out</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button><p class="fine">Demo checkout. No payment is taken.</p>`;
- $('#checkout').onclick=()=>{cart=[];save();renderCart();toast('Order placed. Demo only, nothing was charged.')};
+ $('#cartFoot').innerHTML=`<div><span>Subtotal</span><span>${m2(sub)}</span></div><div><span>${allPick?'Pickup at GVO':'Shipping'+(sub>=75?'':' · free at $75')}</span><span>${ship?m2(ship):'Free'}</span></div><div><span>Tax 6%</span><span>${m2(tax)}</span></div><div class="big"><span>Total</span><span>${m2(sub+ship+tax)}</span></div><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px">Check out</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button><p class="fine">Demo checkout. Walks through how Square handles the order. No payment is taken.</p>`;
+ $('#checkout').onclick=()=>{const items=cart.map(l=>({p:prodById(l.id),v:l.v,q:l.q,ful:l.ful}));closeCart();
+  openSim({kind:'order',total:sub+ship+tax,ship:!allPick,lines:[...items.map(x=>[x.p.n+' · '+vLabel(x.p,x.v)+(x.q>1?' × '+x.q:''),unit(x.p)*x.q]),[allPick?'Pickup at GVO':'Shipping',ship],['MD sales tax 6%',tax]],items,
+   onDone:()=>{cart=[];save();renderCart()}})};
  $('#pickup').onclick=()=>{cart.forEach(l=>{const c=B.add.get(l.id+'|'+l.v);B.add.set(l.id+'|'+l.v,{id:l.id,v:l.v,q:(c?c.q:0)+l.q})});cart=[];save();renderCart();closeCart();if(route==='book')renderBook();location.hash='book';toast('Your bag moved to your session ticket. Pick a time.')};
 }
 $('#lines').addEventListener('click',e=>{const d=e.target.closest('[data-dec]'),i=e.target.closest('[data-inc]');if(d){const k=+d.dataset.dec;if(!--cart[k].q)cart.splice(k,1)}else if(i)cart[+i.dataset.inc].q++;else{if(e.target.closest('a'))closeCart();return}save();renderCart()});
