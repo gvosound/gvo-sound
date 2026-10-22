@@ -920,6 +920,81 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 @media (max-width:760px){.igb-h{grid-template-columns:1fr auto}.igb-h p{grid-column:1/-1;order:3}.igb-g{grid-template-columns:repeat(3,1fr)}}
 .btn .ig-ic{margin-right:-2px}
 
+
+/* fit builder */
+.fit-sec{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 100%);border-top:1px solid var(--line)}
+.fit{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+@media (max-width:900px){.fit{grid-template-columns:1fr}}
+.fit-stage{position:sticky;top:96px;display:grid;gap:12px}
+@media (max-width:900px){.fit-stage{position:static}}
+.fb{position:relative;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;background:radial-gradient(120% 75% at 50% 32%,#f6f3ee 0%,#e7e1d8 55%,#d5cdc1 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 30px 60px -36px rgba(185,178,255,.45);touch-action:pan-y;user-select:none}
+.fb::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.012) 0 2px,transparent 2px 4px)}
+.fb-tag{position:absolute;left:14px;bottom:12px;z-index:6;font:600 .68rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#6b6475}
+.fb-tag b{color:var(--ink)}
+.fb-mark{position:absolute;right:14px;bottom:12px;width:34px;background:#b9b2c7;z-index:6;opacity:.7}
+.fz{position:absolute;padding:0;border:0;background:none;cursor:grab;transition:left .55s var(--ease),top .55s var(--ease),width .55s var(--ease),height .55s var(--ease),opacity .4s;display:grid;place-items:center}
+.fz img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 16px 16px rgba(30,24,40,.26)) drop-shadow(0 2px 3px rgba(30,24,40,.22));pointer-events:none}
+.fz-bottom{z-index:1}.fz-bottom img{object-position:50% 0}
+.fz-top{z-index:2}.fz-layer{z-index:3}.fz-hat{z-index:4}
+.fz-layer img{object-position:100% 50%}
+.fz-top img{object-position:50% 40%}
+.fz.off{opacity:0;pointer-events:none}
+.fz:focus-visible{outline:2px dashed var(--lav-deep);outline-offset:-4px}
+.fz:hover img{filter:drop-shadow(0 20px 20px rgba(30,24,40,.3)) drop-shadow(0 2px 3px rgba(30,24,40,.24)) brightness(1.03)}
+.fz img.in{animation:fzIn .45s var(--ease)}
+.fz img.in-r{animation:fzR .45s var(--ease)}
+.fz img.in-l{animation:fzL .45s var(--ease)}
+@keyframes fzIn{from{opacity:0;transform:scale(.94)}}
+@keyframes fzR{from{opacity:0;transform:translateX(26px) rotate(1.5deg)}}
+@keyframes fzL{from{opacity:0;transform:translateX(-26px) rotate(-1.5deg)}}
+.fit-presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fit-presets>span{font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-right:4px}
+.fit-ctl{display:grid;gap:18px;min-width:0}
+.fit-tabs{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:40px;padding:4px;background:var(--ink)}
+.fit-tabs button{border:0;background:none;border-radius:40px;padding:10px 6px;font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);transition:background .25s,color .25s}
+.fit-tabs button[aria-selected="true"]{background:var(--bone);color:var(--ink)}
+.fit-pick{border:1px solid var(--line);border-radius:var(--r);background:var(--ink);overflow:hidden}
+.fit-pick-h{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:10px;padding:12px;border-bottom:1px solid var(--line);text-align:center}
+.fit-pick-h small{display:block;font:600 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lav)}
+.fit-pick-h b{font-weight:600;line-height:1.25;display:block;margin-top:2px}
+.fit-arr{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:none;font-size:1.05rem;transition:border-color .2s,background .2s}
+.fit-arr:hover{border-color:var(--bone);background:var(--panel)}
+.fit-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px;padding:12px;max-height:260px;overflow:auto}
+@media (max-width:900px){.fit-opts{display:flex;overflow-x:auto;max-height:none;scroll-snap-type:x proximity}.fo{flex:0 0 76px;scroll-snap-align:start}}
+.fo{aspect-ratio:1;border-radius:var(--r);border:1px solid var(--line);background:radial-gradient(circle at 50% 40%,#f3efe9,#d9d2c8);padding:8px;display:grid;place-items:center;transition:transform .2s var(--ease),box-shadow .2s}
+.fo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.2))}
+.fo:hover{transform:translateY(-2px)}
+.fo[aria-pressed="true"]{box-shadow:0 0 0 2px var(--lav),0 0 0 4px var(--ink)}
+.fo-none{background:var(--panel)}.fo-none span{font:600 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.fit-size{display:grid;gap:8px}
+.fit-size>span{font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.fit-size .sz{min-width:46px;padding:10px 8px}
+.fit-lines{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.fit-lines li{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.fit-lines img{width:48px;height:48px;object-fit:contain;border-radius:3px;background:#e7e1d8;padding:4px}
+.fit-lines a{text-decoration:none;font-weight:600;font-size:.92rem;line-height:1.3}
+.fit-lines a:hover{color:var(--lav)}
+.fit-lines small{display:block;font:600 .66rem var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.fit-lines small.ok{color:var(--ok)}.fit-lines small.no{color:var(--tag)}
+.fit-tot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.fit-tot small{display:block;font:600 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.fit-tot b{font:900 1.5rem/1.1 var(--display);font-stretch:110%}
+.fit-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.looks-h{margin-top:clamp(56px,8vw,90px);display:grid;gap:12px;margin-bottom:22px}
+.looks-h h3{font-size:clamp(1.4rem,3vw,2.2rem)}
+.looks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.look{display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink)}
+.look-ph{display:block;aspect-ratio:4/5;overflow:hidden;background:var(--panel)}
+.look-ph img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.look:hover .look-ph img{transform:scale(1.04)}
+.look-b{padding:14px;display:grid;gap:8px;align-content:start}
+.look-b>b{font:900 1.05rem/1 var(--display);font-stretch:110%;text-transform:uppercase}
+.look-b>small{font:.72rem var(--mono);color:var(--mute);letter-spacing:.04em}
+.look-p{display:flex;flex-wrap:wrap;gap:6px}
+.look-p a{font-size:.78rem;border:1px solid var(--line);border-radius:40px;padding:4px 9px;text-decoration:none;color:#d4cfd9}
+.look-p a:hover{border-color:var(--lav);color:var(--bone)}
+.look-b .btn{margin-top:4px;padding:11px 14px}
+@media (max-width:560px){.looks{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:74%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.look{scroll-snap-align:start}}
 /* travel */
 .trhero h1{font-size:clamp(2.3rem,5vw,4.4rem)}
 .trhero{background:radial-gradient(900px 420px at 85% 0%,rgba(185,178,255,.14),transparent 60%)}
@@ -1692,15 +1767,132 @@ function viewBook(){
  </div></section></div>`;
 }
 
+
+/* ================= fit builder =================
+   Cut-out flat lays of real GVO pieces (background removed from the store photos).
+   Each option is one colorway. Stock and prices come from PRODUCTS, so the board never sells a piece the rack can't. */
+const FIT_SLOTS=[{k:'hat',l:'Hat',opt:1},{k:'layer',l:'Layer',opt:1},{k:'top',l:'Top',opt:0},{k:'bottom',l:'Bottom',opt:1}];
+const FIT_RAW={
+ hat:[['gvo-beanie','Maroon','beanie-maroon'],['gvo-beanie','Black','beanie-black']],
+ layer:[['worker-jacket','Tan','worker'],['world-tour-cheetah-hoodie','','cheetah'],['world-tour-cozy-hoodie','Navy','cozy-navy'],['world-tour-cozy-hoodie','Pink','cozy-pink']],
+ top:[['world-tour-tee-black','','wt-black'],['gvo-x-ace-distressed-tee','','ace'],['no-art-for-today-tee','','noart'],['prove-a-point-tee','','prove'],['pain-is-temporary-dirtbike-jersey','','pain'],['gvo-muscle-tee','','muscle'],['collective-set-shirt','Black','coll-shirt'],['never-see-the-haters-here-tee','','haters'],['music-is-a-drug-long-sleeve','','drug'],['no-deadbeats-oversized-pink','','ndb-pink'],['no-deadbeats-oversized-grey','','ndb-grey']],
+ bottom:[['collective-set-pants','Black','coll-pants-black'],['collective-set-pants','Gray','coll-pants-gray'],['gvo-skater-shorts','','shorts']]
+};
+const FIT=Object.fromEntries(Object.entries(FIT_RAW).map(([k,a])=>[k,a.map(([id,c,f])=>({id,c,f,p:prodById(id)})).filter(o=>o.p)]));
+const FIT_SIZES=['XS','S','M','L','XL','2XL','3XL'];
+const FIT_PRESETS=[
+ {n:'Studio night',f:{hat:'beanie-maroon',layer:'worker',top:'wt-black',bottom:'coll-pants-black'}},
+ {n:'Cheetah print',f:{hat:null,layer:'cheetah',top:'noart',bottom:'shorts'}},
+ {n:'Off duty',f:{hat:null,layer:'cozy-pink',top:'haters',bottom:'coll-pants-gray'}},
+ {n:'All black',f:{hat:'beanie-black',layer:'cozy-navy',top:'coll-shirt',bottom:'coll-pants-black'}}
+];
+const LOOKS=[
+ {img:'look_dc6ucdelpr2',t:'Spotted in Good Vibes',who:'Model @mstrmndcbfw_ · photo @kdejesus_',ig:'Dc6UcDelPr2',fit:{hat:null,layer:'cheetah',top:'ace',bottom:null}},
+ {img:'look_ddevhiblm5p',t:'The Collective Set',who:'Photo @dymarchives',ig:'DdevhIBlM5P',fit:{hat:null,layer:null,top:'coll-shirt',bottom:'coll-pants-black'}},
+ {img:'look_ddj7mppllsi',t:'NYFW, Times Square',who:'Worn by @manlikescoop',ig:'Ddj7MPPlLSI',fit:{hat:null,layer:null,top:'pain',bottom:null}},
+ {img:'p_gvo-x-ace-distressed-tee_2',t:'GVO x Ace',who:'The collab tee on the crew',fit:{hat:null,layer:null,top:'ace',bottom:null}},
+ {img:'p_world-tour-tracksuit-pants_1',t:'World Tour Tracksuit',who:'Full set, full crew',shop:['world-tour-tracksuit-jacket','world-tour-tracksuit-pants']}
+];
+let FS={hat:0,layer:0,top:0,bottom:0},fitTab='top',fitSize='L';
+const fitIdx=(k,f)=>f==null?-1:FIT[k].findIndex(o=>o.f===f);
+const fitOpt=k=>FS[k]>=0?FIT[k][FS[k]]:null;
+function fitVariant(o){const p=o.p,sz=p.o.find(x=>x.t==='Size');
+ if(sz&&!sz.v.includes(fitSize))return{v:null,ok:0,why:`Not made in ${fitSize}`};
+ const v=p.o.map(x=>x.t==='Size'?fitSize:x.t==='Color'?(o.c||x.v[0]):x.v[0]).join('/');
+ return{v,ok:p.av.includes(v),why:p.av.includes(v)?(sz?`In stock in ${fitSize}`:'In stock'):(sz?`Sold out in ${fitSize}`:`Sold out in ${o.c}`)}}
+function fitGeo(){const H=FS.hat>=0,L=FS.layer>=0,B=FS.bottom>=0;
+ const up=B?41:58,y0=H?15.5:(B?5:16),g={};
+ g.hat={x:37,y:2.5,w:26,h:12};
+ if(L){g.layer={x:2,y:y0,w:55,h:up};g.top={x:43,y:y0+2.5,w:55,h:up-5}}else{g.top={x:13,y:y0,w:74,h:up}}
+ if(!L)g.layer={x:-30,y:y0,w:55,h:up};
+ const by=y0+up-4;g.bottom={x:20,y:by,w:60,h:Math.max(20,97-by)};
+ return g}
+function fitSummary(){return FIT_SLOTS.map(sl=>fitOpt(sl.k)).filter(Boolean)}
+function fitName(o){return o.p.n+(o.c&&o.p.o.some(x=>x.t==='Color')?`, ${o.c}`:'')}
+function viewFit(){
+ return `<section class="fit-sec" id="fit"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Style it before you buy it</span><h2>Build a fit</h2></div><p class="lede">Mix real GVO pieces into one outfit. Tap a tab to swap a piece, swipe a garment on the board, or shuffle until it clicks. Then add the whole fit to your bag.</p></div>
+  <div class="fit">
+   <div class="fit-stage">
+    <div class="fb" id="fitBoard" role="img" aria-label="">
+     <span class="fb-tag">GVO Fit · <b id="fitNo">01</b></span><span class="fb-mark mark" aria-hidden="true"></span>
+     ${['bottom','top','layer','hat'].map(k=>`<button type="button" class="fz fz-${k}" data-fz="${k}" aria-label="${FIT_SLOTS.find(x=>x.k===k).l}: swipe or tap to change"><img alt="" draggable="false"></button>`).join('')}
+    </div>
+    <div class="fit-presets"><span>Try a fit</span>${FIT_PRESETS.map((x,i)=>`<button type="button" class="chip" data-preset-fit="${i}">${x.n}</button>`).join('')}</div>
+   </div>
+   <div class="fit-ctl">
+    <div class="fit-tabs" role="tablist">${FIT_SLOTS.map(sl=>`<button type="button" role="tab" data-ftab="${sl.k}" aria-selected="${sl.k===fitTab}">${sl.l}</button>`).join('')}</div>
+    <div class="fit-pick"><div class="fit-pick-h"><button type="button" class="fit-arr" data-fstep="-1" aria-label="Previous piece">←</button><div><small id="fitSlotL"></small><b id="fitPieceN"></b></div><button type="button" class="fit-arr" data-fstep="1" aria-label="Next piece">→</button></div><div class="fit-opts" id="fitOpts"></div></div>
+    <div class="fit-size"><span>Your size</span><div class="sizes" id="fitSizes">${FIT_SIZES.map(z=>`<button type="button" class="sz" data-fsize="${z}" aria-pressed="${z===fitSize}">${z}</button>`).join('')}</div></div>
+    <ul class="fit-lines" id="fitLines"></ul>
+    <div class="fit-tot"><div><small>The fit</small><b id="fitTotal"></b></div><button type="button" class="btn btn-lav" id="fitAdd">Add the fit to bag</button></div>
+    <div class="fit-acts"><button type="button" class="btn btn-ghost" id="fitShuffle">Shuffle</button><button type="button" class="btn btn-ghost" id="fitShare">Copy fit link</button></div>
+   </div>
+  </div>
+  ${note('How the board works','Every piece is a real GVO product photo with the background cut away, so the fit you build is what ships. Prices and stock come from the same catalog as the rack, so a sold-out size shows here too. A fit link opens the board with the same pieces, which makes it easy to share a fit on Instagram. Pieces without a clean flat-lay photo (the tracksuit, the cozy pants, the golf set) join the board once they are shot flat on one backdrop.')}
+  <div class="looks-h rv"><span class="eyebrow">Worn by GVO</span><h3>Real fits from @${IG.clothing}</h3></div>
+  <div class="looks">${LOOKS.map((l,i)=>`<article class="look rv"><a class="look-ph" ${l.ig?`href="https://www.instagram.com/p/${l.ig}/" target="_blank" rel="noopener" data-ig="${l.ig}" data-igr="0"`:`href="#product-${l.shop[0]}"`} aria-label="${l.t}">${imgT(l.img,l.t+', '+l.who)}</a><div class="look-b"><b>${l.t}</b><small>${l.who}</small><div class="look-p">${(l.fit?Object.values(l.fit).filter(Boolean).map(f=>Object.values(FIT).flat().find(o=>o.f===f)).map(o=>`<a href="#product-${o.id}">${o.p.n}</a>`):l.shop.map(id=>`<a href="#product-${id}">${prodById(id).n}</a>`)).join('')}</div>${l.fit?`<button type="button" class="btn btn-ghost" data-look="${i}">Build this fit</button>`:`<a class="btn btn-ghost" href="#product-${l.shop[0]}">Shop the set</a>`}</div></article>`).join('')}</div>
+ </div></section>`;
+}
+function mountFit(){
+ const bd=$('#fitBoard',main);if(!bd)return;
+ const q=new URLSearchParams(location.hash.split('?')[1]||'').get('fit');
+ if(q){const [h,l,t,b]=q.split('.');FS={hat:fitIdx('hat',h==='-'?null:h),layer:fitIdx('layer',l==='-'?null:l),top:Math.max(0,fitIdx('top',t)),bottom:fitIdx('bottom',b==='-'?null:b)}}
+ let fitN=1;
+ const paint=(dirs={})=>{
+  const g=fitGeo();
+  FIT_SLOTS.forEach(sl=>{const z=$(`.fz-${sl.k}`,bd),o=fitOpt(sl.k),r=g[sl.k],img=$('img',z);
+   z.style.cssText=`left:${r.x}%;top:${r.y}%;width:${r.w}%;height:${r.h}%`;
+   z.classList.toggle('off',!o);
+   if(o&&img.dataset.f!==o.f){img.dataset.f=o.f;img.src=`img/fit_${o.f}.webp`;img.alt=fitName(o);const d=dirs[sl.k]||0;img.classList.remove('in-l','in-r','in');void img.offsetWidth;img.classList.add(d<0?'in-l':d>0?'in-r':'in')}
+  });
+  const pcs=fitSummary();bd.setAttribute('aria-label','Outfit: '+pcs.map(fitName).join(', '));
+  $('#fitNo',main).textContent=String(fitN).padStart(2,'0');
+  // tab + options
+  $$('[data-ftab]',main).forEach(b=>b.setAttribute('aria-selected',b.dataset.ftab===fitTab));
+  const sl=FIT_SLOTS.find(x=>x.k===fitTab),o=fitOpt(fitTab);
+  $('#fitSlotL',main).textContent=sl.l+(FS[fitTab]>=0?` · ${FS[fitTab]+1} of ${FIT[fitTab].length}`:'');
+  $('#fitPieceN',main).textContent=o?fitName(o):'None';
+  $('#fitOpts',main).innerHTML=(sl.opt?`<button type="button" class="fo fo-none" data-fo="-1" aria-pressed="${FS[fitTab]<0}"><span>None</span></button>`:'')+FIT[fitTab].map((x,i)=>`<button type="button" class="fo" data-fo="${i}" aria-pressed="${FS[fitTab]===i}" aria-label="${fitName(x)}"><img src="img/fit_${x.f}.webp" alt="" loading="lazy"></button>`).join('');
+  $$('[data-fsize]',main).forEach(b=>b.setAttribute('aria-pressed',b.dataset.fsize===fitSize));
+  // lines
+  let tot=0;
+  $('#fitLines',main).innerHTML=pcs.map(o=>{const v=fitVariant(o),u=unit(o.p);tot+=u;return `<li><img src="img/fit_${o.f}.webp" alt=""><div><a href="#product-${o.id}">${fitName(o)}</a><small class="${v.ok?'ok':'no'}">${v.why}</small></div><span class="price">${o.p.s?`<s>${m2(o.p.p)}</s><span class="now">${m2(o.p.s)}</span>`:m2(o.p.p)}</span></li>`}).join('');
+  $('#fitTotal',main).textContent=m2(tot)+` · ${pcs.length} piece${pcs.length>1?'s':''}`;
+ };
+ const set=(k,i,d=0)=>{if(FS[k]===i)return;FS[k]=i;fitN++;paint({[k]:d})};
+ const step=(k,d)=>{const sl=FIT_SLOTS.find(x=>x.k===k),n=FIT[k].length,lo=sl.opt?-1:0;let i=FS[k]+d;if(i>=n)i=lo;if(i<lo)i=n-1;set(k,i,d)};
+ const sec=$('#fit',main);
+ sec.addEventListener('click',e=>{
+  const t=e.target.closest('[data-ftab]');if(t){fitTab=t.dataset.ftab;paint();return}
+  const fo=e.target.closest('[data-fo]');if(fo){const i=+fo.dataset.fo;set(fitTab,i,i>FS[fitTab]?1:-1);return}
+  const st=e.target.closest('[data-fstep]');if(st){step(fitTab,+st.dataset.fstep);return}
+  const sz=e.target.closest('[data-fsize]');if(sz){fitSize=sz.dataset.fsize;paint();return}
+  const pr=e.target.closest('[data-preset-fit]');if(pr){const f=FIT_PRESETS[+pr.dataset.presetFit].f;applyFit(f);return}
+  const lk=e.target.closest('[data-look]');if(lk){applyFit(LOOKS[+lk.dataset.look].fit);bd.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});toast('Fit loaded. Swap any piece to make it yours.');return}
+ });
+ const applyFit=f=>{const dirs={};FIT_SLOTS.forEach(sl=>{const i=fitIdx(sl.k,f[sl.k]);if(sl.k==='top'&&i<0)return;if(FS[sl.k]!==i){FS[sl.k]=i;dirs[sl.k]=1}});fitN++;paint(dirs)};
+ // board: tap a garment to pick its tab, swipe to change it
+ let sx=null,sk=null;
+ bd.addEventListener('pointerdown',e=>{const z=e.target.closest('[data-fz]');if(!z)return;sx=e.clientX;sk=z.dataset.fz});
+ bd.addEventListener('pointerup',e=>{if(sk==null)return;const dx=e.clientX-sx,k=sk;sk=null;if(Math.abs(dx)>34){step(k,dx<0?1:-1);fitTab=k;paint()}else{fitTab=k;paint();$('.fit-ctl',main).scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'})}});
+ $('#fitShuffle',main).onclick=()=>{const dirs={};FIT_SLOTS.forEach(sl=>{const n=FIT[sl.k].length;let i=sl.k==='top'?Math.floor(Math.random()*n):(Math.random()<(sl.k==='hat'?.45:.25)?-1:Math.floor(Math.random()*n));if(sl.k==='bottom'&&i<0)i=Math.floor(Math.random()*n);if(i!==FS[sl.k]){FS[sl.k]=i;dirs[sl.k]=1}});fitN++;paint(dirs)};
+ $('#fitShare',main).onclick=()=>{const code=FIT_SLOTS.map(sl=>fitOpt(sl.k)?.f||'-').join('.');const url=location.href.split('#')[0]+'#shop?fit='+code;try{navigator.clipboard.writeText(url).then(()=>toast('Fit link copied. Paste it anywhere.'),()=>toast(url))}catch(e){toast(url)}};
+ $('#fitAdd',main).onclick=()=>{const pcs=fitSummary(),ok=[],skip=[];pcs.forEach(o=>{const v=fitVariant(o);if(v.ok){const l=cart.find(x=>x.id===o.id&&x.v===v.v);l?l.q++:cart.push({id:o.id,v:v.v,q:1,ful:'ship'});ok.push(o)}else skip.push(o)});save();renderCart(true);
+  toast(ok.length?`Added ${ok.length} piece${ok.length>1?'s':''} to your bag${skip.length?` · ${skip.map(o=>o.p.n).join(', ')} not available in ${fitSize}`:''}`:`None of these pieces are available in ${fitSize}. Try another size.`)};
+ paint();
+ if(q)setTimeout(()=>bd.scrollIntoView({behavior:'instant',block:'center'}),150);
+}
+
 function viewShop(){
  return `<div class="view" data-v="shop"><section style="padding-top:calc(110px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Shop','']])}
-  <div class="shop-hero" style="margin-top:18px">${imgT('lounge','GVO apparel racks and shelves in the studio lounge under a painted mural',0)}<div><span class="eyebrow">GVO apparel</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">The rack</h1><p class="lede" style="color:#d7d2dc">Made by the studio, sold in the lounge. Ship it, or pick it up at your next session.</p></div></div>
+  <div class="shop-hero" style="margin-top:18px">${imgT('lounge','GVO apparel racks and shelves in the studio lounge under a painted mural',0)}<div><span class="eyebrow">GVO apparel</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">The rack</h1><p class="lede" style="color:#d7d2dc">Made by the studio, sold in the lounge. Ship it, or pick it up at your next session.</p><a class="btn btn-lav" href="#fit" style="justify-self:start">Build a fit</a></div></div>
   ${seoNote(META.shop)}
   <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
   <div class="rack" id="rack"></div>
   <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Good vibes, bold threads. Wear the energy.','clothing')}</div>
- </div></section></div>`;
+ </div></section>${viewFit()}</div>`;
 }
 
 function viewProduct(id){
@@ -2235,6 +2427,7 @@ const CATS=['All','Shirts','Cold weather','Bottoms','Headwear','Sale'];let cat='
 function wireShop(){
  const r=()=>{$('#shopFilters').innerHTML=CATS.map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const list=PRODUCTS.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));$('#shopCount').textContent=list.length+' of '+PRODUCTS.length+' pieces · live store, Oct 20';$('#rack').innerHTML=list.map(prodCard).join('')};
  $('#shopFilters').onclick=e=>{const b=e.target.closest('[data-cat]');if(b){cat=b.dataset.cat;r()}};r();
+ mountFit();
 }
 function wireProduct(id){
  const p=prodById(id);if(!p)return;let ful='ship';
