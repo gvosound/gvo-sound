@@ -961,8 +961,8 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .fit-arr:hover{border-color:var(--bone);background:var(--panel)}
 .fit-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px;padding:12px;max-height:260px;overflow:auto}
 @media (max-width:900px){.fit-opts{display:flex;overflow-x:auto;max-height:none;scroll-snap-type:x proximity}.fo{flex:0 0 76px;scroll-snap-align:start}}
-.fo{aspect-ratio:1;border-radius:var(--r);border:1px solid var(--line);background:radial-gradient(circle at 50% 40%,#f3efe9,#d9d2c8);padding:8px;display:grid;place-items:center;transition:transform .2s var(--ease),box-shadow .2s}
-.fo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.2))}
+.fo{position:relative;aspect-ratio:1;border-radius:var(--r);border:1px solid var(--line);background:radial-gradient(circle at 50% 40%,#f3efe9,#d9d2c8);padding:0;overflow:hidden;display:grid;place-items:center;transition:transform .2s var(--ease),box-shadow .2s}
+.fo img{position:absolute;inset:9px;width:calc(100% - 18px);height:calc(100% - 18px);object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.2))}
 .fo:hover{transform:translateY(-2px)}
 .fo[aria-pressed="true"]{box-shadow:0 0 0 2px var(--lav),0 0 0 4px var(--ink)}
 .fo-none{background:var(--panel)}.fo-none span{font:600 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
@@ -1775,7 +1775,7 @@ const FIT_SLOTS=[{k:'hat',l:'Hat',opt:1},{k:'layer',l:'Layer',opt:1},{k:'top',l:
 const FIT_RAW={
  hat:[['gvo-beanie','Maroon','beanie-maroon'],['gvo-beanie','Black','beanie-black']],
  layer:[['worker-jacket','Tan','worker'],['world-tour-cheetah-hoodie','','cheetah'],['world-tour-cozy-hoodie','Navy','cozy-navy'],['world-tour-cozy-hoodie','Pink','cozy-pink']],
- top:[['world-tour-tee-black','','wt-black'],['gvo-x-ace-distressed-tee','','ace'],['no-art-for-today-tee','','noart'],['prove-a-point-tee','','prove'],['pain-is-temporary-dirtbike-jersey','','pain'],['gvo-muscle-tee','','muscle'],['collective-set-shirt','Black','coll-shirt'],['never-see-the-haters-here-tee','','haters'],['music-is-a-drug-long-sleeve','','drug'],['no-deadbeats-oversized-pink','','ndb-pink'],['no-deadbeats-oversized-grey','','ndb-grey']],
+ top:[['world-tour-tee-black','','wt-black'],['gvo-x-ace-distressed-tee','','ace'],['no-art-for-today-tee','','noart'],['prove-a-point-tee','','prove'],['gvo-muscle-tee','','muscle'],['collective-set-shirt','Black','coll-shirt'],['never-see-the-haters-here-tee','','haters'],['music-is-a-drug-long-sleeve','','drug'],['no-deadbeats-oversized-pink','','ndb-pink'],['no-deadbeats-oversized-grey','','ndb-grey']],
  bottom:[['collective-set-pants','Black','coll-pants-black'],['collective-set-pants','Gray','coll-pants-gray'],['gvo-skater-shorts','','shorts']]
 };
 const FIT=Object.fromEntries(Object.entries(FIT_RAW).map(([k,a])=>[k,a.map(([id,c,f])=>({id,c,f,p:prodById(id)})).filter(o=>o.p)]));
@@ -1789,7 +1789,7 @@ const FIT_PRESETS=[
 const LOOKS=[
  {img:'look_dc6ucdelpr2',t:'Spotted in Good Vibes',who:'Model @mstrmndcbfw_ · photo @kdejesus_',ig:'Dc6UcDelPr2',fit:{hat:null,layer:'cheetah',top:'ace',bottom:null}},
  {img:'look_ddevhiblm5p',t:'The Collective Set',who:'Photo @dymarchives',ig:'DdevhIBlM5P',fit:{hat:null,layer:null,top:'coll-shirt',bottom:'coll-pants-black'}},
- {img:'look_ddj7mppllsi',t:'NYFW, Times Square',who:'Worn by @manlikescoop',ig:'Ddj7MPPlLSI',fit:{hat:null,layer:null,top:'pain',bottom:null}},
+ {img:'look_ddj7mppllsi',t:'NYFW, Times Square',who:'Worn by @manlikescoop',ig:'Ddj7MPPlLSI',shop:['pain-is-temporary-dirtbike-jersey']},
  {img:'p_gvo-x-ace-distressed-tee_2',t:'GVO x Ace',who:'The collab tee on the crew',fit:{hat:null,layer:null,top:'ace',bottom:null}},
  {img:'p_world-tour-tracksuit-pants_1',t:'World Tour Tracksuit',who:'Full set, full crew',shop:['world-tour-tracksuit-jacket','world-tour-tracksuit-pants']}
 ];
@@ -1805,7 +1805,7 @@ function fitGeo(){const H=FS.hat>=0,L=FS.layer>=0,B=FS.bottom>=0;
  g.hat={x:37,y:2.5,w:26,h:12};
  if(L){g.layer={x:2,y:y0,w:55,h:up};g.top={x:43,y:y0+2.5,w:55,h:up-5}}else{g.top={x:13,y:y0,w:74,h:up}}
  if(!L)g.layer={x:-30,y:y0,w:55,h:up};
- const by=y0+up-4;g.bottom={x:20,y:by,w:60,h:Math.max(20,97-by)};
+ const by=y0+up-4;g.bottom={x:20,y:by,w:60,h:Math.max(20,95-by)};
  return g}
 function fitSummary(){return FIT_SLOTS.map(sl=>fitOpt(sl.k)).filter(Boolean)}
 function fitName(o){return o.p.n+(o.c&&o.p.o.some(x=>x.t==='Color')?`, ${o.c}`:'')}
@@ -1818,7 +1818,6 @@ function viewFit(){
      <span class="fb-tag">GVO Fit · <b id="fitNo">01</b></span><span class="fb-mark mark" aria-hidden="true"></span>
      ${['bottom','top','layer','hat'].map(k=>`<button type="button" class="fz fz-${k}" data-fz="${k}" aria-label="${FIT_SLOTS.find(x=>x.k===k).l}: swipe or tap to change"><img alt="" draggable="false"></button>`).join('')}
     </div>
-    <div class="fit-presets"><span>Try a fit</span>${FIT_PRESETS.map((x,i)=>`<button type="button" class="chip" data-preset-fit="${i}">${x.n}</button>`).join('')}</div>
    </div>
    <div class="fit-ctl">
     <div class="fit-tabs" role="tablist">${FIT_SLOTS.map(sl=>`<button type="button" role="tab" data-ftab="${sl.k}" aria-selected="${sl.k===fitTab}">${sl.l}</button>`).join('')}</div>
@@ -1827,11 +1826,12 @@ function viewFit(){
     <ul class="fit-lines" id="fitLines"></ul>
     <div class="fit-tot"><div><small>The fit</small><b id="fitTotal"></b></div><button type="button" class="btn btn-lav" id="fitAdd">Add the fit to bag</button></div>
     <div class="fit-acts"><button type="button" class="btn btn-ghost" id="fitShuffle">Shuffle</button><button type="button" class="btn btn-ghost" id="fitShare">Copy fit link</button></div>
+    <div class="fit-presets"><span>Try a fit</span>${FIT_PRESETS.map((x,i)=>`<button type="button" class="chip" data-preset-fit="${i}">${x.n}</button>`).join('')}</div>
    </div>
   </div>
-  ${note('How the board works','Every piece is a real GVO product photo with the background cut away, so the fit you build is what ships. Prices and stock come from the same catalog as the rack, so a sold-out size shows here too. A fit link opens the board with the same pieces, which makes it easy to share a fit on Instagram. Pieces without a clean flat-lay photo (the tracksuit, the cozy pants, the golf set) join the board once they are shot flat on one backdrop.')}
+  ${note('How the board works','Every piece is a real GVO product photo with the background cut away, so the fit you build is what ships. Prices and stock come from the same catalog as the rack, so a sold-out size shows here too. A fit link opens the board with the same pieces, which makes it easy to share a fit on Instagram. Pieces without a clean flat-lay photo (the tracksuit, the cozy pants, the golf set, the dirtbike jersey) join the board once they are shot flat on one backdrop.')}
   <div class="looks-h rv"><span class="eyebrow">Worn by GVO</span><h3>Real fits from @${IG.clothing}</h3></div>
-  <div class="looks">${LOOKS.map((l,i)=>`<article class="look rv"><a class="look-ph" ${l.ig?`href="https://www.instagram.com/p/${l.ig}/" target="_blank" rel="noopener" data-ig="${l.ig}" data-igr="0"`:`href="#product-${l.shop[0]}"`} aria-label="${l.t}">${imgT(l.img,l.t+', '+l.who)}</a><div class="look-b"><b>${l.t}</b><small>${l.who}</small><div class="look-p">${(l.fit?Object.values(l.fit).filter(Boolean).map(f=>Object.values(FIT).flat().find(o=>o.f===f)).map(o=>`<a href="#product-${o.id}">${o.p.n}</a>`):l.shop.map(id=>`<a href="#product-${id}">${prodById(id).n}</a>`)).join('')}</div>${l.fit?`<button type="button" class="btn btn-ghost" data-look="${i}">Build this fit</button>`:`<a class="btn btn-ghost" href="#product-${l.shop[0]}">Shop the set</a>`}</div></article>`).join('')}</div>
+  <div class="looks">${LOOKS.map((l,i)=>`<article class="look rv"><a class="look-ph" ${l.ig?`href="https://www.instagram.com/p/${l.ig}/" target="_blank" rel="noopener" data-ig="${l.ig}" data-igr="0"`:`href="#product-${l.shop?l.shop[0]:Object.values(FIT).flat().find(o=>o.f===l.fit.top).id}"`} aria-label="${l.t}">${imgT(l.img,l.t+', '+l.who)}</a><div class="look-b"><b>${l.t}</b><small>${l.who}</small><div class="look-p">${(l.fit?Object.values(l.fit).filter(Boolean).map(f=>Object.values(FIT).flat().find(o=>o.f===f)).map(o=>`<a href="#product-${o.id}">${o.p.n}</a>`):l.shop.map(id=>`<a href="#product-${id}">${prodById(id).n}</a>`)).join('')}</div>${l.fit?`<button type="button" class="btn btn-ghost" data-look="${i}">Build this fit</button>`:`<a class="btn btn-ghost" href="#product-${l.shop[0]}">Shop the look</a>`}</div></article>`).join('')}</div>
  </div></section>`;
 }
 function mountFit(){
