@@ -651,6 +651,15 @@ section{padding-block:clamp(52px,7vw,92px)}
 .cal div{height:22px;border-top:1px solid #2d2836}
 .cal .blk{grid-column:2;background:var(--lav);color:var(--lav-ink);border-radius:6px;padding:4px 8px;font:700 .75rem var(--body);height:auto}
 .ph-empty{color:var(--mute);font-size:.85rem;text-align:center;padding:40px 10px}
+.sent{border:1px solid var(--lav);border-radius:14px;padding:clamp(20px,4vw,32px);display:grid;gap:12px;background:rgba(180,170,255,.06);animation:sentIn .45s var(--ease);scroll-margin:120px}
+.sent:focus{outline:none}
+.sent h3{font-size:clamp(1.7rem,5vw,2.3rem);margin:0}
+.sent p{margin:0}
+.sent .sent-mail{color:var(--lav);font:600 .85rem/1.5 var(--mono)}
+.sent.sm{padding:16px 18px;gap:6px}.sent.sm h3{font-size:1.25rem}
+.sent button{justify-self:start;margin-top:6px}
+@keyframes sentIn{from{opacity:0;transform:translateY(10px)}}
+.form-err{border:1px solid #e0635a;color:#ffb3ad;border-radius:10px;padding:12px 14px;font:600 .9rem/1.45 var(--body,inherit);scroll-margin:120px}
 .hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
 .sim-in.pay-in{max-width:560px;grid-template-columns:1fr}
 .sp-sess{display:grid;gap:2px;padding-bottom:12px;border-bottom:1px solid #dcd6e0}
@@ -1423,10 +1432,20 @@ async function sendForm(fm,form,fields){
  let ts='';const wid=formTs.get(fm);
  if(wid!=null&&window.turnstile){ts=window.turnstile.getResponse(wid)||'';if(!ts){toast('One second, checking you are not a bot. Try again in a moment.');return false}}
  const btn=fm.querySelector('[type=submit]'),txt=btn&&btn.textContent;if(btn){btn.disabled=true;btn.textContent='Sending…'}
- try{await api('form',{form,fields,ts,hp:(fm.querySelector('[name=website]')||{}).value||'',t:Date.now()-(formT0.get(fm)||0)});return true}
- catch(e){toast(e.message);return false}
+ const old=fm.querySelector('.form-err');if(old)old.remove();
+ try{return await api('form',{form,fields,ts,hp:(fm.querySelector('[name=website]')||{}).value||'',t:Date.now()-(formT0.get(fm)||0)})||{ok:true}}
+ catch(e){const m=document.createElement('p');m.className='form-err';m.setAttribute('role','alert');m.textContent=e.message;const b=fm.querySelector('[type=submit]');b?b.before(m):fm.append(m);m.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});return false}
  finally{if(btn&&btn.isConnected){btn.disabled=false;btn.textContent=txt}if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
 }
+// Success: the form is swapped for a confirmation panel, scrolled to the middle of the screen and focused,
+// so nobody has to hunt for whether it went through. "Send another" brings the empty form back.
+const fmtPh=x=>{const d=String(x).replace(/\D/g,'').replace(/^1(?=\d{10}$)/,'');return d.length===10?`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`:x};
+function formDone(fm,res,o){fm.reset();const prev=fm.previousElementSibling;if(prev&&prev.classList.contains('sent'))prev.remove();
+ const mail=res&&res.confirmation==='sent'&&o.to?`<p class="sent-mail">A copy is on its way to ${esc(o.to)}.</p>`:'';
+ const d=document.createElement('div');d.className='sent'+(o.small?' sm':'');d.tabIndex=-1;d.setAttribute('role','status');
+ d.innerHTML=`<span class="eyebrow">${esc(o.eyebrow)}</span><h3>${esc(o.title)}</h3><p class="lede">${o.body}</p>${mail}${o.again?`<button type="button" class="btn btn-ghost">${esc(o.again)}</button>`:''}`;
+ fm.hidden=true;fm.before(d);const a=d.querySelector('button');if(a)a.onclick=()=>{d.remove();fm.hidden=false;armForm(fm);const f=fm.querySelector('input:not(.hp),textarea');f&&f.focus({preventScroll:true});fm.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})};
+ d.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});d.focus({preventScroll:true})}
 async function loadShop(){
  try{
   const j=await api('shop');
@@ -2084,21 +2103,21 @@ function wire(r){
  if(r==='events'){
   const ty=$('#inqType',main);if(ty)ty.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$$('.chip',ty).forEach(x=>x.setAttribute('aria-pressed',x===c))});
   const fm=$('#inqForm',main);if(fm){armForm(fm);fm.addEventListener('submit',async e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.required&&!x.checkValidity());if(bad){bad.focus();toast('Add your '+(bad.name==='msg'?'details':bad.name));return}const t=$('.chip[aria-pressed="true"]',ty).textContent,v=n=>fm.elements[n].value.trim();
-   if(await sendForm(fm,'event',{type:t,name:v('name'),email:v('email'),phone:v('phone'),org:v('org'),when:v('when'),city:v('city'),details:v('msg')})){fm.reset();toast(`Sent. Flawless gets back to you soon. (${t})`)}})}
-  const nf=$('#evNotify',main);if(nf){armForm(nf);nf.addEventListener('submit',async e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}if(await sendForm(nf,'notify',{list:'Next event',contact:i.value.trim()})){nf.reset();toast("You're on the list for the next date")}})}
+   const em=v('email'),res=await sendForm(fm,'event',{type:t,name:v('name'),email:em,phone:v('phone'),org:v('org'),when:v('when'),city:v('city'),details:v('msg')});if(res)formDone(fm,res,{to:em,eyebrow:'Inquiry received',title:'Talk soon',body:`Someone from the GVO team will reply to ${esc(em)} within 48 hours.`,again:'Send another inquiry'})})}
+  const nf=$('#evNotify',main);if(nf){armForm(nf);nf.addEventListener('submit',async e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}const c=i.value.trim(),res=await sendForm(nf,'notify',{list:'Next event',contact:c});if(res)formDone(nf,res,{to:c.includes('@')?c:'',small:true,eyebrow:'Signed up',title:"You're on the list",body:`When the date and flyer drop, ${esc(c.includes('@')?c:fmtPh(c))} gets one message about it.`})})}
  }
  if(r==='travel'){
   const ty=$('#trType',main);if(ty)ty.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$$('.chip',ty).forEach(x=>x.setAttribute('aria-pressed',x===c))});
   $$('[data-trip]',main).forEach(a=>a.addEventListener('click',()=>{const c=[...$$('.chip',ty)].find(x=>x.textContent===a.dataset.trip);if(c)c.click()}));
   const fm=$('#trForm',main);if(fm){armForm(fm);fm.addEventListener('submit',async e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.required&&!x.checkValidity());if(bad){bad.focus();toast('Add your '+bad.name);return}const t=$('.chip[aria-pressed="true"]',ty).textContent,v=n=>fm.elements[n].value.trim();
-   if(await sendForm(fm,'travel',{trip:t,name:v('name'),email:v('email'),phone:v('phone'),where:v('where'),when:v('when'),pax:v('pax'),details:v('msg')})){fm.reset();toast(`Sent. Flawless gets back to you about your trip. (${t})`)}})}
-  const nf=$('#trNotify',main);if(nf){armForm(nf);nf.addEventListener('submit',async e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}if(await sendForm(nf,'notify',{list:'Africa trip',contact:i.value.trim()})){nf.reset();toast("You're on the list for the Africa trip")}})}
+   const em=v('email'),res=await sendForm(fm,'travel',{trip:t,name:v('name'),email:em,phone:v('phone'),where:v('where'),when:v('when'),pax:v('pax'),details:v('msg')});if(res)formDone(fm,res,{to:em,eyebrow:'Trip request received',title:'Talk soon',body:`Someone from the GVO team will reply to ${esc(em)} within 48 hours about your trip.`,again:'Send another request'})})}
+  const nf=$('#trNotify',main);if(nf){armForm(nf);nf.addEventListener('submit',async e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}const c=i.value.trim(),res=await sendForm(nf,'notify',{list:'Africa trip',contact:c});if(res)formDone(nf,res,{to:c.includes('@')?c:'',small:true,eyebrow:'Signed up',title:"You're on the list",body:`When the Africa trip dates are set, ${esc(c.includes('@')?c:fmtPh(c))} gets one message with the details.`})})}
  }
  if(r.startsWith('music')){const fm=$('#subForm',main);if(fm){armForm(fm);const eng=fm.elements.engineer;fm.elements.gvo.addEventListener('change',e=>{eng.hidden=!/^(Yes|Partly)$/.test(e.target.value)});
   fm.addEventListener('submit',async e=>{e.preventDefault();const v=n=>fm.elements[n].value.trim();
    const bad=['artist','email','title','links'].map(n=>fm.elements[n]).find(x=>!x.value.trim()||!x.checkValidity());if(bad){bad.focus();toast('Fill in '+bad.getAttribute('aria-label').toLowerCase());return}
    const links=v('links').split(/[\s,]+/).filter(Boolean);if(links.length>5){fm.elements.links.focus();toast('Add up to 5 links');return}if(links.some(x=>!/^https:\/\//i.test(x))){fm.elements.links.focus();toast('Each link should start with https://');return}
-   if(await sendForm(fm,'music',{artist:v('artist'),email:v('email'),title:v('title'),type:v('type'),links:links.join('\n'),ig:v('ig'),tiktok:v('tiktok'),yt:v('yt'),gvo:v('gvo'),engineer:eng.hidden?'':v('engineer'),notes:v('notes')})){fm.reset();eng.hidden=true;toast('Sent. The team reviews it before anything goes live.')}})}}
+   const em=v('email'),ti=v('title'),res=await sendForm(fm,'music',{artist:v('artist'),email:em,title:ti,type:v('type'),links:links.join('\n'),ig:v('ig'),tiktok:v('tiktok'),yt:v('yt'),gvo:v('gvo'),engineer:eng.hidden?'':v('engineer'),notes:v('notes')});if(res){eng.hidden=true;formDone(fm,res,{to:em,eyebrow:'Submission received',title:'Your music is in',body:`${esc(ti)} is with the GVO team. Songs picked for the site go up on the music page.`,again:'Submit another song'})}})}}
  if(ROOMS[r])wireRoom(r);
  $$('[data-yt]',main).forEach(b=>b.addEventListener('click',()=>{if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)}));
  const deskEl=$('[data-desk]',main);
@@ -2630,8 +2649,8 @@ function mountQuote(host,switcher){
  $('#qtype').onclick=e=>{const b=e.target.closest('[data-t]');if(b){t=b.dataset.t;rT()}};
  if(switcher)$('#qSwitch').onclick=e=>{const b=e.target.closest('[data-room]');if(!b||b.dataset.room==='pod')return;B.room=b.dataset.room;mountDesk(host,b.dataset.room)};
  armForm($('#qform'));$('#qform').onsubmit=async e=>{e.preventDefault();const fm=e.target,ph=$('#q-phone').value.trim();if(!$('#q-name').value.trim()||!ph){toast('Add your name and phone so the team can call you');return}
-  if(!await sendForm(fm,'quote',{name:$('#q-name').value.trim(),phone:ph,email:$('#q-email').value.trim(),type:t,details:$('#q-notes').value.trim()}))return;
-  fm.innerHTML=`<div style="display:grid;gap:14px"><span class="eyebrow">Request received</span><h3 style="font-size:2rem">Talk soon</h3><p class="lede">The GVO video team will call ${esc(ph)} about your ${t.toLowerCase()} project.</p></div>`;toast('Request sent')};
+  const em=$('#q-email').value.trim(),res=await sendForm(fm,'quote',{name:$('#q-name').value.trim(),phone:ph,email:em,type:t,details:$('#q-notes').value.trim()});if(!res)return;
+  formDone(fm,res,{to:em,eyebrow:'Request received',title:'Talk soon',body:`Expect a call at ${esc(fmtPh(ph))} from (443) 292-6753 within 48 hours with your ${esc(t.toLowerCase())} quote.`,again:'Send another request'})};
 }
 
 /* shop */
