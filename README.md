@@ -34,6 +34,7 @@ The shop, checkout and booking run on GVO's Square account through Pages Functio
 | `POST /api/checkout` | CreateOrder, then CreatePayment for that order's total. Stock drops when the order is paid |
 | `GET /api/availability` | Bookable services and team members, or open start times for one service |
 | `POST /api/form` | Site forms: checks fields, screens out bots, sends the row to the form sheet's Apps Script |
+| `GET /api/videos` | Every YouTube playlist in `functions/_lib/video-lists.js`, newest first, Shorts left out. Cached 1 hour. `?fresh=1` skips the cache |
 | `POST /api/book` | Checks the time is still open, takes full payment, then creates the booking. If the booking fails, the payment is refunded |
 
 Settings, in Pages > Settings > Variables and Secrets, for Production and Preview:
@@ -53,6 +54,7 @@ Settings, in Pages > Settings > Variables and Secrets, for Production and Previe
 | `ORDER_ALERT_TO` | Optional | Who gets the copy of each web order. Defaults to `gvosoundllc@gmail.com` |
 | `FORMS_URL` | Secret | Web app URL of the Apps Script on the form sheet |
 | `FORMS_SECRET` | Secret | Shared secret; the same value is the sheet script's FORM_SECRET property |
+| `YOUTUBE_API_KEY` | Secret | Optional. With it, /api/videos reads every video in each playlist through the YouTube Data API. Without it, the public feed, which only carries the first 15 in playlist order |
 
 Which items sell: the 27 Wix item IDs are pinned in `PINNED` in `functions/_lib/site-products.js` (checked Oct 25, 2026), so a new Square item never lands on the site by accident. Add an ID there to sell a new item. Site photos attach by name; the aliases in that file cover the Wix names.
 

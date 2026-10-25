@@ -797,7 +797,8 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
 .rel .ln a{color:var(--lav);text-decoration:none;padding-block:6px}
 .rel .ln a:hover{color:var(--bone)}
 .rel[aria-current="true"] .cv{outline:2px solid var(--lav);outline-offset:3px}
-.fam{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:14px}
+.fam{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));grid-auto-flow:row dense;gap:14px}
+.fam .art-strip{grid-column:1/-1;margin-top:0}
 .art{display:grid;grid-template-columns:76px 1fr;gap:16px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:14px;background:var(--ink)}
 .art .cv{width:76px;border-radius:50%}
 .art b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase;display:block}
@@ -816,10 +817,22 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
 .submit .full{grid-column:1/-1}
 @media (max-width:760px){.submit{grid-template-columns:1fr}.submit form{grid-template-columns:1fr}}
 .sess{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
-.sess a{scroll-snap-align:start;display:grid;gap:10px;text-decoration:none}
+.sess .vc{scroll-snap-align:start;display:grid;gap:10px;align-content:start;min-width:0}
+.sess button.th{border:0;padding:0;width:100%;cursor:pointer;display:block;color:inherit}
+.sess iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:var(--r);background:#000}
+.art-strip{margin-top:28px;display:grid;gap:14px}
+.art-strip .hd{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.art-strip h3{margin:6px 0 0}
+.ep-list{display:grid;gap:10px;margin-top:4px}
+.ep-list .vc{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center}
+.ep-list .th{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--panel)}
+.ep-list .th img{width:100%;height:100%;object-fit:cover;display:block}
+.ep-list button.th{border:0;padding:0;cursor:pointer}
+.ep-list iframe{grid-column:1/-1;width:100%;aspect-ratio:16/9;border:0;border-radius:var(--r)}
+.ep-list b{font-weight:600}.ep-list small{font:.72rem var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
 .sess .th{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--panel)}
 .sess .th img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
-.sess a:hover .th img{transform:scale(1.05)}
+.sess .vc:hover .th img{transform:scale(1.05)}
 .sess .th::after{content:"";position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(7,6,10,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l9 5-9 5z' fill='%23b9b2ff'/%3E%3C/svg%3E") center/26px no-repeat;border:1px solid rgba(185,178,255,.6);backdrop-filter:blur(4px)}
 .sess b{font-weight:600}
 .sess small{font:.75rem var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
@@ -1317,6 +1330,8 @@ const ARTISTS=[
  {n:'BoobBlack',r:'GVO team engineer. Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',img:'c_boob'},
  {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',img:'c_need'}
 ];
+/* Videos: the site asks /api/videos for each YouTube playlist (functions/_lib/video-lists.js), newest first.
+   SESS and the Platform 16¾ episode below are what shows if YouTube can't be reached. */
 const SESS=[
  {y:'xMfY35F94r0',t:"Young Dylan, It's On Me",s:'Live performance',img:'y_dylan'},
  {y:'pNW2wyC6aXA',t:'Flawless Breezyy',s:'The Garden · Ep. 5',img:'y_flawless'},
@@ -1324,6 +1339,22 @@ const SESS=[
  {y:'IAFnpZepA1o',t:'WillThaRapper',s:'The Garden · Ep. 8',img:'y_will'},
  {y:'8IdhoWf3Z_Q',t:'Lex Bratcher',s:'The Garden · Ep. 11',img:'y_lex'}
 ];
+const ytThumb=id=>`https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+const vDate=d=>{const x=new Date(d);return isNaN(x)?'':x.toLocaleDateString('en-US',{month:'short',year:'numeric'})};
+// One video tile. Tap the picture and it plays right there through youtube-nocookie.
+const vCard=v=>{const t=esc(v.t||v.title),s=esc(v.s||'');return `<div class="vc"><button type="button" class="th" data-yt="${esc(v.id||v.y)}" aria-label="Play ${t}${s?', '+s:''}">${v.img?imgT(v.img,`${t}${s?', '+s:''}`):`<img src="${ytThumb(v.id)}" alt="${t}${s?', '+s:''}" loading="lazy">`}</button><span><b>${t}</b>${s?`<br><small>${s}</small>`:''}</span></div>`};
+let YT=null,vidsP=null;
+const loadVids=()=>vidsP||(vidsP=api('videos').then(j=>YT=j.lists||{}).catch(()=>YT={}));
+const vList=k=>YT&&YT[k]&&YT[k].ok&&YT[k].videos.length?YT[k]:null;
+const plUrl=l=>'https://www.youtube.com/playlist?list='+encodeURIComponent(l.playlist);
+// Swap the hand-picked videos for the live playlists once they arrive. Anything that failed keeps its fallback.
+function fillVideos(root){if(!root||!root.isConnected)return;
+ const ss=vList('sessions'),se=$('[data-vids="sessions"]',root);if(ss&&se)se.innerHTML=ss.videos.map(vCard).join('');
+ // Artist strips: any playlist in video-lists.js with an artist name lands under that artist's card.
+ $$('[data-vids-artist]',root).forEach(el=>{const l=Object.values(YT||{}).find(x=>x.artist===el.dataset.vidsArtist&&x.ok&&x.videos.length);if(!l)return;
+  el.innerHTML=`<div class="hd"><div><span class="eyebrow">${esc(l.artist)}</span><h3>${esc(l.label||'Watch')}</h3></div>${ext(plUrl(l),'Playlist on YouTube →')}</div><div class="sess">${l.videos.map(vCard).join('')}</div>`;el.hidden=false});
+ const pd=vList('podcasts'),pe=$('[data-vids="podcasts"]',root);if(pd&&pe){const [f,...more]=pd.videos,cap=[f.s,vDate(f.published)].filter(Boolean).map(esc).join(' · ');
+  pe.innerHTML=`<figure class="ytv"><button type="button" class="ytv-p" data-yt="${esc(f.id)}" aria-label="Play ${esc(f.t)}${f.s?', '+esc(f.s):''}"><img src="${ytThumb(f.id)}" alt="${esc(f.t)}, shot in the GVO podcast room"><span class="ytv-b" aria-hidden="true"></span></button><figcaption><span class="eyebrow">Shot in this room</span><b>${esc(f.t)}</b>${cap?`<small>${cap}</small>`:''}<a class="link" href="https://www.youtube.com/watch?v=${esc(f.id)}" target="_blank" rel="noopener">Watch on YouTube →</a></figcaption></figure>${more.length?`<div class="ep-list" aria-label="More episodes">${more.map(vCard).join('')}</div>`:''}`}}
 
 /* Events: from GVO SOUND EVENTS on Eventbrite (organizer 72154308173), checked Oct 21, 2026. Newest first. */
 const EVB='https://www.eventbrite.com/e/';
@@ -1663,7 +1694,7 @@ function viewRoom(slug){
    ${r.rates?`<div class="rate-card rv"><h3>Rates <small>Tap a row to book it</small></h3><table class="rates"><thead><tr><th>Length</th><th>Per hour</th><th>Session</th></tr></thead><tbody>${r.rates.map(([h,p])=>`<tr class="${p/h===best?'best':''}" data-hrs="${h}" tabindex="0"><td>${h} ${h===1?'hour':'hours'}</td><td>$${Math.round(p/h)}</td><td>$${p}</td></tr>`).join('')}</tbody></table><div class="rate-foot">${r.rateNote}</div></div>`:''}
    ${r.extra&&inSeason()?`<div class="rate-card rv"><h3>${r.extra.n} <small>$${r.extra.p}</small></h3><div class="rate-foot" style="border:0;color:#d4cfd9">${r.extra.d}</div></div>`:''}
    ${r.k==='pod'?`<a class="rate-card how-link" href="#desk"><h3>How it works</h3><table class="rates"><tbody><tr><td>1. Send a request below</td><td></td><td></td></tr><tr><td>2. The team calls you back</td><td></td><td></td></tr><tr><td>3. Get your quote and book</td><td></td><td></td></tr></tbody></table><span class="how-cta">Request a quote →</span></a>
-   <figure class="ytv rv"><button type="button" class="ytv-p" data-yt="Pe17A8f9T4w" aria-label="Play Platform 16¾, Episode 1 with Young Dylan and Dee">${imgT('y_platform','Platform 16¾ podcast set at GVO Sound with Young Dylan and Dee')}<span class="ytv-b" aria-hidden="true"></span><span class="ytv-d">52:06</span></button><figcaption><span class="eyebrow">Shot in this room</span><b>Platform 16¾, Ep. 1: Young Dylan</b><small>With Dee · 4.5K views on YouTube</small><a class="link" href="https://www.youtube.com/watch?v=Pe17A8f9T4w" target="_blank" rel="noopener">Watch on YouTube →</a></figcaption></figure>`:''}
+   <div data-vids="podcasts"><figure class="ytv rv"><button type="button" class="ytv-p" data-yt="Pe17A8f9T4w" aria-label="Play Platform 16¾, Episode 1 with Young Dylan and Dee">${imgT('y_platform','Platform 16¾ podcast set at GVO Sound with Young Dylan and Dee')}<span class="ytv-b" aria-hidden="true"></span><span class="ytv-d">52:06</span></button><figcaption><span class="eyebrow">Shot in this room</span><b>Platform 16¾, Ep. 1: Young Dylan</b><small>With Dee · 4.5K views on YouTube</small><a class="link" href="https://www.youtube.com/watch?v=Pe17A8f9T4w" target="_blank" rel="noopener">Watch on YouTube →</a></figcaption></figure></div>`:''}
   </div>
  </div></section>
  ${r.k==='rec'?`<section class="heard" id="heard"><canvas aria-hidden="true"></canvas><div class="wrap">
@@ -1717,7 +1748,7 @@ function viewMusic(slug){
  </div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
-  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${ext(SPO+a.sp,'Follow on Spotify →')}</div></div>`).join('')}</div>
+  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${ext(SPO+a.sp,'Follow on Spotify →')}</div></div><div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div>`).join('')}</div>
   <div class="submit rv"><div><span class="eyebrow">Made music at GVO?</span><h3>Get your song on this page</h3><p>Send your links from any platform, a single or a whole project. The team reviews every submission before anything goes live.</p></div>
    <form id="subForm" novalidate>
     <input name="artist" placeholder="Artist name *" required autocomplete="nickname" aria-label="Artist name">
@@ -1738,7 +1769,8 @@ function viewMusic(slug){
  </div></section>
  <section><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO Sound Network</span><h2>Watch the sessions</h2></div>${ext('https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA','YouTube channel','btn btn-ghost')}</div>
-  <div class="sess">${SESS.map(v=>`<a href="https://www.youtube.com/watch?v=${v.y}" target="_blank" rel="noopener"><span class="th">${imgT(v.img,`${v.t}, ${v.s}`)}</span><span><b>${v.t}</b><br><small>${v.s}</small></span></a>`).join('')}</div>
+  <div class="sess" data-vids="sessions">${SESS.map(vCard).join('')}</div>
+  ${note('Video rows','Every video row on the site reads a YouTube playlist: GVO Sound Studio Music here, Podcasts on the podcast page, and Flawless Breezy Music under his artist card. A new upload shows up within the hour once it is added to the playlist, newest first. A video in no playlist shows nowhere, Shorts are left out, and a video in Flawless\'s playlist shows only in his row. If YouTube is down, this row falls back to five hand-picked sessions.')}
  </div></section>
  <section style="padding-top:0;padding-bottom:0"><div class="wrap">
   <div class="finale"><span class="mark"></span><p class="slogan"><span>Bring Your</span><span>Vision</span><span>To Life.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
@@ -2119,7 +2151,7 @@ function wire(r){
    const links=v('links').split(/[\s,]+/).filter(Boolean);if(links.length>5){fm.elements.links.focus();toast('Add up to 5 links');return}if(links.some(x=>!/^https:\/\//i.test(x))){fm.elements.links.focus();toast('Each link should start with https://');return}
    const em=v('email'),ti=v('title'),res=await sendForm(fm,'music',{artist:v('artist'),email:em,title:ti,type:v('type'),links:links.join('\n'),ig:v('ig'),tiktok:v('tiktok'),yt:v('yt'),gvo:v('gvo'),engineer:eng.hidden?'':v('engineer'),notes:v('notes')});if(res){eng.hidden=true;formDone(fm,res,{to:em,eyebrow:'Submission received',title:'Your music is in',body:`${esc(ti)} is with the GVO team. Songs picked for the site go up on the music page.`,again:'Submit another song'})}})}}
  if(ROOMS[r])wireRoom(r);
- $$('[data-yt]',main).forEach(b=>b.addEventListener('click',()=>{if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)}));
+ if($('[data-vids]',main)){if(YT)fillVideos(main);else loadVids().then(()=>{if(route===r)fillVideos(main)})}
  const deskEl=$('[data-desk]',main);
  if(deskEl){const k=deskEl.dataset.desk;if(k==='pod')mountQuote(deskEl);else mountDesk(deskEl,k==='all'?(pendingPreset||B.room):k)}
  pendingPreset=null;
@@ -2204,6 +2236,8 @@ function pTime(){
 ['play','pause'].forEach(ev=>P.au.addEventListener(ev,pSync));
 P.au.addEventListener('timeupdate',pTime);
 P.au.addEventListener('ended',()=>{P.au.currentTime=0;pSync()});
+// Click-to-play for every YouTube tile, including ones filled in after the page drew.
+document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
  const cb=e.target.closest('[data-cats]');if(cb){const c=$('#cat');if(c)c.scrollBy({left:+cb.dataset.cats*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
