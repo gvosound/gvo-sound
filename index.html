@@ -226,7 +226,10 @@ main{min-height:60vh}
 .shot img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);pointer-events:none;user-select:none}
 .shot:hover img{transform:scale(1.05)}
 .shot figcaption{position:absolute;left:12px;bottom:12px;font:600 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;background:rgba(7,6,10,.7);padding:6px 9px;border-radius:3px}
-.reel-nav{display:flex;gap:8px}
+.reel-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.shot-more{display:grid;align-content:end;gap:10px;padding:22px;text-decoration:none;border:1px solid var(--lav);background:linear-gradient(160deg,var(--panel),rgba(180,170,255,.14))}
+.shot-more b{font:800 1.6rem/1.05 var(--display);font-stretch:110%;text-transform:uppercase;color:var(--bone)}
+.shot-more:hover{border-color:var(--bone)}
 .reel-nav button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:none;font-size:1.1rem;transition:border-color .2s,background .2s}
 .reel-nav button:hover{border-color:var(--bone);background:var(--panel)}
 
@@ -1635,8 +1638,8 @@ function viewHome(){
     <div class="row"><a class="btn btn-lav" href="#${slug}">See the ${r.short.toLowerCase()} studio</a>${r.k!=='pod'?`<a class="btn btn-ghost" href="#book" data-preset="${r.k}">Book</a>`:`<a class="btn btn-ghost" href="#${slug}?to=desk">Request a quote</a>`}</div></div></div></div>`).join('')}</div>
  </div></section>
  <section id="booth" style="padding-top:0"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO sounds</span><h2>In the booth</h2></div><div class="reel-nav"><button type="button" data-reel="-1" aria-label="Scroll back">←</button><button type="button" data-reel="1" aria-label="Scroll forward">→</button></div></div>
-  <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session',1],['r_2','Live take']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}">${media(f,c+' at GVO Sound')}<figcaption>${c}</figcaption></figure>`).join('')}</div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO sounds</span><h2>In the booth</h2></div><div class="reel-nav"><a class="btn btn-ghost" href="#music?to=sessions">Watch the sessions</a><button type="button" data-reel="-1" aria-label="Scroll back">←</button><button type="button" data-reel="1" aria-label="Scroll forward">→</button></div></div>
+  <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session',1],['r_2','Live take']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}">${media(f,c+' at GVO Sound')}<figcaption>${c}</figcaption></figure>`).join('')}<a class="shot shot-more" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>Watch the full sessions</b><span class="link">Go to the videos →</span></a></div>
  </div></section>
 
  <section id="stream" style="padding-top:0"><div class="wrap">
@@ -1767,7 +1770,7 @@ function viewMusic(slug){
   </div>
   ${note('Where submissions go','The form adds a row to the Music submissions tab of GVO\'s form sheet with every link, the socials and who engineered it, then emails the GVO Gmail. Cory marks Approved, and Siani adds the release here.')}
  </div></section>
- <section><div class="wrap">
+ <section id="sessions"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO Sound Network</span><h2>Watch the sessions</h2></div>${ext('https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA','YouTube channel','btn btn-ghost')}</div>
   <div class="sess" data-vids="sessions">${SESS.map(vCard).join('')}</div>
   ${note('Video rows','Every video row on the site reads a YouTube playlist: GVO Sound Studio Music here, Podcasts on the podcast page, and Flawless Breezy Music under his artist card. A new upload shows up within the hour once it is added to the playlist, newest first. A video in no playlist shows nowhere, Shorts are left out, and a video in Flawless\'s playlist shows only in his row. If YouTube is down, this row falls back to five hand-picked sessions.')}
@@ -2190,10 +2193,12 @@ function wireHome(){
  // reel
  const reel=$('#reel');
  $$('[data-reel]',main).forEach(b=>b.onclick=()=>reel.scrollBy({left:reel.clientWidth*.8*b.dataset.reel,behavior:'smooth'}));
- let dx=null,sl=0;
- reel.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;dx=e.clientX;sl=reel.scrollLeft;reel.classList.add('drag');reel.setPointerCapture(e.pointerId)});
- reel.addEventListener('pointermove',e=>{if(dx!==null)reel.scrollLeft=sl-(e.clientX-dx)});
+ // Mouse drag scrolls the reel. It only counts as a drag after 6px, so a plain click still opens the link tile.
+ let dx=null,sl=0,moved=false;
+ reel.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;dx=e.clientX;sl=reel.scrollLeft;moved=false});
+ reel.addEventListener('pointermove',e=>{if(dx===null)return;if(!moved&&Math.abs(e.clientX-dx)>6){moved=true;reel.classList.add('drag');try{reel.setPointerCapture(e.pointerId)}catch(_){}}if(moved)reel.scrollLeft=sl-(e.clientX-dx)});
  const end=()=>{dx=null;reel.classList.remove('drag')};reel.addEventListener('pointerup',end);reel.addEventListener('pointercancel',end);
+ reel.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
  // team filter
  const TF=[['all','Everyone'],['rec','Engineers'],['photo','Photographers'],['pod','Video']];let tf='all';
  const rTF=()=>{$('#teamFilters').innerHTML=TF.map(([k,l])=>`<button type="button" class="chip" aria-pressed="${k===tf}" data-k="${k}">${l}</button>`).join('');$$('.member',$('#teamGrid')).forEach(el=>el.classList.toggle('dim',tf!=='all'&&el.dataset.g!==tf&&el.dataset.g!=='all'))};
