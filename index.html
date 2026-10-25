@@ -1441,7 +1441,7 @@ const ROOMS={
   incl:['Engineer for the full session','Mixing included in the rate','Isolated vocal booth','Room for up to 5 people','Book JCX Beats, Mooki or Nelly AEXO by name'],
   gear:['Iso vocal booth','Argosy console desk','4 studio monitors','Dual-screen DAW station','Large-diaphragm condenser'],
   rates:Object.entries(REC).map(([h,p])=>[+h,p]),
-  rateNote:'Paid in full when you book. MD sales tax 6% added at checkout.',
+  rateNote:'Paid in full when you book. No sales tax on recording sessions.',
   gallery:[['s_artist1','Vocal booth'],['s_mic','Booth mic'],['s_artist2','Tracking'],['booth_dark','Iso booth'],['s_artist4','Playback']],
   team:'rec',
   faq:[
@@ -2408,8 +2408,8 @@ function renderTicket(){
  const {p,merch,mcount,q,total}=totals();
  const when=B.slot?`${new Date(B.slot).toLocaleDateString('en-US',{timeZone:'America/New_York',weekday:'short',month:'short',day:'numeric'})} · ${etTime(B.slot)}–${etTime(new Date(new Date(B.slot).getTime()+(s?s.mins:60)*60e3).toISOString())}`:'Pick a start time';
  const staffN=(staffList().find(x=>x.k===(B.room==='photo'?B.photog:B.staff))||{n:'First available'}).n;
- const rows=q?[...q.lines.map((l,i)=>`<div><span>${i===0?`${room.n}, ${s.hrs} ${s.hrs===1?'hour':'hours'}`:l.name}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),...(q.discount?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),`<div><span>${q.tax?'MD sales tax 6%':'Tax'}</span><span>${m2(q.tax/100)}</span></div>`].join('')
-  :`<div><span>Session</span><span>${s?m2(p):'—'}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}<div><span>Tax</span><span>${BK.q.busy?'Pricing…':BK.q.err?'At checkout':'—'}</span></div>`;
+ const rows=q?[...q.lines.map((l,i)=>`<div><span>${i===0?`${room.n}, ${s.hrs} ${s.hrs===1?'hour':'hours'}`:l.name}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),...(q.discount?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),...(q.tax?[`<div><span>MD sales tax 6%</span><span>${m2(q.tax/100)}</span></div>`]:[])].join('')
+  :`<div><span>Session</span><span>${s?m2(p):'—'}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}${BK.q.busy?'<div><span>Tax</span><span>Pricing…</span></div>':''}`;
  const can=!!(B.slot&&s&&q);
  tk.innerHTML=head+`<dl><dt>Length</dt><dd>${s?s.hrs+' '+(s.hrs===1?'hour':'hours'):'—'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffN}${B.room==='photo'&&B.photog!=='none'?' · paid separately':''}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
  <div class="perf"></div>
@@ -2463,7 +2463,7 @@ function quoteRows(q,ship,first){
   ...q.discounts.map(d=>`<div><span>${esc(d.name.replace(/^Wix Website( Discount)?\s*\d*$/i,'Sale'))}</span><span>−${m2(d.amount/100)}</span></div>`),
   ...(q.discount&&!q.discounts.length?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),
   ...(ship!=null?[`<div><span>${ship}</span><span>${q.service?m2(q.service/100):'Free'}</span></div>`]:[]),
-  `<div><span>MD sales tax 6%</span><span>${m2(q.tax/100)}</span></div>`,
+  ...(q.tax?[`<div><span>MD sales tax 6%</span><span>${m2(q.tax/100)}</span></div>`]:[]),
   `<div class="t"><span>Total</span><span>${m2(q.total/100)}</span></div>`].join('');
 }
 /* c: {kind:'shop'|'booking', quote?, book?, title?, sub?, onDone(result), onSlotGone?} */
