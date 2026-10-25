@@ -1,0 +1,33 @@
+# Old Wix links, kept so ads, bios and Google results still land on the right page.
+# The new site uses hash routes, so each rule points at /#<page>. Specific product rules come before the catch-all.
+/sound-studio  /#recording-studio  301
+/photo-studio  /#photo-studio  301
+/podcast-taping  /#podcast-studio  301
+/category/all-products  /#shop  301
+/product-page/gvo-x-ace-distressed-tee  /#product-gvo-x-ace-distressed-tee  301
+/product-page/lose-a-point-tee  /#product-prove-a-point-tee  301
+/product-page/world-tour-tee-1  /#product-world-tour-tee-white  301
+/product-page/world-tour-tee  /#product-world-tour-tee-black  301
+/product-page/gvo-muscle-tee  /#product-gvo-muscle-tee  301
+/product-page/no-art-for-today-tee  /#product-no-art-for-today-tee  301
+/product-page/pain-is-temporary-hockey-tee  /#product-pain-is-temporary-dirtbike-jersey  301
+/product-page/world-tour-cheetah-hoodie  /#product-world-tour-cheetah-hoodie  301
+/product-page/gvo-shorts  /#product-gvo-skater-shorts  301
+/product-page/golf-shirts  /#product-gvo-golf-set-shorts  301
+/product-page/golf-shorts  /#product-gvo-golf-set-shirt  301
+/product-page/tee  /#product-collective-set-shirt  301
+/product-page/pants  /#product-collective-set-pants  301
+/product-page/never-see-the-haters-here-tee  /#product-never-see-the-haters-here-tee  301
+/product-page/music-is-a-drug  /#product-music-is-a-drug-long-sleeve  301
+/product-page/no-deadbeats-oversized  /#product-no-deadbeats-oversized-pink  301
+/product-page/no-deadbeats-oversized-1  /#product-no-deadbeats-oversized-grey  301
+/product-page/world-tour-cozy-set  /#product-world-tour-cozy-hoodie  301
+/product-page/world-tour-cozy-pants  /#product-world-tour-cozy-pants  301
+/product-page/worker-jacket  /#product-worker-jacket  301
+/product-page/world-tour-tracksuit  /#product-world-tour-tracksuit-jacket  301
+/product-page/world-tour-tracksuit-pants  /#product-world-tour-tracksuit-pants  301
+/product-page/gvo-bodysuit  /#product-gvo-bodysuit  301
+/product-page/gvo-body-set-top  /#product-gvo-body-set-top  301
+/product-page/gvo-body-set-bottoms  /#product-gvo-body-set-bottoms  301
+/product-page/gvo-beanie  /#product-gvo-beanie  301
+/product-page/*  /#shop  301

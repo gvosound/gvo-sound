@@ -122,6 +122,7 @@ header.top.solid,body:not([data-view="home"]) header.top{background:rgba(7,6,10,
   :root{--bar:calc(72px + env(safe-area-inset-bottom,0px))}
   .bbar{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:55;background:rgba(7,6,10,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
   .bbar .btn{padding:14px 10px}
+  .bbar:not([data-mode="desk"]){grid-template-columns:1fr 1fr 1.6fr}
 }
 
 /* views */
@@ -650,6 +651,25 @@ section{padding-block:clamp(52px,7vw,92px)}
 .cal div{height:22px;border-top:1px solid #2d2836}
 .cal .blk{grid-column:2;background:var(--lav);color:var(--lav-ink);border-radius:6px;padding:4px 8px;font:700 .75rem var(--body);height:auto}
 .ph-empty{color:var(--mute);font-size:.85rem;text-align:center;padding:40px 10px}
+.sim-in.pay-in{max-width:560px;grid-template-columns:1fr}
+.sp-sess{display:grid;gap:2px;padding-bottom:12px;border-bottom:1px solid #dcd6e0}
+.sp-sess b{font-weight:700}
+.sp-sess span{font-size:.88rem;color:#4b4552}
+.sp-fields select{border:1px solid #cfc9d6;border-radius:6px;padding:12px;font:400 .95rem var(--body);background:#fff;color:var(--ink);width:100%}
+.sp-fields[hidden]{display:none}
+.sp-ful button{background:#fff;border-color:#cfc9d6;color:var(--ink)}
+.sp-ful button small{color:#6b6475}
+.sp-ful button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.sp-wallets{display:grid;gap:8px}
+.sp-wallets #gpay:empty{display:none}
+.sp-wallets #gpay{min-height:46px}
+.apple-pay{-webkit-appearance:-apple-pay-button;-apple-pay-button-type:plain;-apple-pay-button-style:black;width:100%;height:46px;border-radius:6px;border:0}
+.sp-card{min-height:89px}
+.sp-err{margin:0;padding:10px 12px;border-radius:6px;background:#fbe6e8;color:#7a1522;font-size:.88rem}
+.sp-done{margin:0;font-size:.95rem;line-height:1.5}
+.pdp-ship{margin:0;font-size:.9rem;color:var(--mute);line-height:1.5}
+.pdp-ship b{color:var(--bone);margin-right:6px}
+button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
 .sim-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;color:var(--mute);font-size:.85rem}
 .sync{display:inline-flex;align-items:center;gap:8px;font:600 .75rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
 .sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(134,219,163,.18)}
@@ -1221,7 +1241,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 </footer>
 
 <nav class="bbar" aria-label="Quick actions" id="bbar">
-  <a class="btn btn-ghost" href="tel:+14432926753">Call us</a>
+  <a class="btn btn-ghost" href="tel:+14432926753">Call</a><a class="btn btn-ghost" href="sms:+14432926753">Text</a>
   <a class="btn btn-lav" href="#book">Book a session</a>
 </nav>
 
@@ -1265,7 +1285,7 @@ const TEAM=[
 ];
 /* Live store snapshot: every visible, in-stock product on gvosound.com as of Oct 20, 2026. av = in-stock variant combos. */
 const PRODUCTS=[{"id":"gvo-x-ace-distressed-tee","n":"GVO x Ace Distressed Tee","p":40,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["S","M","L","XL"],"img":["p_gvo-x-ace-distressed-tee_0","p_gvo-x-ace-distressed-tee_1","p_gvo-x-ace-distressed-tee_2"],"flag":"New"},{"id":"prove-a-point-tee","n":"Prove A Point Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","M","L","XL","2XL","3XL"],"img":["p_lose-a-point-tee_0","p_lose-a-point-tee_1"],"s":21,"flag":"Restocked"},{"id":"world-tour-tee-white","n":"World Tour Tee, White","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_world-tour-tee-1_0","p_world-tour-tee-1_1"],"flag":"New"},{"id":"world-tour-tee-black","n":"World Tour Tee, Black","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["4XL","3XL","2XL","XL","L","M","S","XS"],"img":["p_world-tour-tee_0"],"flag":"Restocked"},{"id":"gvo-muscle-tee","n":"GVO Muscle Tee","p":35,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_gvo-muscle-tee_0","p_gvo-muscle-tee_1","p_gvo-muscle-tee_2"],"flag":"New"},{"id":"no-art-for-today-tee","n":"No Art For Today Tee","p":55,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_no-art-for-today-tee_0"],"flag":"New"},{"id":"pain-is-temporary-dirtbike-jersey","n":"Pain Is Temporary Dirtbike Jersey","p":65,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL","4XL"]}],"av":["XS","S","M","L","XL","2XL","3XL","4XL"],"img":["p_pain-is-temporary-hockey-tee_0","p_pain-is-temporary-hockey-tee_1"],"flag":"New"},{"id":"world-tour-cheetah-hoodie","n":"World Tour Cheetah Hoodie","p":100,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["M","L","XL","2XL"],"img":["p_world-tour-cheetah-hoodie_0","p_world-tour-cheetah-hoodie_1","p_world-tour-cheetah-hoodie_2"],"flag":"New"},{"id":"gvo-skater-shorts","n":"GVO Skater Shorts","p":30,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["S","M","L","XL","2XL"],"img":["p_gvo-shorts_0","p_gvo-shorts_1","p_gvo-shorts_2"],"flag":"New"},{"id":"gvo-golf-set-shorts","n":"GVO Golf Set, Shorts","p":25,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shirts_0","p_golf-shirts_1","p_golf-shirts_2"],"flag":"New"},{"id":"gvo-golf-set-shirt","n":"GVO Golf Set, Shirt","p":30,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Gray","Black","Khaki"]}],"av":["S/Gray","S/Black","S/Khaki","M/Gray","M/Black","M/Khaki","L/Gray","L/Black","L/Khaki","XL/Gray","XL/Black","XL/Khaki","2XL/Gray","2XL/Black","2XL/Khaki"],"img":["p_golf-shorts_0","p_golf-shorts_1","p_golf-shorts_2"],"flag":"New"},{"id":"collective-set-shirt","n":"The Collective Set, Shirt","p":25,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_tee_0","p_tee_1","p_tee_2"],"flag":"New"},{"id":"collective-set-pants","n":"The Collective Set, Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["S/Black","S/Gray","M/Black","M/Gray","L/Black","L/Gray","XL/Black","XL/Gray","2XL/Black","2XL/Gray"],"img":["p_pants_0","p_pants_1","p_pants_2"],"flag":"New"},{"id":"never-see-the-haters-here-tee","n":"Never See The Haters Here! Tee","p":30,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL","3XL"]}],"av":["XS","S","2XL","3XL"],"img":["p_never-see-the-haters-here-tee_0"],"s":21},{"id":"music-is-a-drug-long-sleeve","n":"Music Is A Drug Long Sleeve","p":35.99,"cat":"Shirts","o":[{"t":"Size","v":["XS","S","M","L","XL","2XL"]}],"av":["2XL","XL","L","S"],"img":["p_music-is-a-drug_0","p_music-is-a-drug_1","p_music-is-a-drug_2"],"s":25.19},{"id":"no-deadbeats-oversized-pink","n":"No Deadbeats Oversized Tee, Pink","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Pink"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Pink/M","Pink/L","Pink/XL","Pink/2XL"],"img":["p_no-deadbeats-oversized_0","p_no-deadbeats-oversized_1"],"s":21},{"id":"no-deadbeats-oversized-grey","n":"No Deadbeats Oversized Tee, Grey","p":30,"cat":"Shirts","o":[{"t":"Color","v":["Grey"]},{"t":"Size","v":["S","M","L","XL","2XL"]}],"av":["Grey/S"],"img":["p_no-deadbeats-oversized-1_0","p_no-deadbeats-oversized-1_1"],"s":21},{"id":"world-tour-cozy-hoodie","n":"World Tour Cozy Hoodie","p":45,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Navy","Light Blue","Olive"]}],"av":["L/Light Blue","XL/Light Blue","2XL/Pink"],"img":["p_world-tour-cozy-set_0","p_world-tour-cozy-set_1","p_world-tour-cozy-set_2"],"s":30},{"id":"world-tour-cozy-pants","n":"World Tour Cozy Pants","p":40,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL","2XL"]},{"t":"Color","v":["Pink","Light Blue","Navy Blue","Olive"]}],"av":["L/Pink","L/Light Blue","XL/Pink","XL/Light Blue","2XL/Pink","2XL/Light Blue","2XL/Navy Blue"],"img":["p_world-tour-cozy-pants_0","p_world-tour-cozy-pants_1","p_world-tour-cozy-pants_2"],"s":16.99},{"id":"worker-jacket","n":"Worker Jacket","p":75,"cat":"Cold weather","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Tan","Purple","Cream","Black"]}],"av":["S/Tan","S/Purple","S/Cream","L/Tan","L/Purple","L/Cream","L/Black","XL/Tan","XL/Purple","XL/Cream","XL/Black"],"img":["p_worker-jacket_0","p_worker-jacket_1","p_worker-jacket_2"],"s":52.5},{"id":"world-tour-tracksuit-jacket","n":"World Tour Tracksuit Jacket","p":85,"cat":"Cold weather","o":[{"t":"Size","v":["M","L","XL"]},{"t":"Color","v":["Black","Gray"]}],"av":["M/Black","M/Gray","L/Black","L/Gray"],"img":["p_world-tour-tracksuit_0"],"s":59.5},{"id":"world-tour-tracksuit-pants","n":"World Tour Tracksuit Pants","p":65,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L","XL"]},{"t":"Color","v":["Black","Gray","White"]}],"av":["M/Gray","L/Black","L/Gray","XL/White"],"img":["p_world-tour-tracksuit-pants_0","p_world-tour-tracksuit-pants_1","p_world-tour-tracksuit-pants_2"],"s":45.5},{"id":"gvo-bodysuit","n":"GVO Bodysuit","p":35,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Navy","Black","Grey","Beige","Khaki","Brown"]}],"av":["S/Navy","S/Black","S/Grey","S/Beige","S/Khaki","S/Brown","M/Navy","M/Black","M/Grey","M/Beige","M/Khaki","L/Navy","L/Black","L/Grey","L/Beige","L/Khaki"],"img":["p_gvo-bodysuit_0","p_gvo-bodysuit_1"],"s":24.5},{"id":"gvo-body-set-top","n":"GVO Body Set, Top","p":15,"cat":"Shirts","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","M/Grey","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-body-set-bottoms","n":"GVO Body Set, Bottoms","p":15,"cat":"Bottoms","o":[{"t":"Size","v":["S","M","L"]},{"t":"Color","v":["Black","Beige","Navy","Brown","Grey"]}],"av":["S/Black","S/Beige","S/Navy","S/Brown","S/Grey","M/Black","M/Beige","M/Navy","M/Brown","L/Black","L/Beige","L/Navy","L/Brown","L/Grey"],"img":[],"s":10.5},{"id":"gvo-beanie","n":"GVO Beanie","p":10,"cat":"Headwear","o":[{"t":"Color","v":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown","Black"]}],"av":["Navy Blue","Olive","Gray","Maroon","Mustard","Tan","Pearl","Brown"],"img":["p_gvo-beanie_0","p_gvo-beanie_1","p_gvo-beanie_2"],"s":7}];
-const unit=p=>p.s||p.p;
+const unit=(p,v)=>{const x=v&&p.vars&&p.vars[v];return x?(x.s!=null?x.s:x.p):(p.s||p.p)};
 /* Music: Spotify ids checked Oct 20, 2026. "All platforms" opens a song.link / album.link page that lists every service carrying the release. */
 const SPO='https://open.spotify.com/';
 const REL=[
@@ -1371,7 +1391,40 @@ const RQ=[['william','Produced exactly how I envisioned my song ending up.'],['g
 const revCard=k=>{const v=REVIEWS[k];return `<figure class="rev rv">${v.g?`<span class="rev-g">${GIC}${stars()}</span>`:'<span class="mark"></span>'}<blockquote>${v.q}</blockquote><figcaption><b>${v.n}</b><span>${v.r}</span></figcaption></figure>`};
 const prodById=id=>PRODUCTS.find(p=>p.id===id);
 const vLabel=(p,v)=>v&&v!=='-'?v.split('/').join(' · '):'One size';
-const firstAvail=p=>p.av[0]||'-';
+const firstAvail=p=>p.av[0]||p.o.map(o=>o.v[0]).join('/')||'-';
+/* ================= live shop from Square (functions/api/shop.js) =================
+   The snapshot above paints the rack instantly. Square then replaces it: the 27 items that came from Wix Stores,
+   with live price, sale price, sizes and stock. Site photos stay wherever the names match. */
+const SNAP=PRODUCTS.slice();
+const SQ={live:false,state:'loading',err:'',cfg:null};
+async function api(path,body){
+ let r,j={};
+ try{r=await fetch('/api/'+path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{headers:{'Accept':'application/json'}})}
+ catch(e){throw new Error('No connection. Check your signal and try again.')}
+ try{j=await r.json()}catch(e){}
+ if(!r.ok||j.ok===false){const e=new Error(j.error||'Square is not answering right now. Call or text the studio at (443) 292-6753.');e.code=j.code;e.data=j;e.status=r.status;throw e}
+ return j;
+}
+async function loadShop(){
+ try{
+  const j=await api('shop');
+  const at=id=>{const i=SNAP.findIndex(x=>x.id===id);return i<0?999:i};
+  const list=j.products.map(lp=>{const s=SNAP.find(x=>x.id===lp.siteId);
+   return{id:lp.id,n:s?s.n:lp.n,cat:s?s.cat:lp.cat,flag:s&&s.flag,img:s&&s.img.length?s.img:lp.img,o:lp.o,av:lp.av,vars:lp.vars,p:lp.p,s:lp.s,live:1}}).sort((a,b)=>at(a.id)-at(b.id));
+  PRODUCTS.length=0;PRODUCTS.push(...list);
+  Object.values(FIT).forEach(a=>a.forEach(o=>{o.p=prodById(o.id)||{...SNAP.find(x=>x.id===o.id),av:[],vars:{}}}));
+  PRODUCTS.forEach(p=>{if(!META['product-'+p.id])META['product-'+p.id]={path:'/shop/'+p.id,title:`${p.n} | GVO Sound Apparel`,desc:`${p.n} by GVO Sound, ${m2(unit(p))}. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.`}});
+  SQ.live=true;SQ.state='live';
+  // drop bag lines that Square no longer sells
+  const keep=l=>{const p=prodById(l.id);return p&&p.vars&&p.vars[l.v]};
+  const before=cart.length;cart=cart.filter(keep);if(cart.length<before){save();toast('Your bag was updated to match what is in stock')}
+  for(const [k,x] of B.add)if(!keep(x))B.add.delete(k);
+ }catch(e){SQ.state='down';SQ.err=e.message;PRODUCTS.forEach(p=>p.av=[])}
+ renderCart();
+ if(route==='shop'||route==='home'||route.startsWith('product-'))render(route,{keep:true});
+ else if(D&&D.host.isConnected)renderBook();
+}
+
 /* seasonal: holiday photo special runs Nov 1 to Dec 31 */
 const SEASON={from:[11,1],to:[12,31]};let forceSeason=false;
 function inSeason(){if(forceSeason)return true;const d=nowET(),md=(d.getMonth()+1)*100+d.getDate();return md>=SEASON.from[0]*100+SEASON.from[1]&&md<=SEASON.to[0]*100+SEASON.to[1]}
@@ -1388,18 +1441,18 @@ const ROOMS={
   incl:['Engineer for the full session','Mixing included in the rate','Isolated vocal booth','Room for up to 5 people','Book JCX Beats, Mooki or Nelly AEXO by name'],
   gear:['Iso vocal booth','Argosy console desk','4 studio monitors','Dual-screen DAW station','Large-diaphragm condenser'],
   rates:Object.entries(REC).map(([h,p])=>[+h,p]),
-  rateNote:'MD sales tax 6% added at checkout. $50 non-refundable deposit holds your slot.',
+  rateNote:'Paid in full when you book. MD sales tax 6% added at checkout.',
   gallery:[['s_artist1','Vocal booth'],['s_mic','Booth mic'],['s_artist2','Tracking'],['booth_dark','Iso booth'],['s_artist4','Playback']],
   team:'rec',
   faq:[
    ['When can I book?','Any time. The studio runs 24/7 by appointment. Book at least 2 hours before you want to start.'],
    ['Is mixing included?','Yes. Every recording session includes your engineer and mixing.'],
-   ['Is there a deposit?','A $50 non-refundable deposit is due when you book. It holds your time slot.'],
+   ['How do I pay?','You pay the full session price when you book, by card or Google Pay. That holds your time slot. No refunds.'],
    ['How many people can come?','Up to 5 people per session, including the artist. Everyone waits in reception until your engineer comes to get you.'],
    ['What happens if I\'m late?','Your session starts at the time you booked and ends on time. If nobody is booked after you, you can ask your engineer for more time at the regular rate.'],
    ['Who keeps my files?','You do. Collect your files before your session ends.'],
    ['Can I smoke in the studio?','No smoking. Vape pens are fine.'],
-   ['What is the cancellation policy?','Cancel or move your session at least 24 hours ahead. Later cancellations and missed sessions are charged part or all of the session.']
+   ['What is the cancellation policy?','Full price is paid up front, and there are no refunds. To switch to another time, call or text (443) 292-6753 no later than 2 hours before your session.']
   ]},
  'photo-studio':{k:'photo',short:'Photo',img:'photo_cyc',
   title:'Photo Studio Rental in Annapolis, MD | From $50/hr | GVO Sound',
@@ -1420,7 +1473,7 @@ const ROOMS={
    ['How many backdrops do I get?','One backdrop color is included. Extra colors cost more.'],
    ['How fast do I get edited photos?','The holiday special delivers 20 edited photos in 2 to 5 days.','season'],
    ['Can I add time during the shoot?','Extra time on the holiday special is $20 per 30 minutes, when nobody is booked after you.','season'],
-   ['What is the cancellation policy?','Cancel or move your session at least 24 hours ahead. Later cancellations and missed sessions are charged part or all of the session.']
+   ['What is the cancellation policy?','Full price is paid up front, and there are no refunds. To switch to another time, call or text (443) 292-6753 no later than 2 hours before your session.']
   ]},
  'podcast-studio':{k:'pod',short:'Podcast',img:'pod_set',
   title:'Podcast and Video Studio in Annapolis, MD | GVO Sound',
@@ -1458,7 +1511,8 @@ function wireVideos(root){
  vs.forEach(v=>vidIO.observe(v));
  cleanup.push(()=>vidIO&&vidIO.disconnect());
 }
-const imgT=(f,alt,lazy=1,cls='')=>`<img src="img/${f}.webp" alt="${alt}"${lazy?' loading="lazy"':''}${cls?` class="${cls}"`:''}>`;
+const imgSrc=f=>/^https?:/.test(f)?f:`img/${f}.webp`;
+const imgT=(f,alt,lazy=1,cls='')=>`<img src="${imgSrc(f)}" alt="${alt}"${lazy?' loading="lazy"':''}${cls?` class="${cls}"`:''}>`;
 const note=(t,h)=>`<div class="note"${notesOn?'':' hidden'}><b>${t}</b>${h}</div>`;
 function seoNote(meta){return note('SEO · this page',`<dl class="seo"><dt>URL</dt><dd>${SITE}${meta.path}</dd><dt>Title</dt><dd>${meta.title} <span style="color:var(--mute)">(${meta.title.length} chars)</span></dd><dt>Meta</dt><dd>${meta.desc} <span style="color:var(--mute)">(${meta.desc.length} chars)</span></dd><dt>H1</dt><dd>${meta.h1}</dd><dt>Schema</dt><dd>${meta.schema}</dd></dl>`)}
 const crumbs=list=>`<ol class="crumbs" aria-label="Breadcrumb">${list.map(([l,h],i)=>i<list.length-1?`<li><a href="${h}">${l}</a></li>`:`<li aria-current="page">${l}</li>`).join('')}</ol>`;
@@ -1468,7 +1522,7 @@ const memberCard=m=>`<figure class="member" data-g="${m.g}">${m.img?imgT(m.img,`
 const doorHTML=()=>`<div class="door rv"><div class="door-ph">${imgT('pod_3','The GVO studio floor with the GVO logo wall')}</div><div class="door-info">
  <div><h3>Pull up</h3><p class="addr">109 Gibralter Ave<br>Annapolis, MD 21401</p><p style="margin:12px 0 0"><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Open in Maps →</a></p></div>
  <div><h3>Studio</h3><p class="hrs-big">Open 24/7</p><p class="hrs-note">By appointment only. Book at least 2 hours ahead.</p><h3 style="margin-top:20px">Shop in person</h3><table class="hours">${hoursRows()}</table><p class="hrs-note">Shop hours can change, so check <a class="link" href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">@gvosound.clothing</a> before you come. <a class="link" href="#shop">Shop online 24/7 →</a></p></div>
- <div><h3>Reach the studio</h3><a class="reach" href="tel:+14432926753"><small>Call</small><span>(443) 292-6753</span><i>→</i></a><a class="reach" href="mailto:gvosoundllc@gmail.com"><small>Email</small><span>gvosoundllc@gmail.com</span><i>→</i></a></div>
+ <div><h3>Reach the studio</h3><a class="reach" href="tel:+14432926753"><small>Call</small><span>(443) 292-6753</span><i>→</i></a><a class="reach" href="sms:+14432926753"><small>Text</small><span>(443) 292-6753</span><i>→</i></a><a class="reach" href="mailto:gvosoundllc@gmail.com"><small>Email</small><span>gvosoundllc@gmail.com</span><i>→</i></a></div>
 </div></div>`;
 
 /* ================= views ================= */
@@ -1537,7 +1591,7 @@ function viewHome(){
  </div></section>
  <section><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO apparel</span><h2>The rack</h2></div><a class="btn btn-ghost" href="#shop">Shop all ${PRODUCTS.length} pieces</a></div>
-  <div class="rack four">${['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','worker-jacket','gvo-beanie'].map(id=>prodCard(prodById(id))).join('')}</div>
+  <div class="rack four">${[...['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','worker-jacket','gvo-beanie'].map(prodById).filter(Boolean),...PRODUCTS].filter((p,i,a)=>a.indexOf(p)===i).slice(0,4).map(prodCard).join('')}</div>
  </div></section>
  <section style="padding-top:0;padding-bottom:0"><div class="wrap">${doorHTML()}
   <div class="finale"><span class="mark"></span><p class="slogan"><span>Book The Studio.</span><span>Bring The Material.</span><span>Leave With The Mix.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
@@ -1582,7 +1636,7 @@ function viewRoom(slug){
   <div class="rev-one">${revCard(({rec:'william',photo:'kennedy',pod:'goodnews'})[r.k])}<div class="rev-more">${gBadge()}<span class="rev-links"><a class="link" href="${GOOG.url}" target="_blank" rel="noopener">Read all ${GOOG.count} on Google →</a><a class="link" href="${GOOG.write}" target="_blank" rel="noopener">Leave a review →</a></span></div></div>
  </div></section>
  <section id="faq"><div class="wrap split">
-  <div class="hd" style="display:grid;gap:16px;align-content:start"><span class="eyebrow">Before you book</span><h2>Questions</h2><p class="lede">Still stuck? Call the studio at (443) 292-6753.</p></div>
+  <div class="hd" style="display:grid;gap:16px;align-content:start"><span class="eyebrow">Before you book</span><h2>Questions</h2><p class="lede">Still stuck? Call or text the studio at (443) 292-6753.</p></div>
   <div class="faq">${live(r.faq).map(([q,a],i)=>`<details${i===0?' open':''}><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
  </div></section>
  <section class="desk-sec" id="desk"><div class="wrap">
@@ -1679,7 +1733,7 @@ function viewEvents(){
    <label><span>Date or month</span><input name="when" placeholder="Optional"></label>
    <label><span>City</span><input name="city" placeholder="Annapolis, Baltimore…"></label>
    <label class="full"><span>What do you have in mind?</span><textarea name="msg" rows="4" required placeholder="Room size, the crowd, the vibe, links to your mixes or venue"></textarea></label>
-   <div class="full inq-f"><button class="btn btn-lav" type="submit">Send inquiry</button><span class="dark-fine">Or call (443) 292-6753</span></div>
+   <div class="full inq-f"><button class="btn btn-lav" type="submit">Send inquiry</button><span class="dark-fine">Or call or text (443) 292-6753</span></div>
   </form>
   ${note('Where inquiries go','Writes a row to the Events table in GVO\'s Airtable, tagged by type, and emails Cory. DJ and venue inquiries land in their own views.')}
  </div></section>
@@ -1747,7 +1801,7 @@ function viewTravel(){
    <label><span>When</span><input name="when" placeholder="Month or dates"></label>
    <label><span>Travelers</span><input name="pax" type="number" min="1" placeholder="How many"></label>
    <label class="full"><span>Anything else?</span><textarea name="msg" rows="4" placeholder="First time traveling abroad? Celebrating something? Budget in mind?"></textarea></label>
-   <div class="full inq-f"><button class="btn btn-lav" type="submit">Send</button><span class="dark-fine">Or email travel@gvosound.com · call (443) 292-6753</span></div>
+   <div class="full inq-f"><button class="btn btn-lav" type="submit">Send</button><span class="dark-fine">Or email travel@gvosound.com · call or text (443) 292-6753</span></div>
   </form>
   ${note('Where trip requests go','Writes a row to a Travel table in GVO\'s Airtable, tagged by trip, and emails travel@gvosound.com. The notify list for the Africa trip lands in its own view, so one message reaches everyone when dates drop.')}
  </div></section>
@@ -1761,7 +1815,7 @@ function viewTravel(){
 function viewBook(){
  return `<div class="view" data-v="book"><section class="desk-sec" style="padding-top:calc(130px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Book a session','']])}
-  <div class="sec-head" style="margin-top:20px"><div class="hd"><span class="eyebrow">Booking desk</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">Book a session</h1></div><p class="lede">Recording, photo, or a quote for podcast and content work. Pick a studio, a length and a start time. A $50 deposit holds it.</p></div>
+  <div class="sec-head" style="margin-top:20px"><div class="hd"><span class="eyebrow">Booking desk</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">Book a session</h1></div><p class="lede">Recording, photo, or a quote for podcast and content work. Pick a studio, a length and a start time. Full price is paid when you book.</p></div>
   ${seoNote(META.book)}
   <div data-desk="all"></div>
  </div></section></div>`;
@@ -1831,7 +1885,7 @@ function viewFit(){
   </div>
   ${note('How the board works','Every piece is a real GVO product photo with the background cut away, so the fit you build is what ships. Prices and stock come from the same catalog as the rack, so a sold-out size shows here too. A fit link opens the board with the same pieces, which makes it easy to share a fit on Instagram. Pieces without a clean flat-lay photo (the tracksuit, the cozy pants, the golf set, the dirtbike jersey) join the board once they are shot flat on one backdrop.')}
   <div class="looks-h rv"><span class="eyebrow">Worn by GVO</span><h3>Real fits from @${IG.clothing}</h3></div>
-  <div class="looks">${LOOKS.map((l,i)=>`<article class="look rv"><a class="look-ph" ${l.ig?`href="https://www.instagram.com/p/${l.ig}/" target="_blank" rel="noopener" data-ig="${l.ig}" data-igr="0"`:`href="#product-${l.shop?l.shop[0]:Object.values(FIT).flat().find(o=>o.f===l.fit.top).id}"`} aria-label="${l.t}">${imgT(l.img,l.t+', '+l.who)}</a><div class="look-b"><b>${l.t}</b><small>${l.who}</small><div class="look-p">${(l.fit?Object.values(l.fit).filter(Boolean).map(f=>Object.values(FIT).flat().find(o=>o.f===f)).map(o=>`<a href="#product-${o.id}">${o.p.n}</a>`):l.shop.map(id=>`<a href="#product-${id}">${prodById(id).n}</a>`)).join('')}</div>${l.fit?`<button type="button" class="btn btn-ghost" data-look="${i}">Build this fit</button>`:`<a class="btn btn-ghost" href="#product-${l.shop[0]}">Shop the look</a>`}</div></article>`).join('')}</div>
+  <div class="looks">${LOOKS.map((l,i)=>`<article class="look rv"><a class="look-ph" ${l.ig?`href="https://www.instagram.com/p/${l.ig}/" target="_blank" rel="noopener" data-ig="${l.ig}" data-igr="0"`:`href="#product-${l.shop?l.shop[0]:Object.values(FIT).flat().find(o=>o.f===l.fit.top).id}"`} aria-label="${l.t}">${imgT(l.img,l.t+', '+l.who)}</a><div class="look-b"><b>${l.t}</b><small>${l.who}</small><div class="look-p">${(l.fit?Object.values(l.fit).filter(Boolean).map(f=>Object.values(FIT).flat().find(o=>o.f===f)).map(o=>`<a href="#product-${o.id}">${o.p.n}</a>`):l.shop.filter(id=>prodById(id)).map(id=>`<a href="#product-${id}">${prodById(id).n}</a>`)).join('')}</div>${l.fit?`<button type="button" class="btn btn-ghost" data-look="${i}">Build this fit</button>`:`<a class="btn btn-ghost" href="#product-${l.shop[0]}">Shop the look</a>`}</div></article>`).join('')}</div>
  </div></section>`;
 }
 function mountFit(){
@@ -1857,7 +1911,7 @@ function mountFit(){
   $$('[data-fsize]',main).forEach(b=>b.setAttribute('aria-pressed',b.dataset.fsize===fitSize));
   // lines
   let tot=0;
-  $('#fitLines',main).innerHTML=pcs.map(o=>{const v=fitVariant(o),u=unit(o.p);tot+=u;return `<li><img src="img/fit_${o.f}.webp" alt=""><div><a href="#product-${o.id}">${fitName(o)}</a><small class="${v.ok?'ok':'no'}">${v.why}</small></div><span class="price">${o.p.s?`<s>${m2(o.p.p)}</s><span class="now">${m2(o.p.s)}</span>`:m2(o.p.p)}</span></li>`}).join('');
+  $('#fitLines',main).innerHTML=pcs.map(o=>{const v=fitVariant(o),u=unit(o.p,v.v);tot+=u;return `<li><img src="img/fit_${o.f}.webp" alt=""><div><a href="#product-${o.id}">${fitName(o)}</a><small class="${v.ok?'ok':'no'}">${v.why}</small></div><span class="price">${o.p.s?`<s>${m2(o.p.p)}</s><span class="now">${m2(o.p.s)}</span>`:m2(o.p.p)}</span></li>`}).join('');
   $('#fitTotal',main).textContent=m2(tot)+` · ${pcs.length} piece${pcs.length>1?'s':''}`;
  };
  const set=(k,i,d=0)=>{if(FS[k]===i)return;FS[k]=i;fitN++;paint({[k]:d})};
@@ -1878,7 +1932,7 @@ function mountFit(){
  bd.addEventListener('pointerup',e=>{if(sk==null)return;const dx=e.clientX-sx,k=sk;sk=null;if(Math.abs(dx)>34){step(k,dx<0?1:-1);fitTab=k;paint()}else{fitTab=k;paint();$('.fit-ctl',main).scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'})}});
  $('#fitShuffle',main).onclick=()=>{const dirs={};FIT_SLOTS.forEach(sl=>{const n=FIT[sl.k].length;let i=sl.k==='top'?Math.floor(Math.random()*n):(Math.random()<(sl.k==='hat'?.45:.25)?-1:Math.floor(Math.random()*n));if(sl.k==='bottom'&&i<0)i=Math.floor(Math.random()*n);if(i!==FS[sl.k]){FS[sl.k]=i;dirs[sl.k]=1}});fitN++;paint(dirs)};
  $('#fitShare',main).onclick=()=>{const code=FIT_SLOTS.map(sl=>fitOpt(sl.k)?.f||'-').join('.');const url=location.href.split('#')[0]+'#shop?fit='+code;try{navigator.clipboard.writeText(url).then(()=>toast('Fit link copied. Paste it anywhere.'),()=>toast(url))}catch(e){toast(url)}};
- $('#fitAdd',main).onclick=()=>{const pcs=fitSummary(),ok=[],skip=[];pcs.forEach(o=>{const v=fitVariant(o);if(v.ok){const l=cart.find(x=>x.id===o.id&&x.v===v.v);l?l.q++:cart.push({id:o.id,v:v.v,q:1,ful:'ship'});ok.push(o)}else skip.push(o)});save();renderCart(true);
+ $('#fitAdd',main).onclick=()=>{if(!SQ.live){toast(SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753.':'Checking stock with Square. Try again in a second.');return}const pcs=fitSummary(),ok=[],skip=[];pcs.forEach(o=>{const v=fitVariant(o);if(v.ok){const l=cart.find(x=>x.id===o.id&&x.v===v.v);l?l.q++:cart.push({id:o.id,v:v.v,q:1});ok.push(o)}else skip.push(o)});save();renderCart(true);
   toast(ok.length?`Added ${ok.length} piece${ok.length>1?'s':''} to your bag${skip.length?` · ${skip.map(o=>o.p.n).join(', ')} not available in ${fitSize}`:''}`:`None of these pieces are available in ${fitSize}. Try another size.`)};
  paint();
  if(q)setTimeout(()=>bd.scrollIntoView({behavior:'instant',block:'center'}),150);
@@ -1906,11 +1960,11 @@ function viewProduct(id){
    <div class="pdp-info">
     <span class="eyebrow">${p.cat}${p.flag?' · '+p.flag:''}</span>
     <h1>${p.n}</h1>
-    <div class="pdp-price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</div>
+    <div class="pdp-price" id="pdpPrice">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</div>
     <p class="lede">Designed by GVO Sound in Annapolis and sold in the studio lounge at 109 Gibralter Ave.</p>
     <div id="pdpOpts" class="opt-row"></div>
     <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><span class="stock" id="pdpStock"></span><span class="sync">Stock from Square</span></div>
-    <div><h3 style="font-size:.8rem;margin-bottom:10px">Get it</h3><div class="ful" id="pdpFul"><button type="button" aria-pressed="true" data-ful="ship"><b>Ship it</b><small>Free over $75</small></button><button type="button" aria-pressed="false" data-ful="pickup"><b>Pick up at GVO</b><small>Free, at your session</small></button></div></div>
+    <p class="pdp-ship"><b>Get it</b> Ships in 3 to 5 business days for $9.99 in the US, or $15.99 international. Pickup at the studio is free. You choose at checkout.</p>
     <button type="button" class="btn btn-lav" id="pdpAdd">Add to bag · ${m2(unit(p))}</button>
     ${seoNote(META['product-'+id])}
    </div>
@@ -1922,7 +1976,7 @@ function viewProduct(id){
 /* ================= SEO meta per route ================= */
 const META={
  home:{path:'/',title:'GVO Sound | Recording, Photo and Podcast Studio in Annapolis, MD',desc:'Recording, photo and podcast studios at 109 Gibralter Ave, Annapolis, MD. Engineer and mixing included. Open 24/7 by appointment.',h1:'GVO Sound, recording studio in Annapolis, MD (visually: Your Vision. Your Sound.)',schema:'RecordingStudio + LocalBusiness, hours, geo'},
- book:{path:'/book',title:'Book a Studio Session | GVO Sound, Annapolis MD',desc:'Book recording or photo studio time at GVO Sound in Annapolis. Pick your studio, length, engineer and start time. $50 deposit holds your slot.',h1:'Book a session',schema:'BreadcrumbList, ReserveAction'},
+ book:{path:'/book',title:'Book a Studio Session | GVO Sound, Annapolis MD',desc:'Book recording or photo studio time at GVO Sound in Annapolis. Pick your studio, length, engineer and start time. Pay in full to hold your slot.',h1:'Book a session',schema:'BreadcrumbList, ReserveAction'},
  shop:{path:'/shop',title:'GVO Apparel | Tees, Hoodies and Sets | GVO Sound Shop',desc:'Shop GVO Sound apparel: World Tour tees, the Cheetah hoodie, the Worker Jacket and more. Ship it or pick it up at the studio in Annapolis.',h1:'The rack',schema:'BreadcrumbList, ItemList of Product'}
 };
 META.events={path:'/events',title:'GVO Sound Events | R&B & Vibes and Parties in Annapolis and Baltimore',desc:'GVO Sound throws R&B & Vibes, rooftop and battle nights in Glen Burnie, Annapolis and Baltimore. See upcoming dates, past events, and book GVO for your venue or DJ night.',h1:'R&B Nights. Rooftops. County vs. City.',schema:'ItemList of Event (MusicEvent) with Place, BreadcrumbList'};
@@ -2202,23 +2256,49 @@ function wireRoom(slug){
  $$('.rates tbody tr[data-hrs]',main).forEach(tr=>{const go=()=>{const k=B.room==='holiday'&&r.k==='photo'?'photo':r.k;B.hrs=+tr.dataset.hrs;setBookRoom(k,B.room===k);B.slot=null;B.done=null;renderBook();$('#desk').scrollIntoView({behavior:reduce?'auto':'smooth'});toast(`${tr.dataset.hrs}-hour session loaded. Pick a start time.`)};tr.onclick=go;tr.onkeydown=e=>{if(e.key==='Enter')go()}});
 }
 
-/* ================= booking desk (one shared state) ================= */
-const B={room:'rec',hrs:2,staff:'any',day:null,slot:null,add:new Map(),done:null,scope:'all'};
+/* ================= booking desk (one shared state, live from Square Appointments) ================= */
+const B={room:'rec',hrs:2,staff:'any',photog:'none',day:null,slot:null,add:new Map(),done:null,scope:'all'};
 const BROOMS=[{k:'pod',n:'Podcast or content',s:'Request a quote',img:'pod_set',quote:1},{k:'rec',n:'Recording session',s:'Engineer and mix included',img:'s_artist2'},{k:'photo',n:'Photo studio',s:'Room, lights, 1 backdrop',img:'photo_cyc'},{k:'holiday',n:'Holiday photo special',s:'1 hr, photographer, 20 edits',img:'t_dym'}];
 const ADDONS=['gvo-beanie','world-tour-tee-black','prove-a-point-tee','world-tour-cozy-hoodie'];
+const POLICY='Paid in full when you book. No refunds. Need to switch? Call or text (443) 292-6753 no later than 2 hours before your session.';
 const addOf=id=>[...B.add.values()].find(x=>x.id===id);
 let D=null;
+/* live booking data: the services menu, open times per service and team member, and Square's price for the ticket */
+const BK={menu:null,menuErr:'',menuP:null,slots:{},q:{key:'',data:null,err:'',busy:0}};
+const ET_DAY=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+const ET_TIME=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'});
+const etDay=iso=>ET_DAY.format(new Date(iso));
+const etTime=iso=>ET_TIME.format(new Date(iso)).replace(':00','').replace(' ','');
+function ensureMenu(){
+ if(BK.menu||BK.menuP)return BK.menuP||Promise.resolve();
+ BK.menuP=api('availability').then(j=>{BK.menu=j.services;BK.menuErr=''}).catch(e=>{BK.menuErr=e.message;BK.menu=null}).finally(()=>{BK.menuP=null;if(D&&D.host.isConnected){setBookRoom(B.room,true)}});
+ return BK.menuP;
+}
+const svcList=k=>(BK.menu||[]).filter(s=>s.kind===k).sort((a,b)=>a.hrs-b.hrs);
+function svc(){const l=svcList(B.room);if(!l.length)return null;return l.find(s=>s.hrs===B.hrs)||l.reduce((a,s)=>Math.abs(s.hrs-B.hrs)<Math.abs(a.hrs-B.hrs)?s:a,l[0])}
+const sqTeam=()=>B.room==='photo'?'any':B.staff;
+const slotKey=()=>{const s=svc();return s?s.id+'|'+sqTeam():''};
+function loadSlots(force){
+ const s=svc(),key=slotKey();if(!s)return;
+ const cur=BK.slots[key];if(cur&&!force&&(cur.busy||Date.now()-cur.at<60e3))return;
+ BK.slots[key]={busy:1,at:Date.now(),byDay:cur&&cur.byDay,err:''};
+ api(`availability?service=${encodeURIComponent(s.id)}&team=${encodeURIComponent(sqTeam())}&days=14`).then(j=>{
+  const byDay=new Map();j.slots.forEach(x=>{const k=etDay(x.start);if(!byDay.has(k))byDay.set(k,[]);byDay.get(k).push(x)});
+  BK.slots[key]={busy:0,at:Date.now(),byDay,mins:j.mins,err:''};
+ }).catch(e=>{BK.slots[key]={busy:0,at:0,byDay:null,err:e.message}}).finally(()=>{if(slotKey()===key)renderBook()});
+}
+const teamPic=n=>{const t=TEAM.find(m=>{const a=m.n.toLowerCase(),b=String(n).toLowerCase();return a===b||b.startsWith(a.split(' ')[0])||a.startsWith(b.split(' ')[0])});return t||null};
 /* step labels: "Step 2 of 5", counting only the steps showing */
 function numberSteps(host){const st=$$('.step',host).filter(x=>!x.hidden&&$('[data-num]',x));st.forEach((x,i)=>{$('[data-num]',x).innerHTML=`Step <b>${i+1}</b>${st.length>1?` of ${st.length}`:''}`})}
 const DESK_HTML=`<div class="desk"><div class="steps">
  <div class="step" data-step="room"><div class="step-h"><span class="n" data-num></span><h3>Studio</h3></div><div class="opts" data-el="rooms"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="2" max="12" step="1" value="2" aria-label="Session length in hours"><div class="ticks" data-el="ticks"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="0" max="0" step="1" value="0" aria-label="Session length"><div class="ticks" data-el="ticks"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
- <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span>Open 24/7 · book at least 2 hours ahead</span><span>Struck-out times are booked</span></div><div class="slots" data-el="slots"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span>Open 24/7 · book at least 2 hours ahead</span><span>Only open start times show</span></div><div class="slots" data-el="slots"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
   <label><span>Name or artist name <span class="req">*</span></span><input id="f-name" autocomplete="name" placeholder="Lex" required aria-describedby="e-name"><span class="field-err" id="e-name" hidden>Add the name for the booking</span></label>
   <label><span>Mobile for text confirm <span class="req">*</span></span><input id="f-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142" required aria-describedby="e-phone"><span class="field-err" id="e-phone" hidden>Add a 10-digit mobile number</span></label>
-  <label>Email<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
+  <label>Email for your receipt<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
   <label>People coming<select id="f-ppl"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
   <label class="full"><span data-el="notesLbl">What are you working on?</span><textarea id="f-notes" rows="2" placeholder="Two songs, beats on a USB"></textarea></label></form></div>
  <div class="step" data-step="merch"><div class="step-h"><h3>Add merch</h3></div><p class="fine">Want to wear the session? Pick anything here and it's bagged at the front desk when you arrive. Same checkout.</p><div class="addons" data-el="addons"></div></div>
@@ -2230,106 +2310,130 @@ function mountDesk(host,k){
  if(fixed)$('[data-step="room"]',host).hidden=true;numberSteps(host);
  const keepRoom=(B.scope==='photo'&&(B.room==='photo'||B.room==='holiday'))||B.room===k;
  setBookRoom(keepRoom?B.room:k,true);
+ ensureMenu();
  D.rooms.onclick=e=>{const b=e.target.closest('[data-room]');if(!b)return;if(b.dataset.room==='pod'){mountQuote(host,true);return}setBookRoom(b.dataset.room)};
- D.staff.onclick=e=>{const b=e.target.closest('[data-staff]');if(b){B.staff=b.dataset.staff;renderBook()}};
- D.days.onclick=e=>{const b=e.target.closest('[data-day]');if(b){B.day=b.dataset.day;B.dayPicked=true;renderBook()}};
- D.slots.onclick=e=>{const b=e.target.closest('[data-slot]');if(b&&!b.disabled){B.slot=+b.dataset.slot;renderBook()}};
- D.addons.onclick=e=>{if(e.target.closest('select'))return;const b=e.target.closest('[data-add]');if(b){const id=b.dataset.add,cur=addOf(id);if(cur)B.add.delete(id+'|'+cur.v);else{const v=firstAvail(prodById(id));B.add.set(id+'|'+v,{id,v,q:1})}renderBook()}};
+ D.staff.onclick=e=>{const b=e.target.closest('[data-staff]');if(!b)return;if(B.room==='photo')B.photog=b.dataset.staff;else{B.staff=b.dataset.staff;B.slot=null}renderBook()};
+ D.days.onclick=e=>{const b=e.target.closest('[data-day]');if(b){B.day=b.dataset.day;B.dayPicked=true;B.slot=null;renderBook()}};
+ D.slots.onclick=e=>{const b=e.target.closest('[data-slot]');if(b&&!b.disabled){B.slot=b.dataset.slot;renderBook()}else if(e.target.closest('[data-retry]'))loadSlots(true)};
+ D.addons.onclick=e=>{if(e.target.closest('select'))return;const b=e.target.closest('[data-add]');if(b){const id=b.dataset.add,cur=addOf(id);if(cur)B.add.delete(id+'|'+cur.v);else{const p=prodById(id);if(!p||!p.av.length||!SQ.live){toast(SQ.live?'Sold out right now':'Merch is still loading from Square');return}const v=firstAvail(p);B.add.set(id+'|'+v,{id,v,q:1})}renderBook()}};
  D.addons.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.addon')){e.preventDefault();e.target.click()}};
  D.addons.onchange=e=>{const s=e.target.closest('select');if(!s)return;const id=s.dataset.id,cur=addOf(id);if(cur){B.add.delete(id+'|'+cur.v);B.add.set(id+'|'+s.value,{id,v:s.value,q:cur.q})}renderBook()};
- D.hrs.oninput=e=>{B.hrs=+e.target.value;renderBook()};
+ D.hrs.oninput=e=>{const l=svcList(B.room),s=l[+e.target.value];if(s&&s.hrs!==B.hrs){B.hrs=s.hrs;B.slot=null;if(B.staff!=='any'&&B.room!=='photo'&&!s.team.some(t=>t.id===B.staff))B.staff='any';renderBook()}};
  D.form.onsubmit=e=>e.preventDefault();
  D.form.oninput=e=>{const t=e.target;if(t.id==='f-phone'){const d=t.value.replace(/\D/g,'').replace(/^1/,'').slice(0,10);t.value=d.length>6?`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`:d.length>3?`(${d.slice(0,3)}) ${d.slice(3)}`:d}const l=t.closest('label');if(l&&l.classList.contains('bad')){l.classList.remove('bad');$('.field-err',l).hidden=true}};
  deskObserve(host);
 }
 function setBookRoom(k,keep){
- if(k==='holiday'&&!inSeason())k='photo';
- if(!keep||B.room!==k){B.staff='any';B.slot=null;B.done=null}
+ if(k==='holiday'&&(!inSeason()||(BK.menu&&!svcList('holiday').length)))k='photo';
+ if(!keep||B.room!==k){B.staff='any';B.photog='none';B.slot=null;B.done=null}
  B.room=k;
- if(!staffList().some(x=>x.k===B.staff))B.staff='any';
  if(!D)return;
- const r=D.hrs;
- if(k==='rec'){r.min=2;r.max=12;r.disabled=false;B.hrs=Math.min(12,Math.max(2,B.hrs))}
- else if(k==='photo'){r.min=1;r.max=5;r.disabled=false;B.hrs=Math.min(5,Math.max(1,B.hrs))}
- else{r.min=1;r.max=1;B.hrs=1;r.disabled=true}
- r.value=B.hrs;renderBook();
+ const l=svcList(k),r=D.hrs;
+ if(l.length){if(!l.some(s=>s.hrs===B.hrs))B.hrs=svc().hrs;r.min=0;r.max=l.length-1;r.value=l.findIndex(s=>s.hrs===B.hrs);r.disabled=l.length<2}
+ else{r.min=0;r.max=0;r.value=0;r.disabled=true}
+ const s=svc();if(B.room!=='photo'&&B.staff!=='any'&&!(s&&s.team.some(t=>t.id===B.staff)))B.staff='any';
+ renderBook();
 }
-const price=()=>B.room==='rec'?REC[B.hrs]:B.room==='photo'?PHOTO[B.hrs]:150;
+const price=()=>{const s=svc();return s?s.price:0};
 function staffList(){
- if(B.room==='rec')return[{k:'any',n:'First available',s:'Any engineer'},{k:'JCX Beats',n:'JCX Beats',s:'Engineer · Producer',img:'t_jcx'},{k:'Mooki',n:'Mooki Mixed It',s:'Sound engineer'},{k:'Nelly AEXO',n:'Nelly AEXO',s:'Engineer · Producer',img:'t_nelly'}];
- const ph=[{k:'Dym Archives',n:'Dym Archives',s:B.room==='photo'?'Rate paid separately':'Included in the $150',img:'t_dym'},{k:'Smooth',n:'Smooth',s:B.room==='photo'?'Rate paid separately':'Included in the $150',img:'t_smooth'}];
- return B.room==='photo'?[{k:'any',n:'No photographer',s:'Bringing my own'},...ph]:[{k:'any',n:'First available',s:'Any photographer'},...ph];
+ const s=svc(),team=s?s.team:[];
+ if(B.room==='photo')return[{k:'none',n:'No photographer',s:'Bringing my own'},{k:'Dym Archives',n:'Dym Archives',s:'Rate paid separately',img:'t_dym'},{k:'Smooth',n:'Smooth',s:'Rate paid separately',img:'t_smooth'}];
+ const role=B.room==='rec'?'engineer':'photographer';
+ return[{k:'any',n:'First available',s:'Any '+role},...team.map(t=>{const m=teamPic(t.n);return{k:t.id,n:t.n,s:m?m.r:(B.room==='rec'?'Engineer':'Photographer'),img:m&&m.img}})];
 }
-const BOOKED=new Set();const roomGroup=r=>r==='rec'?'rec':'photo';
-function bookedOverlap(day,h,len){for(let x=h;x<h+len;x++)if(BOOKED.has(day+'|'+roomGroup(B.room)+'|'+x))return true;return false}
-function taken(key,h){let s=0;for(const c of key+':'+h)s=(s*31+c.charCodeAt(0))>>>0;return s%5===0}
 const keyOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function days(){const out=[],n=nowET();n.setHours(0,0,0,0);for(let i=0;i<14;i++){const d=new Date(n);d.setDate(n.getDate()+i);out.push(d)}return out}
-function slotsFor(d){const[o,c]=HOURS[d.getDay()],now=nowET(),res=[];for(let h=o;h<c;h++){const st=new Date(d);st.setHours(h);res.push({h,dis:st-now<LEAD_H*3600e3||taken(keyOf(d)+B.room,h)||bookedOverlap(keyOf(d),h,B.hrs)})}return res}
 const opt=(o,attr,on)=>`<button type="button" class="opt${o.img?'':' plain'}" aria-pressed="${on}" ${attr}="${o.k}">${o.img?`<div class="ph">${imgT(o.img,'')}</div>`:''}<div class="tx"><b>${o.n}</b><small>${o.s}</small></div></button>`;
+const reachHTML='Call or text <a class="link" href="tel:+14432926753">(443) 292-6753</a>';
 function renderBook(){
  if(!D||!D.host.isConnected)return;
- const roomsShown=(B.scope==='photo'?BROOMS.filter(r=>r.k!=='rec'):BROOMS).filter(r=>(r.k!=='holiday'||inSeason())&&(r.k!=='pod'||B.scope==='all'));
+ const roomsShown=(B.scope==='photo'?BROOMS.filter(r=>r.k!=='rec'):BROOMS).filter(r=>(r.k!=='holiday'||(inSeason()&&(!BK.menu||svcList('holiday').length)))&&(r.k!=='pod'||B.scope==='all'));
  const pod=roomsShown.find(r=>r.k==='pod');if(pod){roomsShown.splice(roomsShown.indexOf(pod),1);roomsShown.push(pod)}
  if(B.scope==='photo')$('[data-step="room"]',D.host).hidden=false;
  numberSteps(D.host);
  D.rooms.innerHTML=roomsShown.map(r=>opt(r,'data-room',B.room===r.k)).join('');
- const mn=+D.hrs.min,mx=+D.hrs.max;
- D.hrsOut.textContent=B.hrs+(B.hrs===1?' hr':' hrs');D.rateOut.textContent='$'+price();
- D.ticks.innerHTML=mn===mx?'<span>Fixed 1-hour shoot</span>':Array.from({length:mx-mn+1},(_,i)=>`<span>${mn+i}</span>`).join('');
+ const l=svcList(B.room),s=svc();
+ D.hrsOut.textContent=s?(s.hrs+(s.hrs===1?' hr':' hrs')):BK.menu?'Not online':'Loading';D.rateOut.textContent=s?m0(s.price):'';
+ D.ticks.innerHTML=!l.length?'':l.length===1?`<span>${l[0].hrs===1?'Fixed 1-hour shoot':l[0].hrs+'-hour session'}</span>`:l.map(x=>`<span>${x.hrs}</span>`).join('');
  D.staffHead.textContent=B.room==='rec'?'Engineer':'Photographer';
- D.staff.innerHTML=staffList().map(s=>opt(s,'data-staff',B.staff===s.k)).join('');
+ const pick=B.room==='photo'?B.photog:B.staff;
+ D.staff.innerHTML=staffList().map(x=>opt(x,'data-staff',pick===x.k)).join('');
  D.staffNote.hidden=B.room==='rec';
  D.staffNote.textContent=B.room==='photo'?'The photo studio rate is for the room and the gear only. Photographers set their own rates and you pay them separately. Your photographer confirms the price with you before the shoot.':'The holiday special includes the photographer, the 1-hour shoot and 20 edited photos.';
- const ds=days();if(!B.day||!ds.some(d=>keyOf(d)===B.day)||!slotsFor(ds.find(d=>keyOf(d)===B.day)).some(x=>!x.dis)&&B.slot===null&&!B.dayPicked){const f=ds.find(d=>slotsFor(d).some(x=>!x.dis))||ds[0];B.day=keyOf(f)}
- D.days.innerHTML=ds.map(d=>`<button type="button" class="day${HOURS[d.getDay()][1]>24?' late':''}" aria-pressed="${B.day===keyOf(d)}" data-day="${keyOf(d)}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString('en-US',{month:'short'})}</small></button>`).join('');
- const sl=slotsFor(ds.find(d=>keyOf(d)===B.day));
- if(B.slot!==null&&!sl.some(s=>s.h===B.slot&&!s.dis))B.slot=null;
- D.slots.innerHTML=sl.length?sl.map(s=>`<button type="button" class="slot" ${s.dis?'disabled':''} aria-pressed="${B.slot===s.h}" data-slot="${s.h}">${fmtH(s.h)}</button>`).join(''):'<p class="fine">No start times left today for a session this long. Try a shorter session or another day.</p>';
- D.whenDone.hidden=B.slot===null;
  const ph=B.room!=='rec';D.notesLbl.textContent=ph?"What's your vision for the shoot?":'What are you working on?';$('#f-notes').placeholder=ph?'Brand portraits, cream backdrop, two outfit changes':'Two songs, beats on a USB';
- const openN=sl.filter(x=>!x.dis).length,dd=new Date(B.day+'T12:00:00');
- D.dayLabel.innerHTML=`${dd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}<span>${openN?openN+' start time'+(openN>1?'s':'')+' open':'Fully booked'}</span>`;
- requestAnimationFrame(()=>{const sel=$('.day[aria-pressed="true"]',D.days);if(sel){const l=sel.offsetLeft-D.days.offsetLeft,w=D.days.clientWidth;if(l<D.days.scrollLeft||l+sel.offsetWidth>D.days.scrollLeft+w)D.days.scrollLeft=Math.max(0,l-16)}});
- const ids=[...new Set([...ADDONS,...[...B.add.values()].map(x=>x.id)])];
- D.addons.innerHTML=ids.map(id=>{const p=prodById(id),cur=addOf(id);return `<div class="addon" role="button" tabindex="0" aria-pressed="${!!cur}" data-add="${id}">${p.img[0]?imgT(p.img[0],''):'<span></span>'}<div class="tx">${p.n}<span>${m0(unit(p))}${cur&&cur.q>1?' × '+cur.q:''}</span></div>${cur&&p.av.length>1?`<select data-id="${id}" aria-label="${p.n} option">${p.av.map(v=>`<option value="${v}"${v===cur.v?' selected':''}>${vLabel(p,v)}</option>`).join('')}</select>`:''}</div>`}).join('');
+ // dates and open times
+ const ds=days(),st=BK.slots[slotKey()],byDay=st&&st.byDay;
+ if(s)loadSlots();
+ const count=k=>byDay?(byDay.get(k)||[]).length:null;
+ if(!B.day||!ds.some(d=>keyOf(d)===B.day)||(byDay&&!count(B.day)&&!B.dayPicked)){const f=byDay&&ds.find(d=>count(keyOf(d)));B.day=keyOf(f||ds[0])}
+ D.days.innerHTML=ds.map(d=>`<button type="button" class="day" aria-pressed="${B.day===keyOf(d)}" data-day="${keyOf(d)}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString('en-US',{month:'short'})}</small></button>`).join('');
+ const list=byDay?(byDay.get(B.day)||[]):[];
+ if(B.slot&&!list.some(x=>x.start===B.slot))B.slot=null;
+ const dd=new Date(B.day+'T12:00:00');
+ let label;
+ if(BK.menuErr){D.slots.innerHTML=`<p class="fine">Live times could not load from Square. ${reachHTML} to book.</p>`;label='Offline'}
+ else if(!BK.menu||!st||(!byDay&&st.busy)){D.slots.innerHTML=`<p class="fine">${BK.menu&&!s?`Online booking for this room isn't set up yet. ${reachHTML} to book.`:'Loading open times from Square…'}</p>`;label=BK.menu&&!s?'Not online':'Loading'}
+ else if(st.err){D.slots.innerHTML=`<p class="fine">${st.err} <button type="button" class="link" data-retry>Try again</button></p>`;label='Offline'}
+ else{D.slots.innerHTML=list.length?list.map(x=>`<button type="button" class="slot" aria-pressed="${B.slot===x.start}" data-slot="${x.start}">${etTime(x.start)}</button>`).join(''):'<p class="fine">No open start times this day for a session this long. Try a shorter session or another day.</p>';label=list.length?list.length+' start time'+(list.length>1?'s':'')+' open':'Fully booked'}
+ D.whenDone.hidden=!B.slot;
+ D.dayLabel.innerHTML=`${dd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}<span>${label}</span>`;
+ requestAnimationFrame(()=>{const sel=$('.day[aria-pressed="true"]',D.days);if(sel){const l2=sel.offsetLeft-D.days.offsetLeft,w=D.days.clientWidth;if(l2<D.days.scrollLeft||l2+sel.offsetWidth>D.days.scrollLeft+w)D.days.scrollLeft=Math.max(0,l2-16)}});
+ const ids=[...new Set([...ADDONS,...[...B.add.values()].map(x=>x.id)])].filter(id=>prodById(id));
+ D.addons.innerHTML=ids.map(id=>{const p=prodById(id),cur=addOf(id),u=unit(p,cur&&cur.v);return `<div class="addon" role="button" tabindex="0" aria-pressed="${!!cur}" data-add="${id}">${p.img[0]?imgT(p.img[0],''):'<span></span>'}<div class="tx">${p.n}<span>${p.av.length||!SQ.live?m0(u):'Sold out'}${cur&&cur.q>1?' × '+cur.q:''}</span></div>${cur&&p.av.length>1?`<select data-id="${id}" aria-label="${p.n} option">${p.av.map(v=>`<option value="${v}"${v===cur.v?' selected':''}>${vLabel(p,v)}</option>`).join('')}</select>`:''}</div>`}).join('');
  renderTicket();
 }
-function totals(){const p=price(),merch=[...B.add.values()].reduce((a,x)=>a+unit(prodById(x.id))*x.q,0),mcount=[...B.add.values()].reduce((a,x)=>a+x.q,0);const tax=(p+merch)*TAX,total=p+merch+tax,dep=Math.min(50,p*(1+TAX)),today=dep+merch*(1+TAX);return{p,merch,mcount,tax,total,today}}
+/* what Square will charge: the session plus any merch, with tax and sale prices applied by Square */
+const merchLines=()=>[...B.add.values()].map(x=>{const p=prodById(x.id),vv=p&&p.vars&&p.vars[x.v];return vv?{v:vv.id,q:x.q}:null}).filter(Boolean);
+let quoteT=0;
+function quoteBooking(){
+ const s=svc();if(!s||!SQ.live&&B.add.size)return;
+ const lines=merchLines(),key=s.id+'|'+JSON.stringify(lines);
+ if(BK.q.key===key&&(BK.q.data||BK.q.busy))return;
+ BK.q={key,data:null,err:'',busy:1};clearTimeout(quoteT);
+ quoteT=setTimeout(()=>api('quote',{service:s.id,lines}).then(j=>{if(BK.q.key===key){BK.q={key,data:j.quote,err:'',busy:0};renderTicket()}}).catch(e=>{if(BK.q.key===key){BK.q={key,data:null,err:e.message,busy:0};renderTicket()}}),250);
+}
+function totals(){
+ const s=svc(),p=s?s.price:0,merch=[...B.add.values()].reduce((a,x)=>{const pr=prodById(x.id);return a+(pr?unit(pr,x.v)*x.q:0)},0),mcount=[...B.add.values()].reduce((a,x)=>a+x.q,0);
+ const q=BK.q.data;const total=q?q.total/100:p+merch;
+ return{p,merch,mcount,q,total,today:total};
+}
 function renderTicket(){
  const tk=D.ticket,room=BROOMS.find(r=>r.k===B.room);
  const head=`<div class="t-head">${imgT(room.k==='rec'?'sound_room':room.k==='photo'?'photo_cyc':'t_dym','')}<div><small>Session ticket · GVO Sound</small><b>${room.n}</b></div></div>`;
  if(B.done){
-  tk.innerHTML=head+`<div class="confirm"><span class="eyebrow" style="justify-content:center;color:var(--lav-deep)">Booked</span><b>See you at GVO</b><div class="code">${B.done.code}</div><p class="fine">${B.done.line}<br>A text confirmation goes to ${B.done.phone}. Move or cancel 24 hours out to keep your deposit.</p><div class="barcode"></div><button type="button" class="btn btn-ghost" data-again style="color:var(--ink);border-color:#cfc9d6">Book another</button><p class="fine">Demo only. No booking was made and no card was charged.</p></div>`;
+  tk.innerHTML=head+`<div class="confirm"><span class="eyebrow" style="justify-content:center;color:var(--lav-deep)">Booked and paid</span><b>See you at GVO</b><div class="code">${B.done.code}</div><p class="fine">${B.done.line}${B.done.team?'<br>With '+B.done.team:''}<br>Square sends your confirmation to ${B.done.phone}.</p>${B.done.receipt?`<p class="fine"><a class="link" href="${B.done.receipt}" target="_blank" rel="noopener">View your receipt</a></p>`:''}<p class="fine">${POLICY}</p><div class="barcode"></div><button type="button" class="btn btn-ghost" data-again style="color:var(--ink);border-color:#cfc9d6">Book another</button></div>`;
   $('[data-again]',tk).onclick=()=>{B.done=null;B.slot=null;B.add.clear();renderBook()};return;
  }
- const {p,merch,mcount,tax,total,today}=totals();
- const d=new Date(B.day+'T12:00:00');
- const when=B.slot!==null?`${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} · ${fmtH(B.slot)}–${fmtH(B.slot+B.hrs)}`:'Pick a start time';
- tk.innerHTML=head+`<dl><dt>Length</dt><dd>${B.hrs} ${B.hrs===1?'hour':'hours'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffList().find(s=>s.k===B.staff).n}${B.room==='photo'&&B.staff!=='any'?' · paid separately':''}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
+ const s=svc();quoteBooking();
+ const {p,merch,mcount,q,total}=totals();
+ const when=B.slot?`${new Date(B.slot).toLocaleDateString('en-US',{timeZone:'America/New_York',weekday:'short',month:'short',day:'numeric'})} · ${etTime(B.slot)}–${etTime(new Date(new Date(B.slot).getTime()+(s?s.mins:60)*60e3).toISOString())}`:'Pick a start time';
+ const staffN=(staffList().find(x=>x.k===(B.room==='photo'?B.photog:B.staff))||{n:'First available'}).n;
+ const rows=q?[...q.lines.map(l=>`<div><span>${l.name}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),...(q.discount?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),`<div><span>${q.tax?'MD sales tax 6%':'Tax'}</span><span>${m2(q.tax/100)}</span></div>`].join('')
+  :`<div><span>Session</span><span>${s?m2(p):'—'}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}<div><span>Tax</span><span>${BK.q.busy?'Pricing…':BK.q.err?'At checkout':'—'}</span></div>`;
+ const can=!!(B.slot&&s&&q);
+ tk.innerHTML=head+`<dl><dt>Length</dt><dd>${s?s.hrs+' '+(s.hrs===1?'hour':'hours'):'—'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffN}${B.room==='photo'&&B.photog!=='none'?' · paid separately':''}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
  <div class="perf"></div>
- <div class="tot"><div><span>Session</span><span>${m2(p)}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}<div><span>MD sales tax 6%</span><span>${m2(tax)}</span></div><div><span>Total</span><span>${m2(total)}</span></div><div class="due"><span>Due today</span><span>${m2(today)}</span></div><p class="fine">$50 non-refundable deposit holds the slot${merch?', merch is paid now':''}. ${m2(total-today)} is due at the studio.${B.room==='photo'&&B.staff!=='any'?' Photographer fee not included.':''}</p></div>
- <div class="act"><button type="button" class="btn btn-lav" data-pay ${B.slot===null?'disabled':''}>${B.slot===null?'Choose a start time':'Pay '+m2(today)}</button><p class="fine">Apple Pay, Google Pay, card or Afterpay.</p></div>`;
+ <div class="tot">${rows}<div class="due"><span>Due today</span><span>${s?m2(total):'—'}</span></div><p class="fine">${POLICY}${B.room==='photo'&&B.photog!=='none'?' Photographer fee not included.':''}</p>${BK.q.err?`<p class="fine">${BK.q.err}</p>`:''}</div>
+ <div class="act"><button type="button" class="btn btn-lav" data-pay ${can?'':'disabled'}>${!s?'Not bookable online':!B.slot?'Choose a start time':!q?'Pricing with Square…':'Pay '+m2(total)}</button><p class="fine">Card or Google Pay, through Square.</p></div>`;
  $('[data-pay]',tk).onclick=()=>{
   const name=$('#f-name').value.trim(),phone=$('#f-phone').value.trim();
   const bad=[];if(!name)bad.push('f-name');if(phone.replace(/\D/g,'').length!==10)bad.push('f-phone');
   bad.forEach(id=>{const l=$('#'+id).closest('label');l.classList.add('bad');$('.field-err',l).hidden=false});
   if(bad.length){const f=$('#'+bad[0]);f.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});setTimeout(()=>f.focus({preventScroll:true}),350);return}
-  const t=totals(),room=BROOMS.find(r=>r.k===B.room),staff=staffList().find(x=>x.k===B.staff).n;
-  const whenL=`${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}, ${fmtH(B.slot)}–${fmtH(B.slot+B.hrs)}`;
-  const items=[...B.add.values()].map(x=>({p:prodById(x.id),v:x.v,q:x.q}));
-  openSim({kind:'booking',name,phone,total:t.today,
-   lines:[['Deposit, '+room.n.toLowerCase(),Math.min(50,t.p*(1+TAX))],...items.map(x=>[x.p.n+(x.q>1?' × '+x.q:''),unit(x.p)*x.q]),...(t.merch?[['Tax on merch',t.merch*TAX]]:[])],
-   due:t.total-t.today,room,staff,whenL,items,
-   onDone:()=>{for(let x=B.slot;x<B.slot+B.hrs;x++)BOOKED.add(B.day+'|'+roomGroup(B.room)+'|'+x);
-    B.done={code:'GVO-'+Math.random().toString(36).slice(2,7).toUpperCase(),phone,line:`${name} · ${d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}, ${fmtH(B.slot)} to ${fmtH(B.slot+B.hrs)}`};
-    B.add.clear();renderTicket();updateBar();if(innerWidth<1000)tk.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}});
+  const whenL=new Date(B.slot).toLocaleString('en-US',{timeZone:'America/New_York',weekday:'long',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'});
+  openPay({kind:'booking',quote:q,
+   book:{service:s.id,start:B.slot,team:sqTeam(),people:+$('#f-ppl').value,notes:$('#f-notes').value.trim(),photographer:B.room==='photo'?B.photog:'',contact:{name,phone,email:$('#f-email').value.trim()},lines:merchLines()},
+   title:`${room.n}, ${s.hrs} ${s.hrs===1?'hour':'hours'}`,sub:`${whenL} · ${staffN}`,
+   onDone:r=>{BK.slots={};BK.q={key:'',data:null,err:'',busy:0};
+    B.done={code:r.code,phone,team:r.team,receipt:r.receiptUrl,line:`${name} · ${whenL}`};
+    B.add.clear();renderTicket();updateBar();if(innerWidth<1000)tk.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})},
+   onSlotGone:()=>{BK.slots={};B.slot=null;renderBook()}});
  };
  updateBar();
 }
 
 /* phone bottom bar: swaps to a live total while the booking desk is on screen */
-const BAR_DEFAULT='<a class="btn btn-ghost" href="tel:+14432926753">Call us</a><a class="btn btn-lav" href="#book">Book a session</a>';
+const BAR_DEFAULT='<a class="btn btn-ghost" href="tel:+14432926753">Call</a><a class="btn btn-ghost" href="sms:+14432926753">Text</a><a class="btn btn-lav" href="#book">Book a session</a>';
 let deskInView=false,deskIO=null;
 function deskObserve(host){if(deskIO)deskIO.disconnect();if(!('IntersectionObserver' in window))return;deskIO=new IntersectionObserver(es=>{deskInView=es[0].isIntersecting;updateBar()},{rootMargin:'-20% 0px -20% 0px'});deskIO.observe(host);cleanup.push(()=>{deskIO.disconnect();deskInView=false;updateBar()})}
 function updateBar(){
@@ -2342,67 +2446,132 @@ function updateBar(){
  $('[data-bar]',bb).onclick=()=>{const tgt=B.slot===null?D.days:D.ticket;tgt.scrollIntoView({behavior:reduce?'auto':'smooth',block:B.slot===null?'center':'start'})};
 }
 
-/* ================= Square integration simulation ================= */
-const sleep=ms=>new Promise(r=>setTimeout(r,reduce?0:ms));
-function openSim(c){
- const el=$('#sim');el.hidden=false;document.body.style.overflow='hidden';
- const isB=c.kind==='booking';
- const lines=c.lines.map(([n,a])=>`<div><span>${n}</span><span>${a?m2(a):'Free'}</span></div>`).join('');
- el.innerHTML=`<div class="sim-in">
-  <div class="sim-head"><span class="eyebrow">${isB?'Booking checkout':'Shop checkout'} · how Square handles it</span><span class="sim-tag">Demo · Square sandbox</span></div>
+/* ================= Square checkout: Web Payments SDK in the page, orders and payments in /functions ================= */
+let sqLib=null;
+async function sqConfig(){if(!SQ.cfg)SQ.cfg=await api('config');if(!SQ.cfg.live)throw new Error('Checkout is not connected yet. Call or text the studio at (443) 292-6753.');return SQ.cfg}
+function loadSquareJs(sandbox){
+ if(window.Square)return Promise.resolve();
+ if(!sqLib)sqLib=new Promise((res,rej)=>{const s=document.createElement('script');s.src=sandbox?'https://sandbox.web.squarecdn.com/v1/square.js':'https://web.squarecdn.com/v1/square.js';s.onload=res;s.onerror=()=>{sqLib=null;s.remove();rej(new Error("Square's payment form could not load. Check your connection and try again."))};document.head.appendChild(s)});
+ return sqLib;
+}
+const uid=()=>((crypto.randomUUID&&crypto.randomUUID())||(Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2))).replace(/-/g,'').slice(0,24);
+const COUNTRIES=[['US','United States'],['CA','Canada'],['GB','United Kingdom'],['JM','Jamaica'],['TT','Trinidad and Tobago'],['BS','Bahamas'],['BB','Barbados'],['HT','Haiti'],['DO','Dominican Republic'],['PR','Puerto Rico'],['NG','Nigeria'],['GH','Ghana'],['KE','Kenya'],['ZA','South Africa'],['FR','France'],['DE','Germany'],['NL','Netherlands'],['IE','Ireland'],['IT','Italy'],['ES','Spain'],['MX','Mexico'],['BR','Brazil'],['JP','Japan'],['KR','South Korea'],['AU','Australia'],['NZ','New Zealand'],['AE','United Arab Emirates']];
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function quoteRows(q,ship){
+ if(!q)return '<p class="sp-note">Getting your total from Square…</p>';
+ return [...q.lines.map(l=>`<div><span>${esc(l.name)}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),
+  ...q.discounts.map(d=>`<div><span>${esc(d.name.replace(/^Wix Website( Discount)?\s*\d*$/i,'Sale'))}</span><span>−${m2(d.amount/100)}</span></div>`),
+  ...(q.discount&&!q.discounts.length?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),
+  ...(ship!=null?[`<div><span>${ship}</span><span>${q.service?m2(q.service/100):'Free'}</span></div>`]:[]),
+  `<div><span>MD sales tax 6%</span><span>${m2(q.tax/100)}</span></div>`,
+  `<div class="t"><span>Total</span><span>${m2(q.total/100)}</span></div>`].join('');
+}
+/* c: {kind:'shop'|'booking', quote?, book?, title?, sub?, onDone(result), onSlotGone?} */
+function openPay(c){
+ const el=$('#sim'),isB=c.kind==='booking',attempt=uid();
+ let q=c.quote||null,busy=false,card=null,gpay=null,apay=null,req=null,ful='ship',country='US',alive=true;
+ el.hidden=false;document.body.style.overflow='hidden';
+ el.innerHTML=`<div class="sim-in pay-in">
+  <div class="sim-head"><span class="eyebrow">${isB?'Book and pay':'Checkout'} · GVO Sound</span><button type="button" class="btn btn-ghost" id="payClose">Close</button></div>
   <div class="sheet-pay" id="spay">
-   <div class="sp-top"><b>Pay GVO Sound</b><small>Secure checkout by Square</small></div>
+   <div class="sp-top"><b>${isB?'Pay for your session':'Pay GVO Sound'}</b><small>Secure checkout by Square</small></div>
    <div class="sp-body">
-    <div class="sp-lines">${lines}<div class="t"><span>Due today</span><span>${m2(c.total)}</span></div>${isB&&c.due>0?`<div style="color:#6b6475;font-size:.82rem"><span>Due at the studio</span><span>${m2(c.due)}</span></div>`:''}</div>
-    ${isB?'':`<div class="sp-fields"><input id="o-name" placeholder="Name" autocomplete="name"><input id="o-email" type="email" placeholder="Email for receipt" autocomplete="email">${c.ship?'<input class="full" id="o-addr" placeholder="Shipping address" autocomplete="street-address">':''}</div>`}
-    <div class="wallets" role="group" aria-label="Pay with">${['Card','Apple Pay','Google Pay','Afterpay','Cash App Pay'].map((w,i)=>`<button type="button" data-w="${w}" aria-pressed="${i===0}">${w}</button>`).join('')}</div>
-    <div class="card-demo" id="cardDemo"><span>4111 1111 1111 1111</span><span>12/28</span><span>111</span><small>Square's sandbox test card. This demo has no real card field, so nothing you type here could be charged.</small></div>
-    <button type="button" class="btn-pay" id="simPay">Pay ${m2(c.total)}</button>
-    <p class="sp-note">In the live site this box is Square's own payment form. Card numbers go straight to Square and never touch GVO's website.</p>
+    ${isB?`<div class="sp-sess"><b>${esc(c.title)}</b><span>${esc(c.sub)}</span></div>`:''}
+    <div class="sp-lines" id="payLines">${quoteRows(q,null)}</div>
+    ${isB?'':`<div class="sp-fields"><input id="o-name" placeholder="Name" autocomplete="name"><input id="o-email" type="email" placeholder="Email for receipt" autocomplete="email"><input class="full" id="o-phone" type="tel" placeholder="Mobile (optional)" autocomplete="tel" inputmode="tel"></div>
+    <div class="ful sp-ful" id="payFul" role="group" aria-label="Get it"><button type="button" aria-pressed="true" data-ful="ship"><b>Ship it</b><small>$9.99 US, 3 to 5 business days · $15.99 international</small></button><button type="button" aria-pressed="false" data-ful="pickup"><b>Pick up at GVO</b><small>Free, 109 Gibralter Ave, Annapolis</small></button></div>
+    <div class="sp-fields" id="payAddr"><select class="full" id="a-country" autocomplete="country" aria-label="Country">${COUNTRIES.map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select><input class="full" id="a-line1" placeholder="Street address" autocomplete="address-line1"><input class="full" id="a-line2" placeholder="Apt, suite (optional)" autocomplete="address-line2"><input id="a-city" placeholder="City" autocomplete="address-level2"><input id="a-state" placeholder="State" autocomplete="address-level1"><input class="full" id="a-zip" placeholder="ZIP or postal code" autocomplete="postal-code"></div>`}
+    ${isB&&!c.book.contact.email?`<div class="sp-fields"><input class="full" id="o-email" type="email" placeholder="Email for your receipt (optional)" autocomplete="email"></div>`:''}
+    <div class="sp-wallets"><div id="gpay"></div><div id="apay" hidden></div></div>
+    <div id="card" class="sp-card"><p class="sp-note">Loading Square's card form…</p></div>
+    <p class="sp-err" id="payErr" role="alert" hidden></p>
+    <button type="button" class="btn-pay" id="payBtn" disabled>Getting your total…</button>
+    <p class="sp-note">${isB?POLICY:'Questions about an order? Call or text (443) 292-6753.'} Card numbers go straight to Square and never touch GVO's website.</p>
    </div>
   </div>
-  <div class="phone" aria-label="Cory's Square app"><div class="phone-scr"><div class="ph-top"><b>Cory's Square app</b><span>GVO Sound</span></div><div class="feed" id="feed"><p class="ph-empty">Watch this screen when you pay. It shows what lands in GVO's Square account.</p></div></div></div>
-  <div class="sim-foot"><span>Card form, payment, ${isB?'calendar':'orders'} and stock all run on GVO's existing Square account.</span><button type="button" class="btn btn-ghost" id="simClose">Cancel</button></div>
  </div>`;
- let wallet='Card';
- $('.wallets',el).onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;wallet=b.dataset.w;$$('.wallets button',el).forEach(x=>x.setAttribute('aria-pressed',x===b));$('#cardDemo').hidden=wallet!=='Card'};
- const close=()=>{el.hidden=true;el.innerHTML='';document.body.style.overflow=''};
- $('#simClose').onclick=close;
- el.onkeydown=e=>{if(e.key==='Escape'&&!running)close()};
- let running=false;
- $('#simPay').focus();
- $('#simPay').onclick=async()=>{
-  if(!isB){const n=$('#o-name').value.trim(),em=$('#o-email').value.trim(),ad=c.ship?$('#o-addr').value.trim():'ok';if(!n||!/.+@.+\..+/.test(em)||!ad){toast(!n?'Add your name':!ad?'Add a shipping address':'Add an email for the receipt');return}c.name=n;c.email=em}
-  running=true;$('#simClose').hidden=true;
-  const pay=wallet==='Card'?'Visa ending 1111':wallet;
-  const steps=isB?[
-   ['Card secured by Square',`${pay}. Square's form turns the card into a one-time token. GVO's site never sees the number.`,'Web Payments SDK'],
-   ['Deposit charged',`${m2(c.total)} to GVO's Square account${c.items.length?': the $50 deposit plus merch.':'.'}`,'Payments API · CreatePayment',()=>feed(`<small>Payment</small><span class="amt">+${m2(c.total)}</span><span>${c.name} · ${pay}</span>`)],
-   ['Session added to the calendar',`${c.room.n}, ${c.whenL}, ${c.staff}.`,'Bookings API · CreateBooking',()=>feed(`<small>Appointments</small><b>${c.room.n}</b><span>${c.whenL} · ${c.staff}</span><div class="cal"><div>${fmtH(B.slot)}</div><div class="blk">${c.name} · ${c.room.n}</div><div>${fmtH(B.slot+B.hrs)}</div><div></div></div>`)],
-   ...(c.items.length?[['Merch pulled from stock',c.items.map(x=>`${x.p.n} (${vLabel(x.p,x.v)})${x.q>1?' × '+x.q:''}`).join(', ')+'. One stock count covers the studio and the website.','Orders + Inventory API',()=>feed(`<small>Inventory</small>${c.items.map(x=>`<span>${x.p.n} · ${vLabel(x.p,x.v)} <b style="color:var(--tag)">−${x.q}</b></span>`).join('')}<span>Bagged for pickup at the session</span>`)]]:[]),
-   ['Customer saved',`${c.name} · ${c.phone} added to GVO's customer list.`,'Customers API',()=>feed(`<small>Customers</small><b>${c.name}</b><span>${c.phone} · first booking</span>`)],
-   ['Confirmation text sent',`To ${c.phone}, with the 24-hour cancellation policy.`,'Text confirmation',()=>feed(`<small>Text sent</small><span>"You're booked at GVO Sound, ${c.whenL}. 109 Gibralter Ave."</span>`)]
-  ]:[
-   ['Card secured by Square',`${pay}. Square's form turns the card into a one-time token. GVO's site never sees the number.`,'Web Payments SDK'],
-   ['Order created',c.items.map(x=>`${x.p.n} (${vLabel(x.p,x.v)})${x.q>1?' × '+x.q:''}`).join(', ')+(c.ship?'. Ship to customer.':'. Pickup at GVO.'),'Orders API · CreateOrder',()=>feed(`<small>Orders</small><b>${c.ship?'To ship':'Ready for pickup'}</b><span>${c.name} · ${c.items.reduce((a,x)=>a+x.q,0)} item${c.items.reduce((a,x)=>a+x.q,0)>1?'s':''}</span>`)],
-   ['Payment charged',`${m2(c.total)} to GVO's Square account.`,'Payments API · CreatePayment',()=>feed(`<small>Payment</small><span class="amt">+${m2(c.total)}</span><span>${c.name} · ${pay}</span>`)],
-   ['Stock updated','Square lowers the count for each size and color. The studio register sees the same numbers.','Inventory API',()=>feed(`<small>Inventory</small>${c.items.map(x=>`<span>${x.p.n} · ${vLabel(x.p,x.v)} <b style="color:var(--tag)">−${x.q}</b></span>`).join('')}`)],
-   ['Receipt emailed',`To ${c.email}.`,'Square receipt',()=>feed(`<small>Customers</small><b>${c.name}</b><span>${c.email} · receipt sent</span>`)]
-  ];
-  $('#spay').innerHTML=`<div class="sp-top"><b>${isB?'Booking':'Order'} in progress</b><small>${m2(c.total)} · ${pay}</small></div><ol class="flow" id="flow">${steps.map(([t,d,api])=>`<li><i></i><div><b>${t}</b><p>${d}</p><code>${api}</code></div></li>`).join('')}</ol>`;
-  $('#feed').innerHTML='';
-  const narrow=innerWidth<880;if(narrow)$('.phone',el).scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
-  const lis=$$('#flow li');
-  for(let i=0;i<steps.length;i++){lis[i].classList.add('run');await sleep(750);lis[i].classList.remove('run');lis[i].classList.add('on');if(steps[i][3])steps[i][3]()}
-  await sleep(300);
-  $('#spay').insertAdjacentHTML('beforeend',`<div class="sp-body" style="border-top:1px solid #dcd6e0"><p class="sp-note" style="color:var(--ink);font-size:.9rem"><b>Done.</b> ${isB?'The booking and the payment are two records in Square, matched by name and time.':'The order waits in Square until Cory marks it shipped or picked up.'} Money lands in GVO's bank the next business day.</p><button type="button" class="btn-pay" id="simDone">${isB?'See the confirmation':'Back to the site'}</button></div>`);
-  running=false;
-  $('#simDone').onclick=()=>{close();c.onDone&&c.onDone();toast(isB?'Session booked':'Order placed')};
-  if(narrow)$('#simDone').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
-  $('#simDone').focus({preventScroll:true});
+ const btn=$('#payBtn'),errEl=$('#payErr');
+ const err=m=>{errEl.textContent=m||'';errEl.hidden=!m;if(m)errEl.scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'})};
+ const close=()=>{if(busy)return;alive=false;try{card&&card.destroy();gpay&&gpay.destroy()}catch(e){}el.hidden=true;el.innerHTML='';document.body.style.overflow=''};
+ $('#payClose').onclick=close;
+ el.onkeydown=e=>{if(e.key==='Escape')close()};
+ const shipLabel=()=>ful==='pickup'?'Pickup at GVO':country==='US'?'Shipping, 3 to 5 business days':'International shipping';
+ const setBtn=()=>{btn.disabled=busy||!q||!card;btn.textContent=busy?'Paying…':!q?'Getting your total…':!card?"Loading Square's card form…":'Pay '+m2(q.total/100)};
+ const paint=()=>{$('#payLines').innerHTML=quoteRows(q,isB?null:shipLabel());setBtn();if(req&&q)try{req.update({total:{amount:(q.total/100).toFixed(2),label:'GVO Sound'}})}catch(e){}};
+ const shopLinesNow=()=>cart.map(l=>{const p=prodById(l.id),v=p&&p.vars&&p.vars[l.v];return v?{v:v.id,q:l.q}:null}).filter(Boolean);
+ let qn=0;
+ const requote=async()=>{
+  if(isB)return;const n=++qn;q=null;paint();
+  try{const j=await api('quote',{lines:shopLinesNow(),fulfillment:{type:ful,country}});if(n===qn&&alive){q=j.quote;paint()}}
+  catch(e){if(n===qn&&alive){err(e.message);setBtn()}}
  };
+ if(!isB){
+  $('#payFul').onclick=e=>{const b=e.target.closest('[data-ful]');if(!b||busy)return;ful=b.dataset.ful;$$('#payFul button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('#payAddr').hidden=ful!=='ship';requote()};
+  $('#a-country').onchange=e=>{const was=country==='US';country=e.target.value;$('#a-state').placeholder=country==='US'?'State':'State or region (optional)';if(was!==(country==='US'))requote()};
+  $('#o-phone').oninput=e=>{const t=e.target,d=t.value.replace(/\D/g,'').replace(/^1/,'').slice(0,10);t.value=d.length>6?`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`:d.length>3?`(${d.slice(0,3)}) ${d.slice(3)}`:d};
+  requote();
+ }else if(!q){err('Square has not priced this session yet. Close and try again.')}
+ // contact and address from the form
+ const read=()=>{
+  if(isB)return{ok:1,email:(($('#o-email')||{}).value||c.book.contact.email||'').trim(),name:c.book.contact.name,phone:c.book.contact.phone};
+  const v=id=>$('#'+id).value.trim(),name=v('o-name'),email=v('o-email');
+  if(!name)return{bad:'o-name',m:'Add your name.'};
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return{bad:'o-email',m:'Add an email for your receipt.'};
+  const out={ok:1,name,email,phone:v('o-phone')};
+  if(ful==='ship'){const a={country,line1:v('a-line1'),line2:v('a-line2'),city:v('a-city'),state:v('a-state'),zip:v('a-zip')};
+   for(const [k,id,m] of [['line1','a-line1','Add your street address.'],['city','a-city','Add your city.'],['zip','a-zip','Add your ZIP or postal code.']])if(!a[k])return{bad:id,m};
+   if(country==='US'&&!a.state)return{bad:'a-state',m:'Add your state.'};out.address=a}
+  return out;
+ };
+ const billing=f=>{const [g,...r]=String(f.name||'').split(/\s+/);const b={givenName:g||'',familyName:r.join(' ')};if(f.email)b.email=f.email;if(f.phone)b.phone=f.phone.replace(/\D/g,'');if(f.address){b.addressLines=[f.address.line1,f.address.line2].filter(Boolean);b.city=f.address.city;b.state=f.address.state;b.postalCode=f.address.zip;b.countryCode=f.address.country}else b.countryCode='US';return b};
+ const pay=async method=>{
+  if(busy||!q)return;err('');
+  const f=read();if(!f.ok){err(f.m);const i=$('#'+f.bad);if(i)i.focus();return}
+  busy=true;setBtn();
+  try{
+   let tok;
+   if(method==='card'){const r=await card.tokenize({amount:(q.total/100).toFixed(2),billingContact:billing(f),currencyCode:'USD',intent:'CHARGE',customerInitiated:true,sellerKeyedIn:false});
+    if(r.status!=='OK'){throw new Error((r.errors&&r.errors[0]&&r.errors[0].message)||'Check your card details and try again.')}tok=r.token}
+   else{const r=await method.tokenize();if(r.status!=='OK'){busy=false;setBtn();if(r.status!=='Cancel')err('That wallet payment did not go through. Try your card.');return}tok=r.token}
+   const body=isB?{...c.book,contact:{...c.book.contact,email:f.email},attempt,sourceId:tok,expectTotal:q.total}
+    :{attempt,sourceId:tok,lines:shopLinesNow(),fulfillment:ful==='ship'?{type:'ship',address:f.address}:{type:'pickup'},contact:{name:f.name,email:f.email,phone:f.phone},expectTotal:q.total};
+   const res=await api(isB?'book':'checkout',body);
+   busy=false;done(res,f);
+  }catch(e){
+   busy=false;
+   if(e.code==='TOTAL_CHANGED'&&e.data&&e.data.quote){q=e.data.quote;paint();err(e.message);return}
+   if(e.code==='SLOT_TAKEN'||e.code==='BOOKING_FAILED'){err(e.message);btn.textContent='Pick another time';btn.disabled=false;btn.onclick=()=>{close();c.onSlotGone&&c.onSlotGone()};return}
+   err(e.message||'The payment did not go through. Try again.');setBtn();
+  }
+ };
+ const done=(res,f)=>{
+  const s=res.summary||q;
+  $('#spay').innerHTML=`<div class="sp-top"><b>${isB?'Booked':'Order placed'}</b><small>Paid ${m2(s.total/100)}</small></div><div class="sp-body">
+   <p class="sp-done">${isB?`You're booked at GVO Sound, ${esc(res.when||c.sub)}${res.team?' with '+esc(res.team):''}. Square sends your confirmation to ${esc(c.book.contact.phone)}${f.email?' and '+esc(f.email):''}.`:`Thanks, ${esc(f.name.split(' ')[0])}. Your receipt is on its way to ${esc(f.email)}. ${ful==='ship'?'Your order ships in 3 to 5 business days.':'Pick it up at 109 Gibralter Ave. The studio lets you know when it is ready.'}`}</p>
+   <div class="sp-lines">${quoteRows(s,isB?null:shipLabel())}</div>
+   ${res.receiptUrl?`<a class="link" href="${esc(res.receiptUrl)}" target="_blank" rel="noopener">View your Square receipt</a>`:''}
+   <p class="sp-note">${isB?POLICY:'Order '+esc(res.ref||'')}</p>
+   <button type="button" class="btn-pay" id="payDone">${isB?'See your ticket':'Back to the site'}</button></div>`;
+  $('#payClose').hidden=true;
+  $('#payDone').onclick=()=>{$('#payClose').hidden=false;close();c.onDone&&c.onDone(res);toast(isB?'Session booked':'Order placed')};
+  $('#payDone').focus();
+ };
+ btn.onclick=()=>pay('card');
+ // Square's card form, plus Google Pay and Apple Pay where the device supports them
+ (async()=>{
+  try{
+   const cf=await sqConfig();await loadSquareJs(cf.sandbox);if(!alive)return;
+   const payments=window.Square.payments(cf.appId,cf.locationId);
+   card=await payments.card();if(!alive)return;$('#card').innerHTML='';await card.attach('#card');setBtn();
+   const total0=q?(q.total/100).toFixed(2):'1.00';
+   req=payments.paymentRequest({countryCode:'US',currencyCode:'USD',total:{amount:total0,label:'GVO Sound'}});
+   try{gpay=await payments.googlePay(req);if(alive){await gpay.attach('#gpay',{buttonColor:'black',buttonSizeMode:'fill',buttonType:'long'});$('#gpay').onclick=()=>pay(gpay)}}catch(e){gpay=null}
+   try{apay=await payments.applePay(req);if(alive){const a=$('#apay');a.hidden=false;a.innerHTML='<button type="button" class="apple-pay" aria-label="Pay with Apple Pay"></button>';a.firstChild.onclick=()=>pay(apay)}}catch(e){apay=null}
+  }catch(e){if(alive){$('#card').innerHTML='';err(e.message||"Square's payment form could not load.")}}
+ })();
+ setBtn();
+ setTimeout(()=>{const f=$('#o-name')||$('#payClose');f&&f.focus()},60);
 }
-function feed(html){const f=$('#feed');if(!f)return;const d=document.createElement('div');d.className='fi';d.innerHTML=html;f.prepend(d)}
 
 /* podcast quote form */
 function mountQuote(host,switcher){
@@ -2414,7 +2583,7 @@ function mountQuote(host,switcher){
   <div class="fields"><label>Name<input id="q-name" autocomplete="name" placeholder="Your name or show name"></label><label>Phone<input id="q-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label><label class="full">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com"></label><label class="full">Tell us about it<textarea id="q-notes" rows="4" placeholder="Weekly show, 2 hosts and a guest, want clips for Instagram"></textarea></label></div>
   <button type="submit" class="btn btn-lav" style="justify-self:start">Send request</button>
   <p class="fine">Demo form. Nothing is sent.</p></form>
-  <aside class="ticket"><div class="t-head">${imgT('pod_set','')}<div><small>Podcast and video</small><b>Quoted per project</b></div></div><dl><dt>Producers</dt><dd>Bob Almighty, KingMAG Prod, Skandle</dd><dt>Studio</dt><dd>Open 24/7 by appointment</dd><dt>Reply</dt><dd>A call back from the team</dd></dl><div class="act"><p class="fine">Prefer to talk? Call (443) 292-6753</p></div></aside></div>`;
+  <aside class="ticket"><div class="t-head">${imgT('pod_set','')}<div><small>Podcast and video</small><b>Quoted per project</b></div></div><dl><dt>Producers</dt><dd>Bob Almighty, KingMAG Prod, Skandle</dd><dt>Studio</dt><dd>Open 24/7 by appointment</dd><dt>Reply</dt><dd>A call back from the team</dd></dl><div class="act"><p class="fine">Prefer to talk? Call or text (443) 292-6753</p></div></aside></div>`;
  if(switcher)$$('#qSwitch',host).forEach(()=>{const n=$('[data-num]',host);if(n)n.innerHTML='Step <b>1</b> of 2'});
  const rT=()=>$('#qtype').innerHTML=types.map(x=>`<button type="button" class="chip" aria-pressed="${x===t}" data-t="${x}">${x}</button>`).join('');rT();
  $('#qtype').onclick=e=>{const b=e.target.closest('[data-t]');if(b){t=b.dataset.t;rT()}};
@@ -2425,45 +2594,44 @@ function mountQuote(host,switcher){
 /* shop */
 const CATS=['All','Shirts','Cold weather','Bottoms','Headwear','Sale'];let cat='All';
 function wireShop(){
- const r=()=>{$('#shopFilters').innerHTML=CATS.map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const list=PRODUCTS.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));$('#shopCount').textContent=list.length+' of '+PRODUCTS.length+' pieces · live store, Oct 20';$('#rack').innerHTML=list.map(prodCard).join('')};
+ const r=()=>{$('#shopFilters').innerHTML=CATS.map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const list=PRODUCTS.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));$('#shopCount').textContent=list.length+' of '+PRODUCTS.length+' pieces · '+(SQ.live?'live from Square':SQ.state==='down'?'Square is offline':'checking Square');$('#rack').innerHTML=list.map(prodCard).join('')};
  $('#shopFilters').onclick=e=>{const b=e.target.closest('[data-cat]');if(b){cat=b.dataset.cat;r()}};r();
  mountFit();
 }
 function wireProduct(id){
- const p=prodById(id);if(!p)return;let ful='ship';
+ const p=prodById(id);if(!p)return;
  const sel=firstAvail(p).split('/');
  const isAv=arr=>p.av.includes(arr.join('/'));
  function draw(){
   $('#pdpOpts').innerHTML=p.o.map((o,oi)=>o.v.length<2&&o.t==='Color'?'':`<div><h3 style="font-size:.8rem;margin-bottom:10px">${o.t}${o.t==='Color'?` <span style="color:var(--mute);font:500 .72rem var(--mono);text-transform:none;letter-spacing:0">· ${sel[oi]}</span>`:''}</h3><div class="sizes">${o.v.map(v=>{const trial=sel.slice();trial[oi]=v;const any=p.av.some(a=>a.split('/')[oi]===v);const ok=isAv(trial);return `<button type="button" class="sz${o.t==='Color'?' c':''}" aria-pressed="${sel[oi]===v}" data-oi="${oi}" data-v="${v}" ${any?'':'disabled'} ${!ok&&any?'style="opacity:.55"':''}>${v}</button>`}).join('')}</div></div>`).join('');
-  const ok=isAv(sel);const st=$('#pdpStock');
-  const count=p.av.length,total=p.o.reduce((a,o)=>a*o.v.length,1);
-  st.textContent=ok?(count<=total/3?'In stock · few sizes left':'In stock'):'This combination is sold out';st.classList.toggle('low',!ok||count<=total/3);
-  const btn=$('#pdpAdd');btn.disabled=!ok;btn.textContent=ok?'Add to bag · '+m2(unit(p)):'Sold out';
+  const key=sel.join('/'),ok=isAv(sel),vx=p.vars&&p.vars[key],few=!!(vx&&vx.q!=null&&vx.q<=3);
+  const st=$('#pdpStock');
+  st.textContent=!SQ.live?(SQ.state==='down'?'Online checkout is offline. Call or text (443) 292-6753 to order.':'Checking stock with Square…'):ok?(few?`In stock · only ${vx.q} left`:'In stock'):'This combination is sold out';
+  st.classList.toggle('low',!SQ.live||!ok||few);
+  if(vx)$('#pdpPrice').innerHTML=vx.s!=null?`<s>${m2(vx.p)}</s><span class="now">${m2(vx.s)}</span>`:m2(vx.p);
+  const btn=$('#pdpAdd');btn.disabled=!ok||!SQ.live;
+  btn.textContent=!SQ.live?(SQ.state==='down'?'Call or text to order':'Checking stock…'):ok?'Add to bag · '+m2(unit(p,key)):'Sold out';
  }
  draw();
  $('#pdpOpts').onclick=e=>{const b=e.target.closest('[data-oi]');if(!b||b.disabled)return;const oi=+b.dataset.oi;sel[oi]=b.dataset.v;if(!isAv(sel)){const fix=p.av.map(a=>a.split('/')).find(a=>a[oi]===sel[oi]);if(fix)fix.forEach((v,i)=>sel[i]=v)}draw()};
- $$('.pdp-th button',main).forEach(b=>b.onclick=()=>{$$('.pdp-th button',main).forEach(x=>x.setAttribute('aria-pressed',x===b));$('#pdpMain img').src=`img/${b.dataset.img}.webp`});
+ $$('.pdp-th button',main).forEach(b=>b.onclick=()=>{$$('.pdp-th button',main).forEach(x=>x.setAttribute('aria-pressed',x===b));$('#pdpMain img').src=imgSrc(b.dataset.img)});
  const pm=$('#pdpMain img')&&$('#pdpMain');
  if(pm){pm.onclick=()=>pm.classList.toggle('zoom');pm.onmousemove=e=>{const r=pm.getBoundingClientRect();$('img',pm).style.transformOrigin=`${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`};pm.onmouseleave=()=>pm.classList.remove('zoom')}
- $('#pdpFul').onclick=e=>{const b=e.target.closest('[data-ful]');if(b){ful=b.dataset.ful;$$('#pdpFul button').forEach(x=>x.setAttribute('aria-pressed',x===b))}};
- $('#pdpAdd').onclick=()=>{if(isAv(sel))addToBag(id,sel.join('/'),ful)};
+ $('#pdpAdd').onclick=()=>{if(SQ.live&&isAv(sel))addToBag(id,sel.join('/'))};
 }
 
 /* ================= bag ================= */
-let cart=[];try{cart=JSON.parse(localStorage.getItem('gvo-bag2')||'[]').filter(l=>prodById(l.id))}catch(e){cart=[]}
-const save=()=>{try{localStorage.setItem('gvo-bag2',JSON.stringify(cart))}catch(e){}};
-function addToBag(id,v,ful){const p=prodById(id),l=cart.find(x=>x.id===id&&x.v===v);l?l.q++:cart.push({id,v,q:1,ful});save();renderCart(true);toast(`Added ${p.n} · ${vLabel(p,v)}${ful==='pickup'?' · pickup at GVO':''}`)}
+let cart=[];try{cart=JSON.parse(localStorage.getItem('gvo-bag3')||'[]').filter(l=>prodById(l.id))}catch(e){cart=[]}
+const save=()=>{try{localStorage.setItem('gvo-bag3',JSON.stringify(cart))}catch(e){}};
+function addToBag(id,v){const p=prodById(id),l=cart.find(x=>x.id===id&&x.v===v);l?l.q++:cart.push({id,v,q:1});save();renderCart(true);toast(`Added ${p.n} · ${vLabel(p,v)}`)}
 function renderCart(bump){
  const c=$('#cartCount');c.textContent=cart.reduce((a,l)=>a+l.q,0);
  if(bump){c.classList.add('bump');setTimeout(()=>c.classList.remove('bump'),300)}
  if(!cart.length){$('#lines').innerHTML='<div class="empty"><span class="mark"></span>Your bag is empty.<a class="btn btn-ghost" href="#shop">Browse the rack</a></div>';$('#cartFoot').innerHTML='';return}
  let sub=0;
- $('#lines').innerHTML=cart.map((l,i)=>{const p=prodById(l.id),u=unit(p);sub+=u*l.q;return `<div class="line">${p.img[0]?imgT(p.img[0],''):'<div class="nophoto" style="position:static;width:60px;height:74px;border-radius:3px"><span class="mark"></span></div>'}<div><a href="#product-${p.id}" style="font-weight:600;font-size:.9rem;line-height:1.3;text-decoration:none">${p.n}</a><br><small>${vLabel(p,l.v)} · ${m2(u)}${l.ful==='pickup'?' · pickup':''}</small></div><div class="qty"><button type="button" data-dec="${i}" aria-label="Remove one">−</button>${l.q}<button type="button" data-inc="${i}" aria-label="Add one">+</button></div></div>`}).join('');
- const allPick=cart.every(l=>l.ful==='pickup'),ship=allPick||sub>=75?0:7.99,tax=sub*TAX;
- $('#cartFoot').innerHTML=`<div><span>Subtotal</span><span>${m2(sub)}</span></div><div><span>${allPick?'Pickup at GVO':'Shipping'+(sub>=75?'':' · free at $75')}</span><span>${ship?m2(ship):'Free'}</span></div><div><span>Tax 6%</span><span>${m2(tax)}</span></div><div class="big"><span>Total</span><span>${m2(sub+ship+tax)}</span></div><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px">Check out</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button><p class="fine">Demo checkout. Walks through how Square handles the order. No payment is taken.</p>`;
- $('#checkout').onclick=()=>{const items=cart.map(l=>({p:prodById(l.id),v:l.v,q:l.q,ful:l.ful}));closeCart();
-  openSim({kind:'order',total:sub+ship+tax,ship:!allPick,lines:[...items.map(x=>[x.p.n+' · '+vLabel(x.p,x.v)+(x.q>1?' × '+x.q:''),unit(x.p)*x.q]),[allPick?'Pickup at GVO':'Shipping',ship],['MD sales tax 6%',tax]],items,
-   onDone:()=>{cart=[];save();renderCart()}})};
+ $('#lines').innerHTML=cart.map((l,i)=>{const p=prodById(l.id),u=unit(p,l.v);sub+=u*l.q;return `<div class="line">${p.img[0]?imgT(p.img[0],''):'<div class="nophoto" style="position:static;width:60px;height:74px;border-radius:3px"><span class="mark"></span></div>'}<div><a href="#product-${p.id}" style="font-weight:600;font-size:.9rem;line-height:1.3;text-decoration:none">${p.n}</a><br><small>${vLabel(p,l.v)} · ${m2(u)}</small></div><div class="qty"><button type="button" data-dec="${i}" aria-label="Remove one">−</button>${l.q}<button type="button" data-inc="${i}" aria-label="Add one">+</button></div></div>`}).join('');
+ $('#cartFoot').innerHTML=`<div class="big"><span>Subtotal</span><span>${m2(sub)}</span></div><p class="fine">Shipping is $9.99 in the US (3 to 5 business days) or $15.99 international. Pickup at the studio is free. Square adds 6% MD sales tax at checkout.</p><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px" ${SQ.live?'':'disabled'}>${SQ.live?'Check out':SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753':'Checking stock with Square…'}</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button>`;
+ $('#checkout').onclick=()=>{if(!SQ.live)return;closeCart();openPay({kind:'shop',onDone:()=>{cart=[];save();renderCart()}})};
  $('#pickup').onclick=()=>{cart.forEach(l=>{const c=B.add.get(l.id+'|'+l.v);B.add.set(l.id+'|'+l.v,{id:l.id,v:l.v,q:(c?c.q:0)+l.q})});cart=[];save();renderCart();closeCart();if(route==='book')renderBook();location.hash='book';toast('Your bag moved to your session ticket. Pick a time.')};
 }
 $('#lines').addEventListener('click',e=>{const d=e.target.closest('[data-dec]'),i=e.target.closest('[data-inc]');if(d){const k=+d.dataset.dec;if(!--cart[k].q)cart.splice(k,1)}else if(i)cart[+i.dataset.inc].q++;else{if(e.target.closest('a'))closeCart();return}save();renderCart()});
@@ -2541,6 +2709,7 @@ batIntro();
 renderCart();
 const first=parse();
 render(first===null?'home':first,{first:true});
+loadShop();
 onScroll();
 })();
 </script>
