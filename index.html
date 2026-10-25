@@ -2401,7 +2401,7 @@ function renderTicket(){
  const tk=D.ticket,room=BROOMS.find(r=>r.k===B.room);
  const head=`<div class="t-head">${imgT(room.k==='rec'?'sound_room':room.k==='photo'?'photo_cyc':'t_dym','')}<div><small>Session ticket · GVO Sound</small><b>${room.n}</b></div></div>`;
  if(B.done){
-  tk.innerHTML=head+`<div class="confirm"><span class="eyebrow" style="justify-content:center;color:var(--lav-deep)">Booked and paid</span><b>See you at GVO</b><div class="code">${B.done.code}</div><p class="fine">${B.done.line}${B.done.team?'<br>With '+B.done.team:''}<br>Square sends your confirmation to ${B.done.phone}.</p>${B.done.receipt?`<p class="fine"><a class="link" href="${B.done.receipt}" target="_blank" rel="noopener">View your receipt</a></p>`:''}<p class="fine">${POLICY}</p><div class="barcode"></div><button type="button" class="btn btn-ghost" data-again style="color:var(--ink);border-color:#cfc9d6">Book another</button></div>`;
+  tk.innerHTML=head+`<div class="confirm"><span class="eyebrow" style="justify-content:center;color:var(--lav-deep)">Booked and paid</span><b>See you at GVO</b><div class="code">${B.done.code}</div><p class="fine">${B.done.line}${B.done.team?'<br>With '+B.done.team:''}</p>${B.done.receipt?`<p class="fine"><a class="link" href="${B.done.receipt}" target="_blank" rel="noopener">View your receipt</a></p>`:''}<p class="fine">${POLICY}</p><div class="barcode"></div><button type="button" class="btn btn-ghost" data-again style="color:var(--ink);border-color:#cfc9d6">Book another</button></div>`;
   $('[data-again]',tk).onclick=()=>{B.done=null;B.slot=null;B.add.clear();renderBook()};return;
  }
  const s=svc();quoteBooking();
@@ -2547,7 +2547,7 @@ function openPay(c){
  const done=(res,f)=>{
   const s=res.summary||q;
   $('#spay').innerHTML=`<div class="sp-top"><b>${isB?'Booked':'Order placed'}</b><small>Paid ${m2(s.total/100)}</small></div><div class="sp-body">
-   <p class="sp-done">${isB?`You're booked at GVO Sound, ${esc(res.when||c.sub)}${res.team?' with '+esc(res.team):''}. Square sends your confirmation to ${esc(c.book.contact.phone)}${f.email?' and '+esc(f.email):''}.`:`Thanks, ${esc(f.name.split(' ')[0])}. Your receipt is on its way to ${esc(f.email)}. ${ful==='ship'?'Your order ships in 3 to 5 business days.':'Pick it up at 109 Gibralter Ave. The studio lets you know when it is ready.'}`}</p>
+   <p class="sp-done">${isB?`You're booked at GVO Sound, ${esc(res.when||c.sub)}${res.team?' with '+esc(res.team):''}. It's on the GVO calendar. Save your receipt with the link below.`:`Thanks, ${esc(f.name.split(' ')[0])}. Your order is in. Save your receipt with the link below. ${ful==='ship'?'Your order ships in 3 to 5 business days.':'Pick it up at 109 Gibralter Ave. The studio lets you know when it is ready.'}`}</p>
    <div class="sp-lines">${quoteRows(s,isB?null:shipLabel(),isB?c.title:null)}</div>
    ${res.receiptUrl?`<a class="link" href="${esc(res.receiptUrl)}" target="_blank" rel="noopener">View your Square receipt</a>`:''}
    <p class="sp-note">${isB?POLICY:'Order '+esc(res.ref||'')}</p>
