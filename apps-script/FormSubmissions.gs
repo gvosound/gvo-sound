@@ -20,15 +20,16 @@ const FORMS = {
   quote:  { tab: 'Podcast quotes',    label: 'Podcast or video quote', cols: ['name', 'phone', 'email', 'type', 'details'] },
   event:  { tab: 'Event inquiries',   label: 'Event inquiry',          cols: ['type', 'name', 'email', 'phone', 'org', 'when', 'city', 'details'] },
   travel: { tab: 'Travel requests',   label: 'Travel request',         cols: ['trip', 'name', 'email', 'phone', 'where', 'when', 'pax', 'details'] },
-  music:  { tab: 'Music submissions', label: 'Music submission',       cols: ['artist', 'email', 'link'] },
+  music:  { tab: 'Music submissions', label: 'Music submission',       cols: ['artist', 'email', 'title', 'type', 'links', 'ig', 'tiktok', 'yt', 'gvo', 'engineer', 'notes'] },
   notify: { tab: 'Notify list',       label: 'Notify list sign-up',    cols: ['list', 'contact'] },
 };
 // Status column to start as "New", by tab (1-based column number), so new rows stand out.
 const STATUS_COL = { quote: 7, event: 10, travel: 10 };
 
 const LABELS = { name: 'Name', phone: 'Phone', email: 'Email', type: 'Type', details: 'Details', org: 'Company or venue',
-  when: 'When', city: 'City', trip: 'Trip', where: 'Where to', pax: 'Travelers', artist: 'Artist', link: 'Link',
-  list: 'List', contact: 'Email or phone' };
+  when: 'When', city: 'City', trip: 'Trip', where: 'Where to', pax: 'Travelers', artist: 'Artist', title: 'Song or project',
+  links: 'Links', ig: 'Instagram', tiktok: 'TikTok', yt: 'YouTube', gvo: 'Recorded at GVO', engineer: 'GVO engineer or producer',
+  notes: 'Anything else', list: 'List', contact: 'Email or phone' };
 
 function doPost(e) {
   let body;
@@ -65,7 +66,28 @@ function doPost(e) {
   } catch (err) {
     console.log('alert email failed: ' + err);
   }
-  return out({ ok: true, row });
+  // How many rows this email address sent in the last hour, across every tab. The site uses it to cap confirmations.
+  let recent = 0;
+  try { recent = recentFor(String(f.email || f.contact || '').toLowerCase()); } catch (err) { recent = 1; }
+  return out({ ok: true, row, recent });
+}
+
+function recentFor(addr) {
+  if (!addr || addr.indexOf('@') < 0) return 0;
+  const since = Date.now() - 3600 * 1000;
+  let n = 0;
+  Object.keys(FORMS).forEach(k => {
+    const form = FORMS[k], col = form.cols.indexOf(k === 'notify' ? 'contact' : 'email');
+    if (col < 0) return;
+    const sh = SpreadsheetApp.getActive().getSheetByName(form.tab), last = sh.getLastRow();
+    if (last < 3) return;
+    const start = Math.max(3, last - 99);
+    sh.getRange(start, 1, last - start + 1, col + 2).getValues().forEach(r => {
+      const when = r[0] instanceof Date ? r[0].getTime() : 0;
+      if (when >= since && String(r[col + 1]).replace(/^'/, '').toLowerCase() === addr) n++;
+    });
+  });
+  return n;
 }
 
 function doGet() { return out({ ok: true, service: 'GVO form submissions' }); }

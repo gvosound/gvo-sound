@@ -798,8 +798,12 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
 .submit h3{font-size:clamp(1.4rem,2.6vw,2rem);line-height:.95;margin:0 0 10px}
 .submit p{margin:0;color:var(--mute)}
 .submit form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.submit input{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;color:var(--bone);font:1rem var(--body,inherit);min-height:48px}
-.submit input:focus{outline:none;border-color:var(--lav)}
+.submit input,.submit select,.submit textarea{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;color:var(--bone);font:1rem var(--body,inherit);min-height:48px;resize:vertical}
+.submit select:invalid,.submit select option[value=""]{color:var(--mute)}
+.submit input:focus,.submit select:focus,.submit textarea:focus{outline:none;border-color:var(--lav)}
+.submit [hidden]{display:none}
+.ts-box{grid-column:1/-1;min-height:0}
+.ts-box:empty{display:none}
 .submit .full{grid-column:1/-1}
 @media (max-width:760px){.submit{grid-template-columns:1fr}.submit form{grid-template-columns:1fr}}
 .sess{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
@@ -1407,13 +1411,21 @@ async function api(path,body){
  return j;
 }
 /* site forms: each posts to /api/form, which writes the row to GVO's form sheet and emails the GVO Gmail */
-const formT0=new WeakMap();
-function armForm(fm){if(!fm)return;if(!fm.querySelector('[name=website]'))fm.insertAdjacentHTML('beforeend','<input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">');formT0.set(fm,Date.now())}
+const formT0=new WeakMap(),formTs=new WeakMap();
+/* Cloudflare Turnstile, once TURNSTILE_SITE_KEY is set: usually invisible, shows a checkbox only when Cloudflare is unsure */
+let siteCfgP=null,tsLibP=null;
+const siteCfg=()=>siteCfgP||(siteCfgP=api('config').catch(()=>({})));
+function tsLib(){if(window.turnstile)return Promise.resolve(window.turnstile);return tsLibP||(tsLibP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;s.onload=()=>res(window.turnstile);s.onerror=()=>{tsLibP=null;rej(new Error('Turnstile did not load'))};document.head.appendChild(s)}))}
+function armForm(fm){if(!fm)return;if(!fm.querySelector('[name=website]'))fm.insertAdjacentHTML('beforeend','<input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">');formT0.set(fm,Date.now());
+ siteCfg().then(c=>{if(!c.turnstileSiteKey||!fm.isConnected||formTs.has(fm))return;let box=fm.querySelector('.ts-box');if(!box){box=document.createElement('div');box.className='ts-box';const b=fm.querySelector('[type=submit]');b?b.before(box):fm.append(box)}
+  return tsLib().then(t=>{if(fm.isConnected&&!formTs.has(fm))formTs.set(fm,t.render(box,{sitekey:c.turnstileSiteKey,theme:'dark',appearance:'interaction-only',size:'flexible',action:'form'}))})}).catch(()=>{})}
 async function sendForm(fm,form,fields){
+ let ts='';const wid=formTs.get(fm);
+ if(wid!=null&&window.turnstile){ts=window.turnstile.getResponse(wid)||'';if(!ts){toast('One second, checking you are not a bot. Try again in a moment.');return false}}
  const btn=fm.querySelector('[type=submit]'),txt=btn&&btn.textContent;if(btn){btn.disabled=true;btn.textContent='Sending…'}
- try{await api('form',{form,fields,hp:(fm.querySelector('[name=website]')||{}).value||'',t:Date.now()-(formT0.get(fm)||0)});return true}
+ try{await api('form',{form,fields,ts,hp:(fm.querySelector('[name=website]')||{}).value||'',t:Date.now()-(formT0.get(fm)||0)});return true}
  catch(e){toast(e.message);return false}
- finally{if(btn&&btn.isConnected){btn.disabled=false;btn.textContent=txt}}
+ finally{if(btn&&btn.isConnected){btn.disabled=false;btn.textContent=txt}if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
 }
 async function loadShop(){
  try{
@@ -1687,10 +1699,23 @@ function viewMusic(slug){
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
   <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${ext(SPO+a.sp,'Follow on Spotify →')}</div></div>`).join('')}</div>
-  <div class="submit rv"><div><span class="eyebrow">Recorded at GVO?</span><h3>Get your song on this page</h3><p>Send the link. Flawless reviews every submission before it goes live.</p></div>
-   <form id="subForm" novalidate><input name="artist" placeholder="Artist name" required autocomplete="nickname"><input name="email" type="email" placeholder="Email" required autocomplete="email"><input class="full" name="link" type="url" placeholder="Spotify or Apple Music link" required><button class="btn btn-lav full" type="submit">Submit my release</button></form>
+  <div class="submit rv"><div><span class="eyebrow">Made music at GVO?</span><h3>Get your song on this page</h3><p>Send your links from any platform, a single or a whole project. The team reviews every submission before anything goes live.</p></div>
+   <form id="subForm" novalidate>
+    <input name="artist" placeholder="Artist name *" required autocomplete="nickname" aria-label="Artist name">
+    <input name="email" type="email" placeholder="Email *" required autocomplete="email" aria-label="Email">
+    <input class="full" name="title" placeholder="Song or project title *" required aria-label="Song or project title">
+    <select name="type" aria-label="Type of release"><option value="">Type of release</option><option>Single</option><option>EP</option><option>Album or mixtape</option><option>Music video</option></select>
+    <select name="gvo" aria-label="Recorded at GVO?"><option value="">Recorded at GVO?</option><option>Yes</option><option>Partly</option><option>No</option></select>
+    <input class="full" name="engineer" placeholder="GVO engineer or producer" aria-label="GVO engineer or producer" hidden>
+    <textarea class="full" name="links" rows="3" required placeholder="Links, one per line, up to 5 * Spotify, Apple Music, YouTube, SoundCloud, Audiomack, TIDAL…" aria-label="Links to your music"></textarea>
+    <input name="ig" placeholder="Instagram @handle" aria-label="Instagram handle" autocapitalize="off">
+    <input name="tiktok" placeholder="TikTok @handle" aria-label="TikTok handle" autocapitalize="off">
+    <input class="full" name="yt" type="url" placeholder="YouTube channel link" aria-label="YouTube channel link">
+    <textarea class="full" name="notes" rows="2" placeholder="Anything else" aria-label="Anything else"></textarea>
+    <button class="btn btn-lav full" type="submit">Submit my music</button>
+   </form>
   </div>
-  ${note('Where submissions go','The form adds a row to the Music submissions tab of GVO\'s form sheet and emails Cory. He marks Approved, and Siani adds the release here.')}
+  ${note('Where submissions go','The form adds a row to the Music submissions tab of GVO\'s form sheet with every link, the socials and who engineered it, then emails the GVO Gmail. Cory marks Approved, and Siani adds the release here.')}
  </div></section>
  <section><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO Sound Network</span><h2>Watch the sessions</h2></div>${ext('https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA','YouTube channel','btn btn-ghost')}</div>
@@ -2069,7 +2094,11 @@ function wire(r){
    if(await sendForm(fm,'travel',{trip:t,name:v('name'),email:v('email'),phone:v('phone'),where:v('where'),when:v('when'),pax:v('pax'),details:v('msg')})){fm.reset();toast(`Sent. Flawless gets back to you about your trip. (${t})`)}})}
   const nf=$('#trNotify',main);if(nf){armForm(nf);nf.addEventListener('submit',async e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}if(await sendForm(nf,'notify',{list:'Africa trip',contact:i.value.trim()})){nf.reset();toast("You're on the list for the Africa trip")}})}
  }
- if(r.startsWith('music')){const fm=$('#subForm',main);if(fm){armForm(fm);fm.addEventListener('submit',async e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.name!=='website'&&!x.checkValidity());if(bad){bad.focus();toast(bad.name==='link'?'Paste a full link, starting with https://':'Fill in '+bad.placeholder.toLowerCase());return}const v=n=>fm.elements[n].value.trim();if(await sendForm(fm,'music',{artist:v('artist'),email:v('email'),link:v('link')})){fm.reset();toast('Sent. Flawless reviews it before it goes live.')}})}}
+ if(r.startsWith('music')){const fm=$('#subForm',main);if(fm){armForm(fm);const eng=fm.elements.engineer;fm.elements.gvo.addEventListener('change',e=>{eng.hidden=!/^(Yes|Partly)$/.test(e.target.value)});
+  fm.addEventListener('submit',async e=>{e.preventDefault();const v=n=>fm.elements[n].value.trim();
+   const bad=['artist','email','title','links'].map(n=>fm.elements[n]).find(x=>!x.value.trim()||!x.checkValidity());if(bad){bad.focus();toast('Fill in '+bad.getAttribute('aria-label').toLowerCase());return}
+   const links=v('links').split(/[\s,]+/).filter(Boolean);if(links.length>5){fm.elements.links.focus();toast('Add up to 5 links');return}if(links.some(x=>!/^https:\/\//i.test(x))){fm.elements.links.focus();toast('Each link should start with https://');return}
+   if(await sendForm(fm,'music',{artist:v('artist'),email:v('email'),title:v('title'),type:v('type'),links:links.join('\n'),ig:v('ig'),tiktok:v('tiktok'),yt:v('yt'),gvo:v('gvo'),engineer:eng.hidden?'':v('engineer'),notes:v('notes')})){fm.reset();eng.hidden=true;toast('Sent. The team reviews it before anything goes live.')}})}}
  if(ROOMS[r])wireRoom(r);
  $$('[data-yt]',main).forEach(b=>b.addEventListener('click',()=>{if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)}));
  const deskEl=$('[data-desk]',main);

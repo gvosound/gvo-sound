@@ -24,7 +24,8 @@ const DAY = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', wee
 export function emailCfg(env, origin) {
   return {
     key: env.RESEND_API_KEY || '',
-    from: env.EMAIL_FROM || 'GVO Sound <orders@gvosound.com>',
+    from: env.EMAIL_FROM || 'GVO Sound Clothing <clothing@gvosound.com>', // shop orders
+    infoFrom: env.EMAIL_FROM_INFO || 'GVO Sound <info@gvosound.com>',   // forms and studio notes
     alertTo: (env.ORDER_ALERT_TO || STUDIO.gmail).split(/[\s,]+/).filter(Boolean),
     replyTo: env.EMAIL_REPLY_TO || STUDIO.gmail,
     site: (env.SITE_URL || origin || 'https://www.gvosound.com').replace(/\/$/, ''),
@@ -68,7 +69,7 @@ function addressLines(a) {
 const C = { ink: '#07060a', bone: '#f3f0ea', paper: '#ffffff', text: '#1b1820', mute: '#6b6475', line: '#e3dee6', lav: '#b9b2ff', lavInk: '#120f26', tag: '#c62a23' };
 const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
 
-function shell({ site, preheader, body, staff = false }) {
+function shell({ site, preheader, body, staff = false, footer = true }) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><title>GVO Sound</title></head>
 <body style="margin:0;padding:0;background:${C.bone};">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:${C.bone};">${esc(preheader)}</div>
@@ -82,7 +83,7 @@ function shell({ site, preheader, body, staff = false }) {
 ${body}
 </td></tr>
 <tr><td bgcolor="${C.paper}" style="background:${C.paper};padding:8px 28px 28px;border-radius:0 0 8px 8px;font-family:${FONT};font-size:13px;line-height:1.6;color:${C.mute};">
- ${staff ? `<p style="margin:0;border-top:1px solid ${C.line};padding-top:18px;">Sent by gvosound.com. Reply to reach the customer.</p>` : `<p style="margin:0;border-top:1px solid ${C.line};padding-top:18px;">Questions? Call or text <a href="sms:${STUDIO.tel}" style="color:${C.text};">${STUDIO.phone}</a>, or reply to this email.</p>`}
+ ${!footer ? `<p style="margin:0;border-top:1px solid ${C.line};padding-top:4px;"></p>` : staff ? `<p style="margin:0;border-top:1px solid ${C.line};padding-top:18px;">Sent by gvosound.com. Reply to reach the customer.</p>` : `<p style="margin:0;border-top:1px solid ${C.line};padding-top:18px;">Questions? Call or text <a href="sms:${STUDIO.tel}" style="color:${C.text};">${STUDIO.phone}</a>, or reply to this email.</p>`}
 </td></tr>
 <tr><td align="center" style="padding:18px 12px 0;font-family:${FONT};font-size:12px;line-height:1.6;color:${C.mute};">
  GVO Sound LLC · ${STUDIO.street} · ${STUDIO.city}<br>Good Vibes Only
@@ -186,9 +187,72 @@ export function bookingMerchAlert(cfg, { order, idx, contact, when, session, tea
     p('Paid online with the session. Mark the order picked up in Square when they collect it.', `color:${C.mute};font-size:13px;`),
   ].join('\n');
   return {
-    from: cfg.from, to: cfg.alertTo, reply_to: contact.email || cfg.replyTo,
+    from: cfg.infoFrom, to: cfg.alertTo, reply_to: contact.email || cfg.replyTo,
     subject: `Bag merch for ${contact.name}, ${when}`,
     html: shell({ site: cfg.site, preheader: `${lines.length} item(s) for a session`, body, staff: true }),
     text: [`Bag merch for ${contact.name}, ${when}`, ...lines.map(l => `${l.name}${l.opts ? ' (' + l.opts + ')' : ''} x ${l.qty}`)].join('\n'),
+  };
+}
+
+/* ---------- form confirmations: sent to the person who filled in a form ---------- */
+const FORM_LABELS = {
+  quote: [['type', 'Project'], ['name', 'Name or show'], ['phone', 'Phone'], ['email', 'Email'], ['details', 'Details']],
+  event: [['type', 'Inquiry type'], ['name', 'Name'], ['email', 'Email'], ['phone', 'Phone'], ['org', 'Company or venue'], ['when', 'Event date'], ['city', 'City'], ['details', 'Details']],
+  travel: [['trip', 'Trip'], ['name', 'Name'], ['email', 'Email'], ['phone', 'Phone'], ['where', 'Where to'], ['when', 'When'], ['pax', 'Travelers'], ['details', 'Details']],
+  music: [['artist', 'Artist'], ['email', 'Email'], ['title', 'Song or project'], ['type', 'Type'], ['links', 'Links'], ['ig', 'Instagram'], ['tiktok', 'TikTok'], ['yt', 'YouTube'], ['gvo', 'Recorded at GVO'], ['engineer', 'GVO engineer or producer'], ['notes', 'Anything else']],
+  notify: [['contact', 'Email']],
+};
+const TRIP_PHRASE = { "Valentine's cruise": "the Valentine's cruise", 'Next group trip': 'the next group trip', 'Private trip': 'a private trip', 'Custom itinerary': 'a custom itinerary' };
+
+function answers(form, f) {
+  return (FORM_LABELS[form] || []).filter(([k]) => f[k]).map(([k, l]) => [l, String(f[k])]);
+}
+
+export function formConfirmation(cfg, form, f) {
+  const first = String(f.name || f.artist || '').trim().split(/\s+/)[0];
+  const hi = first ? `Hi ${first},` : '';
+  const call = (lead) => `${lead} Call or text <a href="sms:${STUDIO.tel}" style="color:${C.text};">${STUDIO.phone}</a>.`;
+  let subject, intro, close = '', closeText = '';
+  if (form === 'quote') {
+    subject = 'We got your quote request';
+    intro = `Thanks for reaching out to GVO Sound. Your podcast and video request is in. Expect a call at ${f.phone} from ${STUDIO.phone} within 48 hours with your quote.`;
+    close = call('Need something sooner?'); closeText = `Need something sooner? Call or text ${STUDIO.phone}.`;
+  } else if (form === 'event') {
+    subject = 'Your event inquiry is in';
+    intro = `Thanks for reaching out about ${f.when ? 'your event on ' + f.when : 'your event'}. Someone from the GVO team will reply by email within 48 hours.`;
+    close = call('Anything urgent?'); closeText = `Anything urgent? Call or text ${STUDIO.phone}.`;
+  } else if (form === 'travel') {
+    subject = 'Your trip request is in';
+    intro = `Thanks for your interest in ${TRIP_PHRASE[f.trip] || 'your trip'}. The GVO team will reply by email within 48 hours with details for that trip.`;
+    close = call('Questions before then?'); closeText = `Questions before then? Call or text ${STUDIO.phone}.`;
+  } else if (form === 'music') {
+    subject = 'We got your music';
+    intro = 'Thanks for sending your music to GVO Sound. Songs picked for the site go up on the music page at gvosound.com/music.';
+  } else if (form === 'notify' && f.list === 'Next event') {
+    subject = "You're on the list for the next GVO event";
+    intro = "You're on the list for the next GVO Sound event. When the date and flyer drop, you get one email about it. That's all this list is for.";
+    close = 'Want off the list? Reply "remove" and you\'re out.'; closeText = close;
+  } else if (form === 'notify' && f.list === 'Africa trip') {
+    subject = "You're on the list for the Africa trip";
+    intro = "You're on the list for the GVO Sound group trip to Africa. When the dates are set, you get one email with the details. That's all this list is for.";
+    close = 'Want off the list? Reply "remove" and you\'re out.'; closeText = close;
+  } else return null;
+
+  const ans = answers(form, form === 'notify' ? { contact: f.contact } : f);
+  const row = ([l, v]) => `<tr><td style="padding:7px 12px 7px 0;border-bottom:1px solid ${C.line};color:${C.mute};white-space:nowrap;vertical-align:top;">${esc(l)}</td><td style="padding:7px 0;border-bottom:1px solid ${C.line};vertical-align:top;">${esc(v).replace(/\n/g, '<br>')}</td></tr>`;
+  const body = [
+    hi ? p(esc(hi)) : '',
+    p(esc(intro)),
+    label('What you sent'),
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;">${ans.map(row).join('')}</table>`,
+    close ? p(close, 'margin-top:18px;') : '',
+  ].join('\n');
+  const text = [hi, intro, '', 'What you sent', ...ans.map(([l, v]) => `${l}: ${v.replace(/\n/g, ', ')}`), '', closeText,
+    '', `GVO Sound LLC · ${STUDIO.street} · ${STUDIO.city}`].filter((x, i, a) => !(x === '' && a[i - 1] === '')).join('\n').trim();
+  return {
+    from: cfg.infoFrom, to: [f.email || f.contact], reply_to: cfg.replyTo,
+    subject,
+    html: shell({ site: cfg.site, preheader: intro.slice(0, 110), body, footer: false }),
+    text,
   };
 }

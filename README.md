@@ -46,7 +46,10 @@ Settings, in Pages > Settings > Variables and Secrets, for Production and Previe
 | `SHOP_SINCE` | Optional | Items created in Square on or after this date are the Wix items. Defaults to `2026-10-20` |
 | `SHOP_ITEM_IDS` | Optional | Comma list of Square item IDs. When set, only these sell on the site |
 | `RESEND_API_KEY` | Secret | Resend API key for confirmation emails. Without it, orders still work and no email is sent |
-| `EMAIL_FROM` | Optional | Defaults to `GVO Sound <orders@gvosound.com>` |
+| `EMAIL_FROM` | Optional | Sender for shop orders. Defaults to `GVO Sound Clothing <clothing@gvosound.com>` |
+| `EMAIL_FROM_INFO` | Optional | Sender for form confirmations and studio notes. Defaults to `GVO Sound <info@gvosound.com>` |
+| `TURNSTILE_SITE_KEY` | Text | Cloudflare Turnstile site key (public). Shows the bot check on every form |
+| `TURNSTILE_SECRET` | Secret | Turnstile secret key. When set, /api/form rejects submissions without a valid check |
 | `ORDER_ALERT_TO` | Optional | Who gets the copy of each web order. Defaults to `gvosoundllc@gmail.com` |
 | `FORMS_URL` | Secret | Web app URL of the Apps Script on the form sheet |
 | `FORMS_SECRET` | Secret | Shared secret; the same value is the sheet script's FORM_SECRET property |
@@ -56,6 +59,8 @@ Which items sell: the 27 Wix item IDs are pinned in `PINNED` in `functions/_lib/
 Shipping is rebuilt from the Wix rates: $9.99 US (3 to 5 business days), $15.99 international, free pickup at 109 Gibralter Ave. Booking policy from Cory: full price up front, no refunds, switches no later than 2 hours before. Lead time 2 hours, open 24/7, 5 people max.
 
 Emails: Square sends no receipt for API orders, so `functions/_lib/email.js` sends one through Resend: an order confirmation to the customer and a copy to Cory, plus a front-desk note when a booking includes merch. Square Appointments confirms bookings by text and email on its own.
+
+Form confirmations: after a form saves to the sheet, the person gets a confirmation from info@ through Resend (only with RESEND_API_KEY set and a valid email). At most 3 per hour go to one address, counted from the sheet, so the forms can't be used to flood a stranger's inbox. Notify sign-ups confirm only the one list they joined; nobody is added to marketing.
 
 Refunds: canceling an appointment does not refund it. Refund the payment under Transactions too.
 
