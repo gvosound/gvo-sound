@@ -2547,7 +2547,7 @@ function openPay(c){
  const done=(res,f)=>{
   const s=res.summary||q;
   $('#spay').innerHTML=`<div class="sp-top"><b>${isB?'Booked':'Order placed'}</b><small>Paid ${m2(s.total/100)}</small></div><div class="sp-body">
-   <p class="sp-done">${isB?`You're booked at GVO Sound, ${esc(res.when||c.sub)}${res.team?' with '+esc(res.team):''}. It's on the GVO calendar. Save your receipt with the link below.`:`Thanks, ${esc(f.name.split(' ')[0])}. Your order is in. Save your receipt with the link below. ${ful==='ship'?'Your order ships in 3 to 5 business days.':'Pick it up at 109 Gibralter Ave. The studio lets you know when it is ready.'}`}</p>
+   <p class="sp-done">${isB?`You're booked at GVO Sound, ${esc(res.when||c.sub)}${res.team?' with '+esc(res.team):''}. Square Appointments texts and emails your confirmation.`:`Thanks, ${esc(f.name.split(' ')[0])}. ${res.emailed?`A confirmation email is on its way to ${esc(f.email)}.`:'Your order is in. Save your receipt with the link below.'} ${ful==='ship'?'Your order ships in 3 to 5 business days.':'Pick it up at 109 Gibralter Ave. The studio lets you know when it is ready.'}`}</p>
    <div class="sp-lines">${quoteRows(s,isB?null:shipLabel(),isB?c.title:null)}</div>
    ${res.receiptUrl?`<a class="link" href="${esc(res.receiptUrl)}" target="_blank" rel="noopener">View your Square receipt</a>`:''}
    <p class="sp-note">${isB?POLICY:'Order '+esc(res.ref||'')}</p>

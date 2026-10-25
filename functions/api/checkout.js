@@ -3,9 +3,10 @@
 // Body: { attempt, sourceId, lines:[{v,q}], fulfillment:{type, address}, contact:{name,email,phone}, expectTotal }
 import { sq, cfg, json, fail, readBody, idem, money, cents } from '../_lib/square.js';
 import { loadCatalog } from '../_lib/catalog.js';
-import { shopLines, shopOrder, summarize, contactOf, badRequest } from '../_lib/orders.js';
+import { shopLines, shopOrder, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
+import { emailCfg, sendEmail, orderConfirmation, orderAlert } from '../_lib/email.js';
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   try {
     const b = await readBody(request);
     const attempt = String(b.attempt || '').replace(/[^\w-]/g, '').slice(0, 36);
@@ -41,12 +42,21 @@ export async function onRequestPost({ request, env }) {
     if (fulfillment.type === 'ship') pay.shipping_address = created.fulfillments[0].shipment_details.recipient.address;
     const payment = (await sq(env, 'POST', '/v2/payments', pay)).payment;
 
+    // Confirmation to the customer and a copy to Cory. Sent after the reply so the buyer never waits on email.
+    // Wrapped so an email problem can never turn a paid order into an error screen.
+    const mail = (async () => {
+      const ecfg = emailCfg(env, new URL(request.url).origin), data = { order: created, idx: shopIndex(cat), contact, fulfillment, payment };
+      await Promise.allSettled([sendEmail(env, orderConfirmation(ecfg, data)), sendEmail(env, orderAlert(ecfg, data))]);
+    })().catch(e => console.log('email error', e && e.message));
+    if (waitUntil) waitUntil(mail); else await mail;
+
     return json({
       ok: true,
       orderId: created.id,
       ref: created.reference_id,
       paymentId: payment.id,
       receiptUrl: payment.receipt_url || null,
+      emailed: !!env.RESEND_API_KEY,
       receiptNumber: payment.receipt_number || null,
       summary: summarize(created),
     });

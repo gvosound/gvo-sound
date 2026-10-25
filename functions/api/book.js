@@ -4,12 +4,13 @@
 // Body: { attempt, sourceId, service, start, team, contact:{name,phone,email}, people, notes, photographer, lines:[{v,q}], expectTotal }
 import { sq, cfg, json, fail, readBody, idem, money, cents, clean, findOrCreateCustomer } from '../_lib/square.js';
 import { loadCatalog } from '../_lib/catalog.js';
-import { shopLines, summarize, contactOf, badRequest } from '../_lib/orders.js';
+import { shopLines, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
+import { emailCfg, sendEmail, bookingMerchAlert } from '../_lib/email.js';
 import { serviceOf, bookingOrder, searchSlots, teamNames, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
 
 const ET = { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   let payment = null;
   try {
     const b = await readBody(request);
@@ -97,6 +98,15 @@ export async function onRequestPost({ request, env }) {
     }
 
     const names = await teamNames(env).catch(() => new Map());
+
+    // Square Appointments texts and emails the customer. Cory gets a front-desk note only when merch rides along.
+    if (merch.length) {
+      const mail = (async () => {
+        const msg = bookingMerchAlert(emailCfg(env, new URL(request.url).origin), { order: created, idx: shopIndex(cat), contact, when, session: s.name, team: names.get(slot.team) });
+        if (msg) await sendEmail(env, msg);
+      })().catch(e => console.log('email error', e && e.message));
+      if (waitUntil) waitUntil(mail); else await mail;
+    }
     return json({
       ok: true,
       bookingId: booking.id,

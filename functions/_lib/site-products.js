@@ -69,3 +69,33 @@ export const OLD_ITEM_PATTERNS = [
   /signature\s+tee/i, /essentials?\s+(hoodie|pants)/i, /ski\s*mask/i, /\bkings?\b/i, /\bqueens?\b/i,
   /\bfee\b/i, /ticket/i, /french\s+bulldog/i, /\bdeposit\b/i, /^world tour tee$/i,
 ];
+
+// Names the site shows, used in confirmation emails instead of Square's internal item names.
+export const SITE_NAMES = {
+  "gvo-x-ace-distressed-tee": "GVO x Ace Distressed Tee",
+  "prove-a-point-tee": "Prove A Point Tee",
+  "world-tour-tee-white": "World Tour Tee, White",
+  "world-tour-tee-black": "World Tour Tee, Black",
+  "gvo-muscle-tee": "GVO Muscle Tee",
+  "no-art-for-today-tee": "No Art For Today Tee",
+  "pain-is-temporary-dirtbike-jersey": "Pain Is Temporary Dirtbike Jersey",
+  "world-tour-cheetah-hoodie": "World Tour Cheetah Hoodie",
+  "gvo-skater-shorts": "GVO Skater Shorts",
+  "gvo-golf-set-shorts": "GVO Golf Set, Shorts",
+  "gvo-golf-set-shirt": "GVO Golf Set, Shirt",
+  "collective-set-shirt": "The Collective Set, Shirt",
+  "collective-set-pants": "The Collective Set, Pants",
+  "never-see-the-haters-here-tee": "Never See The Haters Here! Tee",
+  "music-is-a-drug-long-sleeve": "Music Is A Drug Long Sleeve",
+  "no-deadbeats-oversized-pink": "No Deadbeats Oversized Tee, Pink",
+  "no-deadbeats-oversized-grey": "No Deadbeats Oversized Tee, Grey",
+  "world-tour-cozy-hoodie": "World Tour Cozy Hoodie",
+  "world-tour-cozy-pants": "World Tour Cozy Pants",
+  "worker-jacket": "Worker Jacket",
+  "world-tour-tracksuit-jacket": "World Tour Tracksuit Jacket",
+  "world-tour-tracksuit-pants": "World Tour Tracksuit Pants",
+  "gvo-bodysuit": "GVO Bodysuit",
+  "gvo-body-set-top": "GVO Body Set, Top",
+  "gvo-body-set-bottoms": "GVO Body Set, Bottoms",
+  "gvo-beanie": "GVO Beanie"
+};
