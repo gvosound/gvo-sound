@@ -31,10 +31,37 @@ export const SITE_PRODUCTS = [
   { id: 'gvo-beanie', a: ['GVO Beanie', 'Beanie'] },
 ];
 
-// Square item ids pinned to site pages once the live catalog has been checked.
-// Filled in after the first run of /api/shop?debug=1 with the token in place. While empty, matching is by name.
+// The 27 Square items that came from Wix Stores, checked against /api/shop?debug=1 on Oct 25, 2026.
+// Only these sell on the site. Each points at the site page whose photos it uses ('' = no site page, Square photos).
+// A new item added in Square stays off the site until its id is added here.
 export const PINNED = {
-  // 'SQUARE_ITEM_ID': 'site-product-id',
+  'B45FHAADJKXMNJWWTINVWQVJ': 'no-deadbeats-oversized-pink', // No Deadbeats Oversized, Pink
+  'B6LSIFNINJQMF6KN6UNVP6FO': 'world-tour-tee-black', // World Tour Tee - Black
+  'IGHE5Q2IFP3QFGV2TVSZKQUS': 'world-tour-cozy-hoodie', // World Tour Cozy Hoodie
+  'CGCXB2Y4D5UOBOFFCV674VCA': 'world-tour-tracksuit-pants', // World Tour Tracksuit Pants
+  'OOPB5E5OJRJKSMA6DMAW5OGZ': 'prove-a-point-tee', // Prove A Point Tee
+  'VNANFTRHUASES273LPG77SR4': 'music-is-a-drug-long-sleeve', // Music is a Drug (Long Sleeve)
+  'CHJQBLDYGCTT3USMGTOFMBQE': 'world-tour-tee-white', // World Tour Tee - White
+  'GCOUEOHKTP4H4Z7RRGK5EXGU': 'gvo-beanie', // GVO Beanie
+  'DJRIQZJQATDPUJIDMKR32CRX': 'gvo-muscle-tee', // GVO Muscle Tee
+  'YFB3DFVEWR3LBAALDF4PRHKD': 'worker-jacket', // Worker Jacket
+  'YA3K27VD3BETIUAABVQNUJQW': 'gvo-x-ace-distressed-tee', // GVO X Ace Distressed Tee
+  'DKN6FBIHMJ6FL5UKTFMEU2MS': 'gvo-body-set-top', // GVO Body Set- Tops
+  'EPYKEBLV3A3Q7JNOTS3LJRLS': 'gvo-skater-shorts', // GVO Skater Shorts
+  'L6KQ2RLB4NT45WWJ2PU3BV7V': 'gvo-golf-set-shirt', // GVO Golf Set - SHIRT ONLY *
+  'MQKVEOUCG5P3W7JYULO2RFJ5': 'never-see-the-haters-here-tee', // Never See The Haters Here! Tee
+  '7EGDHFSS53LCM36QHGRUFDPT': 'gvo-bodysuit', // GVO Bodysuit
+  'KUS53WDUTWGJBBVCC3MYK3PR': 'gvo-golf-set-shorts', // GVO Golf Set - SHORTS ONLY*
+  'SLNGVPSQWXFST5XKE52CJIP4': 'world-tour-cheetah-hoodie', // World Tour Cheetah Hoodie
+  'AIRNHRORQ3DURIEYWLYJ5DA2': 'pain-is-temporary-dirtbike-jersey', // Pain Is Temporary - Dirtbike Jersey
+  'HCWN7YJ7CQIKBBDGL6YP4GU4': 'world-tour-cozy-pants', // World Tour Cozy Pants
+  'X7VPNAN667FGEN6Q2MFVOOM3': 'collective-set-shirt', // The Collective Set - SHIRT*
+  'UUXYF464FHXTMZXNKLYWEVTO': 'world-tour-tracksuit-jacket', // World Tour Tracksuit Jacket
+  'PTU3SAUK24HNNR2GS6EBNBOG': '', // Music is a Drug
+  'VTTJMB6L7NZUQSCZAWM2PHIP': 'no-deadbeats-oversized-grey', // No Deadbeats Oversized, Gray
+  'G5B5BKIY37XNKVNXIVXNDJOO': 'gvo-body-set-bottoms', // GVO Body Set-Bottoms
+  'Z6VMLFZEJ7VUDF77J3N6CEK4': 'no-art-for-today-tee', // No Art For Today Tee
+  'IQGMLKOJNJQUQ33W3RFVSOW7': 'collective-set-pants', // The Collective Set - Pants*
 };
 
 // Items in Square from before the Wix move. Never sold on the site (Cory's call to change).

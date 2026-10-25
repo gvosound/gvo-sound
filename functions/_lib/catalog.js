@@ -35,8 +35,9 @@ async function build(env) {
 
   const discounts = activeDiscounts(objects, byId);
   const shop = buildShop(env, merch, byId, atLoc, discounts);
+  await priceBySquare(env, shop.products);
   const svc = buildServices(services, atLoc);
-  return { shop, services: svc, byId, at: new Date().toISOString() };
+  return { shop, services: svc, rules: discounts.map(r => r.info), byId, at: new Date().toISOString() };
 }
 
 /* ---------- discounts: automatic pricing rules, for display only. Square applies the real ones at checkout. ---------- */
@@ -66,7 +67,11 @@ function activeDiscounts(objects, byId) {
     const exclude = new Set();
     const ex = byId.get(r.exclude_products_id);
     if (ex && ex.product_set_data) (ex.product_set_data.product_ids_any || []).forEach(id => exclude.add(id));
-    rules.push({ name: dd.name || r.name || '', type: dd.discount_type, pct: Number(dd.percentage || 0), amount: cents(dd.amount_money), ids, all, exclude });
+    const ps = (set && set.product_set_data) || {};
+    rules.push({ name: dd.name || r.name || '', type: dd.discount_type, pct: Number(dd.percentage || 0), amount: cents(dd.amount_money), ids, all, exclude,
+      info: { rule: r.name || o.id, discount: dd.name, type: dd.discount_type, pct: dd.percentage, amount: cents(dd.amount_money) / 100 || undefined,
+        products: all ? 'all' : ids.size, from: r.valid_from_date, until: r.valid_until_date, timePeriods: (r.time_period_ids || []).length || undefined,
+        customerGroups: (r.customer_group_ids_any || []).length || undefined, qtyExact: ps.quantity_exact, qtyMin: ps.quantity_min, stackable: r.stackable, excludeStrategy: r.exclude_strategy } });
   }
   return rules;
 }
@@ -85,6 +90,27 @@ function salePrice(base, itemId, varId, catIds, rules) {
   return best;
 }
 
+// The sale price shown on the site comes from Square itself: one CalculateOrder per item, quantity 1,
+// automatic discounts on. Checkout uses the same engine, so the rack and the receipt always agree.
+async function priceBySquare(env, products) {
+  const { locationId } = cfg(env);
+  await Promise.all(products.map(async p => {
+    const v = p.vars[0]; if (!v) return;
+    p.vars.forEach(x => { x.guess = x.sale; });
+    try {
+      const r = await sq(env, 'POST', '/v2/orders/calculate', { order: { location_id: locationId, line_items: [{ quantity: '1', catalog_object_id: v.id }], pricing_options: { auto_apply_discounts: true, auto_apply_taxes: false } } });
+      const li = (r.order.line_items || [])[0] || {};
+      const g = cents(li.gross_sales_money) || v.base, off = cents(li.total_discount_money), ratio = g ? off / g : 0;
+      p.squareSale = { pct: Math.round(ratio * 10000) / 100, discounts: (r.order.discounts || []).filter(x => cents(x.applied_money) > 0).map(x => x.name) };
+      p.vars.forEach(x => { x.sale = x.base - Math.round(x.base * ratio); });
+    } catch (e) {
+      // Without Square's answer, show the regular price. Checkout still applies the real discount.
+      p.squareSale = { error: e.message };
+      p.vars.forEach(x => { x.sale = x.base; });
+    }
+  }));
+}
+
 /* ---------- shop ---------- */
 const norm = s => String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/\bgrey\b/g, 'gray').replace(/[^a-z0-9]+/g, ' ').trim();
 const toks = s => norm(s).split(' ').filter(Boolean);
@@ -96,11 +122,11 @@ function sim(a, b) {
   let both = 0; ta.forEach(t => { if (tb.has(t)) both++; });
   return (2 * both) / (ta.size + tb.size);
 }
-const SIZE_RE = /^(xxs|xs|s|m|l|xl|xxl|xxxl|[2-6]xl|small|medium|large|x-?large|xx-?large|one size|os|o\/s|\d{1,2})$/i;
+const SIZE_RE = /^(xxs|xs|s|m|l|xl|xxl|xxxl|[2-6]xl|small|medium|large|x-?small|xx-?small|x-?large|xx-?large|one size|os|o\/s|\d{1,2})$/i;
 const SIZE_ORDER = ['XXS', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
 const sizeFix = v => {
   const k = String(v).trim().toLowerCase().replace(/-/g, '');
-  const m = { small: 'S', medium: 'M', large: 'L', xlarge: 'XL', xxlarge: '2XL', xxl: '2XL', xxxl: '3XL' };
+  const m = { xxsmall: 'XXS', xsmall: 'XS', small: 'S', medium: 'M', large: 'L', xlarge: 'XL', xxlarge: '2XL', xxl: '2XL', xxxl: '3XL' };
   return m[k] || String(v).trim().toUpperCase();
 };
 const COLORS = ['black', 'white', 'gray', 'pink', 'navy', 'blue', 'light blue', 'navy blue', 'olive', 'tan', 'purple', 'cream', 'beige', 'khaki', 'brown', 'maroon', 'mustard', 'pearl', 'red', 'green'];
@@ -190,7 +216,8 @@ function buildShop(env, merch, byId, atLoc, rules) {
     const groups = matches.length > 1 && colorIdx >= 0
       ? matches.map(m => ({ m, keep: r => norm(r[colorIdx]) === norm(m.sp.color) }))
       : [{ m: matches[0], keep: () => true }];
-    const sqImgs = (d.image_ids || [o.image_id]).filter(Boolean).map(id => byId.get(id)).filter(Boolean).map(x => x.image_data && x.image_data.url).filter(Boolean);
+    const imgIds = [...(d.image_ids || [o.image_id]), ...(d.variations || []).flatMap(v => (v.item_variation_data && v.item_variation_data.image_ids) || [])].filter(Boolean);
+    const sqImgs = [...new Set(imgIds)].map(id => byId.get(id)).filter(Boolean).map(x => x.image_data && x.image_data.url).filter(Boolean);
 
     for (const g of groups) {
       const vars = [];

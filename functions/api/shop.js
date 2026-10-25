@@ -26,7 +26,8 @@ export async function onRequestGet({ request, env }) {
     if (debug) {
       body.debug = {
         rule: cat.shop.rule,
-        items: cat.shop.report.map(r => ({ ...r, pages: cat.shop.products.filter(x => x.itemId === r.id).map(x => ({ page: x.siteId || 'none, uses the Square photo', match: x.match, variations: x.vars.length })) })),
+        items: cat.shop.report.map(r => ({ ...r, pages: cat.shop.products.filter(x => x.itemId === r.id).map(x => ({ page: x.siteId || 'none, uses the Square photo', match: x.match, variations: x.vars.length, squareSale: x.squareSale })) })),
+        discountRules: cat.rules,
         services: cat.services.map(s => ({ id: s.id, name: s.name, kind: s.kind || 'not used on the site', hours: s.hrs, price: s.price == null ? null : s.price / 100, team: s.team.length })),
         unmatchedSitePages: (await import('../_lib/site-products.js')).SITE_PRODUCTS.map(s => s.id).filter(id => !products.some(p => p.siteId === id)),
       };

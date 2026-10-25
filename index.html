@@ -2408,7 +2408,7 @@ function renderTicket(){
  const {p,merch,mcount,q,total}=totals();
  const when=B.slot?`${new Date(B.slot).toLocaleDateString('en-US',{timeZone:'America/New_York',weekday:'short',month:'short',day:'numeric'})} · ${etTime(B.slot)}–${etTime(new Date(new Date(B.slot).getTime()+(s?s.mins:60)*60e3).toISOString())}`:'Pick a start time';
  const staffN=(staffList().find(x=>x.k===(B.room==='photo'?B.photog:B.staff))||{n:'First available'}).n;
- const rows=q?[...q.lines.map(l=>`<div><span>${l.name}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),...(q.discount?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),`<div><span>${q.tax?'MD sales tax 6%':'Tax'}</span><span>${m2(q.tax/100)}</span></div>`].join('')
+ const rows=q?[...q.lines.map((l,i)=>`<div><span>${i===0?`${room.n}, ${s.hrs} ${s.hrs===1?'hour':'hours'}`:l.name}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),...(q.discount?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),`<div><span>${q.tax?'MD sales tax 6%':'Tax'}</span><span>${m2(q.tax/100)}</span></div>`].join('')
   :`<div><span>Session</span><span>${s?m2(p):'—'}</span></div>${merch?`<div><span>Merch, bagged at the desk</span><span>${m2(merch)}</span></div>`:''}<div><span>Tax</span><span>${BK.q.busy?'Pricing…':BK.q.err?'At checkout':'—'}</span></div>`;
  const can=!!(B.slot&&s&&q);
  tk.innerHTML=head+`<dl><dt>Length</dt><dd>${s?s.hrs+' '+(s.hrs===1?'hour':'hours'):'—'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffN}${B.room==='photo'&&B.photog!=='none'?' · paid separately':''}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
@@ -2457,9 +2457,9 @@ function loadSquareJs(sandbox){
 const uid=()=>((crypto.randomUUID&&crypto.randomUUID())||(Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2))).replace(/-/g,'').slice(0,24);
 const COUNTRIES=[['US','United States'],['CA','Canada'],['GB','United Kingdom'],['JM','Jamaica'],['TT','Trinidad and Tobago'],['BS','Bahamas'],['BB','Barbados'],['HT','Haiti'],['DO','Dominican Republic'],['PR','Puerto Rico'],['NG','Nigeria'],['GH','Ghana'],['KE','Kenya'],['ZA','South Africa'],['FR','France'],['DE','Germany'],['NL','Netherlands'],['IE','Ireland'],['IT','Italy'],['ES','Spain'],['MX','Mexico'],['BR','Brazil'],['JP','Japan'],['KR','South Korea'],['AU','Australia'],['NZ','New Zealand'],['AE','United Arab Emirates']];
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function quoteRows(q,ship){
+function quoteRows(q,ship,first){
  if(!q)return '<p class="sp-note">Getting your total from Square…</p>';
- return [...q.lines.map(l=>`<div><span>${esc(l.name)}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),
+ return [...q.lines.map((l,i)=>`<div><span>${esc(i===0&&first?first:l.name)}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),
   ...q.discounts.map(d=>`<div><span>${esc(d.name.replace(/^Wix Website( Discount)?\s*\d*$/i,'Sale'))}</span><span>−${m2(d.amount/100)}</span></div>`),
   ...(q.discount&&!q.discounts.length?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),
   ...(ship!=null?[`<div><span>${ship}</span><span>${q.service?m2(q.service/100):'Free'}</span></div>`]:[]),
@@ -2477,7 +2477,7 @@ function openPay(c){
    <div class="sp-top"><b>${isB?'Pay for your session':'Pay GVO Sound'}</b><small>Secure checkout by Square</small></div>
    <div class="sp-body">
     ${isB?`<div class="sp-sess"><b>${esc(c.title)}</b><span>${esc(c.sub)}</span></div>`:''}
-    <div class="sp-lines" id="payLines">${quoteRows(q,null)}</div>
+    <div class="sp-lines" id="payLines">${quoteRows(q,null,isB?c.title:null)}</div>
     ${isB?'':`<div class="sp-fields"><input id="o-name" placeholder="Name" autocomplete="name"><input id="o-email" type="email" placeholder="Email for receipt" autocomplete="email"><input class="full" id="o-phone" type="tel" placeholder="Mobile (optional)" autocomplete="tel" inputmode="tel"></div>
     <div class="ful sp-ful" id="payFul" role="group" aria-label="Get it"><button type="button" aria-pressed="true" data-ful="ship"><b>Ship it</b><small>$9.99 US, 3 to 5 business days · $15.99 international</small></button><button type="button" aria-pressed="false" data-ful="pickup"><b>Pick up at GVO</b><small>Free, 109 Gibralter Ave, Annapolis</small></button></div>
     <div class="sp-fields" id="payAddr"><select class="full" id="a-country" autocomplete="country" aria-label="Country">${COUNTRIES.map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select><input class="full" id="a-line1" placeholder="Street address" autocomplete="address-line1"><input class="full" id="a-line2" placeholder="Apt, suite (optional)" autocomplete="address-line2"><input id="a-city" placeholder="City" autocomplete="address-level2"><input id="a-state" placeholder="State" autocomplete="address-level1"><input class="full" id="a-zip" placeholder="ZIP or postal code" autocomplete="postal-code"></div>`}
@@ -2497,7 +2497,7 @@ function openPay(c){
  el.onkeydown=e=>{if(e.key==='Escape')close()};
  const shipLabel=()=>ful==='pickup'?'Pickup at GVO':country==='US'?'Shipping, 3 to 5 business days':'International shipping';
  const setBtn=()=>{btn.disabled=busy||!q||!card;btn.textContent=busy?'Paying…':!q?'Getting your total…':!card?"Loading Square's card form…":'Pay '+m2(q.total/100)};
- const paint=()=>{$('#payLines').innerHTML=quoteRows(q,isB?null:shipLabel());setBtn();if(req&&q)try{req.update({total:{amount:(q.total/100).toFixed(2),label:'GVO Sound'}})}catch(e){}};
+ const paint=()=>{$('#payLines').innerHTML=quoteRows(q,isB?null:shipLabel(),isB?c.title:null);setBtn();if(req&&q)try{req.update({total:{amount:(q.total/100).toFixed(2),label:'GVO Sound'}})}catch(e){}};
  const shopLinesNow=()=>cart.map(l=>{const p=prodById(l.id),v=p&&p.vars&&p.vars[l.v];return v?{v:v.id,q:l.q}:null}).filter(Boolean);
  let qn=0;
  const requote=async()=>{
@@ -2548,7 +2548,7 @@ function openPay(c){
   const s=res.summary||q;
   $('#spay').innerHTML=`<div class="sp-top"><b>${isB?'Booked':'Order placed'}</b><small>Paid ${m2(s.total/100)}</small></div><div class="sp-body">
    <p class="sp-done">${isB?`You're booked at GVO Sound, ${esc(res.when||c.sub)}${res.team?' with '+esc(res.team):''}. Square sends your confirmation to ${esc(c.book.contact.phone)}${f.email?' and '+esc(f.email):''}.`:`Thanks, ${esc(f.name.split(' ')[0])}. Your receipt is on its way to ${esc(f.email)}. ${ful==='ship'?'Your order ships in 3 to 5 business days.':'Pick it up at 109 Gibralter Ave. The studio lets you know when it is ready.'}`}</p>
-   <div class="sp-lines">${quoteRows(s,isB?null:shipLabel())}</div>
+   <div class="sp-lines">${quoteRows(s,isB?null:shipLabel(),isB?c.title:null)}</div>
    ${res.receiptUrl?`<a class="link" href="${esc(res.receiptUrl)}" target="_blank" rel="noopener">View your Square receipt</a>`:''}
    <p class="sp-note">${isB?POLICY:'Order '+esc(res.ref||'')}</p>
    <button type="button" class="btn-pay" id="payDone">${isB?'See your ticket':'Back to the site'}</button></div>`;
@@ -2594,7 +2594,7 @@ function mountQuote(host,switcher){
 /* shop */
 const CATS=['All','Shirts','Cold weather','Bottoms','Headwear','Sale'];let cat='All';
 function wireShop(){
- const r=()=>{$('#shopFilters').innerHTML=CATS.map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const list=PRODUCTS.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));$('#shopCount').textContent=list.length+' of '+PRODUCTS.length+' pieces · '+(SQ.live?'live from Square':SQ.state==='down'?'Square is offline':'checking Square');$('#rack').innerHTML=list.map(prodCard).join('')};
+ const r=()=>{$('#shopFilters').innerHTML=CATS.map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const shown=PRODUCTS.filter(p=>!SQ.live||p.av.length),list=shown.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));$('#shopCount').textContent=list.length+' of '+shown.length+' pieces · '+(SQ.live?'live from Square':SQ.state==='down'?'Square is offline':'checking Square');$('#rack').innerHTML=list.map(prodCard).join('')};
  $('#shopFilters').onclick=e=>{const b=e.target.closest('[data-cat]');if(b){cat=b.dataset.cat;r()}};r();
  mountFit();
 }
