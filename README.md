@@ -33,6 +33,7 @@ The shop, checkout and booking run on GVO's Square account through Pages Functio
 | `POST /api/quote` | Square prices a bag or a session: automatic discounts, 6% tax, shipping |
 | `POST /api/checkout` | CreateOrder, then CreatePayment for that order's total. Stock drops when the order is paid |
 | `GET /api/availability` | Bookable services and team members, or open start times for one service |
+| `POST /api/form` | Site forms: checks fields, screens out bots, sends the row to the form sheet's Apps Script |
 | `POST /api/book` | Checks the time is still open, takes full payment, then creates the booking. If the booking fails, the payment is refunded |
 
 Settings, in Pages > Settings > Variables and Secrets, for Production and Preview:
@@ -47,6 +48,8 @@ Settings, in Pages > Settings > Variables and Secrets, for Production and Previe
 | `RESEND_API_KEY` | Secret | Resend API key for confirmation emails. Without it, orders still work and no email is sent |
 | `EMAIL_FROM` | Optional | Defaults to `GVO Sound <orders@gvosound.com>` |
 | `ORDER_ALERT_TO` | Optional | Who gets the copy of each web order. Defaults to `gvosoundllc@gmail.com` |
+| `FORMS_URL` | Secret | Web app URL of the Apps Script on the form sheet |
+| `FORMS_SECRET` | Secret | Shared secret; the same value is the sheet script's FORM_SECRET property |
 
 Which items sell: the 27 Wix item IDs are pinned in `PINNED` in `functions/_lib/site-products.js` (checked Oct 25, 2026), so a new Square item never lands on the site by accident. Add an ID there to sell a new item. Site photos attach by name; the aliases in that file cover the Wix names.
 
@@ -64,7 +67,7 @@ Apple Pay shows only after gvosound.com is registered for Apple Pay in the Squar
 
 - The static `PRODUCTS` list paints the rack instantly. `/api/shop` replaces it with Square's live catalog a moment later. If Square is down, the rack stays visible and checkout says to call or text.
 - The holiday photoshoot special shows Nov 1 to Dec 31 only.
-- Music: each release has its own ad landing link (`/music/<release>`) that puts that song in the top slot. Spotify ids checked Oct 20, 2026; "All platforms" opens song.link / album.link. Artist submissions go to a Music table in Airtable for Cory to approve.
+- Music: each release has its own ad landing link (`/music/<release>`) that puts that song in the top slot. Spotify ids checked Oct 20, 2026; "All platforms" opens song.link / album.link. Artist submissions go to the Music submissions tab of GVO's form sheet for Cory to approve.
 
 ## System plan
 
@@ -74,7 +77,7 @@ Apple Pay shows only after gvosound.com is registered for Apple Pay in the Squar
 | Site | GitHub + Cloudflare Pages | Siani builds, Cory owns |
 | Money and stock | Square: bookings, deposits, merch catalog and inventory, studio register, payouts | Cory (existing account) |
 | Square bridge | Pages Functions in `functions/` holding the Square access token as a secret (never in browser code) | Siani |
-| Forms and leads | Airtable base in Cory's name: podcast quotes, contact, testimonials. Automations email each new entry to his Gmail, so he rarely needs to open Airtable. Siani gives him a short tutorial | Cory |
+| Forms and leads | Google Sheet "GVO Website Form Submissions": podcast quotes, event inquiries, travel requests, music submissions, notify lists. An Apps Script on the sheet (`apps-script/FormSubmissions.gs`) adds each row and emails the GVO Gmail | Cory |
 | Email | Cloudflare Email Routing: hello@gvosound.com forwards to gvosoundllc@gmail.com | Cory |
 
 
