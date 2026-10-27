@@ -129,13 +129,14 @@ async function build(env, force) {
 export async function onRequestGet({ request, env, waitUntil }) {
   TOKENS = IG_ACCOUNTS.map(a => env[a.token]).filter(Boolean);
   const url = new URL(request.url);
-  if (url.searchParams.has('debug')) { // counts only: what Instagram sent and what the site kept
+  const keyOk = !!env.FORMS_SECRET && request.headers.get('X-Refresh-Key') === env.FORMS_SECRET;
+  if (url.searchParams.has('debug') && keyOk) { // counts only: what Instagram sent and what the site kept
     for (const k in STATS) delete STATS[k];
     const scrub = scrubber(env);
     await Promise.all(IG_ACCOUNTS.map(a => liveFeed(env, a, scrub).catch(e => { STATS[a.key] = { error: e.message }; })));
     return json({ ok: true, kv: !!env.IG_KV, stats: STATS }, 200, 'no-store');
   }
-  const force = url.searchParams.has('refresh') && !!env.FORMS_SECRET && request.headers.get('X-Refresh-Key') === env.FORMS_SECRET;
+  const force = url.searchParams.has('refresh') && keyOk;
   if (env.IG_KV) {
     try { return json(await build(env, force), 200, force ? 'no-store' : 'public, max-age=300'); }
     catch (e) { console.log('ig: build failed'); return json({ ok: false, accounts: {}, approved: { music: [], podcast: [] } }, 200, 'no-store'); }
