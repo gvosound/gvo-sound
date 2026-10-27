@@ -11,7 +11,13 @@
 import { IG_ACCOUNTS, GRAPH, FIELDS } from '../_lib/ig-accounts.js';
 
 const HOUR = 3600e3, MAX_POSTS = 24, MAX_APPROVED = 12;
-const json = (b, s = 200, cc = 'public, max-age=300') => new Response(JSON.stringify(b), { status: s, headers: { 'Content-Type': 'application/json', 'Cache-Control': cc } });
+let TOKENS = [];
+// Last check before anything leaves: a response that somehow holds a token is never sent.
+const json = (b, s = 200, cc = 'public, max-age=300') => {
+  let t = JSON.stringify(b);
+  if (TOKENS.some(k => k && t.includes(k))) { console.log('ig: blocked a response that held a token'); t = JSON.stringify({ ok: false, accounts: {}, approved: { music: [], podcast: [] } }); cc = 'no-store'; }
+  return new Response(t, { status: s, headers: { 'Content-Type': 'application/json', 'Cache-Control': cc } });
+};
 
 function scrubber(env) {
   const toks = IG_ACCOUNTS.map(a => env[a.token]).filter(Boolean);
@@ -38,9 +44,14 @@ async function graph(env, acct, path, scrub) {
   return j;
 }
 
+const STATS = {};
 async function liveFeed(env, acct, scrub) {
   const j = await graph(env, acct, `${acct.id}/media?fields=${FIELDS}&limit=${MAX_POSTS}`, scrub);
-  return (j.data || []).map(m => shape(m, acct.handle)).filter(Boolean);
+  const raw = j.data || [], posts = raw.map(m => shape(m, acct.handle)).filter(Boolean);
+  STATS[acct.key] = { fromInstagram: raw.length, shown: posts.length,
+    noMediaUrl: raw.filter(m => !m.media_url).length, noMediaUrlButThumb: raw.filter(m => !m.media_url && m.thumbnail_url).length,
+    types: raw.reduce((o, m) => (o[m.media_type] = (o[m.media_type] || 0) + 1, o), {}) };
+  return posts;
 }
 
 async function kvGet(env, k) { if (!env.IG_KV) return null; try { return await env.IG_KV.get(k, 'json'); } catch (e) { return null; } }
@@ -113,7 +124,14 @@ async function build(env, force) {
 }
 
 export async function onRequestGet({ request, env, waitUntil }) {
+  TOKENS = IG_ACCOUNTS.map(a => env[a.token]).filter(Boolean);
   const url = new URL(request.url);
+  if (url.searchParams.has('debug')) { // counts only: what Instagram sent and what the site kept
+    for (const k in STATS) delete STATS[k];
+    const scrub = scrubber(env);
+    await Promise.all(IG_ACCOUNTS.map(a => liveFeed(env, a, scrub).catch(e => { STATS[a.key] = { error: e.message }; })));
+    return json({ ok: true, kv: !!env.IG_KV, stats: STATS }, 200, 'no-store');
+  }
   const force = url.searchParams.has('refresh') && !!env.FORMS_SECRET && request.headers.get('X-Refresh-Key') === env.FORMS_SECRET;
   if (env.IG_KV) {
     try { return json(await build(env, force), 200, force ? 'no-store' : 'public, max-age=300'); }
