@@ -4,7 +4,7 @@ export async function onRequestGet({ env }) {
   const tok = env.IG_TOKEN_SOUND, id = '17841437160886622';
   if (!tok) return Response.json({ ok: false, error: 'IG_TOKEN_SOUND is not set in this deployment' });
   const scrub = s => String(s || '').split(tok).join('[token]').slice(0, 240);
-  const out = { tokenLength: tok.length, tokenStart: tok.slice(0, 4) };
+  const out = { tokenKind: /^IG/.test(tok) ? 'Instagram login token' : /^EA/.test(tok) ? 'Facebook login token' : 'other' };
   for (const host of ['graph.instagram.com', 'graph.facebook.com']) {
     const u = `https://${host}/v21.0/${id}/media?fields=${FIELDS}&limit=3&access_token=${encodeURIComponent(tok)}`;
     try {
