@@ -967,6 +967,8 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .igb-g a:hover img{transform:scale(1.06);filter:brightness(.7)}
 .igb-g a::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='5' fill='none' stroke='%23f3f0ea' stroke-width='1.8'/%3E%3Ccircle cx='12' cy='12' r='4.2' fill='none' stroke='%23f3f0ea' stroke-width='1.8'/%3E%3C/svg%3E") center/28px no-repeat;opacity:0;transition:opacity .3s}
 .igb-g a:hover::after{opacity:1}
+.igb-t{display:contents}
+.ig-sec:has(.igb[hidden]){display:none}
 @media (max-width:760px){.igb-h{grid-template-columns:1fr auto}.igb-h p{grid-column:1/-1;order:3}.igb-g{grid-template-columns:repeat(3,1fr)}}
 .btn .ig-ic{margin-right:-2px}
 
@@ -1414,7 +1416,18 @@ const IG={main:'gvo.sound',events:'gvosound.events',clothing:'gvosound.clothing'
 const igUrl=h=>`https://www.instagram.com/${h}/`;
 const IGIC='<svg viewBox="0 0 24 24" aria-hidden="true" class="ig-ic"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg>';
 /* Instagram band: profile chip + a tile strip that opens the profile. Production swaps the tiles for the latest posts. */
-const igBand=(h,label,line,k)=>`<div class="igb rv"><div class="igb-h"><a class="igb-me" href="${igUrl(h)}" target="_blank" rel="noopener"><span class="igb-av"><span><span class="mark"></span></span></span><span><b>@${h}</b><small>${label}</small></span></a><p>${line}</p><div class="igb-nav"><button type="button" data-igs="-1" aria-label="Scroll back">←</button><button type="button" data-igs="1" aria-label="Scroll forward">→</button><a class="btn btn-ghost" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}Follow</a></div></div><div class="igb-c">${IGP[k].map(([id,r,alt])=>`<a href="https://www.instagram.com/${r?'reel':'p'}/${id}/" target="_blank" rel="noopener" data-ig="${id}" data-igr="${r}" aria-label="${alt}${r?', reel':''}, on Instagram">${imgT(igImg({events:'ev',clothing:'cl',travel:'tr'}[k],id),alt)}${r?'<span class="igr" aria-hidden="true">Reel</span>':''}</a>`).join('')}<a class="igb-more" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}<span>More on<br>@${h}</span></a></div></div>`;
+/* Instagram band: profile chip and a strip of posts. /api/ig fills it with live posts (functions/_lib/ig-accounts.js).
+   Events, travel and shop start with the posts saved Oct 21, shown only if no live list has ever loaded.
+   Bands with nothing saved (the @gvo.sound band, and the approved rows on music and podcast) stay hidden until posts arrive. */
+const igTile=p=>`<a href="${esc(p.link)}" target="_blank" rel="noopener" data-ig="${esc(p.code)}" data-igr="${p.reel?1:0}" aria-label="${esc(p.alt)}${p.video?', video':''}, on Instagram"><img src="${esc(p.img)}" alt="${esc(p.alt)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()">${p.video?'<span class="igr" aria-hidden="true">Reel</span>':''}</a>`;
+const igSaved=k=>(IGP[k]||[]).map(([id,r,alt])=>`<a href="https://www.instagram.com/${r?'reel':'p'}/${id}/" target="_blank" rel="noopener" data-ig="${id}" data-igr="${r}" aria-label="${alt}${r?', reel':''}, on Instagram">${imgT(igImg({events:'ev',clothing:'cl',travel:'tr'}[k],id),alt)}${r?'<span class="igr" aria-hidden="true">Reel</span>':''}</a>`).join('');
+const igBand=(h,label,line,k)=>`<div class="igb rv" data-igfeed="${k}"${IGP[k]?'':' hidden'}><div class="igb-h"><a class="igb-me" href="${igUrl(h)}" target="_blank" rel="noopener"><span class="igb-av"><span><span class="mark"></span></span></span><span><b>@${h}</b><small>${label}</small></span></a><p>${line}</p><div class="igb-nav"><button type="button" data-igs="-1" aria-label="Scroll back">←</button><button type="button" data-igs="1" aria-label="Scroll forward">→</button><a class="btn btn-ghost" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}Follow</a></div></div><div class="igb-c"><span class="igb-t">${igSaved(k)}</span><a class="igb-more" href="${igUrl(h)}" target="_blank" rel="noopener">${IGIC}<span>More on<br>@${h}</span></a></div></div>`;
+let IGD=null,igP=null;
+const loadIg=()=>igP||(igP=api('ig').then(j=>IGD=j).catch(()=>IGD={}));
+// Live posts replace the saved ones. A band with no posts at all stays hidden.
+function fillIg(root){if(!root||!root.isConnected||!IGD)return;
+ $$('[data-igfeed]',root).forEach(b=>{const k=b.dataset.igfeed,a=IGD.accounts&&IGD.accounts[k],list=a?(a.ok?a.posts:null):((IGD.approved||{})[k]||null);
+  if(list&&list.length){$('.igb-t',b).innerHTML=list.map(igTile).join('');b.hidden=false;b.classList.add('in')}})}
 const relById=id=>REL.find(x=>x.id===id);
 const spUrl=x=>SPO+x.k+'/'+x.sp;
 const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
@@ -1668,6 +1681,7 @@ function viewHome(){
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO apparel</span><h2>The rack</h2></div><a class="btn btn-ghost" href="#shop">Shop all ${PRODUCTS.length} pieces</a></div>
   <div class="rack four">${[...['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','worker-jacket','gvo-beanie'].map(prodById).filter(Boolean),...PRODUCTS].filter((p,i,a)=>a.indexOf(p)===i).slice(0,4).map(prodCard).join('')}</div>
  </div></section>
+ <section class="ig-sec" style="padding-top:0"><div class="wrap">${igBand(IG.main,'GVO Sound','Sessions, drops and late nights at 109 Gibralter Ave. Tap a reel to watch it here.','sound')}</div></section>
  <section style="padding-top:0;padding-bottom:0"><div class="wrap">${doorHTML()}
   <div class="finale"><span class="mark"></span><p class="slogan"><span>Book The Studio.</span><span>Bring The Material.</span><span>Leave With The Mix.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
  </div></section>
@@ -1704,6 +1718,7 @@ function viewRoom(slug){
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recent GVO Sounds</span><h2>Hear the room</h2><p class="lede">Two records cut on Gibralter Ave. Same booth, same desk you'd book. Press play on either one.</p></div></div>
   <div class="heard-row">${['need-to-know','ride-for-me'].map((id,i)=>{const x=relById(id);return `${i===1?'<div class="heard-mid" aria-live="polite"><div><span data-w="k">Preview</span><b data-w="t">Press play</b><span data-w="s">On either song</span></div></div>':''}<div class="hcard rv" data-side="${i?1:-1}" data-id="${x.id}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}${pvBtn(x)}</span><div><h3>${x.t}</h3><p>${x.a}</p><div class="pbar" data-prog="${x.id}"><span></span></div><div class="ln">${ext(spUrl(x),SPIC+'Full song on Spotify')}${ext(allUrl(x),'All platforms')}</div></div></div>`}).join('')}</div>
  </div></section>`:''}
+ ${r.k==='pod'?`<section class="ig-sec" style="padding-top:0"><div class="wrap">${igBand(IG.main,'Podcast clips','Clips from the podcast room, picked by the GVO team. Tap a reel to watch it here.','podcast')}</div></section>`:''}
  <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
@@ -1775,6 +1790,8 @@ function viewMusic(slug){
   <div class="sess" data-vids="sessions">${SESS.map(vCard).join('')}</div>
   ${note('Video rows','Every video row on the site reads a YouTube playlist: GVO Sound Studio Music here, Podcasts on the podcast page, and Flawless Breezy Music under his artist card. A new upload shows up within the hour once it is added to the playlist, newest first. A video in no playlist shows nowhere, Shorts are left out, and a video in Flawless\'s playlist shows only in his row. If YouTube is down, this row falls back to five hand-picked sessions.')}
  </div></section>
+ <section class="ig-sec" style="padding-top:0"><div class="wrap">${igBand(IG.main,'From the studio','Picked by the GVO team. Tap a reel to watch it here.','music')}
+  ${note('Instagram approvals','This row shows only @gvo.sound posts the team approved. Every new post lands in the Social posts tab of GVO\'s form sheet within the hour, unticked. Tick Approved, pick Music, Podcast or Both under Show on, and it shows here within the hour.')}</div></section>
  <section style="padding-top:0;padding-bottom:0"><div class="wrap">
   <div class="finale"><span class="mark"></span><p class="slogan"><span>Bring Your</span><span>Vision</span><span>To Life.</span></p><a class="btn btn-lav" href="#book">Book a session</a></div>
  </div></section>
@@ -2155,6 +2172,7 @@ function wire(r){
    const em=v('email'),ti=v('title'),res=await sendForm(fm,'music',{artist:v('artist'),email:em,title:ti,type:v('type'),links:links.join('\n'),ig:v('ig'),tiktok:v('tiktok'),yt:v('yt'),gvo:v('gvo'),engineer:eng.hidden?'':v('engineer'),notes:v('notes')});if(res){eng.hidden=true;formDone(fm,res,{to:em,eyebrow:'Submission received',title:'Your music is in',body:`${esc(ti)} is with the GVO team. Songs picked for the site go up on the music page.`,again:'Submit another song'})}})}}
  if(ROOMS[r])wireRoom(r);
  if($('[data-vids]',main)){if(YT)fillVideos(main);else loadVids().then(()=>{if(route===r)fillVideos(main)})}
+ if($('[data-igfeed]',main)){if(IGD)fillIg(main);else loadIg().then(()=>{if(route===r)fillIg(main)})}
  const deskEl=$('[data-desk]',main);
  if(deskEl){const k=deskEl.dataset.desk;if(k==='pod')mountQuote(deskEl);else mountDesk(deskEl,k==='all'?(pendingPreset||B.room):k)}
  pendingPreset=null;

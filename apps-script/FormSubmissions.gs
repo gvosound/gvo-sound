@@ -11,9 +11,19 @@
  *      Copy the Web app URL into Cloudflare as the FORMS_URL secret.
  *   After editing this code later: Deploy > Manage deployments > edit > Version: New version.
  *   That keeps the same URL.
+ *
+ * Instagram approvals (Social posts tab):
+ *   5. Pick "setupSocial" and click Run, once. Approve the new permissions (it reaches the website).
+ *      It adds an hourly trigger that asks the site to read @gvo.sound, so new posts land in the tab
+ *      even when nobody visits. Tick Approved on a row and pick Show on (Music, Podcast or Both).
+ *      The post shows on the site within the hour.
  */
 
 const ALERT_TO = 'gvosoundllc@gmail.com';
+const SITE = 'https://gvo-sound-329.pages.dev'; // keeps working after launch, same Cloudflare project
+const SOCIAL_TAB = 'Social posts';
+// Social posts columns: A Post link, B Account, C Date, D Caption, E Media type, F Approved, G Show on, H Post ID
+const KINDS = { IMAGE: 'Photo', VIDEO: 'Reel or video', CAROUSEL_ALBUM: 'Carousel' };
 
 // Tab name and column order for each form. "Received" is always column A.
 const FORMS = {
@@ -36,6 +46,7 @@ function doPost(e) {
   try { body = JSON.parse(e.postData.contents); } catch (err) { return out({ ok: false, error: 'bad json' }); }
   const secret = PropertiesService.getScriptProperties().getProperty('FORM_SECRET');
   if (!secret || body.secret !== secret) return out({ ok: false, error: 'forbidden' });
+  if (body.action === 'social') return out(social(body));
   const form = FORMS[body.form];
   if (!form) return out({ ok: false, error: 'unknown form' });
   const f = body.fields || {};
@@ -88,6 +99,57 @@ function recentFor(addr) {
     });
   });
   return n;
+}
+
+// The site sends the newest posts from an account. New ones become rows, unticked. The answer lists every
+// ticked row so the site can show it.
+function social(body) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const ss = SpreadsheetApp.getActive();
+    const sh = ss.getSheetByName(SOCIAL_TAB) || makeSocialTab(ss);
+    const last = sh.getLastRow();
+    const rows = last >= 3 ? sh.getRange(3, 1, last - 2, 8).getValues() : [];
+    const have = new Set(rows.map(r => String(r[7]).replace(/^'/, '')));
+    const add = (body.posts || [])
+      .filter(p => p && p.id && !have.has(String(p.id)))
+      .sort((a, b) => new Date(a.at) - new Date(b.at)) // oldest first, so the newest ends up at the bottom
+      .map(p => ["'" + String(p.link || '').slice(0, 300), "'" + String(body.account || '').slice(0, 60), new Date(p.at),
+        "'" + String(p.caption || '').slice(0, 500), KINDS[p.kind] || p.kind || '', false, 'Both', "'" + String(p.id)]);
+    if (add.length) {
+      sh.getRange(sh.getLastRow() + 1, 1, add.length, 8).setValues(add);
+      sh.getRange(3, 6, sh.getLastRow() - 2, 1).insertCheckboxes(); // keeps Approved a checkbox on every row
+    }
+    const approved = rows.concat(add).filter(r => r[5] === true)
+      .map(r => ({ id: String(r[7]).replace(/^'/, ''), link: String(r[0]).replace(/^'/, ''), show: String(r[6] || 'Both') }));
+    return { ok: true, added: add.length, approved };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Only used if the tab was deleted. The styled tab already exists in the sheet.
+function makeSocialTab(ss) {
+  const sh = ss.insertSheet(SOCIAL_TAB);
+  sh.getRange(1, 1).setValue('New @gvo.sound posts land here each hour. Tick Approved to show one on the site, and pick where in Show on.');
+  sh.getRange(2, 1, 1, 8).setValues([['Post link', 'Account', 'Date', 'Caption', 'Media type', 'Approved', 'Show on', 'Post ID']]).setFontWeight('bold');
+  sh.setFrozenRows(2);
+  return sh;
+}
+
+// Run once from the editor. Adds the hourly trigger and runs it once right away.
+function setupSocial() {
+  ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'refreshSocial').forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('refreshSocial').timeBased().everyHours(1).create();
+  refreshSocial();
+}
+
+// Asks the site to read Instagram now. The site then sends any new posts back to doPost above.
+function refreshSocial() {
+  const secret = PropertiesService.getScriptProperties().getProperty('FORM_SECRET');
+  const r = UrlFetchApp.fetch(SITE + '/api/ig?refresh=1', { headers: { 'X-Refresh-Key': secret }, muteHttpExceptions: true });
+  console.log('Site answered ' + r.getResponseCode());
 }
 
 function doGet() { return out({ ok: true, service: 'GVO form submissions' }); }
