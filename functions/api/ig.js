@@ -2,7 +2,8 @@
 // music and podcast pages.
 // 1. Each feed is read at most once an hour. With the IG_KV binding, the last list that loaded is kept in KV,
 //    and shown whenever Instagram fails. Without it, the whole answer is cached for an hour.
-// 2. Posts Instagram serves without media (removed, flagged, or not public) are left out.
+// 2. Posts Instagram serves with no picture at all are left out. The API only lists the account's own
+//    published posts, so archived and deleted ones never arrive.
 // 3. Every new @gvo.sound post goes to the Social posts tab of the form sheet through the forms Apps Script
 //    (FORMS_URL, FORMS_SECRET), which answers with the rows ticked Approved and their Show on choice.
 // 4. ?refresh=1 with the X-Refresh-Key header set to FORMS_SECRET reads everything fresh. The sheet's
@@ -26,9 +27,11 @@ function scrubber(env) {
 
 // One Instagram media object -> one tile. Null when Instagram gave no usable media.
 export function shape(m, handle) {
-  if (!m || !m.media_url || !m.permalink) return null; // no media_url: removed, flagged, or not public
+  if (!m || !m.permalink) return null;
   const code = (m.permalink.match(/instagram\.com\/(?:[\w.]+\/)?(?:p|reel|tv)\/([\w-]+)/) || [])[1];
-  const img = m.media_type === 'VIDEO' ? m.thumbnail_url : m.media_url;
+  // Reels with licensed music come with no media_url but still have a thumbnail, and Instagram's own player
+  // (the lightbox) plays them. Only a post with no picture at all is left out.
+  const img = m.media_type === 'VIDEO' ? (m.thumbnail_url || m.media_url) : (m.media_url || m.thumbnail_url);
   if (!code || !img) return null;
   const first = String(m.caption || '').split('\n').map(s => s.trim()).find(Boolean) || '';
   const alt = first.replace(/(^|\s)[#@][\w.]+/g, ' ').replace(/\s{2,}/g, ' ').trim().slice(0, 110) || `Post from @${handle}`;
