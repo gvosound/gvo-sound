@@ -109,8 +109,10 @@ function social(body) {
   try {
     const ss = SpreadsheetApp.getActive();
     const sh = ss.getSheetByName(SOCIAL_TAB) || makeSocialTab(ss);
-    const last = sh.getLastRow();
-    const rows = last >= 3 ? sh.getRange(3, 1, last - 2, 8).getValues() : [];
+    // Approved is a checkbox on every row, so the last used row comes from the Post ID column, not getLastRow.
+    const ids = sh.getMaxRows() > 2 ? sh.getRange(3, 8, sh.getMaxRows() - 2, 1).getValues() : [];
+    let n = ids.length; while (n > 0 && !String(ids[n - 1][0]).trim()) n--;
+    const rows = n ? sh.getRange(3, 1, n, 8).getValues() : [];
     const have = new Set(rows.map(r => String(r[7]).replace(/^'/, '')));
     const add = (body.posts || [])
       .filter(p => p && p.id && !have.has(String(p.id)))
@@ -118,8 +120,10 @@ function social(body) {
       .map(p => ["'" + String(p.link || '').slice(0, 300), "'" + String(body.account || '').slice(0, 60), new Date(p.at),
         "'" + String(p.caption || '').slice(0, 500), KINDS[p.kind] || p.kind || '', false, 'Both', "'" + String(p.id)]);
     if (add.length) {
-      sh.getRange(sh.getLastRow() + 1, 1, add.length, 8).setValues(add);
-      sh.getRange(3, 6, sh.getLastRow() - 2, 1).insertCheckboxes(); // keeps Approved a checkbox on every row
+      const at = 3 + n;
+      if (at + add.length - 1 > sh.getMaxRows()) sh.insertRowsAfter(sh.getMaxRows(), add.length + 200);
+      sh.getRange(at, 1, add.length, 8).setValues(add);
+      sh.getRange(at, 6, add.length, 1).insertCheckboxes();
     }
     const approved = rows.concat(add).filter(r => r[5] === true)
       .map(r => ({ id: String(r[7]).replace(/^'/, ''), link: String(r[0]).replace(/^'/, ''), show: String(r[6] || 'Both') }));
