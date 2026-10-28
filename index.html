@@ -344,7 +344,7 @@ main{min-height:60vh}
 .gtile b{font:800 1.15rem/1.05 var(--display);font-stretch:110%;text-transform:uppercase}
 .gtile .pmark{left:auto;top:14px;right:14px;margin:0}
 @media (max-width:760px){.grow{--gw:72%}.grow-h .igb-nav button{display:none}}
-.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.gallery img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;transition:transform .8s var(--ease)}
 .gallery figure:hover img{transform:scale(1.05)}
 @media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px}}
 .faq{border-top:1px solid var(--line)}
@@ -1726,7 +1726,7 @@ const ROOMS={
   rates:Object.entries(PHOTO).map(([h,p])=>[+h,p]),
   rateNote:'Room rental only. Extra backdrop colors cost more. MD sales tax 6% added at checkout.',
   extra:{season:1,n:'Holiday photoshoot special',p:150,d:'1-hour shoot with a GVO photographer, 20 edited photos, 2–5 day turnaround. Extra time is $20 per 30 minutes.'},
-  gallery:[['photo_black','Black backdrop with RGB lights'],['photo_cyc','White cyc with color backdrops'],['p_gvo-beanie_0','Product shot, GVO Beanie'],['p_world-tour-cozy-set_0','Product shot, World Tour Cozy Hoodie'],['p_no-deadbeats-oversized_0','Product shot, No Deadbeats Tee']],
+  gallery:[['a_259','Group shoot on the white seamless'],['photo_cyc','White cyc with color backdrops'],['a_119','Portrait on the green backdrop'],['a_105','Purple light portrait'],['photo_black','Black backdrop with RGB lights']],
   team:'photo',
   faq:[
    ['Does the rental include a photographer?','No. Rates are for the room and the gear. Book Dym Archives or Smooth, or bring your own photographer.'],
