@@ -342,6 +342,7 @@ main{min-height:60vh}
 .fader-top span{font:600 1.05rem var(--mono);color:var(--lav)}
 input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 .ticks{display:flex;justify-content:space-between;font:.75rem var(--mono);color:var(--mute)}
+.len-note{margin:12px 0 0;font-size:.85rem;color:var(--mute)}
 .days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
 .day{flex:0 0 66px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 0;display:grid;gap:3px;text-align:center;position:relative}
 .day small{font:.75rem var(--mono);color:var(--mute);text-transform:uppercase}
@@ -1535,6 +1536,7 @@ const ROOMS={
   faq:[
    ['When can I book?','Any time. The studio runs 24/7 by appointment. Book at least 2 hours before you want to start.'],
    ['Is mixing included?','Yes. Every recording session includes your engineer and mixing.'],
+   ['Can I book just 1 hour?','Sessions book online from 2 hours. For 1 hour, call or text the studio at (443) 292-6753 and ask. It depends on what the engineers have open.'],
    ['How do I pay?','You pay the full session price when you book, by card or Google Pay. That holds your time slot. No refunds.'],
    ['How many people can come?','Up to 5 people per session, including the artist. Everyone waits in reception until your engineer comes to get you.'],
    ['What happens if I\'m late?','Your session starts at the time you booked and ends on time. If nobody is booked after you, you can ask your engineer for more time at the regular rate.'],
@@ -2409,7 +2411,7 @@ const teamPic=n=>{const t=TEAM.find(m=>{const a=m.n.toLowerCase(),b=String(n).to
 function numberSteps(host){const st=$$('.step',host).filter(x=>!x.hidden&&$('[data-num]',x));st.forEach((x,i)=>{$('[data-num]',x).innerHTML=`Step <b>${i+1}</b>${st.length>1?` of ${st.length}`:''}`})}
 const DESK_HTML=`<div class="desk"><div class="steps">
  <div class="step" data-step="room"><div class="step-h"><span class="n" data-num></span><h3>Studio</h3></div><div class="opts" data-el="rooms"></div></div>
- <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="0" max="0" step="1" value="0" aria-label="Session length"><div class="ticks" data-el="ticks"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="0" max="0" step="1" value="0" aria-label="Session length"><div class="ticks" data-el="ticks"></div><p class="len-note" data-el="lenNote" hidden>Sessions start at 2 hours. Need just 1? <a class="link" href="sms:+14432926753">Text</a> or <a class="link" href="tel:+14432926753">call</a> (443) 292-6753 to request it.</p></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span>Open 24/7 · book at least 2 hours ahead</span><span>Only open start times show</span></div><div class="slots" data-el="slots"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
@@ -2472,6 +2474,7 @@ function renderBook(){
  const l=svcList(B.room),s=svc();
  D.hrsOut.textContent=s?(s.hrs+(s.hrs===1?' hr':' hrs')):BK.menu?'Not online':'Loading';D.rateOut.textContent=s?m0(s.price):'';
  D.ticks.innerHTML=!l.length?'':l.length===1?`<span>${l[0].hrs===1?'Fixed 1-hour shoot':l[0].hrs+'-hour session'}</span>`:l.map(x=>`<span>${x.hrs}</span>`).join('');
+ D.lenNote.hidden=B.room!=='rec';
  D.staffHead.textContent=B.room==='rec'?'Engineer':'Photographer';
  const pick=B.room==='photo'?B.photog:B.staff;
  D.staff.innerHTML=staffList().map(x=>opt(x,'data-staff',pick===x.k)).join('');

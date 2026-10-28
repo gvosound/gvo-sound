@@ -6,7 +6,7 @@ import { sq, cfg, json, fail, readBody, idem, money, cents, clean, findOrCreateC
 import { loadCatalog } from '../_lib/catalog.js';
 import { shopLines, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
 import { emailCfg, sendEmail, bookingMerchAlert } from '../_lib/email.js';
-import { serviceOf, bookingOrder, searchSlots, teamNames, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
+import { serviceOf, bookingOrder, searchSlots, teamNames, allowedTeam, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
 
 const ET = { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
 
@@ -31,7 +31,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     // Still open? Ask Square for that exact start.
     const want = b.team && b.team !== 'any' ? String(b.team) : 'any';
-    const open = (await searchSlots(env, s, { from: new Date(start.getTime() - 60e3).toISOString(), days: 1, team: want }))
+    const names = await teamNames(env).catch(() => null);
+    const allowed = names ? allowedTeam(s, names) : null;
+    const open = (await searchSlots(env, s, { from: new Date(start.getTime() - 60e3).toISOString(), days: 1, team: want, allowed }))
       .filter(x => new Date(x.start).getTime() === start.getTime());
     if (!open.length) return json({ ok: false, code: 'SLOT_TAKEN', error: 'That time was just booked. Pick another start time.' }, 409);
     const slot = open[0];
@@ -97,12 +99,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
         : 'Your payment went through but the calendar did not take the booking. Call or text the studio at (443) 292-6753 and give this code: ' + ref + '.' }, 409);
     }
 
-    const names = await teamNames(env).catch(() => new Map());
+    const teamName = names || await teamNames(env).catch(() => new Map());
 
     // Square Appointments texts and emails the customer. Cory gets a front-desk note only when merch rides along.
     if (merch.length) {
       const mail = (async () => {
-        const msg = bookingMerchAlert(emailCfg(env, new URL(request.url).origin), { order: created, idx: shopIndex(cat), contact, when, session: s.name, team: names.get(slot.team) });
+        const msg = bookingMerchAlert(emailCfg(env, new URL(request.url).origin), { order: created, idx: shopIndex(cat), contact, when, session: s.name, team: teamName.get(slot.team) });
         if (msg) await sendEmail(env, msg);
       })().catch(e => console.log('email error', e && e.message));
       if (waitUntil) waitUntil(mail); else await mail;
@@ -113,7 +115,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
       code: ref,
       start: booking.start_at,
       when,
-      team: names.get(slot.team) || null,
+      team: teamName.get(slot.team) || null,
       receiptUrl: payment.receipt_url || null,
       summary: summarize(created),
     });
