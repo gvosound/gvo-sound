@@ -104,6 +104,34 @@ header.top.solid,body:not([data-view="home"]) header.top{background:rgba(7,6,10,
 .nav ul a{text-decoration:none;font:600 .75rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);transition:color .2s;padding-block:6px;border-bottom:1px solid transparent}
 .nav ul a:hover{color:var(--bone)}
 .nav ul a[aria-current="page"]{color:var(--bone);border-color:var(--lav)}
+.srch-btn{background:none;border:1px solid var(--line);border-radius:var(--r);height:40px;padding:0 12px;display:flex;gap:8px;align-items:center;color:var(--bone);font:600 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-left:auto}
+.srch-btn:hover{border-color:var(--lav)}
+@media (max-width:1180px){.srch-btn span{display:none}.srch-btn{width:44px;padding:0;justify-content:center}}
+@media (max-width:960px){.nav .srch-btn{margin-left:auto}.nav .srch-btn+.cart-btn{margin-left:0}}
+.sheet-srch{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 12px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--ink-2);color:var(--mute);font:500 1rem var(--body,inherit);text-align:left;cursor:pointer}
+.srch{position:fixed;inset:0;z-index:90;background:rgba(7,6,10,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:flex-start;padding:calc(72px + env(safe-area-inset-top,0px)) 16px 16px}
+.srch[hidden]{display:none}
+body.srch-on{overflow:hidden}
+.srch-panel{width:min(680px,100%);max-height:calc(100svh - 110px);display:grid;grid-template-rows:auto minmax(0,1fr);background:var(--ink);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.srch-bar{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);color:var(--mute)}
+.srch-bar input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--bone);font-size:1.1rem;padding:6px 0}
+.srch-bar input::-webkit-search-cancel-button{display:none}
+.srch-x{background:none;border:1px solid var(--line);border-radius:var(--r);color:var(--bone);font:600 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;cursor:pointer}
+.srch-r{overflow:auto;padding:6px 8px 12px;overscroll-behavior:contain}
+.srch-h{margin:12px 8px 6px;font:600 .66rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--lav)}
+.srch-i{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;padding:8px;border-radius:8px;color:var(--bone);text-decoration:none}
+.srch-i:hover,.srch-i.on,.srch-i:focus-visible{background:var(--ink-2);outline:0}
+.srch-i img,.srch-ph{width:44px;height:44px;border-radius:6px;object-fit:cover;background:var(--panel);display:grid;place-items:center}
+.srch-ph .mark{width:20px;opacity:.5}
+.srch-i b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.srch-i small{display:block;color:var(--mute);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srch-i i{font:600 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-style:normal}
+.srch-all{display:block;margin:4px 8px 0;padding:8px 0;color:var(--lav);text-decoration:none;font-size:.9rem}
+.srch-all.on{text-decoration:underline}
+.srch-none{margin:18px 10px;color:var(--mute)}
+.shop-q{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:30px;padding:0 14px;height:44px;color:var(--mute);min-width:min(260px,100%)}
+.shop-q:focus-within{border-color:var(--lav)}
+.shop-q input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--bone);font-size:.95rem}
+.rack-none{grid-column:1/-1;display:grid;gap:14px;justify-items:start;padding:30px 0;color:var(--mute)}
 .cart-btn{background:none;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;display:flex;gap:8px;align-items:center;font:600 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .cart-count{background:var(--tag);color:#fff;border-radius:3px;font:700 .7rem/1 var(--mono);padding:3px 6px;transition:transform .3s var(--ease)}
 .cart-count.bump{transform:scale(1.35)}
@@ -423,11 +451,13 @@ input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 
 /* shop */
 .pday{padding-bottom:0}
-.pday-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(20px,4vw,56px);align-items:center}
-.pday-hd{display:grid;gap:14px;max-width:480px}
-.pday-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.pday-row{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+.pday-ig{display:contents}
+.pday-t{scroll-snap-align:start}
 .pday-t .worn-m{aspect-ratio:9/16}
-@media (max-width:760px){.pday-in{grid-template-columns:1fr}.pday-row{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.pday-t{scroll-snap-align:start}}
+.pday-igt .worn-m>a{display:block;width:100%;height:100%}.pday-igt .worn-m img{width:100%;height:100%;object-fit:cover}
+@media (max-width:1100px){.pday-row{grid-auto-columns:calc((100% - 28px)/3)}}
+@media (max-width:760px){.pday-row{grid-auto-columns:72%}}
 .saleB{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:clamp(14px,3vw,32px);align-items:center;margin:0 0 26px;padding:clamp(16px,2.4vw,26px) clamp(18px,3vw,32px);border:1px solid var(--lav);border-radius:var(--r);background:linear-gradient(90deg,rgba(184,168,255,.14),rgba(184,168,255,0) 70%)}
 .saleB .big{font:900 clamp(2.4rem,6vw,4.2rem)/.85 var(--display);font-stretch:112%;color:var(--lav)}
 .saleB .big small{display:block;font:600 .7rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone);margin-top:6px}
@@ -1318,6 +1348,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
       <li><a href="#travel">Travel</a></li>
       <li><a href="#shop">Shop</a></li>
     </ul></nav>
+    <button class="srch-btn" id="openSearch" type="button" aria-label="Search the site" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Search</span></button>
     <button class="cart-btn" id="openCart" type="button" aria-label="Open bag">Bag <span class="cart-count" id="cartCount">0</span></button>
     <button class="menu-btn" id="openMenu" type="button" aria-expanded="false">Menu</button>
     <a class="btn btn-lav book-top" href="#book">Book</a>
@@ -1326,6 +1357,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 
 <div class="sheet" id="sheet" hidden>
   <button class="x" id="closeMenu" type="button" aria-label="Close menu">✕</button>
+  <button class="sheet-srch" type="button" data-open-search><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Search pieces, studios, music</button>
   <a href="#recording-studio">Recording <small>From $150</small></a>
   <a href="#photo-studio">Photo <small>From $50</small></a>
   <a href="#podcast-studio">Podcast <small>Quote</small></a>
@@ -1334,6 +1366,13 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
   <a href="#travel">Travel <small>Trips</small></a>
   <a href="#shop">Shop <small>Apparel</small></a>
   <a href="#book">Book a session <small>→</small></a>
+</div>
+
+<div class="srch" id="srch" role="dialog" aria-modal="true" aria-label="Search GVO Sound" hidden>
+  <div class="srch-panel">
+    <div class="srch-bar"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="srchIn" type="search" placeholder="Search pieces, studios, music, events" autocomplete="off" spellcheck="false" aria-controls="srchR"><button type="button" class="srch-x" id="srchX">Close</button></div>
+    <div class="srch-r" id="srchR" role="listbox" aria-label="Results"></div>
+  </div>
 </div>
 
 <main id="main" tabindex="-1"></main>
@@ -1516,7 +1555,8 @@ const loadIg=()=>igP||(igP=api('ig').then(j=>IGD=j).catch(()=>IGD={}));
 // Live posts replace the saved ones. A band with no posts at all stays hidden.
 function fillIg(root){if(!root||!root.isConnected||!IGD)return;
  $$('[data-igfeed]',root).forEach(b=>{const k=b.dataset.igfeed,a=IGD.accounts&&IGD.accounts[k],list=a?(a.ok?a.posts:null):((IGD.approved||{})[k]||null);
-  if(list&&list.length){$('.igb-t',b).innerHTML=list.map(igTile).join('');b.hidden=false;b.classList.add('in')}})}
+  if(list&&list.length){$('.igb-t',b).innerHTML=list.map(igTile).join('');b.hidden=false;b.classList.add('in')}});
+ const pe=$('[data-igpod]',root),pl=(IGD.approved||{}).podcast;if(pe&&pl&&pl.length)pe.innerHTML=pl.map(podIgTile).join('')}
 const relById=id=>REL.find(x=>x.id===id);
 const spUrl=x=>SPO+x.k+'/'+x.sp;
 const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
@@ -1735,7 +1775,7 @@ const crumbs=list=>`<ol class="crumbs" aria-label="Breadcrumb">${list.map(([l,h]
 const prodCard=p=>{const badge=p.s?`<span class="badge sale">${Math.round((1-p.s/p.p)*100)}% off</span>`:p.flag?`<span class="badge">${p.flag}</span>`:'';const colors=(p.o.find(o=>o.t==='Color')||{v:[]}).v.length;
  return `<a class="prod rv" href="#product-${p.id}"><div class="pic">${badge}${p.img.length?imgT(sm(p.img[0]),p.n)+(p.img[1]?imgT(sm(p.img[1]),'',1,'b'):''):'<div class="nophoto"><span class="mark"></span><small>Photo coming</small></div>'}</div><div class="meta"><span class="name">${p.n}${colors>1?`<small class="cols">${colors} colors</small>`:''}</span><span class="price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</span></div></a>`};
 const memberCard=m=>`<figure class="member" data-g="${m.g}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span><a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a></figcaption></figure>`;
-const doorHTML=()=>`<div class="door rv"><div class="door-ph">${imgT('pod_3','The GVO studio floor with the GVO logo wall')}</div><div class="door-info">
+const doorHTML=()=>`<div class="door rv" id="visit"><div class="door-ph">${imgT('pod_3','The GVO studio floor with the GVO logo wall')}</div><div class="door-info">
  <div><h3>Pull up</h3><p class="addr">109 Gibralter Ave<br>Annapolis, MD 21401</p><p style="margin:12px 0 0"><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Open in Maps →</a></p></div>
  <div><h3>Studio</h3><p class="hrs-big">Open 24/7</p><p class="hrs-note">By appointment only. Book at least 2 hours ahead.</p><h3 style="margin-top:20px">Shop in person</h3><table class="hours">${hoursRows()}</table><p class="hrs-note">Shop hours can change, so check <a class="link" href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">@gvosound.clothing</a> before you come. <a class="link" href="#shop">Shop online 24/7 →</a></p></div>
  <div><h3>Reach the studio</h3><a class="reach" href="tel:+14432926753"><small>Call</small><span>(443) 292-6753</span><i>→</i></a><a class="reach" href="sms:+14432926753"><small>Text</small><span>(443) 292-6753</span><i>→</i></a><a class="reach" href="mailto:gvosoundllc@gmail.com"><small>Email</small><span>gvosoundllc@gmail.com</span><i>→</i></a></div>
@@ -1819,8 +1859,10 @@ function viewHome(){
 function factsOf(r){return r.facts.filter(f=>f[2]==='season'?inSeason():f[2]==='off'?!inSeason():true)}
 // Podcast page: two clips from a content day, each linking to the quote form.
 const POD_DAY=[["vid/reel_content-day-bts.mp4","vid/reel_content-day-bts.webp","Content day, behind the scenes"],["vid/reel_going-the-extra-mile.mp4","vid/reel_going-the-extra-mile.webp","Going the extra mile"]];
-const podDay=()=>`<section class="pday"><div class="wrap"><div class="pday-in"><div class="pday-hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bob Almighty, KingMAG Prod and Skandle shoot and edit every project, start to finish.</p><a class="btn btn-lav" href="#desk" style="justify-self:start">Request a quote</a></div>
- <div class="pday-row">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, podcast room at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Book a podcast session</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}</div></div></div></section>`;
+// On set: the two shoot clips, then the @gvo.sound reels the team approved for the podcast page, in one swipe row.
+const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bob Almighty, KingMAG Prod and Skandle shoot and edit every project, start to finish.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Request a quote</a>${NAV}</div></div>
+ <div class="pday-row">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, podcast room at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Book a podcast session</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}<span class="pday-ig" data-igpod></span></div></div></section>`;
+const podIgTile=p=>`<figure class="worn-t pday-t pday-igt"><div class="worn-m">${igTile(p)}</div><figcaption><b>${esc(String(p.alt||'Podcast clip').slice(0,60))}</b><span class="worn-s"><a href="${esc(p.link)}" target="_blank" rel="noopener">Reel on @gvo.sound</a><span aria-hidden="true">→</span></span></figcaption></figure>`;
 function viewRoom(slug){
  const r=ROOMS[slug],others=Object.entries(ROOMS).filter(([s])=>s!==slug);
  const team=TEAM.filter(m=>m.g===r.team);
@@ -1851,7 +1893,6 @@ function viewRoom(slug){
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Recorded here</span><h2>Hear the room</h2><p class="lede">Two records cut on Gibralter Ave. Same booth, same desk you'd book. Press play on either one.</p></div></div>
   <div class="heard-row">${['need-to-know','ride-for-me'].map((id,i)=>{const x=relById(id);return `${i===1?'<div class="heard-mid" aria-live="polite"><div><span data-w="k">Preview</span><b data-w="t">Press play</b><span data-w="s">On either song</span></div></div>':''}<div class="hcard rv" data-side="${i?1:-1}" data-id="${x.id}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}${pvBtn(x)}</span><div><h3>${x.t}</h3><p>${x.a}</p><div class="pbar" data-prog="${x.id}"><span></span></div><div class="ln">${ext(spUrl(x),SPIC+'Full song on Spotify')}${ext(allUrl(x),'All platforms')}</div></div></div>`}).join('')}</div>
  </div></section>`:''}
- ${r.k==='pod'?`<section class="ig-sec" style="padding-top:0"><div class="wrap">${igBand(IG.main,'Podcast clips','Clips from the podcast room, picked by the GVO team. Tap a reel to watch it here.','podcast')}</div></section>`:''}
  <section style="padding-top:0"><div class="wrap">${r.k==='rec'
   ?`<div class="grow-h"><span class="eyebrow">Inside the booth</span><div class="igb-nav"><button type="button" data-grow="-1" aria-label="Scroll back">←</button><button type="button" data-grow="1" aria-label="Scroll forward">→</button></div></div><div class="grow" id="grow">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound recording studio`)}<figcaption>${c}</figcaption></figure>`).join('')}<span class="grow-g" data-vids="garden">${gardenTiles(SESS.filter(v=>/garden/i.test(v.s)).map(v=>({id:v.y,t:v.t,s:v.s,img:v.img})))}</span></div>`
   :`<div class="gallery">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div>`}</div></section>
@@ -2211,7 +2252,7 @@ function viewShop(){
   ${crumbs([['Home','#'],['Shop','']])}
   <div class="shop-hero2"><div class="sh-txt"><span class="eyebrow">GVO apparel</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">The rack</h1><p class="lede">Made by GVO. Sold at the studio. Ship it, or pick it up at your next session.</p><a class="btn btn-lav" href="#fit" style="justify-self:start">Build a fit</a></div><figure class="sh-vid"><video class="lv" muted loop playsinline autoplay preload="none" poster="vid/shop-hero_new-merch.webp" data-src="vid/shop-hero_new-merch.mp4" data-webm="0" aria-label="New GVO merch, worn on the white set"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI('vid/shop-hero_new-merch.mp4')}</figure></div>${saleBanner()}
   ${seoNote(META.shop)}
-  <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
+  <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><label class="shop-q"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="shopQ" type="search" placeholder="Search the rack" autocomplete="off" aria-label="Search the rack"></label><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
   <div class="rack" id="rack"></div>
   <div class="pickup"><figure>${imgT('lounge','GVO apparel racks and shelves at the studio under a painted mural')}</figure><div><span class="eyebrow">Pick it up at the studio</span><h3>Pickup at the studio is free</h3><p>Choose pickup at checkout and your order waits on the racks at 109 Gibralter Ave. Shipping in the US is $9.99.</p></div></div>
   <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Good vibes, bold threads. Wear the energy.','clothing')}</div>
@@ -2291,6 +2332,65 @@ function ldFor(route){
  return{};
 }
 
+/* ================= search =================
+   One index for the whole site, built in the browser from the same data the pages use: every shop piece
+   (name, category, colors), the studios, the releases and artists, the team, upcoming events and trips.
+   Words match from the start ("hood" finds Hoodie), every word has to match, and a few shop words
+   stand in for each other (grey and gray, tee and shirt, pants and joggers). */
+const SYN={grey:'gray',gray:'grey',tee:'shirt',tshirt:'tee',shirt:'tee',top:'shirt',hoodie:'sweatshirt',sweatshirt:'hoodie',pants:'joggers',joggers:'pants',bottoms:'pants',sweatpants:'pants',hat:'beanie',beanie:'hat',jacket:'coat',coat:'jacket',shorts:'short',podcast:'pod',record:'recording',recording:'record',studio:'studios',photo:'photography',photography:'photo',music:'songs',songs:'music',party:'events',events:'party',trip:'travel',travel:'trip'};
+const norm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,'').replace(/[^a-z0-9$.]+/g,' ').trim();
+const words=t=>norm(t).split(' ').filter(Boolean);
+function srchIndex(){
+ const items=[];
+ const add=(kind,label,sub,href,text,img,extra=0)=>items.push({kind,label,sub,href,img,boost:extra,w:words(label+' '+text)});
+ PRODUCTS.forEach(p=>{const cols=(p.o.find(o=>o.t==='Color')||{v:[]}).v;
+  add('Shop',p.n,[m2(p.s||p.p),cols.length>1?cols.length+' colors':cols[0]||'',p.cat].filter(Boolean).join(' · '),'#product-'+p.id,[p.cat,cols.join(' '),p.flag||'','apparel clothes merch gvo'].join(' '),p.img[0]?imgSrc(sm(p.img[0])):'',2)});
+ Object.entries(ROOMS).forEach(([slug,r])=>add('Studios',r.h1.replace(' in Annapolis',''),r.k==='pod'?'Quoted per project':r.facts[0].join(' '),'#'+slug,[r.short,r.lede,(r.gear||[]).join(' '),(r.incl||[]).join(' '),'book booking session rent'].join(' '),imgSrc(r.img),1));
+ REL.forEach(x=>add('Music',x.t,'by '+x.a,'#music/'+x.id,[x.a,x.tag||'','song single listen stream preview'].join(' '),imgSrc(x.c)));
+ ARTISTS.forEach(a=>add('Music',a.n,a.r,'#music','artist '+a.r,a.img?imgSrc(a.img):''));
+ TEAM.forEach(m=>add('Team',m.n,m.r,m.g==='photo'?'#photo-studio':m.g==='pod'?'#podcast-studio':'#recording-studio','@'+m.ig+' '+m.r,m.img?imgSrc(m.img):''));
+ const today=new Date().toISOString().slice(0,10);
+ EVENTS.filter(e=>e.d>=today).forEach(e=>add('Events',e.t,new Date(e.d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+e.v,'#events',[e.k||'',e.v,e.c,'party tickets rsvp'].join(' '),e.fl?imgSrc(e.fl):''));
+ TRIPS.forEach(t=>add('Travel',t.p,[t.k,t.when].filter(Boolean).join(' · '),'#travel',(t.l||'')+' trip travel'));
+ [['Book a session','Recording, photo or podcast','#book','book booking schedule appointment price rates'],['Build a fit','Mix pieces from the rack','#fit','outfit fit style build'],['Shop all','Every piece on the rack','#shop','shop store apparel clothes merch'],['Watch the sessions','The Garden and live performances','#music?to=sessions','video youtube garden live session watch'],['Events','Parties and tickets','#events','events party tickets'],['Travel','Group trips','#travel','travel trips'],['Hours and address','109 Gibralter Ave, Annapolis','#?to=visit','hours address directions location open']].forEach(([l,sb,h,t])=>add('Pages',l,sb,h,t));
+ return items;
+}
+let SRCH=null;
+function srchFind(q,only){
+ SRCH=SRCH||srchIndex();
+ const qs=words(q);if(!qs.length)return [];
+ const hit=(w,t)=>w.some(x=>x.startsWith(t)||(t.length>3&&x.includes(t)));
+ return SRCH.filter(it=>!only||it.kind===only).map(it=>{let sc=0;
+  for(const t of qs){const alt=SYN[t];const ok=hit(it.w,t)||(alt&&hit(it.w,alt))||(t.endsWith('s')&&hit(it.w,t.slice(0,-1)));if(!ok)return null;sc+=words(it.label).some(x=>x.startsWith(t))?3:1}
+  if(norm(it.label).startsWith(norm(q)))sc+=4;return {...it,sc:sc+it.boost}}).filter(Boolean).sort((a,b)=>b.sc-a.sc);
+}
+const srchEl=$('#srch'),srchIn=$('#srchIn'),srchR=$('#srchR');let srchAct=-1,srchBack=null;
+const srchRow=(it,i)=>`<a class="srch-i" role="option" id="sr${i}" href="${it.href}">${it.img?`<img src="${it.img}" alt="" loading="lazy">`:'<span class="srch-ph"><span class="mark"></span></span>'}<span><b>${esc(it.label)}</b><small>${esc(it.sub||'')}</small></span></a>`;
+function srchDraw(){
+ const q=srchIn.value.trim();srchAct=-1;
+ if(!q){srchR.innerHTML=`<p class="srch-h">Popular</p>${['Shop all','Book a session','Build a fit','Watch the sessions','Hours and address'].map(l=>(SRCH=SRCH||srchIndex()).find(x=>x.label===l)).filter(Boolean).map(srchRow).join('')}`;return}
+ const all=srchFind(q),order=['Shop','Studios','Music','Events','Travel','Team','Pages'];let i=0,html='';
+ if(!all.length){srchR.innerHTML=`<p class="srch-none">Nothing matches “${esc(q)}”. Try a piece, a color or a studio, or call or text (443) 292-6753.</p>`;return}
+ order.forEach(k=>{const g=all.filter(x=>x.kind===k);if(!g.length)return;const top=g.slice(0,k==='Shop'?6:4);
+  html+=`<p class="srch-h">${k}</p>`+top.map(it=>srchRow(it,i++)).join('');
+  if(k==='Shop'&&g.length>top.length)html+=`<a class="srch-all" href="#shop?q=${encodeURIComponent(q)}">See all ${g.length} pieces for “${esc(q)}” →</a>`});
+ srchR.innerHTML=html;
+}
+function srchOpen(){srchBack=document.activeElement;closeMenu();srchEl.hidden=false;document.body.classList.add('srch-on');srchDraw();setTimeout(()=>srchIn.focus(),20)}
+function srchClose(){if(srchEl.hidden)return;srchEl.hidden=true;document.body.classList.remove('srch-on');if(srchBack&&srchBack.focus)srchBack.focus()}
+$('#openSearch').onclick=srchOpen;$('#srchX').onclick=srchClose;
+document.addEventListener('click',e=>{if(e.target.closest('[data-open-search]')){e.preventDefault();srchOpen();return}if(!srchEl.hidden&&(e.target===srchEl||e.target.closest('.srch-i,.srch-all')))setTimeout(srchClose,0)});
+srchIn.addEventListener('input',srchDraw);
+document.addEventListener('keydown',e=>{
+ const typing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)||document.activeElement.isContentEditable;
+ if(srchEl.hidden){if((e.key==='/'&&!typing)||((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k')){e.preventDefault();srchOpen()}return}
+ const rows=$$('.srch-i,.srch-all',srchR);
+ if(e.key==='Escape'){e.preventDefault();srchClose()}
+ else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!rows.length)return;srchAct=(srchAct+(e.key==='ArrowDown'?1:-1)+rows.length)%rows.length;rows.forEach((r,k)=>r.classList.toggle('on',k===srchAct));rows[srchAct].scrollIntoView({block:'nearest'});srchIn.setAttribute('aria-activedescendant',rows[srchAct].id||'')}
+ else if(e.key==='Enter'&&document.activeElement===srchIn){const r=rows[srchAct>=0?srchAct:0];if(r){e.preventDefault();r.click()}}
+ else if(e.key==='Tab'){const f=[srchIn,...rows,$('#srchX')];const i=f.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();srchIn.focus()}}
+});
+
 /* ================= router ================= */
 const main=$('#main');let route='home',cleanup=[],popNav=false;const scrollMem={};
 let navIdx=0;try{history.scrollRestoration='manual'}catch(e){}addEventListener('popstate',e=>{popNav=!!(e.state&&e.state.gvo!=null)});
@@ -2356,7 +2456,7 @@ function wire(r){
    const em=v('email'),ti=v('title'),res=await sendForm(fm,'music',{artist:v('artist'),email:em,title:ti,type:v('type'),links:links.join('\n'),ig:v('ig'),tiktok:v('tiktok'),yt:v('yt'),gvo:v('gvo'),engineer:eng.hidden?'':v('engineer'),notes:v('notes')});if(res){eng.hidden=true;formDone(fm,res,{to:em,eyebrow:'Submission received',title:'Your music is in',body:`${esc(ti)} is with the GVO team. Songs picked for the site go up on the music page.`,again:'Submit another song'})}})}}
  if(ROOMS[r])wireRoom(r);
  if($('[data-vids]',main)){if(YT)fillVideos(main);else loadVids().then(()=>{if(route===r)fillVideos(main)})}
- if($('[data-igfeed]',main)){if(IGD)fillIg(main);else loadIg().then(()=>{if(route===r)fillIg(main)})}
+ if($('[data-igfeed],[data-igpod]',main)){if(IGD)fillIg(main);else loadIg().then(()=>{if(route===r)fillIg(main)})}
  const deskEl=$('[data-desk]',main);
  if(deskEl){const k=deskEl.dataset.desk;if(k==='pod')mountQuote(deskEl);else mountDesk(deskEl,k==='all'?(pendingPreset||B.room):k)}
  pendingPreset=null;
@@ -2462,7 +2562,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
- const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.art-strip,section'),r=box&&$('.sess',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
+ const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.art-strip,section'),r=box&&$('.sess,.pday-row',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
  const cb=e.target.closest('[data-cats]');if(cb){const c=$('#cat');if(c)c.scrollBy({left:+cb.dataset.cats*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const gb=e.target.closest('[data-grow]');if(gb){const c=$('#grow');c.scrollBy({left:+gb.dataset.grow*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const sb=e.target.closest('[data-igs]');if(sb){const c=sb.closest('.igb').querySelector('.igb-c');c.scrollBy({left:+sb.dataset.igs*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
@@ -2922,7 +3022,14 @@ const CATS=['All','Shirts','Cold weather','Bottoms','Headwear','Sale'];let cat='
 // The Sale chip only shows while Square has a sale price on something.
 const cats=()=>CATS.filter(c=>c!=='Sale'||PRODUCTS.some(p=>p.s||(p.vars&&Object.values(p.vars).some(v=>v.s!=null))));
 function wireShop(){
- const r=()=>{$('#shopFilters').innerHTML=cats().map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const shown=PRODUCTS.filter(p=>!SQ.live||p.av.length),list=shown.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));$('#shopCount').textContent=list.length+' of '+shown.length+' pieces · '+(SQ.live?'live from Square':SQ.state==='down'?'Square is offline':'checking Square');$('#rack').innerHTML=list.map(prodCard).join('')};
+ const r=()=>{$('#shopFilters').innerHTML=cats().map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const q=$('#shopQ').value.trim(),ids=q?srchFind(q,'Shop').map(x=>x.href.slice(9)):null;
+  const shown=PRODUCTS.filter(p=>!SQ.live||p.av.length);let list=shown.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));
+  if(ids)list=ids.map(id=>list.find(p=>p.id===id)).filter(Boolean);
+  $('#shopCount').textContent=list.length+' of '+shown.length+' pieces'+(q?` for “${q}”`:'')+(notesOn?' · '+(SQ.live?'live from Square':SQ.state==='down'?'Square is offline':'checking Square'):'');
+  $('#rack').innerHTML=list.length?list.map(prodCard).join(''):`<div class="rack-none"><p>Nothing on the rack matches “${esc(q)}”${cat!=='All'?' in '+esc(cat):''}.</p><button type="button" class="btn btn-ghost" data-clearq>Clear search</button></div>`};
+ const sq=$('#shopQ');sq.value=new URLSearchParams(location.hash.split('?')[1]||'').get('q')||'';let sqt;
+ sq.addEventListener('input',()=>{clearTimeout(sqt);sqt=setTimeout(r,120)});
+ $('#rack').addEventListener('click',e=>{if(e.target.closest('[data-clearq]')){sq.value='';cat='All';r();sq.focus()}});
  $('#shopFilters').onclick=e=>{const b=e.target.closest('[data-cat]');if(b){cat=b.dataset.cat;r()}};r();
  mountFit();wireWorn(main);
 }
