@@ -422,6 +422,26 @@ input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 .seg{display:flex;flex-wrap:wrap;gap:8px}
 
 /* shop */
+.pday{padding-bottom:0}
+.pday-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(20px,4vw,56px);align-items:center}
+.pday-hd{display:grid;gap:14px;max-width:480px}
+.pday-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.pday-t .worn-m{aspect-ratio:9/16}
+@media (max-width:760px){.pday-in{grid-template-columns:1fr}.pday-row{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.pday-t{scroll-snap-align:start}}
+.shop-hero2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center;margin:18px 0 28px}
+.sh-txt{display:grid;gap:14px;max-width:560px;min-width:0}
+.sh-vid{position:relative;margin:0;justify-self:end;height:clamp(400px,62vh,600px);max-width:100%;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;background:#f6f6ef}
+.sh-vid video{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+@media (max-width:760px){.shop-hero2{grid-template-columns:1fr}.sh-vid{order:-1;justify-self:stretch;height:auto;width:100%;aspect-ratio:1/1}}
+.pickup{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:center;margin-top:clamp(48px,7vw,80px)}
+.pickup figure{margin:0;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;background:var(--panel)}
+.pickup img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.pickup>div{display:grid;gap:10px}.pickup h3{font-size:clamp(1.4rem,2.6vw,2rem)}.pickup p{margin:0;color:var(--mute);max-width:46ch}
+@media (max-width:760px){.pickup{grid-template-columns:1fr}}
+.msnd{position:absolute;right:10px;bottom:10px;z-index:3;border:0;border-radius:30px;padding:8px 12px;font:600 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(7,6,10,.72);color:var(--bone);cursor:pointer;backdrop-filter:blur(6px)}
+.msnd[aria-pressed="true"]{background:var(--lav);color:var(--lav-ink)}
+.mcred{position:absolute;left:10px;bottom:12px;right:96px;z-index:3;font:600 .66rem/1.3 var(--mono);letter-spacing:.06em;color:var(--bone);text-shadow:0 1px 6px rgba(0,0,0,.6);text-decoration:none}
+a.mcred:hover{text-decoration:underline}
 .shop-hero{position:relative;border-radius:var(--r);overflow:hidden;height:clamp(240px,34vw,420px);margin-bottom:28px}
 .shop-hero img{width:100%;height:100%;object-fit:cover;object-position:50% 45%}
 .shop-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,6,10,.9),rgba(7,6,10,.2) 70%)}
@@ -1516,7 +1536,20 @@ const SNAP=PRODUCTS.slice();
    CLIPS: product -> color -> [mp4, poster]; '*' is any color. WORN: [v|p, file, poster, title, product ids]. */
 const PHOTOS={"worker-jacket":[["a_1","Tan"],["a_3","Tan"],["a_e20","Tan"],["a_83","Tan"],["a_82","Tan"],["a_119","Tan"],["a_e18","Black"],["a_e25","Black"],["a_79","Black"],["a_77","Black"],["a_e23","Purple"],["a_e8","Purple"],["a_106","Purple"],["a_105","Purple"],["a_97","Purple"]],"gvo-bodysuit":[["a_30","Navy"],["a_31","Navy"],["a_167","Navy"],["a_9","Navy"],["a_10","Navy"],["a_138","Grey"],["a_158","Grey"],["a_e11","Grey"],["a_e15","Grey"],["a_e12","Black"],["a_e26","Black"],["a_24",null],["a_25",null],["a_26",null],["a_27",null],["a_29",null],["a_212",null],["a_12",null]],"world-tour-tracksuit-jacket":[["a_93","Black"],["a_94","Black"],["a_89","Gray"],["a_99","Gray"],["a_100","Gray"],["a_91",null],["a_36",null]],"world-tour-tracksuit-pants":[["a_100","Gray"],["a_89","Gray"],["a_93","Black"],["a_91",null],["a_36",null]],"world-tour-cozy-hoodie":[["a_45","Pink"],["a_44","Pink"],["a_47","Light Blue"],["a_101",null],["a_37","Navy"],["a_41",null],["a_40",null]],"world-tour-cozy-pants":[["a_46","Pink"],["a_48","Light Blue"],["a_101",null],["a_39","Navy Blue"],["a_43",null]],"pain-is-temporary-dirtbike-jersey":[["a_236",null],["a_250",null],["a_231",null],["a_233",null],["a_229",null],["a_277",null],["a_239",null],["a_128",null]],"gvo-muscle-tee":[["a_255",null],["a_258",null],["a_131",null],["a_139",null],["a_257",null],["a_135",null]],"gvo-x-ace-distressed-tee":[["a_188",null],["a_222",null],["a_225",null],["a_190",null],["a_186",null]],"no-art-for-today-tee":[["a_172",null],["a_173",null],["a_174",null],["a_177",null],["a_176",null],["a_171",null]],"never-see-the-haters-here-tee":[["a_151",null],["a_152",null],["a_162",null],["a_164",null]],"world-tour-tee-black":[["a_69",null],["a_70",null],["a_23",null]],"world-tour-tee-white":[["a_149",null],["a_150",null],["a_147",null]],"no-deadbeats-oversized-pink":[["a_35",null],["a_34",null],["a_114",null]],"no-deadbeats-oversized-grey":[["a_32",null],["a_33",null],["a_115",null]],"music-is-a-drug-long-sleeve":[["a_14",null],["a_11",null],["a_108",null],["a_109",null]],"gvo-beanie":[["a_51","Maroon"],["a_52","Navy Blue"],["a_54","Olive"],["a_55","Brown"],["a_56","Gray"],["a_57","Tan"],["a_58","Pearl"],["a_60","Black"]],"gvo-golf-set-shirt":[["a_213",null],["a_215",null],["a_217",null],["a_218",null]],"gvo-golf-set-shorts":[["a_214",null],["a_217",null],["a_269",null],["a_218",null]],"collective-set-shirt":[["a_143","Black"],["a_140","Black"],["a_141","Black"]],"collective-set-pants":[["a_140","Black"],["a_145","Black"],["a_142","Black"]],"world-tour-cheetah-hoodie":[["a_261",null],["a_274",null],["a_267",null],["a_264",null],["a_252",null]]};
 const CLIPS={"worker-jacket":{"Black":["vid/spin_worker-jacket-black.mp4","vid/spin_worker-jacket-black.webp"],"Tan":["vid/spin_worker-jacket-tan.mp4","vid/spin_worker-jacket-tan.webp"],"Purple":["vid/spin_worker-jacket-plum.mp4","vid/spin_worker-jacket-plum.webp"],"Cream":["vid/spin_worker-jacket-cream.mp4","vid/spin_worker-jacket-cream.webp"]},"world-tour-tracksuit-jacket":{"Black":["vid/spin_world-tour-tracksuit-black.mp4","vid/spin_world-tour-tracksuit-black.webp"],"*":["vid/reel_tracksuit-studio.mp4","vid/reel_tracksuit-studio.webp"]},"world-tour-tracksuit-pants":{"*":["vid/reel_tracksuit-outdoor.mp4","vid/reel_tracksuit-outdoor.webp"]},"gvo-bodysuit":{"*":["vid/reel_bodysuit.mp4","vid/reel_bodysuit.webp"]},"world-tour-cozy-hoodie":{"*":["vid/reel_cozy-set.mp4","vid/reel_cozy-set.webp"]},"world-tour-cozy-pants":{"*":["vid/reel_cozy-set.mp4","vid/reel_cozy-set.webp"]},"no-deadbeats-oversized-pink":{"*":["vid/reel_no-deadbeats.mp4","vid/reel_no-deadbeats.webp"]},"no-deadbeats-oversized-grey":{"*":["vid/reel_no-deadbeats.mp4","vid/reel_no-deadbeats.webp"]}};
-const WORN=[["v","vid/reel_bodysuit-ladies.mp4","vid/reel_bodysuit-ladies.webp","The Bodysuit",["gvo-bodysuit"]],["p","a_247",null,"Pain Is Temporary",["pain-is-temporary-dirtbike-jersey"]],["v","vid/reel_worker-jacket-tan.mp4","vid/reel_worker-jacket-tan.webp","GVO x Mas Vida Worker Jacket",["worker-jacket"]],["p","a_92",null,"World Tour Tracksuit",["world-tour-tracksuit-jacket","world-tour-tracksuit-pants"]],["v","vid/reel_tracksuit-outdoor-2.mp4","vid/reel_tracksuit-outdoor-2.webp","World Tour Tracksuit, outside",["world-tour-tracksuit-jacket","world-tour-tracksuit-pants"]],["p","a_259",null,"World Tour Cheetah Hoodie",["world-tour-cheetah-hoodie"]],["v","vid/reel_bodysuit-baby-girl.mp4","vid/reel_bodysuit-baby-girl.webp","Baby Girl",["gvo-bodysuit"]],["p","a_218",null,"GVO Golf Set",["gvo-golf-set-shirt","gvo-golf-set-shorts"]],["v","vid/reel_worker-jacket-black.mp4","vid/reel_worker-jacket-black.webp","Worker Jacket, black",["worker-jacket"]],["p","a_21",null,"Bodysuits and the Cozy set",["gvo-bodysuit","world-tour-cozy-hoodie","world-tour-cozy-pants"]],["v","vid/reel_no-deadbeats.mp4","vid/reel_no-deadbeats.webp","No Deadbeats Club",["no-deadbeats-oversized-pink","no-deadbeats-oversized-grey"]],["p","a_258",null,"GVO Muscle Tee, back print",["gvo-muscle-tee"]],["v","vid/reel_tracksuit-studio.mp4","vid/reel_tracksuit-studio.webp","World Tour Tracksuit, studio",["world-tour-tracksuit-jacket","world-tour-tracksuit-pants"]],["p","a_250",null,"Front and back",["pain-is-temporary-dirtbike-jersey"]],["v","vid/reel_cozy-set.mp4","vid/reel_cozy-set.webp","World Tour Cozy set",["world-tour-cozy-hoodie","world-tour-cozy-pants"]]];
+const WORN=[["v","vid/reel_bodysuit-ladies.mp4","vid/reel_bodysuit-ladies.webp","The Bodysuit",["gvo-bodysuit"]],["v","vid/reel_tmc-tracksuit.mp4","vid/reel_tmc-tracksuit.webp","TMC in the World Tour Tracksuit",["world-tour-tracksuit-jacket","world-tour-tracksuit-pants"]],["p","a_247",null,"Pain Is Temporary",["pain-is-temporary-dirtbike-jersey"]],["v","vid/reel_worker-jacket-tan.mp4","vid/reel_worker-jacket-tan.webp","GVO x Mas Vida Worker Jacket",["worker-jacket"]],["p","a_92",null,"World Tour Tracksuit",["world-tour-tracksuit-jacket","world-tour-tracksuit-pants"]],["v","vid/reel_tracksuit-outdoor-2.mp4","vid/reel_tracksuit-outdoor-2.webp","World Tour Tracksuit, outside",["world-tour-tracksuit-jacket","world-tour-tracksuit-pants"]],["p","a_259",null,"World Tour Cheetah Hoodie",["world-tour-cheetah-hoodie"]],["v","vid/reel_bodysuit-baby-girl.mp4","vid/reel_bodysuit-baby-girl.webp","Baby Girl",["gvo-bodysuit"]],["p","a_218",null,"GVO Golf Set",["gvo-golf-set-shirt","gvo-golf-set-shorts"]],["v","vid/reel_worker-jacket-black.mp4","vid/reel_worker-jacket-black.webp","Worker Jacket, black",["worker-jacket"]],["v","vid/reel_worker-jacket-gear.mp4","vid/reel_worker-jacket-gear.webp","GVO gear, dark room",["worker-jacket"]],["p","a_21",null,"Bodysuits and the Cozy set",["gvo-bodysuit","world-tour-cozy-hoodie","world-tour-cozy-pants"]],["v","vid/reel_no-deadbeats.mp4","vid/reel_no-deadbeats.webp","No Deadbeats Club",["no-deadbeats-oversized-pink","no-deadbeats-oversized-grey"]],["p","a_258",null,"GVO Muscle Tee, back print",["gvo-muscle-tee"]],["v","vid/reel_tracksuit-studio.mp4","vid/reel_tracksuit-studio.webp","World Tour Tracksuit, studio",["world-tour-tracksuit-jacket","world-tour-tracksuit-pants"]],["p","a_250",null,"Front and back",["pain-is-temporary-dirtbike-jersey"]],["v","vid/reel_cozy-set.mp4","vid/reel_cozy-set.webp","World Tour Cozy set",["world-tour-cozy-hoodie","world-tour-cozy-pants"]]];
+// Siani fills these in from Cory's answers. Leave a clip empty if its beat samples someone else's record; it stays muted.
+// Only these four longer clips can ever play sound. href = the artist's page on this site, where there is one.
+const CLIP_MUSIC={
+ 'shop-hero_new-merch':{artist:'',track:'',href:''},
+ 'reel_tmc-tracksuit':{artist:'',track:'',href:''},
+ 'reel_content-day-bts':{artist:'',track:'',href:''},
+ 'reel_going-the-extra-mile':{artist:'',track:'',href:''}
+};
+const clipKey=src=>String(src||'').split('/').pop().replace(/\.mp4$/,'');
+const clipMusic=src=>{const m=CLIP_MUSIC[clipKey(src)];return m&&m.artist&&m.track?m:null};
+// Sound button and credit line, only for a clip with a filled-in credit. Empty entries render nothing.
+const musicUI=src=>{const m=clipMusic(src);if(!m)return '';const cred=`Music: ${esc(m.artist)}, ${esc(m.track)}`;
+ return `<button type="button" class="msnd" data-msnd aria-pressed="false" aria-label="Play with sound">Sound</button>${m.href?`<a class="mcred" href="${esc(m.href)}">${cred}</a>`:`<span class="mcred">${cred}</span>`}`};
 const IMGC={}; // photo -> its color
 Object.entries(PHOTOS).forEach(([id,list])=>{const p=SNAP.find(x=>x.id===id);if(!p)return;list.forEach(([f,c])=>{if(c)IMGC[f]=c});const fs=list.map(x=>x[0]);p.img=[...fs,...p.img.filter(f=>!fs.includes(f))]});
 // a_ photos have a 700px copy (a_N_s) for grids and thumbnails; the full 1400px file is for the main viewer.
@@ -1524,6 +1557,8 @@ const sm=f=>/^a_/.test(f)?f+'_s':f;
 const colorOpt=p=>{const i=(p.o||[]).findIndex(o=>o.t==='Color'&&o.v.length>1);return i};
 // The photos for one color: that color's photos plus the untagged ones. No color, or a one-color item: all of them.
 const galFor=(p,color)=>colorOpt(p)<0||!color?p.img.slice():p.img.filter(f=>!IMGC[f]||IMGC[f]===color);
+// More clips on a product page, after its first clip. at:1 = the second slide, at:'end' = after the photos.
+const CLIP_EXTRA={"worker-jacket":[{at:'end',clip:["vid/reel_worker-jacket-gear.mp4","vid/reel_worker-jacket-gear.webp"]}],"world-tour-tracksuit-jacket":[{at:1,clip:["vid/reel_tmc-tracksuit.mp4","vid/reel_tmc-tracksuit.webp"]}],"world-tour-tracksuit-pants":[{at:1,clip:["vid/reel_tmc-tracksuit.mp4","vid/reel_tmc-tracksuit.webp"]}]};
 const clipFor=(p,color)=>{const c=CLIPS[p.id];return c?(color&&c[color])||c['*']||null:null};
 const SQ={live:false,state:'loading',err:'',cfg:null};
 async function api(path,body){
@@ -1758,6 +1793,10 @@ function viewHome(){
 }
 
 function factsOf(r){return r.facts.filter(f=>f[2]==='season'?inSeason():f[2]==='off'?!inSeason():true)}
+// Podcast page: two clips from a content day, each linking to the quote form.
+const POD_DAY=[["vid/reel_content-day-bts.mp4","vid/reel_content-day-bts.webp","Content day, behind the scenes"],["vid/reel_going-the-extra-mile.mp4","vid/reel_going-the-extra-mile.webp","Going the extra mile"]];
+const podDay=()=>`<section class="pday"><div class="wrap"><div class="pday-in"><div class="pday-hd"><span class="eyebrow">Shot in this room</span><h2>How a content day runs</h2><p class="lede">Two clips from shoots in this room. Bob Almighty, KingMAG Prod and Skandle shoot and edit every one.</p><a class="btn btn-lav" href="#desk" style="justify-self:start">Request a quote</a></div>
+ <div class="pday-row">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, podcast room at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Book a podcast session</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}</div></div></div></section>`;
 function viewRoom(slug){
  const r=ROOMS[slug],others=Object.entries(ROOMS).filter(([s])=>s!==slug);
  const team=TEAM.filter(m=>m.g===r.team);
@@ -1772,6 +1811,7 @@ function viewRoom(slug){
    ${r.k==='photo'?note('Seasonal package','The holiday photoshoot special shows from Nov 1 to Dec 31 and hides itself the rest of the year, here and in the booking desk. <button type="button" class="chip" data-season style="margin-top:10px">'+(forceSeason?'Back to today':'Preview holiday season')+'</button>'):''}
   </div>
  </section>
+ ${r.k==='pod'?podDay():''}
  <section><div class="wrap split">
   <div style="display:grid;gap:26px"><span class="eyebrow">The space</span><div class="prose">${r.about.map(p=>`<p>${p}</p>`).join('')}</div>
    <div><h3 style="margin-bottom:12px">What's included</h3><ul class="incl">${r.incl.map(i=>`<li>${i}</li>`).join('')}</ul></div>
@@ -2072,7 +2112,7 @@ function wornTile([t,f,poster,title,shop]){
  // "World Tour Tracksuit" + "World Tour Tracksuit Jacket" reads as "Jacket": drop the words the title already says.
  const short=n=>{const a=n.replace(/,/g,'').split(' '),b=title.replace(/,/g,'').toLowerCase().split(' ');let k=0;while(k<a.length-1&&k<b.length&&a[k].toLowerCase()===b[k])k++;return k?a.slice(k).join(' '):n.replace(/^(GVO|World Tour) /,'')};
  const media=t==='v'
-  ?`<video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(title)}, worn at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}`
+  ?`<video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(title)}, worn at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}`
   :imgT(sm(f),`${esc(title)}, worn at GVO Sound`);
  return `<figure class="worn-t"><div class="worn-m">${media}<a class="worn-tag" href="#photo-studio" aria-label="Shot at GVO Sound. Book the photo studio">Shot at GVO</a></div>
   <figcaption><b>${esc(title)}</b>${ps.length?`<span class="worn-s">${ps.map(p=>`<a href="#product-${p.id}" aria-label="Shop the ${esc(p.n)}">${esc(short(p.n))}</a>`).join('<i aria-hidden="true">·</i>')}<span aria-hidden="true">→</span></span>`:''}</figcaption></figure>`}
@@ -2145,23 +2185,25 @@ function mountFit(){
 function viewShop(){
  return `<div class="view" data-v="shop"><section style="padding-top:calc(110px + env(safe-area-inset-top,0px))"><div class="wrap">
   ${crumbs([['Home','#'],['Shop','']])}
-  <div class="shop-hero" style="margin-top:18px">${imgT('lounge','GVO apparel racks and shelves in the studio lounge under a painted mural',0)}<div><span class="eyebrow">GVO apparel</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">The rack</h1><p class="lede" style="color:#d7d2dc">Made by the studio, sold in the lounge. Ship it, or pick it up at your next session.</p><a class="btn btn-lav" href="#fit" style="justify-self:start">Build a fit</a></div></div>
+  <div class="shop-hero2"><div class="sh-txt"><span class="eyebrow">GVO apparel</span><h1 style="font-size:clamp(2.6rem,7vw,5.6rem)">The rack</h1><p class="lede">Made by the studio, sold in the lounge. Ship it, or pick it up at your next session.</p><a class="btn btn-lav" href="#fit" style="justify-self:start">Build a fit</a></div><figure class="sh-vid"><video class="lv" muted loop playsinline autoplay preload="none" poster="vid/shop-hero_new-merch.webp" data-src="vid/shop-hero_new-merch.mp4" data-webm="0" aria-label="New GVO merch, worn on the white set"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI('vid/shop-hero_new-merch.mp4')}</figure></div>
   ${seoNote(META.shop)}
   <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
   <div class="rack" id="rack"></div>
+  <div class="pickup"><figure>${imgT('lounge','GVO apparel racks and shelves in the studio lounge under a painted mural')}</figure><div><span class="eyebrow">Pick it up at the studio</span><h3>Pickup at the studio is free</h3><p>Choose pickup at checkout and your order waits on the lounge racks at 109 Gibralter Ave. Shipping in the US is $9.99.</p></div></div>
   <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Good vibes, bold threads. Wear the energy.','clothing')}</div>
  </div></section>${viewFit()}</div>`;
 }
 
 /* Product gallery: the clip (if the product has one) is slide 0, then the photos for the picked color.
    The clip only gets its source once it's on screen (wireVideos), so price, options and Add to bag never wait on it. */
-const galSlides=(p,color)=>{const c=clipFor(p,color);return [...(c?[{clip:c}]:[]),...galFor(p,color).map(f=>({f}))]};
+const galSlides=(p,color)=>{const c=clipFor(p,color),ex=CLIP_EXTRA[p.id]||[];
+ return [...(c?[{clip:c}]:[]),...ex.filter(x=>x.at===1).map(x=>({clip:x.clip})),...galFor(p,color).map(f=>({f})),...ex.filter(x=>x.at==='end').map(x=>({clip:x.clip}))]};
 const photoAlt=(p,f)=>p.n+(colorOpt(p)>=0&&IMGC[f]?', '+IMGC[f]:'');
 function galThumbs(p,color){return galSlides(p,color).map((x,i)=>x.clip
  ?`<button type="button" class="th-clip" aria-pressed="${i===0}" data-slide="${i}" aria-label="Play the video"><img src="${x.clip[1]}" alt=""><span class="pmark" aria-hidden="true"></span></button>`
  :`<button type="button" aria-pressed="${i===0}" data-slide="${i}" aria-label="View photo ${i+1}">${imgT(sm(x.f),'',0)}</button>`).join('')}
 function galSlide(p,color,i){const x=galSlides(p,color)[i];if(!x)return '';
- return x.clip?`<video class="lv pdp-vid" muted loop playsinline autoplay preload="none" poster="${x.clip[1]}" data-src="${x.clip[0]}" data-webm="0" aria-label="${esc(p.n)}${color?', '+esc(color):''}, video"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}`
+ return x.clip?`<video class="lv pdp-vid" muted loop playsinline autoplay preload="none" poster="${x.clip[1]}" data-src="${x.clip[0]}" data-webm="0" aria-label="${esc(p.n)}${color?', '+esc(color):''}, video"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(x.clip[0])}`
  :imgT(x.f,photoAlt(p,x.f),0)}
 function viewProduct(id){
  const p=prodById(id);if(!p)return viewShop();
@@ -2368,6 +2410,12 @@ function pTime(){
 ['play','pause'].forEach(ev=>P.au.addEventListener(ev,pSync));
 P.au.addEventListener('timeupdate',pTime);
 P.au.addEventListener('ended',()=>{P.au.currentTime=0;pSync()});
+// Sound on a credited clip: tap to unmute it; every other clip goes back to muted.
+document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if(!b)return;e.preventDefault();e.stopPropagation();
+ const v=b.parentNode.querySelector('video');if(!v)return;const on=b.getAttribute('aria-pressed')!=='true';
+ $$('video').forEach(x=>{if(x!==v)x.muted=true});$$('[data-msnd]').forEach(x=>{if(x!==b){x.setAttribute('aria-pressed','false');x.textContent='Sound'}});
+ if(on&&!v.dataset.on&&v.dataset.src){v.dataset.on=1;v.src=v.dataset.src}
+ v.muted=!on;b.setAttribute('aria-pressed',String(on));b.textContent=on?'Sound off':'Sound';if(on)v.play().catch(()=>{})});
 // Click-to-play for every YouTube tile, including ones filled in after the page drew.
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
@@ -2478,6 +2526,7 @@ function mountWave(sec){
 }
 
 function wireRoom(slug){
+ if(ROOMS[slug].k==='pod')wireWorn(main);
  const hd=$('#heard',main);if(hd)mountWave(hd);
  const r=ROOMS[slug];
  $$('.rates tbody tr[data-hrs]',main).forEach(tr=>{const go=()=>{const k=B.room==='holiday'&&r.k==='photo'?'photo':r.k;B.hrs=+tr.dataset.hrs;setBookRoom(k,B.room===k);B.slot=null;B.done=null;renderBook();$('#desk').scrollIntoView({behavior:reduce?'auto':'smooth'});toast(`${tr.dataset.hrs}-hour session loaded. Pick a start time.`)};tr.onclick=go;tr.onkeydown=e=>{if(e.key==='Enter')go()}});
