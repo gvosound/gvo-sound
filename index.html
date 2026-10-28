@@ -1179,7 +1179,9 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .cruise-bar li{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;background:var(--panel);font-size:.9rem}
 .cruise-bar span{color:var(--mute);font-family:var(--mono);font-size:.8rem}
 @media (max-width:860px){.cruise{grid-template-columns:1fr}.cruise-fl{position:static;max-width:420px}.cruise-cols{grid-template-columns:1fr}}
-.trips{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.trips{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 48px)/5);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+.trips .trip{scroll-snap-align:start}
+@media (max-width:1100px){.trips{grid-auto-columns:calc((100% - 24px)/3)}}
 .trip{position:relative;display:block;aspect-ratio:3/4;border-radius:var(--r);overflow:hidden;background:var(--panel);text-decoration:none;border:1px solid var(--line)}
 .trip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease),filter .5s}
 .trip:hover img{transform:scale(1.05);filter:brightness(.75)}
@@ -1189,7 +1191,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .trip-t small{font:600 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lav)}
 .trip-t b{font:900 1.25rem/1 var(--display);font-stretch:110%;text-transform:uppercase}
 .trip-t span{font-size:.85rem;color:#d4cfd9;line-height:1.4}
-@media (max-width:560px){.trips{grid-template-columns:1fr 1fr;gap:8px}.trip-t span{display:none}.trip-t b{font-size:1rem}}
+@media (max-width:760px){.trips{grid-auto-columns:62%;gap:10px}}
 .tr-how{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,5vw,64px);align-items:center}
 @media (max-width:860px){.tr-how{grid-template-columns:1fr}}
 .tr-q{margin:18px 0 0;font:700 clamp(1.5rem,3.2vw,2.4rem)/1.2 var(--body)}
@@ -1476,7 +1478,7 @@ const vCard=v=>{const t=esc(v.t||v.title),s=esc(v.s||'');return `<div class="vc"
 const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg'" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria-label="Scroll back">←</button><button type="button" data-row="1" aria-label="Scroll forward">→</button></div>';
 // Arrows only show when their row has more than fits.
-function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.art-strip,section'),r=box&&$('.sess,.pday-row',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
+function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.art-strip,section'),r=box&&$('.sess,.pday-row,.trips',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
 addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos').then(j=>YT=j.lists||{}).catch(()=>YT={}));
@@ -2062,7 +2064,7 @@ function viewTravel(){
   <div class="ev-empty rv"><div><span class="eyebrow">Next group trip</span><h3>Africa</h3><p>Dates and details are coming. Flawless has spent time in Ibadan and Lagos, and the next GVO group trip heads to Africa. Get on the list and you'll hear first.</p></div><form id="trNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Get trip details</button></form><p class="ev-follow">Or DM "Africa" to <a class="link" href="${igUrl(IG.travel)}" target="_blank" rel="noopener">@${IG.travel}</a>.</p></div>
  </div></section>
  <section style="padding-top:0"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Where GVO has been</span><h2>Trip log</h2></div><p class="lede">Boracay to Bangkok, Korea to Tokyo, Hong Kong to Puerto Rico. Tap a trip to watch it here.</p></div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Where GVO has been</span><h2>Trip log</h2><p class="lede">Boracay to Bangkok, Korea to Tokyo, Hong Kong to Puerto Rico. Tap a trip to watch it here.</p></div>${NAV}</div>
   <div class="trips">${TRIPS.map(tripCard).join('')}</div>
   <p class="dark-fine rv" style="margin:18px 0 0">Trip videos shot by Flawless on a DJI Pocket 3 and edited by Bob Almighty.</p>
  </div></section>
@@ -2567,7 +2569,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
- const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.art-strip,section'),r=box&&$('.sess,.pday-row',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
+ const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.art-strip,section'),r=box&&$('.sess,.pday-row,.trips',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
  const cb=e.target.closest('[data-cats]');if(cb){const c=$('#cat');if(c)c.scrollBy({left:+cb.dataset.cats*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const gb=e.target.closest('[data-grow]');if(gb){const c=$('#grow');c.scrollBy({left:+gb.dataset.grow*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const sb=e.target.closest('[data-igs]');if(sb){const c=sb.closest('.igb').querySelector('.igb-c');c.scrollBy({left:+sb.dataset.igs*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
