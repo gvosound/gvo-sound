@@ -102,4 +102,17 @@ document.addEventListener('keydown',ev=>{if(!lb.open)return;if(ev.key==='ArrowRi
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)document.querySelectorAll('video').forEach(v=>{v.removeAttribute('autoplay');v.pause();v.controls=true});
 
 
+
+/* Live stock from Square on every load */
+(function(){
+const NM={"world-tour-cozy-hoodie":"Hoodie","world-tour-cozy-pants":"Pants","world-tour-tracksuit-jacket":"Jacket","world-tour-tracksuit-pants":"Pants","world-tour-tee-black":"Black","world-tour-tee-white":"White","no-deadbeats-oversized-pink":"Pink","no-deadbeats-oversized-grey":"Grey","gvo-golf-set-shirt":"Shirt","gvo-golf-set-shorts":"Shorts","collective-set-shirt":"Shirt","collective-set-pants":"Pants","gvo-body-set-top":"Top","gvo-body-set-bottoms":"Bottoms"};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+fetch('/api/shop').then(r=>r.json()).then(d=>{const by={};(d.products||[]).forEach(p=>{if(p.siteId)by[p.siteId]=p});
+ document.querySelectorAll('.sq[data-ids]').forEach(el=>{const lines=el.dataset.ids.split(',').map(id=>{const p=by[id];if(!p)return null;
+  const col=(p.o||[]).find(o=>/^col/i.test(o.t)),cv=col?col.v:[];let s;
+  if(cv.length>1){const q={};cv.forEach(c=>q[c]=0);Object.entries(p.vars||{}).forEach(([k,v])=>{const c=k.split('/').find(x=>cv.includes(x));if(c)q[c]+=v.q||0});s=cv.map(c=>q[c]?`${c} (${q[c]})`:`${c} (sold out)`).join(', ')}
+  else{s=Object.values(p.vars||{}).reduce((a,v)=>a+(v.q||0),0)+' in stock'}
+  return (NM[id]?NM[id]+': ':'')+'$'+(+p.p).toFixed(p.p%1?2:0)+', '+s}).filter(Boolean);
+  if(lines.length)el.innerHTML='<span>In Square now<i class="live">live</i></span>'+lines.map(esc).join('<br>')})}).catch(()=>{});
+})();
 </script></body></html>
