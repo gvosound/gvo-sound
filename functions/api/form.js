@@ -1,4 +1,5 @@
-// POST /api/form: the site's forms (podcast quote, event inquiry, travel request, music submission, notify lists).
+// POST /api/form: the site's forms (podcast quote, event inquiry, travel request, music submission, notify lists,
+// and Cory's answers on the shop review page).
 // 1. Screens out bots: Cloudflare Turnstile when TURNSTILE_SECRET is set, plus a hidden field and a minimum fill time.
 // 2. Checks the fields.
 // 3. Hands the row to the Apps Script on the GVO Website Form Submissions sheet (FORMS_URL, FORMS_SECRET),
@@ -23,6 +24,7 @@ const SPEC = {
   travel: { trip: [60, 1], name: [100, 1], email: [120, 1], phone: [30, 0], where: [120, 0], when: [80, 0], pax: [4, 0], details: [2000, 0] },
   music:  { artist: [100, 1], email: [120, 1], title: [150, 1], type: [30, 0], links: [1600, 1], ig: [80, 0], tiktok: [80, 0], yt: [300, 0], gvo: [10, 0], engineer: [100, 0], notes: [1000, 0] },
   notify: { list: [40, 1], contact: [120, 1] },
+  review: { who: [60, 0], item: [200, 1], answer: [40, 0], notes: [2000, 0] }, // the shop review page at /review/
 };
 const LISTS = ['Next event', 'Africa trip'];
 const MUSIC_TYPES = ['Single', 'EP', 'Album or mixtape', 'Music video'];
@@ -80,6 +82,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (!EMAIL.test(f.contact)) f.contact = fmtPhone(f.contact);
   }
   if (f.pax && !/^\d{1,3}$/.test(f.pax)) return bad('Travelers should be a number.');
+  if (b.form === 'review' && !f.answer && !f.notes) return bad('Pick an answer or add a note.');
 
   if (!env.FORMS_URL || !env.FORMS_SECRET) {
     console.log('form not sent: FORMS_URL or FORMS_SECRET missing', b.form);

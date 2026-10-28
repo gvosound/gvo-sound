@@ -18,3 +18,7 @@
 
 /aud/*
   Cache-Control: public, max-age=604800
+
+# Shop review page for Cory: never in search, even after launch
+/review/*
+  X-Robots-Tag: noindex, nofollow

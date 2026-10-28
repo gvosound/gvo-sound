@@ -32,14 +32,17 @@ const FORMS = {
   travel: { tab: 'Travel requests',   label: 'Travel request',         cols: ['trip', 'name', 'email', 'phone', 'where', 'when', 'pax', 'details'] },
   music:  { tab: 'Music submissions', label: 'Music submission',       cols: ['artist', 'email', 'title', 'type', 'links', 'ig', 'tiktok', 'yt', 'gvo', 'engineer', 'notes'] },
   notify: { tab: 'Notify list',       label: 'Notify list sign-up',    cols: ['list', 'contact'] },
+  review: { tab: 'Review answers',    label: 'Shop review answer',     cols: ['who', 'item', 'answer', 'notes'] },
 };
+// Review answers also go to Siani, who updates the site from them.
+const REVIEW_TO = 'sianibutler@gmail.com';
 // Status column to start as "New", by tab (1-based column number), so new rows stand out.
 const STATUS_COL = { quote: 7, event: 10, travel: 10 };
 
 const LABELS = { name: 'Name', phone: 'Phone', email: 'Email', type: 'Type', details: 'Details', org: 'Company or venue',
   when: 'When', city: 'City', trip: 'Trip', where: 'Where to', pax: 'Travelers', artist: 'Artist', title: 'Song or project',
   links: 'Links', ig: 'Instagram', tiktok: 'TikTok', yt: 'YouTube', gvo: 'Recorded at GVO', engineer: 'GVO engineer or producer',
-  notes: 'Anything else', list: 'List', contact: 'Email or phone' };
+  notes: 'Anything else', list: 'List', contact: 'Email or phone', who: 'From', item: 'About', answer: 'Answer' };
 
 function doPost(e) {
   let body;
@@ -55,7 +58,7 @@ function doPost(e) {
   lock.waitLock(20000);
   let row;
   try {
-    const sheet = SpreadsheetApp.getActive().getSheetByName(form.tab);
+    const sheet = SpreadsheetApp.getActive().getSheetByName(form.tab) || makeTab(form);
     // Leading ' keeps the sheet from turning text like 2/14 or +1410 into dates or formulas.
     const values = [new Date()].concat(form.cols.map(k => f[k] == null || f[k] === '' ? '' : "'" + String(f[k]).slice(0, 2000)));
     sheet.appendRow(values);
@@ -66,12 +69,12 @@ function doPost(e) {
   }
 
   try {
-    const who = f.name || f.artist || f.contact || 'Someone';
+    const who = body.form === 'review' ? (f.who || 'Cory') + ' on ' + f.item : (f.name || f.artist || f.contact || 'Someone');
     const lines = form.cols.filter(k => f[k]).map(k => LABELS[k] + ': ' + f[k]);
     const url = SpreadsheetApp.getActive().getUrl() + '#gid=' + SpreadsheetApp.getActive().getSheetByName(form.tab).getSheetId();
     const opts = { name: 'GVO Sound website' };
     if (f.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) opts.replyTo = f.email;
-    MailApp.sendEmail(ALERT_TO, `${form.label}: ${who}`,
+    MailApp.sendEmail(body.form === 'review' ? ALERT_TO + ',' + REVIEW_TO : ALERT_TO, `${form.label}: ${who}`,
       `${form.label} from gvosound.com\n\n${lines.join('\n')}\n\nRow ${row} in "${form.tab}": ${url}\n` +
       (opts.replyTo ? '\nReply to this email to answer them.' : ''), opts);
   } catch (err) {
@@ -81,6 +84,15 @@ function doPost(e) {
   let recent = 0;
   try { recent = recentFor(String(f.email || f.contact || '').toLowerCase()); } catch (err) { recent = 1; }
   return out({ ok: true, row, recent });
+}
+
+// Adds a tab the first time a form needs it: a title row, then the column headers on row 2, like the others.
+function makeTab(form) {
+  const sh = SpreadsheetApp.getActive().insertSheet(form.tab);
+  sh.getRange(1, 1).setValue(form.label + 's from the website');
+  sh.getRange(2, 1, 1, form.cols.length + 1).setValues([['Received'].concat(form.cols.map(k => LABELS[k] || k))]).setFontWeight('bold');
+  sh.setFrozenRows(2);
+  return sh;
 }
 
 function recentFor(addr) {
