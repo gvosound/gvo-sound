@@ -1475,6 +1475,9 @@ const vCard=v=>{const t=esc(v.t||v.title),s=esc(v.s||'');return `<div class="vc"
 // The Garden on the recording page: each episode opens Watch the sessions on the music page.
 const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg'" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria-label="Scroll back">←</button><button type="button" data-row="1" aria-label="Scroll forward">→</button></div>';
+// Arrows only show when their row has more than fits.
+function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.art-strip,section'),r=box&&$('.sess,.pday-row',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
+addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos').then(j=>YT=j.lists||{}).catch(()=>YT={}));
 const vList=k=>YT&&YT[k]&&YT[k].ok&&YT[k].videos.length?YT[k]:null;
@@ -1486,6 +1489,7 @@ function fillVideos(root){if(!root||!root.isConnected)return;
  // Artist strips: any playlist in video-lists.js with an artist name lands under that artist's card.
  $$('[data-vids-artist]',root).forEach(el=>{const l=Object.values(YT||{}).find(x=>x.artist===el.dataset.vidsArtist&&x.ok&&x.videos.length);if(!l)return;
   el.innerHTML=`<div class="hd"><div><span class="eyebrow">${esc(l.artist)} · ${l.videos.length} videos</span><h3>${esc(l.label||'Watch')}</h3></div><div class="row-end">${ext(plUrl(l),'Playlist on YouTube →')}${NAV}</div></div><div class="sess">${l.videos.map(vCard).join('')}</div>`;el.hidden=false});
+ setTimeout(()=>rowNavs(root),0);
  const pd=vList('podcasts'),pe=$('[data-vids="podcasts"]',root);if(pd&&pe){const [f,...more]=pd.videos,cap=[f.s,vDate(f.published)].filter(Boolean).map(esc).join(' · ');
   pe.innerHTML=`<figure class="ytv"><button type="button" class="ytv-p" data-yt="${esc(f.id)}" aria-label="Play ${esc(f.t)}${f.s?', '+esc(f.s):''}"><img src="${ytThumb(f.id)}" alt="${esc(f.t)}, shot in the GVO podcast room"><span class="ytv-b" aria-hidden="true"></span></button><figcaption><span class="eyebrow">Shot in this room</span><b>${esc(f.t)}</b>${cap?`<small>${cap}</small>`:''}<a class="link" href="https://www.youtube.com/watch?v=${esc(f.id)}" target="_blank" rel="noopener">Watch on YouTube →</a></figcaption></figure>${more.length?`<div class="ep-list" aria-label="More episodes">${more.map(vCard).join('')}</div>`:''}`}}
 
@@ -1556,7 +1560,7 @@ const loadIg=()=>igP||(igP=api('ig').then(j=>IGD=j).catch(()=>IGD={}));
 function fillIg(root){if(!root||!root.isConnected||!IGD)return;
  $$('[data-igfeed]',root).forEach(b=>{const k=b.dataset.igfeed,a=IGD.accounts&&IGD.accounts[k],list=a?(a.ok?a.posts:null):((IGD.approved||{})[k]||null);
   if(list&&list.length){$('.igb-t',b).innerHTML=list.map(igTile).join('');b.hidden=false;b.classList.add('in')}});
- const pe=$('[data-igpod]',root),pl=(IGD.approved||{}).podcast;if(pe&&pl&&pl.length)pe.innerHTML=pl.map(podIgTile).join('')}
+ const pe=$('[data-igpod]',root),pl=(IGD.approved||{}).podcast;if(pe&&pl&&pl.length)pe.innerHTML=pl.map(podIgTile).join('');rowNavs(root)}
 const relById=id=>REL.find(x=>x.id===id);
 const spUrl=x=>SPO+x.k+'/'+x.sp;
 const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
@@ -2434,7 +2438,7 @@ function wire(r){
  if(typeof pSync==='function')pSync();
  updateBar();
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
- wireVideos(main);
+ wireVideos(main);setTimeout(rowNavs,60);
  if(r==='home')wireHome();
  if(r==='events'){
   const ty=$('#inqType',main);if(ty)ty.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$$('.chip',ty).forEach(x=>x.setAttribute('aria-pressed',x===c))});
