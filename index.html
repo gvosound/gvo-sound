@@ -1558,12 +1558,13 @@ const WORN=[["v","vid/reel_bodysuit-ladies.mp4","vid/reel_bodysuit-ladies.webp",
 // use other artists' records (Young Joc, DJ Drama, Lil Flip), so they stay muted and have no sound copy. href = where the credit links.
 const CLIP_MUSIC={
  'reel_tmc-tracksuit':{artist:'',track:'',href:''},
- 'reel_going-the-extra-mile':{artist:'',track:'',href:''}
+ // No music: Dym and the person on set talking, so it gets the Sound button with no credit line.
+ 'reel_going-the-extra-mile':{speech:true}
 };
 const clipKey=src=>String(src||'').split('/').pop().replace(/\.mp4$/,'');
-const clipMusic=src=>{const m=CLIP_MUSIC[clipKey(src)];return m&&m.artist&&m.track?m:null};
+const clipMusic=src=>{const m=CLIP_MUSIC[clipKey(src)];return m&&(m.speech||m.artist&&m.track)?m:null};
 // Sound button and credit line, only for a clip with a filled-in credit. Empty entries render nothing.
-const musicUI=src=>{const m=clipMusic(src);if(!m)return '';const cred=`Music: ${esc(m.artist)}, ${esc(m.track)}`;
+const musicUI=src=>{const m=clipMusic(src);if(!m)return '';if(m.speech)return `<button type="button" class="msnd" data-msnd aria-pressed="false" aria-label="Play with sound">Sound</button>`;const cred=`Music: ${esc(m.artist)}, ${esc(m.track)}`;
  return `<button type="button" class="msnd" data-msnd aria-pressed="false" aria-label="Play with sound">Sound</button>${m.href?`<a class="mcred" href="${esc(m.href)}">${cred}</a>`:`<span class="mcred">${cred}</span>`}`};
 const IMGC={}; // photo -> its color
 Object.entries(PHOTOS).forEach(([id,list])=>{const p=SNAP.find(x=>x.id===id);if(!p)return;list.forEach(([f,c])=>{if(c)IMGC[f]=[].concat(c)});const fs=list.map(x=>x[0]);p.img=[...fs,...p.img.filter(f=>!fs.includes(f))]});
