@@ -2359,7 +2359,7 @@ function srchIndex(){
  EVENTS.filter(e=>e.d>=today).forEach(e=>add('Events',e.t,new Date(e.d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+e.v,'#events',[e.k||'',e.v,e.c,'party tickets rsvp'].join(' '),e.fl?imgSrc(e.fl):''));
  TRIPS.forEach(t=>add('Travel',t.p,[t.k,t.when].filter(Boolean).join(' · '),'#travel',(t.l||'')+' trip travel',imgSrc(igImg('tr',t.id))));
  // Each page gets a picture from that page, so the popular list reads at a glance.
- [['Book a session','Recording, photo or podcast','#book','book booking schedule appointment price rates',imgSrc('sound_room')],['Build a fit','Mix pieces from the rack','#fit','outfit fit style build',imgSrc('look_ddj7mppllsi')],['Shop all','Every piece on the rack','#shop','shop store apparel clothes merch',imgSrc('lounge')],['Watch the sessions','The Garden and live performances','#music?to=sessions','video youtube garden live session watch',imgSrc('y_flawless')],['Events','Parties and tickets','#events','events party tickets',imgSrc('f_anniv')],['Travel','Group trips','#travel','travel trips',imgSrc('ig_tr_cruise_hd')],['Hours and address','109 Gibralter Ave, Annapolis','#?to=visit','hours address directions location open',imgSrc('pod_3')]].forEach(([l,sb,h,t,im])=>add('Pages',l,sb,h,t,im));
+ [['Book a session','Recording, photo or podcast','#book','book booking schedule appointment price rates',imgSrc('sound_room')],['Build a fit','Mix pieces from the rack','#fit','outfit fit style build',imgSrc('look_ddj7mppllsi')],['Shop all','Every piece on the rack','#shop','shop store apparel clothes merch',imgSrc('lounge')],['Watch the sessions','The Garden and live performances','#music?to=sessions','video youtube garden live session watch',imgSrc('y_flawless')],['Events','Parties and tickets','#events','events party tickets',imgSrc('f_anniv')],['Travel','Group trips','#travel','travel trips',imgSrc('ig_tr_cruise_hd')],['Hours and address','109 Gibralter Ave, Annapolis','#?to=visit','hours address directions location open','img/map_pin.svg']].forEach(([l,sb,h,t,im])=>add('Pages',l,sb,h,t,im));
  return items;
 }
 let SRCH=null;
@@ -2727,7 +2727,7 @@ const DESK_HTML=`<div class="desk"><div class="steps">
   <label>Email for your receipt<input id="f-email" type="email" autocomplete="email" placeholder="you@email.com"></label>
   <label>People coming<select id="f-ppl"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
   <label class="full"><span data-el="notesLbl">What are you working on?</span><textarea id="f-notes" rows="2" placeholder="Two songs, beats on a USB"></textarea></label></form></div>
- <div class="step" data-step="merch"><div class="step-h"><h3>Add merch</h3></div><p class="fine">Want to wear the session? Pick anything here and it's bagged at the front desk when you arrive. Same checkout.</p><div class="addons" data-el="addons"></div></div>
+ <div class="step" data-step="merch"><div class="step-h"><h3>Add merch</h3></div><p class="fine">Wear GVO. Pick anything here and it's bagged at the front desk when you arrive. Same checkout.</p><div class="addons" data-el="addons"></div></div>
 </div><aside class="ticket" data-el="ticket" aria-live="polite"></aside></div>`;
 function mountDesk(host,k){
  host.innerHTML=DESK_HTML;D={};$$('[data-el]',host).forEach(el=>D[el.dataset.el]=el);D.host=host;
