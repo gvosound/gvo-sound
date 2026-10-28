@@ -2915,7 +2915,7 @@ function mountQuote(host,switcher){
 // In-store sale for the 4-year anniversary. Set to false when the stock runs out: the panel, the product-page
 // line and the homepage strip item all go away.
 const STORE_SALE=true;
-const saleBanner=()=>STORE_SALE?`<aside class="saleB" aria-label="In-store sale"><div class="big">30%<small>Off in store</small></div><div><span class="eyebrow">4 years in the shop</span><h3>30% off everything in the store</h3><p>While stock lasts. Online prices stay the same. Shop open today ${SHOP_HRS[nowET().getDay()]}.</p></div><a class="btn btn-lav" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Get directions</a></aside>`:'';
+const saleBanner=()=>STORE_SALE?`<aside class="saleB" aria-label="In-store sale"><div class="big">30%<small>Off in store</small></div><div><span class="eyebrow">4 years in the shop</span><h3>30% off everything in the store</h3><p>While stock lasts. In store only, not on the site. Shop open today ${SHOP_HRS[nowET().getDay()]}.</p></div><a class="btn btn-lav" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Get directions</a></aside>`:'';
 const CATS=['All','Shirts','Cold weather','Bottoms','Headwear','Sale'];let cat='All';
 // The Sale chip only shows while Square has a sale price on something.
 const cats=()=>CATS.filter(c=>c!=='Sale'||PRODUCTS.some(p=>p.s||(p.vars&&Object.values(p.vars).some(v=>v.s!=null))));
