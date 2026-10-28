@@ -2414,9 +2414,16 @@ P.au.addEventListener('ended',()=>{P.au.currentTime=0;pSync()});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if(!b)return;e.preventDefault();e.stopPropagation();
  const v=b.parentNode.querySelector('video');if(!v)return;const on=b.getAttribute('aria-pressed')!=='true';
  $$('video').forEach(x=>{if(x!==v)x.muted=true});$$('[data-msnd]').forEach(x=>{if(x!==b){x.setAttribute('aria-pressed','false');x.textContent='Sound'}});
- // The page plays a silent copy. The first tap swaps in the copy with sound (vid/snd/), at the same spot in the clip.
- const snd='vid/snd/'+clipKey(v.dataset.src)+'.mp4';
- if(on&&v.dataset.snd!=='1'){v.dataset.snd='1';v.dataset.on=1;const t=v.currentTime||0;v.src=snd;v.addEventListener('loadedmetadata',()=>{try{v.currentTime=t}catch(e){}},{once:true})}
+ // The page plays a silent copy. The first tap loads the copy with sound (vid/snd/) in full, so it can pick up
+ // at the same spot in the clip. The silent copy keeps playing until it's ready.
+ if(on&&!v.dataset.snd){v.dataset.snd='loading';v.dataset.on=1;b.textContent='Loading';
+  fetch('vid/snd/'+clipKey(v.dataset.src)+'.mp4').then(r=>{if(!r.ok)throw 0;return r.blob()}).then(bl=>{
+   const t=v.currentTime||0;v.dataset.snd='1';v.src=URL.createObjectURL(bl);
+   v.addEventListener('loadedmetadata',()=>{try{v.currentTime=t}catch(e){}v.muted=b.getAttribute('aria-pressed')!=='true';v.play().catch(()=>{})},{once:true});
+   b.textContent=b.getAttribute('aria-pressed')==='true'?'Sound off':'Sound'})
+  .catch(()=>{v.dataset.snd='';b.setAttribute('aria-pressed','false');b.textContent='Sound'});
+  // Unmute and play inside the tap itself, so iPhones allow sound when the copy with audio arrives.
+  v.muted=false;v.play().catch(()=>{});b.setAttribute('aria-pressed','true');return}
  v.muted=!on;b.setAttribute('aria-pressed',String(on));b.textContent=on?'Sound off':'Sound';if(on)v.play().catch(()=>{})});
 // Click-to-play for every YouTube tile, including ones filled in after the page drew.
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
