@@ -293,22 +293,29 @@ main{min-height:60vh}
 .gallery figure{margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:var(--panel)}
 .gallery figure:first-child{grid-column:span 2;grid-row:span 2}
 .grow-h{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
-.grow{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(240px,24%);grid-template-rows:clamp(300px,34vw,440px);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
+.grow{--gw:calc((100% - 30px)/4);display:grid;grid-auto-flow:column;grid-auto-columns:var(--gw);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
 .grow::-webkit-scrollbar{display:none}
-.grow>figure:first-child{grid-column:span 2}
-.grow figure,.gtile{margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:var(--panel);scroll-snap-align:start}
-.grow figure img,.grow figure video{width:100%;height:100%;object-fit:cover;display:block}
+.grow>figure,.grow-g>a{aspect-ratio:4/5;margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:var(--panel);scroll-snap-align:start}
+.grow figure img,.grow figure video,.gtile .th img{width:100%;height:100%;object-fit:cover;display:block}
+/* Stills drift slowly so the row never jumps from moving clips to frozen frames */
+.grow figure img,.gtile .th img{animation:drift 16s ease-in-out infinite alternate}
+.grow>figure:nth-child(even) img,.grow-g>a:nth-child(odd) img{animation-delay:-8s}
+@keyframes drift{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.14) translate(-2.5%,-1.5%)}}
+@media (prefers-reduced-motion:reduce){.grow figure img,.gtile .th img{animation:none}}
 .grow figcaption{position:absolute;left:12px;bottom:12px;font:600 .72rem var(--mono);letter-spacing:.12em;text-transform:uppercase;background:rgba(7,6,10,.7);padding:6px 9px;border-radius:3px}
 .grow-g{display:contents}
+.gcard{display:grid;align-content:end;gap:10px;padding:22px;border:1px solid var(--lav);background:linear-gradient(170deg,var(--panel),rgba(185,178,255,.16));text-decoration:none;color:var(--bone)}
+.gcard b{font:800 clamp(1.5rem,2.4vw,2rem)/1 var(--display);font-stretch:110%;text-transform:uppercase}
+.gcard p{margin:0;color:var(--mute);font-size:.92rem}
+.gcard i{font:600 .72rem var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--lav)}
 .gtile{display:block;text-decoration:none;color:var(--bone)}
 .gtile .th{position:absolute;inset:0}
-.gtile .th img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s}
-.gtile:hover .th img{transform:scale(1.05);filter:brightness(.75)}
-.gtile .gt{position:absolute;inset:auto 0 0 0;display:grid;gap:4px;padding:40px 14px 14px;background:linear-gradient(transparent,rgba(7,6,10,.92))}
+.gtile:hover .th img{filter:brightness(.75)}
+.gtile .gt{position:absolute;inset:auto 0 0 0;display:grid;gap:4px;padding:48px 14px 14px;background:linear-gradient(transparent,rgba(7,6,10,.92))}
 .gtile small{font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lav)}
 .gtile b{font:800 1.15rem/1.05 var(--display);font-stretch:110%;text-transform:uppercase}
-.gtile i{font:normal .8rem var(--body);color:var(--mute)}
-@media (max-width:760px){.grow{grid-auto-columns:78%;grid-template-rows:380px}.grow>figure:first-child{grid-column:auto}.grow-h .igb-nav button{display:none}}
+.gtile .pmark{left:auto;top:14px;right:14px;margin:0}
+@media (max-width:760px){.grow{--gw:72%}.grow-h .igb-nav button{display:none}}
 .gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .gallery figure:hover img{transform:scale(1.05)}
 @media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px}}
@@ -1387,7 +1394,7 @@ const vDate=d=>{const x=new Date(d);return isNaN(x)?'':x.toLocaleDateString('en-
 // One video tile. Tap the picture and it plays right there through youtube-nocookie.
 const vCard=v=>{const t=esc(v.t||v.title),s=esc(v.s||'');return `<div class="vc"><button type="button" class="th" data-yt="${esc(v.id||v.y)}" aria-label="Play ${t}${s?', '+s:''}">${v.img?imgT(v.img,`${t}${s?', '+s:''}`):`<img src="${ytThumb(v.id)}" alt="${t}${s?', '+s:''}" loading="lazy">`}</button><span><b>${t}</b>${s?`<br><small>${s}</small>`:''}</span></div>`};
 // The Garden on the recording page: each episode opens Watch the sessions on the music page.
-const gardenTiles=list=>list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="${ytThumb(v.id)}" alt="" loading="lazy">`}</span><span class="gt"><small>${esc(v.s)}</small><b>${esc(v.t)}</b><i>Watch on the music page →</i></span></a>`).join('');
+const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth. Every episode is on the music page.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg'" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos').then(j=>YT=j.lists||{}).catch(()=>YT={}));
 const vList=k=>YT&&YT[k]&&YT[k].ok&&YT[k].videos.length?YT[k]:null;
