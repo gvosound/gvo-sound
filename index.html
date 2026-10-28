@@ -451,6 +451,7 @@ input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 
 /* shop */
 .pday{padding-bottom:0}
+.gtile .th img.lb{height:134%;margin-top:-17%}
 .pday-row{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .pday-ig{display:contents}
 .pday-t{scroll-snap-align:start}
@@ -1475,7 +1476,10 @@ const vDate=d=>{const x=new Date(d);return isNaN(x)?'':x.toLocaleDateString('en-
 // One video tile. Tap the picture and it plays right there through youtube-nocookie.
 const vCard=v=>{const t=esc(v.t||v.title),s=esc(v.s||'');return `<div class="vc"><button type="button" class="th" data-yt="${esc(v.id||v.y)}" aria-label="Play ${t}${s?', '+s:''}">${v.img?imgT(v.img,`${t}${s?', '+s:''}`):`<img src="${ytThumb(v.id)}" onerror="${ytBack(esc(v.id))}" onload="if(this.naturalWidth<200){${ytBack(esc(v.id))}}" alt="${t}${s?', '+s:''}" loading="lazy">`}</button><span><b>${t}</b>${s?`<br><small>${s}</small>`:''}</span></div>`};
 // The Garden on the recording page: each episode opens Watch the sessions on the music page.
-const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg'" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
+// Some uploads have no hq720: YouTube answers with a small gray placeholder instead of an error. Those tiles use
+// sddefault (640x480, letterboxed), zoomed in so the black bars fall outside the tile.
+const gFix=id=>`this.onerror=null;this.onload=null;this.classList.add('lb');this.src='https://i.ytimg.com/vi/${id}/sddefault.jpg'`;
+const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="${gFix(esc(v.id))}" onload="if(this.naturalWidth<200){${gFix(esc(v.id))}}" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria-label="Scroll back">←</button><button type="button" data-row="1" aria-label="Scroll forward">→</button></div>';
 // Arrows only show when their row has more than fits.
 function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.art-strip,section'),r=box&&$('.sess,.pday-row,.trips',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
