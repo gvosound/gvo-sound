@@ -1070,15 +1070,20 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .looks-h{margin-top:clamp(56px,8vw,90px);display:grid;gap:12px;margin-bottom:22px}
 .looks-h h3{font-size:clamp(1.4rem,3vw,2.2rem)}
 .looks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.worn{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-bottom:clamp(28px,4vw,44px)}
-.worn-t{margin:0;display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink)}
-.worn-m{position:relative;aspect-ratio:3/4;background:var(--panel);overflow:hidden}
-.worn-m img,.worn-m video{width:100%;height:100%;object-fit:cover;display:block}
-.worn-t figcaption{display:grid;gap:8px;padding:14px 14px 16px;align-content:start}
-.worn-t b{font:800 1rem/1.15 var(--display);font-stretch:110%;text-transform:uppercase}
-.worn-shop{display:flex;flex-wrap:wrap;gap:6px}
-.worn-shop a{font:600 .68rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--lav-ink);background:var(--lav);padding:6px 9px;border-radius:30px;text-decoration:none}
-.worn-book{font-size:.8rem;color:var(--mute);text-decoration:underline;text-underline-offset:3px}
+.worn{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:28px 14px;margin-bottom:clamp(28px,4vw,44px)}
+.worn-t{margin:0;display:grid;gap:12px;align-content:start}
+.worn-m{position:relative;aspect-ratio:3/4;background:var(--panel);overflow:hidden;border-radius:var(--r)}
+.worn-m img,.worn-m video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
+.worn-t:hover .worn-m img,.worn-t:hover .worn-m video{transform:scale(1.03)}
+.worn-tag{position:absolute;top:10px;left:10px;z-index:1;font:600 .6rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--bone);text-decoration:none;background:rgba(7,6,10,.5);backdrop-filter:blur(6px);padding:5px 8px;border-radius:3px;transition:background .2s,color .2s}
+.worn-tag:hover{background:var(--bone);color:var(--ink)}
+.worn-t figcaption{display:grid;gap:5px}
+.worn-t figcaption b{font:800 .95rem/1.1 var(--display);font-stretch:112%;text-transform:uppercase;text-wrap:balance}
+.worn-s{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;font-size:.86rem;color:var(--mute)}
+.worn-s a{color:var(--mute);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.worn-s a:hover{color:var(--bone);border-color:var(--lav)}
+.worn-s i{font-style:normal;color:var(--line)}
+.worn-s>span{color:var(--lav);font-size:.8rem}
 @media (max-width:760px){.worn{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.worn-t{scroll-snap-align:start}}
 .look{display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink)}
 .look-ph{display:block;aspect-ratio:4/5;overflow:hidden;background:var(--panel)}
@@ -2063,11 +2068,14 @@ function viewFit(){
 }
 /* Worn at GVO: clips and photos from Cory's album. Each links to its pieces and to the photo studio it was shot in. */
 function wornTile([t,f,poster,title,shop]){
- const links=shop.map(prodById).filter(Boolean).map(p=>`<a href="#product-${p.id}">${esc(p.n)}</a>`).join('');
- return `<figure class="worn-t">${t==='v'
-  ?`<div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(title)}, worn at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}</div>`
-  :`<div class="worn-m">${imgT(sm(f),`${esc(title)}, worn at GVO Sound`)}</div>`}
-  <figcaption><b>${esc(title)}</b>${links?`<span class="worn-shop">${links}</span>`:''}<a class="worn-book" href="#photo-studio">Shot at GVO Sound. Book the photo studio</a></figcaption></figure>`}
+ const ps=shop.map(prodById).filter(Boolean);
+ // "World Tour Tracksuit" + "World Tour Tracksuit Jacket" reads as "Jacket": drop the words the title already says.
+ const short=n=>{const a=n.replace(/,/g,'').split(' '),b=title.replace(/,/g,'').toLowerCase().split(' ');let k=0;while(k<a.length-1&&k<b.length&&a[k].toLowerCase()===b[k])k++;return k?a.slice(k).join(' '):n.replace(/^(GVO|World Tour) /,'')};
+ const media=t==='v'
+  ?`<video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(title)}, worn at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}`
+  :imgT(sm(f),`${esc(title)}, worn at GVO Sound`);
+ return `<figure class="worn-t"><div class="worn-m">${media}<a class="worn-tag" href="#photo-studio" aria-label="Shot at GVO Sound. Book the photo studio">Shot at GVO</a></div>
+  <figcaption><b>${esc(title)}</b>${ps.length?`<span class="worn-s">${ps.map(p=>`<a href="#product-${p.id}" aria-label="Shop the ${esc(p.n)}">${esc(short(p.n))}</a>`).join('<i aria-hidden="true">·</i>')}<span aria-hidden="true">→</span></span>`:''}</figcaption></figure>`}
 // Worn clips play only while on screen. On a phone only the tile most in view plays.
 let wornIO=null;
 function wireWorn(root){
