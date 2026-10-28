@@ -292,6 +292,23 @@ main{min-height:60vh}
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:10px}
 .gallery figure{margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:var(--panel)}
 .gallery figure:first-child{grid-column:span 2;grid-row:span 2}
+.grow-h{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.grow{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(240px,24%);grid-template-rows:clamp(300px,34vw,440px);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
+.grow::-webkit-scrollbar{display:none}
+.grow>figure:first-child{grid-column:span 2}
+.grow figure,.gtile{margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:var(--panel);scroll-snap-align:start}
+.grow figure img,.grow figure video{width:100%;height:100%;object-fit:cover;display:block}
+.grow figcaption{position:absolute;left:12px;bottom:12px;font:600 .72rem var(--mono);letter-spacing:.12em;text-transform:uppercase;background:rgba(7,6,10,.7);padding:6px 9px;border-radius:3px}
+.grow-g{display:contents}
+.gtile{display:block;text-decoration:none;color:var(--bone)}
+.gtile .th{position:absolute;inset:0}
+.gtile .th img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease),filter .4s}
+.gtile:hover .th img{transform:scale(1.05);filter:brightness(.75)}
+.gtile .gt{position:absolute;inset:auto 0 0 0;display:grid;gap:4px;padding:40px 14px 14px;background:linear-gradient(transparent,rgba(7,6,10,.92))}
+.gtile small{font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lav)}
+.gtile b{font:800 1.15rem/1.05 var(--display);font-stretch:110%;text-transform:uppercase}
+.gtile i{font:normal .8rem var(--body);color:var(--mute)}
+@media (max-width:760px){.grow{grid-auto-columns:78%;grid-template-rows:380px}.grow>figure:first-child{grid-column:auto}.grow-h .igb-nav button{display:none}}
 .gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .gallery figure:hover img{transform:scale(1.05)}
 @media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px}}
@@ -1369,6 +1386,8 @@ const ytThumb=id=>`https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 const vDate=d=>{const x=new Date(d);return isNaN(x)?'':x.toLocaleDateString('en-US',{month:'short',year:'numeric'})};
 // One video tile. Tap the picture and it plays right there through youtube-nocookie.
 const vCard=v=>{const t=esc(v.t||v.title),s=esc(v.s||'');return `<div class="vc"><button type="button" class="th" data-yt="${esc(v.id||v.y)}" aria-label="Play ${t}${s?', '+s:''}">${v.img?imgT(v.img,`${t}${s?', '+s:''}`):`<img src="${ytThumb(v.id)}" alt="${t}${s?', '+s:''}" loading="lazy">`}</button><span><b>${t}</b>${s?`<br><small>${s}</small>`:''}</span></div>`};
+// The Garden on the recording page: each episode opens Watch the sessions on the music page.
+const gardenTiles=list=>list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="${ytThumb(v.id)}" alt="" loading="lazy">`}</span><span class="gt"><small>${esc(v.s)}</small><b>${esc(v.t)}</b><i>Watch on the music page →</i></span></a>`).join('');
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos').then(j=>YT=j.lists||{}).catch(()=>YT={}));
 const vList=k=>YT&&YT[k]&&YT[k].ok&&YT[k].videos.length?YT[k]:null;
@@ -1376,6 +1395,7 @@ const plUrl=l=>'https://www.youtube.com/playlist?list='+encodeURIComponent(l.pla
 // Swap the hand-picked videos for the live playlists once they arrive. Anything that failed keeps its fallback.
 function fillVideos(root){if(!root||!root.isConnected)return;
  const ss=vList('sessions'),se=$('[data-vids="sessions"]',root);if(ss&&se)se.innerHTML=ss.videos.map(vCard).join('');
+ const ge=$('[data-vids="garden"]',root),gl=ss&&ss.videos.filter(v=>/garden/i.test(v.s));if(ge&&gl&&gl.length)ge.innerHTML=gardenTiles(gl);
  // Artist strips: any playlist in video-lists.js with an artist name lands under that artist's card.
  $$('[data-vids-artist]',root).forEach(el=>{const l=Object.values(YT||{}).find(x=>x.artist===el.dataset.vidsArtist&&x.ok&&x.videos.length);if(!l)return;
   el.innerHTML=`<div class="hd"><div><span class="eyebrow">${esc(l.artist)}</span><h3>${esc(l.label||'Watch')}</h3></div>${ext(plUrl(l),'Playlist on YouTube →')}</div><div class="sess">${l.videos.map(vCard).join('')}</div>`;el.hidden=false});
@@ -1756,7 +1776,9 @@ function viewRoom(slug){
   <div class="heard-row">${['need-to-know','ride-for-me'].map((id,i)=>{const x=relById(id);return `${i===1?'<div class="heard-mid" aria-live="polite"><div><span data-w="k">Preview</span><b data-w="t">Press play</b><span data-w="s">On either song</span></div></div>':''}<div class="hcard rv" data-side="${i?1:-1}" data-id="${x.id}"><span class="cv">${imgT(x.c,`${x.t} cover art`)}${pvBtn(x)}</span><div><h3>${x.t}</h3><p>${x.a}</p><div class="pbar" data-prog="${x.id}"><span></span></div><div class="ln">${ext(spUrl(x),SPIC+'Full song on Spotify')}${ext(allUrl(x),'All platforms')}</div></div></div>`}).join('')}</div>
  </div></section>`:''}
  ${r.k==='pod'?`<section class="ig-sec" style="padding-top:0"><div class="wrap">${igBand(IG.main,'Podcast clips','Clips from the podcast room, picked by the GVO team. Tap a reel to watch it here.','podcast')}</div></section>`:''}
- <section style="padding-top:0"><div class="wrap"><div class="gallery">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div></div></section>
+ <section style="padding-top:0"><div class="wrap">${r.k==='rec'
+  ?`<div class="grow-h"><span class="eyebrow">Inside the booth</span><div class="igb-nav"><button type="button" data-grow="-1" aria-label="Scroll back">←</button><button type="button" data-grow="1" aria-label="Scroll forward">→</button></div></div><div class="grow" id="grow">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound recording studio`)}<figcaption>${c}</figcaption></figure>`).join('')}<span class="grow-g" data-vids="garden">${gardenTiles(SESS.filter(v=>/garden/i.test(v.s)).map(v=>({id:v.y,t:v.t,s:v.s,img:v.img})))}</span></div>`
+  :`<div class="gallery">${r.gallery.map(([f,c])=>`<figure>${media(f,`${c}, GVO Sound ${r.short.toLowerCase()} studio`)}</figure>`).join('')}</div>`}</div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Who you'll work with</span><h2>The ${r.k==='rec'?'engineers':r.k==='photo'?'photographers':'producers'}</h2></div></div>
   <div class="team fit" style="--n:${team.length}">${team.map(memberCard).join('')}</div>
@@ -2336,6 +2358,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
  const cb=e.target.closest('[data-cats]');if(cb){const c=$('#cat');if(c)c.scrollBy({left:+cb.dataset.cats*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
+ const gb=e.target.closest('[data-grow]');if(gb){const c=$('#grow');c.scrollBy({left:+gb.dataset.grow*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const sb=e.target.closest('[data-igs]');if(sb){const c=sb.closest('.igb').querySelector('.igb-c');c.scrollBy({left:+sb.dataset.igs*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const a=e.target.closest('a[data-ig]');if(a&&!e.metaKey&&!e.ctrlKey){e.preventDefault();const id=a.dataset.ig,r=a.dataset.igr==='1';$('#iglbF').innerHTML=`<iframe src="https://www.instagram.com/${r?'reel':'p'}/${id}/embed/" title="Instagram ${r?'reel':'post'}" allow="autoplay; encrypted-media" loading="lazy"></iframe>`;$('#iglbA').href=a.href;$('#iglb').hidden=false;$('#iglbX').focus();if(!P.au.paused)P.au.pause()}
 });
