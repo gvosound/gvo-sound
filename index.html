@@ -2355,8 +2355,9 @@ function srchIndex(){
  TEAM.forEach(m=>add('Team',m.n,m.r,m.g==='photo'?'#photo-studio':m.g==='pod'?'#podcast-studio':'#recording-studio','@'+m.ig+' '+m.r,m.img?imgSrc(m.img):''));
  const today=new Date().toISOString().slice(0,10);
  EVENTS.filter(e=>e.d>=today).forEach(e=>add('Events',e.t,new Date(e.d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+e.v,'#events',[e.k||'',e.v,e.c,'party tickets rsvp'].join(' '),e.fl?imgSrc(e.fl):''));
- TRIPS.forEach(t=>add('Travel',t.p,[t.k,t.when].filter(Boolean).join(' · '),'#travel',(t.l||'')+' trip travel'));
- [['Book a session','Recording, photo or podcast','#book','book booking schedule appointment price rates'],['Build a fit','Mix pieces from the rack','#fit','outfit fit style build'],['Shop all','Every piece on the rack','#shop','shop store apparel clothes merch'],['Watch the sessions','The Garden and live performances','#music?to=sessions','video youtube garden live session watch'],['Events','Parties and tickets','#events','events party tickets'],['Travel','Group trips','#travel','travel trips'],['Hours and address','109 Gibralter Ave, Annapolis','#?to=visit','hours address directions location open']].forEach(([l,sb,h,t])=>add('Pages',l,sb,h,t));
+ TRIPS.forEach(t=>add('Travel',t.p,[t.k,t.when].filter(Boolean).join(' · '),'#travel',(t.l||'')+' trip travel',imgSrc(igImg('tr',t.id))));
+ // Each page gets a picture from that page, so the popular list reads at a glance.
+ [['Book a session','Recording, photo or podcast','#book','book booking schedule appointment price rates',imgSrc('sound_room')],['Build a fit','Mix pieces from the rack','#fit','outfit fit style build',imgSrc('look_ddj7mppllsi')],['Shop all','Every piece on the rack','#shop','shop store apparel clothes merch',imgSrc('lounge')],['Watch the sessions','The Garden and live performances','#music?to=sessions','video youtube garden live session watch',imgSrc('y_flawless')],['Events','Parties and tickets','#events','events party tickets',imgSrc('f_anniv')],['Travel','Group trips','#travel','travel trips',imgSrc('ig_tr_cruise_hd')],['Hours and address','109 Gibralter Ave, Annapolis','#?to=visit','hours address directions location open',imgSrc('pod_3')]].forEach(([l,sb,h,t,im])=>add('Pages',l,sb,h,t,im));
  return items;
 }
 let SRCH=null;
@@ -2369,7 +2370,7 @@ function srchFind(q,only){
   if(norm(it.label).startsWith(norm(q)))sc+=4;return {...it,sc:sc+it.boost}}).filter(Boolean).sort((a,b)=>b.sc-a.sc);
 }
 const srchEl=$('#srch'),srchIn=$('#srchIn'),srchR=$('#srchR');let srchAct=-1,srchBack=null;
-const srchRow=(it,i)=>`<a class="srch-i" role="option" id="sr${i}" href="${it.href}">${it.img?`<img src="${it.img}" alt="" loading="lazy">`:'<span class="srch-ph"><span class="mark"></span></span>'}<span><b>${esc(it.label)}</b><small>${esc(it.sub||'')}</small></span></a>`;
+const srchRow=(it,i)=>`<a class="srch-i" role="option" id="sr${i}" href="${it.href}">${it.img?`<img src="${it.img}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'srch-ph',innerHTML:'<span class=mark></span>'}))">`:'<span class="srch-ph"><span class="mark"></span></span>'}<span><b>${esc(it.label)}</b><small>${esc(it.sub||'')}</small></span></a>`;
 function srchDraw(){
  const q=srchIn.value.trim();srchAct=-1;
  if(!q){srchR.innerHTML=`<p class="srch-h">Popular</p>${['Shop all','Book a session','Build a fit','Watch the sessions','Hours and address'].map(l=>(SRCH=SRCH||srchIndex()).find(x=>x.label===l)).filter(Boolean).map(srchRow).join('')}`;return}
