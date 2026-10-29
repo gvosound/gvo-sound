@@ -1741,7 +1741,8 @@ async function loadShop(){
   const list=j.products.map(lp=>{const s=SNAP.find(x=>x.id===lp.siteId);
    return{id:lp.id,n:s?s.n:lp.n,cat:s?s.cat:lp.cat,flag:s&&s.flag,img:s&&s.img.length?s.img:lp.img,o:lp.o,av:lp.av,vars:lp.vars,p:lp.p,s:lp.s,live:1}}).sort((a,b)=>at(a.id)-at(b.id));
   PRODUCTS.length=0;PRODUCTS.push(...list);
-  Object.values(FIT).forEach(a=>a.forEach(o=>{o.p=prodById(o.id)||{...SNAP.find(x=>x.id===o.id),av:[],vars:{}}}));
+  Object.values(FIT_ALL).forEach(a=>a.forEach(o=>{o.p=prodById(o.id)||{...SNAP.find(x=>x.id===o.id),av:[],vars:{}}}));fitRestock();
+  if(typeof fitRepaint==='function'&&$('#fitBoard',main))fitRepaint();
   PRODUCTS.forEach(p=>{if(!META['product-'+p.id])META['product-'+p.id]={path:'/shop/'+p.id,title:`${p.n} | GVO Sound Apparel`,desc:`${p.n} by GVO Sound, ${m2(unit(p))}. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.`}});
   SQ.live=true;SQ.state='live';
   // drop bag lines that Square no longer sells
@@ -2192,12 +2193,18 @@ function viewBook(){
    Each option is one colorway. Stock and prices come from PRODUCTS, so the board never sells a piece the rack can't. */
 const FIT_SLOTS=[{k:'hat',l:'Hat',opt:1},{k:'layer',l:'Layer',opt:1},{k:'top',l:'Top',opt:0},{k:'bottom',l:'Bottom',opt:1}];
 const FIT_RAW={
- hat:[['gvo-beanie','Maroon','beanie-maroon'],['gvo-beanie','Black','beanie-black']],
+ hat:[['gvo-beanie','Maroon','beanie-maroon'],['gvo-beanie','Black','beanie-black'],['gvo-beanie','Navy Blue','beanie-navy'],['gvo-beanie','Olive','beanie-olive'],['gvo-beanie','Brown','beanie-brown'],['gvo-beanie','Gray','beanie-gray'],['gvo-beanie','Tan','beanie-tan'],['gvo-beanie','Pearl','beanie-pearl']],
  layer:[['worker-jacket','Tan','worker'],['world-tour-cheetah-hoodie','','cheetah'],['world-tour-cozy-hoodie','Navy','cozy-navy'],['world-tour-cozy-hoodie','Pink','cozy-pink']],
  top:[['world-tour-tee-black','','wt-black'],['gvo-x-ace-distressed-tee','','ace'],['no-art-for-today-tee','','noart'],['prove-a-point-tee','','prove'],['gvo-muscle-tee','','muscle'],['collective-set-shirt','Black','coll-shirt'],['never-see-the-haters-here-tee','','haters'],['music-is-a-drug-long-sleeve','','drug'],['no-deadbeats-oversized-pink','','ndb-pink'],['no-deadbeats-oversized-grey','','ndb-grey']],
  bottom:[['collective-set-pants','Black','coll-pants-black'],['collective-set-pants','Gray','coll-pants-gray'],['gvo-skater-shorts','','shorts']]
 };
-const FIT=Object.fromEntries(Object.entries(FIT_RAW).map(([k,a])=>[k,a.map(([id,c,f])=>({id,c,f,p:prodById(id)})).filter(o=>o.p)]));
+const FIT_ALL=Object.fromEntries(Object.entries(FIT_RAW).map(([k,a])=>[k,a.map(([id,c,f])=>({id,c,f,p:prodById(id)})).filter(o=>o.p)]));
+// The board shows only colorways with stock. It refilters when live stock arrives and keeps each slot's pick.
+const fitInStock=o=>{const p=o.p;if(!p||!p.av||!p.av.length)return false;if(!o.c)return true;const ci=p.o.findIndex(x=>x.t==='Color');return ci<0||p.av.some(v=>v.split('/')[ci]===o.c)};
+const FIT=Object.fromEntries(Object.keys(FIT_ALL).map(k=>[k,FIT_ALL[k].filter(fitInStock)]));
+function fitRestock(){const was=typeof FS==='object'?Object.fromEntries(Object.keys(FIT).map(k=>[k,FS[k]>=0&&FIT[k][FS[k]]?FIT[k][FS[k]].f:null])):null;
+ Object.keys(FIT_ALL).forEach(k=>{FIT[k].length=0;FIT[k].push(...FIT_ALL[k].filter(fitInStock))});
+ if(was)Object.keys(FIT).forEach(k=>{const i=fitIdx(k,was[k]);FS[k]=i>=0?i:(k==='top'?0:-1)})}
 const FIT_SIZES=['XS','S','M','L','XL','2XL','3XL'];
 const FIT_PRESETS=[
  {n:'Studio night',f:{hat:'beanie-maroon',layer:'worker',top:'wt-black',bottom:'coll-pants-black'}},
@@ -2326,9 +2333,10 @@ function mountFit(){
  $('#fitShare',main).onclick=()=>{const code=FIT_SLOTS.map(sl=>fitOpt(sl.k)?.f||'-').join('.');const url=location.href.split('#')[0]+'#shop?fit='+code;try{navigator.clipboard.writeText(url).then(()=>toast('Fit link copied. Paste it anywhere.'),()=>toast(url))}catch(e){toast(url)}};
  $('#fitAdd',main).onclick=()=>{if(!SQ.live){toast(SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753.':'Checking stock. Try again in a second.');return}const pcs=fitSummary(),ok=[],skip=[];pcs.forEach(o=>{const v=fitVariant(o);if(v.ok){const l=cart.find(x=>x.id===o.id&&x.v===v.v);l?l.q++:cart.push({id:o.id,v:v.v,q:1});ok.push(o)}else skip.push(o)});save();renderCart(true);
   toast(ok.length?`Added ${ok.length} piece${ok.length>1?'s':''} to your bag${skip.length?` · ${skip.map(o=>o.p.n).join(', ')} not available in ${fitSize}`:''}`:`None of these pieces are available in ${fitSize}. Try another size.`)};
- paint();
+ paint();fitRepaint=paint;
  if(q)setTimeout(()=>bd.scrollIntoView({behavior:'instant',block:'center'}),150);
 }
+let fitRepaint=null;
 
 function viewShop(){
  return `<div class="view" data-v="shop"><section style="padding-top:calc(110px + env(safe-area-inset-top,0px))"><div class="wrap">
