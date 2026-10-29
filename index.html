@@ -518,6 +518,7 @@ a.mcred:hover{text-decoration:underline}
 .pdp-th button{padding:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#ece9e4;aspect-ratio:4/5}
 .pdp-th button[aria-pressed="true"]{border-color:var(--lav);box-shadow:0 0 0 1px var(--lav)}
 .pdp-th img{width:100%;height:100%;object-fit:cover}
+.q-hint{display:block;margin:2px 0 6px;font:500 .78rem var(--body,inherit);color:var(--mute);text-transform:none;letter-spacing:0}
 .pdp-miss{grid-column:1/-1;order:3;margin:2px 0 0;font:600 .72rem/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
 .piece-tag{position:absolute;top:12px;left:12px;z-index:3;padding:6px 10px;border-radius:3px;background:var(--lav);color:var(--lav-ink);font:700 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;pointer-events:none}
 .set-note{margin:-4px 0 0;color:var(--bone);font-size:.95rem}.set-note a{color:var(--lav);text-decoration:none;white-space:nowrap}.set-note a:hover{text-decoration:underline}
@@ -3079,16 +3080,22 @@ function mountQuote(host,switcher){
  const sw=switcher?`<div class="steps" style="margin-bottom:16px"><div class="step"><div class="step-h"><span class="n" data-num></span><h3>Studio</h3></div><div class="opts" id="qSwitch">${BROOMS.filter(r=>r.k!=='holiday'||inSeason()).sort((a,b)=>(a.k==='pod')-(b.k==='pod')).map(r=>opt(r,'data-room',r.k==='pod')).join('')}</div></div></div>`:'';
  host.innerHTML=sw+`<div class="desk"><form class="quote-form" novalidate id="qform">
   <div>${switcher?'<span class="n" style="display:inline-flex;margin-bottom:10px">Step <b>2</b> of 2</span>':''}<h3 style="font-size:.8rem;margin-bottom:10px">What are you making?</h3><div class="seg" id="qtype"></div></div>
-  <div class="fields"><label>Name<input id="q-name" autocomplete="name" placeholder="Your name or show name"></label><label>Phone<input id="q-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label><label class="full">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com"></label><label class="full">Tell us about it<textarea id="q-notes" rows="4" placeholder="Weekly show, 2 hosts and a guest, want clips for Instagram"></textarea></label></div>
+  <div><h3 style="font-size:.8rem;margin-bottom:10px">Crew</h3><div class="seg" id="qcrew" role="radiogroup" aria-label="Crew"></div></div>
+  <div class="fields"><label>Name<input id="q-name" autocomplete="name" placeholder="Your name or show name"></label><label>Phone<input id="q-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142"></label><label class="full">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com"></label><label class="full">Tell us about it <small class="q-hint">The more detail, the better the quote</small><textarea id="q-notes" rows="6" placeholder="What you're making, how many people on camera, how long you need the room, dates or days that work, and what you want back (full episode, clips, edits, voiceover files)"></textarea></label></div>
   <button type="submit" class="btn btn-lav" style="justify-self:start">Send request</button>
   <p class="fine">The video team calls you back with a quote.</p></form>
   <aside class="ticket"><div class="t-head">${imgT('pod_set','')}<div><small>Content studio</small><b>Quoted per project</b></div></div><dl><dt>Producers</dt><dd>Bob Almighty, KingMAG Prod, Skandle</dd><dt>Studio</dt><dd>Open 24/7 by appointment</dd><dt>Reply</dt><dd>A call back from the team</dd></dl><div class="act"><p class="fine">Prefer to talk? Call or text (443) 292-6753</p></div></aside></div>`;
  if(switcher)$$('#qSwitch',host).forEach(()=>{const n=$('[data-num]',host);if(n)n.innerHTML='Step <b>1</b> of 2'});
  const rT=()=>$('#qtype').innerHTML=types.map(x=>`<button type="button" class="chip" aria-pressed="${x===t}" data-t="${x}">${x}</button>`).join('');rT();
  $('#qtype').onclick=e=>{const b=e.target.closest('[data-t]');if(b){t=b.dataset.t;rT()}};
+ // Crew: the sheet has no crew column yet, so the choice rides at the top of the details.
+ const crews=['I need a GVO crew','I\'m bringing my own crew'];let crew='';
+ const rC=()=>$('#qcrew').innerHTML=crews.map(x=>`<button type="button" class="chip" role="radio" aria-checked="${x===crew}" aria-pressed="${x===crew}" data-c="${esc(x)}">${esc(x)}</button>`).join('');rC();
+ $('#qcrew').onclick=e=>{const b=e.target.closest('[data-c]');if(b){crew=b.dataset.c;rC()}};
  if(switcher)$('#qSwitch').onclick=e=>{const b=e.target.closest('[data-room]');if(!b||b.dataset.room==='pod')return;B.room=b.dataset.room;mountDesk(host,b.dataset.room)};
  armForm($('#qform'));$('#qform').onsubmit=async e=>{e.preventDefault();const fm=e.target,ph=$('#q-phone').value.trim();if(!$('#q-name').value.trim()||!ph){toast('Add your name and phone so the team can call you');return}
-  const em=$('#q-email').value.trim(),res=await sendForm(fm,'quote',{name:$('#q-name').value.trim(),phone:ph,email:em,type:t,details:$('#q-notes').value.trim()});if(!res)return;
+  if(!crew){toast('Pick a crew option: GVO crew or your own');$('#qcrew').scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'});return}
+  const notes=$('#q-notes').value.trim(),em=$('#q-email').value.trim(),res=await sendForm(fm,'quote',{name:$('#q-name').value.trim(),phone:ph,email:em,type:t,details:`Crew: ${crew==='I need a GVO crew'?'Needs a GVO crew':'Bringing their own crew'}${notes?'\n\n'+notes:''}`});if(!res)return;
   formDone(fm,res,{to:em,eyebrow:'Request received',title:'Talk soon',body:`Expect a call at ${esc(fmtPh(ph))} from (443) 292-6753 within 48 hours with your ${esc(t.toLowerCase())} quote.`,again:'Send another request'})};
 }
 
