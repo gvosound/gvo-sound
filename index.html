@@ -453,6 +453,8 @@ input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 
 /* shop */
 .pday{padding-bottom:0}
+.bagboy{padding-bottom:0}
+@media (min-width:761px){.sess.bb-row{grid-auto-columns:calc((100% - 14px)/2)}}
 .gtile .th img.lb{height:134%;margin-top:-17%}
 .pday-row{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .pday-ig{display:contents}
@@ -1466,6 +1468,7 @@ const TEAM=[
  {n:'Nelly AEXO',r:'Engineer · Producer',ig:'vvsaexo',img:'t_nelly',g:'rec'},
  {n:'Mooki',r:'Sound engineer',ig:'mooki2x',g:'rec'},
  {n:'Boob Black',r:'Sound engineer',ig:'boobiecaldwell',img:'t_boob',g:'rec'},
+ {n:'Ike',r:'Sound engineer',img:'t_ike',g:'rec'},
  {n:'Dym Archives',r:'Photographer',ig:'dymarchives',img:'t_dym',g:'photo'},
  {n:'Smooth',r:'Photographer',ig:'smoozus',img:'t_smooth',g:'photo'},
  {n:'Spain',r:'Photographer',ig:'spain_15',img:'t_spain',g:'photo'},
@@ -1848,7 +1851,7 @@ function seoNote(meta){return note('SEO · this page',`<dl class="seo"><dt>URL</
 const crumbs=list=>`<ol class="crumbs" aria-label="Breadcrumb">${list.map(([l,h],i)=>i<list.length-1?`<li><a href="${h}">${l}</a></li>`:`<li aria-current="page">${l}</li>`).join('')}</ol>`;
 const prodCard=p=>{const badge=p.s?`<span class="badge sale">${Math.round((1-p.s/p.p)*100)}% off</span>`:p.flag?`<span class="badge">${p.flag}</span>`:'';const colors=(p.o.find(o=>o.t==='Color')||{v:[]}).v.length;
  return `<a class="prod rv" href="#product-${p.id}"><div class="pic">${badge}${p.img.length?imgT(sm(p.img[0]),p.n)+(p.img[1]?imgT(sm(p.img[1]),'',1,'b'):''):'<div class="nophoto"><span class="mark"></span><small>Photo coming</small></div>'}</div><div class="meta"><span class="name">${p.n}${colors>1?`<small class="cols">${colors} colors</small>`:''}</span><span class="price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</span></div></a>`};
-const memberCard=m=>`<figure class="member" data-g="${m.g}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span><a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a></figcaption></figure>`;
+const memberCard=m=>`<figure class="member" data-g="${m.g}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span>${m.ig?`<a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a>`:''}</figcaption></figure>`;
 const doorHTML=()=>`<div class="door rv" id="visit"><div class="door-ph">${imgT('pod_3','The GVO studio floor with the GVO logo wall')}</div><div class="door-info">
  <div><h3>Pull up</h3><p class="addr">109 Gibralter Ave<br>Annapolis, MD 21401</p><p style="margin:12px 0 0"><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Open in Maps →</a></p></div>
  <div><h3>Studio</h3><p class="hrs-big">Open 24/7</p><p class="hrs-note">By appointment only. Book at least 2 hours ahead.</p><h3 style="margin-top:20px">Shop in person</h3><table class="hours">${hoursRows()}</table><p class="hrs-note">Shop hours can change, so check <a class="link" href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">@gvosound.clothing</a> before you come. <a class="link" href="#shop">Shop online 24/7 →</a></p></div>
@@ -1936,6 +1939,10 @@ const POD_DAY=[["vid/reel_content-day-bts.mp4","vid/reel_content-day-bts.webp","
 // On set: the two shoot clips, then the @gvo.sound reels the team approved for the podcast page, in one swipe row.
 const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bring your own crew, or add GVO's. Our videographers and editors are available to shoot and cut it.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Request a quote</a>${NAV}</div></div>
  <div class="pday-row">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, content studio at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}<span class="pday-ig" data-igpod></span></div></div></section>`;
+// Shot here: Skandle's BagBoy Network (Cory: almost every episode filmed at GVO, from a couple hundred subscribers
+// to 100K+; the channel showed 128K on Oct 29, 2026).
+const BAGBOY=[{id:'JoAuWwjZyT4',t:'100 million views, talking to my son',s:'BagBoy Network'},{id:'KgY4zWyNDrY',t:'The Zen Martin Show, #3',s:'BagBoy Network'}];
+const bagBoy=()=>`<section class="bagboy"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Built in this room</span><h2>BagBoy Network</h2><p class="lede">Almost every BagBoy Network episode was filmed here. The channel grew from a few hundred subscribers to more than 100K.</p></div><div class="row-end">${ext('https://www.youtube.com/@bagboynetwork','Watch the channel','btn btn-ghost')}</div></div><div class="sess bb-row">${BAGBOY.map(vCard).join('')}</div></div></section>`;
 const podIgTile=p=>`<figure class="worn-t pday-t pday-igt"><div class="worn-m">${igTile(p)}</div><figcaption><b>${esc(String(p.alt||'Podcast clip').slice(0,60))}</b><span class="worn-s"><a href="${esc(p.link)}" target="_blank" rel="noopener">Reel on @gvo.sound</a><span aria-hidden="true">→</span></span></figcaption></figure>`;
 function viewRoom(slug){
  const r=ROOMS[slug],others=Object.entries(ROOMS).filter(([s])=>s!==slug);
@@ -1951,7 +1958,7 @@ function viewRoom(slug){
    ${r.k==='photo'?note('Seasonal package','The holiday photoshoot special shows from Nov 1 to Dec 31 and hides itself the rest of the year, here and in the booking desk. <button type="button" class="chip" data-season style="margin-top:10px">'+(forceSeason?'Back to today':'Preview holiday season')+'</button>'):''}
   </div>
  </section>
- ${r.k==='pod'?podDay():''}
+ ${r.k==='pod'?podDay()+bagBoy():''}
  <section><div class="wrap split">
   <div style="display:grid;gap:26px"><span class="eyebrow">The space</span><div class="prose">${r.about.map(p=>`<p>${p}</p>`).join('')}</div>
    <div><h3 style="margin-bottom:12px">What's included</h3><ul class="incl">${r.incl.map(i=>`<li>${i}</li>`).join('')}</ul></div>
@@ -2424,7 +2431,7 @@ function srchIndex(){
  Object.entries(ROOMS).forEach(([slug,r])=>add('Studios',r.h1.replace(' in Annapolis',''),r.k==='pod'?'Quoted per project':r.facts[0].join(' '),'#'+slug,[r.short,r.lede,(r.gear||[]).join(' '),(r.incl||[]).join(' '),'book booking session rent'].join(' '),imgSrc(r.img),1));
  REL.forEach(x=>add('Music',x.t,'by '+x.a,'#music/'+x.id,[x.a,x.tag||'','song single listen stream preview'].join(' '),imgSrc(x.c)));
  ARTISTS.forEach(a=>add('Music',a.n,a.r,'#music','artist '+a.r,a.img?imgSrc(a.img):''));
- TEAM.forEach(m=>add('Team',m.n,m.r,m.g==='photo'?'#photo-studio':m.g==='pod'?'#content-studio':'#recording-studio','@'+m.ig+' '+m.r,m.img?imgSrc(m.img):''));
+ TEAM.forEach(m=>add('Team',m.n,m.r,m.g==='photo'?'#photo-studio':m.g==='pod'?'#content-studio':'#recording-studio',(m.ig?'@'+m.ig+' ':'')+m.r,m.img?imgSrc(m.img):''));
  const today=new Date().toISOString().slice(0,10);
  EVENTS.filter(e=>e.d>=today).forEach(e=>add('Events',e.t,new Date(e.d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+e.v,'#events',[e.k||'',e.v,e.c,'party tickets rsvp'].join(' '),e.fl?imgSrc(e.fl):''));
  TRIPS.forEach(t=>add('Travel',t.p,[t.k,t.when].filter(Boolean).join(' · '),'#travel',(t.l||'')+' trip travel',imgSrc(igImg('tr',t.id))));
