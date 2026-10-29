@@ -1704,7 +1704,7 @@ async function api(path,body){
  try{r=await fetch('/api/'+path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{headers:{'Accept':'application/json'}})}
  catch(e){throw new Error('No connection. Check your signal and try again.')}
  try{j=await r.json()}catch(e){}
- if(!r.ok||j.ok===false){const e=new Error(j.error||'Square is not answering right now. Call or text the studio at (443) 292-6753.');e.code=j.code;e.data=j;e.status=r.status;throw e}
+ if(!r.ok||j.ok===false){const e=new Error(j.error||'Checkout is not answering right now. Call or text the studio at (443) 292-6753.');e.code=j.code;e.data=j;e.status=r.status;throw e}
  return j;
 }
 /* site forms: each posts to /api/form, which writes the row to GVO's form sheet and emails the GVO Gmail */
@@ -2324,7 +2324,7 @@ function mountFit(){
  bd.addEventListener('pointerup',e=>{if(sk==null)return;const dx=e.clientX-sx,k=sk;sk=null;if(Math.abs(dx)>34){step(k,dx<0?1:-1);fitTab=k;paint()}else{fitTab=k;paint();$('.fit-ctl',main).scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'})}});
  $('#fitShuffle',main).onclick=()=>{const dirs={};FIT_SLOTS.forEach(sl=>{const n=FIT[sl.k].length;let i=sl.k==='top'?Math.floor(Math.random()*n):(Math.random()<(sl.k==='hat'?.45:.25)?-1:Math.floor(Math.random()*n));if(sl.k==='bottom'&&i<0)i=Math.floor(Math.random()*n);if(i!==FS[sl.k]){FS[sl.k]=i;dirs[sl.k]=1}});fitN++;paint(dirs)};
  $('#fitShare',main).onclick=()=>{const code=FIT_SLOTS.map(sl=>fitOpt(sl.k)?.f||'-').join('.');const url=location.href.split('#')[0]+'#shop?fit='+code;try{navigator.clipboard.writeText(url).then(()=>toast('Fit link copied. Paste it anywhere.'),()=>toast(url))}catch(e){toast(url)}};
- $('#fitAdd',main).onclick=()=>{if(!SQ.live){toast(SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753.':'Checking stock with Square. Try again in a second.');return}const pcs=fitSummary(),ok=[],skip=[];pcs.forEach(o=>{const v=fitVariant(o);if(v.ok){const l=cart.find(x=>x.id===o.id&&x.v===v.v);l?l.q++:cart.push({id:o.id,v:v.v,q:1});ok.push(o)}else skip.push(o)});save();renderCart(true);
+ $('#fitAdd',main).onclick=()=>{if(!SQ.live){toast(SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753.':'Checking stock. Try again in a second.');return}const pcs=fitSummary(),ok=[],skip=[];pcs.forEach(o=>{const v=fitVariant(o);if(v.ok){const l=cart.find(x=>x.id===o.id&&x.v===v.v);l?l.q++:cart.push({id:o.id,v:v.v,q:1});ok.push(o)}else skip.push(o)});save();renderCart(true);
   toast(ok.length?`Added ${ok.length} piece${ok.length>1?'s':''} to your bag${skip.length?` · ${skip.map(o=>o.p.n).join(', ')} not available in ${fitSize}`:''}`:`None of these pieces are available in ${fitSize}. Try another size.`)};
  paint();
  if(q)setTimeout(()=>bd.scrollIntoView({behavior:'instant',block:'center'}),150);
@@ -2377,7 +2377,7 @@ function viewProduct(id){
     ${STORE_SALE?'<p class="pdp-sale">30% off in store while stock lasts. <a href="#shop">Details</a></p>':''}
     <p class="lede">Designed by GVO Sound in Annapolis and sold at the studio, 109 Gibralter Ave.</p>
     <div id="pdpOpts" class="opt-row"></div>
-    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><span class="stock" id="pdpStock"></span><span class="sync"${notesOn?'':' hidden'}>Stock from Square</span></div>
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><span class="stock" id="pdpStock"></span></div>
     <p class="pdp-ship"><b>Get it</b> Ships in 3 to 5 business days for $9.99 in the US, or $15.99 international. Pickup at the studio is free. You choose at checkout.</p>
     <button type="button" class="btn btn-lav" id="pdpAdd">Add to bag · ${m2(unit(p))}</button>
     ${seoNote(META['product-'+id])}
@@ -2800,7 +2800,7 @@ const DESK_HTML=`<div class="desk"><div class="steps">
  <div class="step" data-step="room"><div class="step-h"><span class="n" data-num></span><h3>Studio</h3></div><div class="opts" data-el="rooms"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Length</h3></div><div class="fader-top"><b data-el="hrsOut"></b><span data-el="rateOut"></span></div><input type="range" data-el="hrs" min="0" max="0" step="1" value="0" aria-label="Session length"><div class="ticks" data-el="ticks"></div><p class="len-note" data-el="lenNote" hidden>Sessions start at 2 hours. Need just 1? <a class="link" href="sms:+14432926753">Text</a> or <a class="link" href="tel:+14432926753">call</a> (443) 292-6753 to request it.</p></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3 data-el="staffHead">Engineer</h3></div><div class="opts" data-el="staff"></div><p class="fine staff-note" data-el="staffNote" hidden></p></div>
- <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Date and start</h3><span class="sync" style="margin-left:auto" data-sync>Live from Square</span><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span>Open 24/7 · book at least 2 hours ahead</span><span>Only open start times show</span></div><div class="slots" data-el="slots"></div></div>
+ <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Date and start</h3><span class="done" data-el="whenDone" hidden>Set</span></div><div class="days" data-el="days"></div><div class="day-label" data-el="dayLabel"></div><div class="legend"><span>Open 24/7 · book at least 2 hours ahead</span><span>Only open start times show</span></div><div class="slots" data-el="slots"></div></div>
  <div class="step"><div class="step-h"><span class="n" data-num></span><h3>Your details</h3></div><form class="fields" data-el="form" novalidate>
   <label><span>Name or artist name <span class="req">*</span></span><input id="f-name" autocomplete="name" placeholder="Lex" required aria-describedby="e-name"><span class="field-err" id="e-name" hidden>Add the name for the booking</span></label>
   <label><span>Mobile for text confirm <span class="req">*</span></span><input id="f-phone" autocomplete="tel" inputmode="tel" placeholder="(410) 555-0142" required aria-describedby="e-phone"><span class="field-err" id="e-phone" hidden>Add a 10-digit mobile number</span></label>
@@ -2821,7 +2821,7 @@ function mountDesk(host,k){
  D.staff.onclick=e=>{const b=e.target.closest('[data-staff]');if(!b)return;if(B.room==='photo')B.photog=b.dataset.staff;else{B.staff=b.dataset.staff;B.slot=null}renderBook()};
  D.days.onclick=e=>{const b=e.target.closest('[data-day]');if(b){B.day=b.dataset.day;B.dayPicked=true;B.slot=null;renderBook()}};
  D.slots.onclick=e=>{const b=e.target.closest('[data-slot]');if(b&&!b.disabled){B.slot=b.dataset.slot;renderBook()}else if(e.target.closest('[data-retry]'))loadSlots(true)};
- D.addons.onclick=e=>{if(e.target.closest('select'))return;const b=e.target.closest('[data-add]');if(b){const id=b.dataset.add,cur=addOf(id);if(cur)B.add.delete(id+'|'+cur.v);else{const p=prodById(id);if(!p||!p.av.length||!SQ.live){toast(SQ.live?'Sold out right now':'Merch is still loading from Square');return}const v=firstAvail(p);B.add.set(id+'|'+v,{id,v,q:1})}renderBook()}};
+ D.addons.onclick=e=>{if(e.target.closest('select'))return;const b=e.target.closest('[data-add]');if(b){const id=b.dataset.add,cur=addOf(id);if(cur)B.add.delete(id+'|'+cur.v);else{const p=prodById(id);if(!p||!p.av.length||!SQ.live){toast(SQ.live?'Sold out right now':'Merch is still loading. Try again in a moment.');return}const v=firstAvail(p);B.add.set(id+'|'+v,{id,v,q:1})}renderBook()}};
  D.addons.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.addon')){e.preventDefault();e.target.click()}};
  D.addons.onchange=e=>{const s=e.target.closest('select');if(!s)return;const id=s.dataset.id,cur=addOf(id);if(cur){B.add.delete(id+'|'+cur.v);B.add.set(id+'|'+s.value,{id,v:s.value,q:cur.q})}renderBook()};
  D.hrs.oninput=e=>{const l=svcList(B.room),s=l[+e.target.value];if(s&&s.hrs!==B.hrs){B.hrs=s.hrs;B.slot=null;if(B.staff!=='any'&&B.room!=='photo'&&!s.team.some(t=>t.id===B.staff))B.staff='any';renderBook()}};
@@ -2878,8 +2878,8 @@ function renderBook(){
  if(B.slot&&!list.some(x=>x.start===B.slot))B.slot=null;
  const dd=new Date(B.day+'T12:00:00');
  let label;
- if(BK.menuErr){D.slots.innerHTML=`<p class="fine">Live times could not load from Square. ${reachHTML} to book.</p>`;label='Offline'}
- else if(!BK.menu||!st||(!byDay&&st.busy)){D.slots.innerHTML=`<p class="fine">${BK.menu&&!s?`Online booking for this room isn't set up yet. ${reachHTML} to book.`:'Loading open times from Square…'}</p>`;label=BK.menu&&!s?'Not online':'Loading'}
+ if(BK.menuErr){D.slots.innerHTML=`<p class="fine">Times couldn't load right now. ${reachHTML} to book.</p>`;label='Offline'}
+ else if(!BK.menu||!st||(!byDay&&st.busy)){D.slots.innerHTML=`<p class="fine">${BK.menu&&!s?`Online booking for this room isn't set up yet. ${reachHTML} to book.`:'Loading open times…'}</p>`;label=BK.menu&&!s?'Not online':'Loading'}
  else if(st.err){D.slots.innerHTML=`<p class="fine">${st.err} <button type="button" class="link" data-retry>Try again</button></p>`;label='Offline'}
  else{D.slots.innerHTML=list.length?list.map(x=>`<button type="button" class="slot" aria-pressed="${B.slot===x.start}" data-slot="${x.start}">${etTime(x.start)}</button>`).join(''):'<p class="fine">No open start times this day for a session this long. Try a shorter session or another day.</p>';label=list.length?list.length+' start time'+(list.length>1?'s':'')+' open':'Fully booked'}
  D.whenDone.hidden=!B.slot;
@@ -2921,7 +2921,7 @@ function renderTicket(){
  tk.innerHTML=head+`<dl><dt>Length</dt><dd>${s?s.hrs+' '+(s.hrs===1?'hour':'hours'):'—'}</dd><dt>${B.room==='rec'?'Engineer':'Photographer'}</dt><dd>${staffN}${B.room==='photo'&&B.photog!=='none'?' · paid separately':''}</dd><dt>When</dt><dd>${when}</dd><dt>Merch</dt><dd>${mcount?mcount+' item'+(mcount>1?'s':''):'None'}</dd></dl>
  <div class="perf"></div>
  <div class="tot">${rows}<div class="due"><span>Due today</span><span>${s?m2(total):'—'}</span></div><p class="fine">${POLICY}${B.room==='photo'&&B.photog!=='none'?' Photographer fee not included.':''}</p>${BK.q.err?`<p class="fine">${BK.q.err}</p>`:''}</div>
- <div class="act"><button type="button" class="btn btn-lav" data-pay ${can?'':'disabled'}>${!s?'Not bookable online':!B.slot?'Choose a start time':!q?'Pricing with Square…':'Pay '+m2(total)}</button><p class="fine">Card or Google Pay, through Square.</p></div>`;
+ <div class="act"><button type="button" class="btn btn-lav" data-pay ${can?'':'disabled'}>${!s?'Not bookable online':!B.slot?'Choose a start time':!q?'Pricing…':'Pay '+m2(total)}</button><p class="fine">Card or Google Pay, through Square.</p></div>`;
  $('[data-pay]',tk).onclick=()=>{
   const name=$('#f-name').value.trim(),phone=$('#f-phone').value.trim();
   const bad=[];if(!name)bad.push('f-name');if(phone.replace(/\D/g,'').length!==10)bad.push('f-phone');
@@ -2965,7 +2965,7 @@ const uid=()=>((crypto.randomUUID&&crypto.randomUUID())||(Date.now().toString(36
 const COUNTRIES=[['US','United States'],['CA','Canada'],['GB','United Kingdom'],['JM','Jamaica'],['TT','Trinidad and Tobago'],['BS','Bahamas'],['BB','Barbados'],['HT','Haiti'],['DO','Dominican Republic'],['PR','Puerto Rico'],['NG','Nigeria'],['GH','Ghana'],['KE','Kenya'],['ZA','South Africa'],['FR','France'],['DE','Germany'],['NL','Netherlands'],['IE','Ireland'],['IT','Italy'],['ES','Spain'],['MX','Mexico'],['BR','Brazil'],['JP','Japan'],['KR','South Korea'],['AU','Australia'],['NZ','New Zealand'],['AE','United Arab Emirates']];
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function quoteRows(q,ship,first){
- if(!q)return '<p class="sp-note">Getting your total from Square…</p>';
+ if(!q)return '<p class="sp-note">Getting your total…</p>';
  return [...q.lines.map((l,i)=>`<div><span>${esc(i===0&&first?first:l.name)}${l.qty>1?' × '+l.qty:''}</span><span>${m2(l.gross/100)}</span></div>`),
   ...q.discounts.map(d=>`<div><span>${esc(d.name.replace(/^Wix Website( Discount)?\s*\d*$/i,'Sale'))}</span><span>−${m2(d.amount/100)}</span></div>`),
   ...(q.discount&&!q.discounts.length?[`<div><span>Sale</span><span>−${m2(q.discount/100)}</span></div>`]:[]),
@@ -3017,7 +3017,7 @@ function openPay(c){
   $('#a-country').onchange=e=>{const was=country==='US';country=e.target.value;$('#a-state').placeholder=country==='US'?'State':'State or region (optional)';if(was!==(country==='US'))requote()};
   $('#o-phone').oninput=e=>{const t=e.target,d=t.value.replace(/\D/g,'').replace(/^1/,'').slice(0,10);t.value=d.length>6?`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`:d.length>3?`(${d.slice(0,3)}) ${d.slice(3)}`:d};
   requote();
- }else if(!q){err('Square has not priced this session yet. Close and try again.')}
+ }else if(!q){err('This session is not priced yet. Close and try again.')}
  // contact and address from the form
  const read=()=>{
   if(isB)return{ok:1,email:(($('#o-email')||{}).value||c.book.contact.email||'').trim(),name:c.book.contact.name,phone:c.book.contact.phone};
@@ -3118,7 +3118,7 @@ function wireShop(){
  const r=()=>{$('#shopFilters').innerHTML=cats().map(c=>`<button type="button" class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join('');const q=$('#shopQ').value.trim(),ids=q?srchFind(q,'Shop').map(x=>x.href.slice(9)):null;
   const shown=PRODUCTS.filter(p=>!SQ.live||p.av.length);let list=shown.filter(p=>cat==='All'||(cat==='Sale'?p.s:p.cat===cat));
   if(ids)list=ids.map(id=>list.find(p=>p.id===id)).filter(Boolean);
-  $('#shopCount').textContent=list.length+' of '+shown.length+' pieces'+(q?` for “${q}”`:'')+(notesOn?' · '+(SQ.live?'live from Square':SQ.state==='down'?'Square is offline':'checking Square'):'');
+  $('#shopCount').textContent=list.length+' of '+shown.length+' pieces'+(q?` for “${q}”`:'');
   $('#rack').innerHTML=list.length?list.map(prodCard).join(''):`<div class="rack-none"><p>Nothing on the rack matches “${esc(q)}”${cat!=='All'?' in '+esc(cat):''}.</p><button type="button" class="btn btn-ghost" data-clearq>Clear search</button></div>`};
  const sq=$('#shopQ');sq.value=new URLSearchParams(location.hash.split('?')[1]||'').get('q')||'';let sqt;
  sq.addEventListener('input',()=>{clearTimeout(sqt);sqt=setTimeout(r,120)});
@@ -3137,7 +3137,7 @@ function wireProduct(id){
   $('#pdpOpts').innerHTML=p.o.map((o,oi)=>o.v.length<2&&o.t==='Color'?'':`<div><h3 style="font-size:.8rem;margin-bottom:10px">${o.t}${o.t==='Color'?` <span style="color:var(--mute);font:500 .72rem var(--mono);text-transform:none;letter-spacing:0">· ${sel[oi]}</span>`:''}</h3><div class="sizes">${o.v.map(v=>{const trial=sel.slice();trial[oi]=v;const any=p.av.some(a=>a.split('/')[oi]===v);const ok=isAv(trial);return `<button type="button" class="sz${o.t==='Color'?' c':''}" aria-pressed="${sel[oi]===v}" data-oi="${oi}" data-v="${v}" ${any?'':'disabled'} ${!ok&&any?'style="opacity:.55"':''}>${v}</button>`}).join('')}</div></div>`).join('');
   const key=sel.join('/'),ok=isAv(sel),vx=p.vars&&p.vars[key],few=!!(vx&&vx.q!=null&&vx.q<=3);
   const st=$('#pdpStock');
-  st.textContent=!SQ.live?(SQ.state==='down'?'Online checkout is offline. Call or text (443) 292-6753 to order.':'Checking stock with Square…'):ok?(few?`In stock · only ${vx.q} left`:'In stock'):'This combination is sold out';
+  st.textContent=!SQ.live?(SQ.state==='down'?'Online checkout is offline. Call or text (443) 292-6753 to order.':'Checking stock…'):ok?(few?`In stock · only ${vx.q} left`:'In stock'):'This combination is sold out';
   st.classList.toggle('low',!SQ.live||!ok||few);
   if(vx)$('#pdpPrice').innerHTML=vx.s!=null?`<s>${m2(vx.p)}</s><span class="now">${m2(vx.s)}</span>`:m2(vx.p);
   const btn=$('#pdpAdd');btn.disabled=!ok||!SQ.live;
@@ -3174,7 +3174,7 @@ function renderCart(bump){
  if(!cart.length){$('#lines').innerHTML='<div class="empty"><span class="mark"></span>Your bag is empty.<a class="btn btn-ghost" href="#shop">Browse the rack</a></div>';$('#cartFoot').innerHTML='';return}
  let sub=0;
  $('#lines').innerHTML=cart.map((l,i)=>{const p=prodById(l.id),u=unit(p,l.v);sub+=u*l.q;return `<div class="line">${p.img[0]?imgT(sm(p.img[0]),''):'<div class="nophoto" style="position:static;width:60px;height:74px;border-radius:3px"><span class="mark"></span></div>'}<div><a href="#product-${p.id}" style="font-weight:600;font-size:.9rem;line-height:1.3;text-decoration:none">${p.n}</a><br><small>${vLabel(p,l.v)} · ${m2(u)}</small></div><div class="qty"><button type="button" data-dec="${i}" aria-label="Remove one">−</button>${l.q}<button type="button" data-inc="${i}" aria-label="Add one">+</button></div></div>`}).join('');
- $('#cartFoot').innerHTML=`<div class="big"><span>Subtotal</span><span>${m2(sub)}</span></div><p class="fine">Shipping is $9.99 in the US (3 to 5 business days) or $15.99 international. Pickup at the studio is free. Square adds 6% MD sales tax at checkout.</p><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px" ${SQ.live?'':'disabled'}>${SQ.live?'Check out':SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753':'Checking stock with Square…'}</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button>`;
+ $('#cartFoot').innerHTML=`<div class="big"><span>Subtotal</span><span>${m2(sub)}</span></div><p class="fine">Shipping is $9.99 in the US (3 to 5 business days) or $15.99 international. Pickup at the studio is free. Square adds 6% MD sales tax at checkout.</p><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px" ${SQ.live?'':'disabled'}>${SQ.live?'Check out':SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753':'Checking stock…'}</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button>`;
  $('#checkout').onclick=()=>{if(!SQ.live)return;closeCart();openPay({kind:'shop',onDone:()=>{cart=[];save();renderCart()}})};
  $('#pickup').onclick=()=>{cart.forEach(l=>{const c=B.add.get(l.id+'|'+l.v);B.add.set(l.id+'|'+l.v,{id:l.id,v:l.v,q:(c?c.q:0)+l.q})});cart=[];save();renderCart();closeCart();if(route==='book')renderBook();location.hash='book';toast('Your bag moved to your session ticket. Pick a time.')};
 }
