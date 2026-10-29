@@ -1529,7 +1529,9 @@ const plUrl=l=>'https://www.youtube.com/playlist?list='+encodeURIComponent(l.pla
 function fillVideos(root){if(!root||!root.isConnected)return;
  const ss=vList('sessions'),se=$('[data-vids="sessions"]',root);if(ss&&se)se.innerHTML=ss.videos.map(vCard).join('');
  // BagBoy Network: the channel's newest full-length episodes. Titles drop the channel name; the date goes underneath.
- const bb=vList('bagboy'),be=$('[data-vids="bagboy"]',root);if(bb&&be)be.innerHTML=bb.videos.map(v=>vCard({id:v.id,t:v.title.replace(/\s*[|·-]\s*BagBoy Network\s*$/i,''),s:vDate(v.published)})).join('');
+ const bbT=t=>{t=t.replace(/\s*[|·-]\s*BagBoy Network\s*$/i,'').replace(/\s*@\w+/g,'').replace(/([!?])[!?]+/g,'$1').trim();
+  return t===t.toUpperCase()?t.toLowerCase().replace(/(^|[\s(#"'])([a-z])/g,(m,a,b)=>a+b.toUpperCase()):t};
+ const bb=vList('bagboy'),be=$('[data-vids="bagboy"]',root);if(bb&&be)be.innerHTML=bb.videos.map(v=>vCard({id:v.id,t:bbT(v.title),s:vDate(v.published)})).join('');
  const ge=$('[data-vids="garden"]',root),gl=ss&&ss.videos.filter(v=>/garden/i.test(v.s));if(ge&&gl&&gl.length)ge.innerHTML=gardenTiles(gl);
  // Artist strips: any playlist in video-lists.js with an artist name lands under that artist's card.
  $$('[data-vids-artist]',root).forEach(el=>{const l=Object.values(YT||{}).find(x=>x.artist===el.dataset.vidsArtist&&x.ok&&x.videos.length);if(!l)return;
@@ -1817,7 +1819,7 @@ const ROOMS={
   about:['The content set sits in the main studio at 109 Gibralter Ave, with seating for guests, cameras on stands and the GVO wall behind you.','Bob Almighty, KingMAG Prod and Skandle produce, shoot and edit. Tell us what you\'re making and the team calls you back with a quote.'],
   incl:['Experienced producers','Video production','Launch on multiple platforms','Studio rentals seven days a week','Licensed professionals'],
   gear:['Multi-cam set','Guest seating','Podcast and voiceover mics','Video editing'],
-  gallery:[['pod_set','The set'],['pod_2','On camera'],['pod_3','Guests'],['t_bob','Bob Almighty'],['t_mike','KingMAG Prod']],
+  gallery:[['pod_set','The podcast set'],['pod_bts_camera','Photographer on a content day'],['pod_bts_green','Green screen shoot'],['pod_2','On camera'],['pod_bts_set','Shoot on the muslin backdrop']],
   team:'pod',
   faq:[
    ['How is content work priced?','Every project is quoted. Send a request and the team calls you back.'],
