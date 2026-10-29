@@ -1522,7 +1522,7 @@ const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria
 function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.art-strip,section'),r=box&&$('.sess,.pday-row,.trips',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
 addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
-const loadVids=()=>vidsP||(vidsP=api('videos').then(j=>YT=j.lists||{}).catch(()=>YT={}));
+const loadVids=()=>vidsP||(vidsP=api('videos?v=2').then(j=>YT=j.lists||{}).catch(()=>YT={}));
 const vList=k=>YT&&YT[k]&&YT[k].ok&&YT[k].videos.length?YT[k]:null;
 const plUrl=l=>'https://www.youtube.com/playlist?list='+encodeURIComponent(l.playlist);
 // Swap the hand-picked videos for the live playlists once they arrive. Anything that failed keeps its fallback.
@@ -1816,10 +1816,10 @@ const ROOMS={
   h1:'Content studio in Annapolis',
   lede:'Podcasts, voiceovers, social content and commercials. Use the room with your own crew, or have GVO\'s video team shoot and edit. Every project gets its own quote.',
   facts:[['3','Producers on the team'],['Multi','Camera set'],['7','Days a week'],['Quote','Per project']],
-  about:['The content set sits in the main studio at 109 Gibralter Ave, with seating for guests, cameras on stands and the GVO wall behind you.','Bob Almighty, KingMAG Prod and Skandle produce, shoot and edit. Tell us what you\'re making and the team calls you back with a quote.'],
+  about:['The content set sits in the main studio at 109 Gibralter Ave, with seating for guests, cameras on stands and the GVO wall behind you.','Bring your own crew, or add GVO\'s producers, videographers and editors. Tell us what you\'re making and the team calls you back with a quote.'],
   incl:['Experienced producers','Video production','Launch on multiple platforms','Studio rentals seven days a week','Licensed professionals'],
   gear:['Multi-cam set','Guest seating','Podcast and voiceover mics','Video editing'],
-  gallery:[['pod_set','The podcast set'],['pod_bts_camera','Photographer on a content day'],['pod_bts_green','Green screen shoot'],['pod_2','On camera'],['pod_bts_set','Shoot on the muslin backdrop']],
+  gallery:[['https://i.ytimg.com/vi/KgY4zWyNDrY/hq720.jpg','The Zen Martin Show on the content set'],['pod_bts_camera','Photographer on a content day'],['pod_bts_green','Green screen shoot'],['pod_2','On camera'],['pod_bts_set','Shoot on the muslin backdrop']],
   team:'pod',
   faq:[
    ['How is content work priced?','Every project is quoted. Send a request and the team calls you back.'],
@@ -1837,7 +1837,7 @@ function openState(){return{open:1}}
 const statusTxt=()=>'Studio open 24/7 · by appointment';
 const hoursRows=()=>{const t=nowET().getDay();return [1,2,3,4,5,6,0].map(d=>`<tr class="${d===t?'today':''}"><td>${DAYN[d]}</td><td>${SHOP_HRS[d]}</td></tr>`).join('')};
 const VIDS={s_artist1:['v_artist1','s_artist1'],s_artist2:['v_artist2','s_artist2'],s_artist3:['v_artist3','s_artist3'],s_artist4:['v_artist4','s_artist4'],s_artist5:['v_artist5','v_artist5_poster']};
-const media=(f,alt)=>VIDS[f]?`<video class="lv" muted loop playsinline preload="none" poster="img/${VIDS[f][1]}.webp" data-src="vid/${VIDS[f][0]}.mp4" aria-label="${alt}"></video>`:`<img src="img/${f}.webp" alt="${alt}" loading="lazy" draggable="false">`;
+const media=(f,alt)=>VIDS[f]?`<video class="lv" muted loop playsinline preload="none" poster="img/${VIDS[f][1]}.webp" data-src="vid/${VIDS[f][0]}.mp4" aria-label="${alt}"></video>`:`<img src="${imgSrc(f)}" alt="${alt}" loading="lazy" draggable="false" referrerpolicy="no-referrer">`;
 let vidIO=null;
 function wireVideos(root){
  const vs=$$('video.lv',root);if(!vs.length)return;
