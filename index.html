@@ -1815,7 +1815,7 @@ const ROOMS={
   faq:[
    ['How is content work priced?','Every project is quoted. Send a request and the team calls you back.'],
    ['Can I record a voiceover here?','Yes. Voiceovers, ads and narration are quoted like any other project. Send a request and the team calls you back.'],
-   ['Do I have to use your video team?','No. Bring your own crew, or have Bob Almighty, KingMAG Prod and Skandle shoot and edit for you.'],
+   ['Do I have to use your video team?','No. Bring your own crew, or have GVO\'s videographers and editors shoot and edit for you.'],
    ['Can you publish the episodes?','The team can launch your show on multiple platforms.'],
    ['What else do you produce?','Social media content and commercials.']
   ]}
@@ -1933,7 +1933,7 @@ function factsOf(r){return r.facts.filter(f=>f[2]==='season'?inSeason():f[2]==='
 // Content page: two clips from a content day, each linking to the quote form.
 const POD_DAY=[["vid/reel_content-day-bts.mp4","vid/reel_content-day-bts.webp","Content day, behind the scenes"],["vid/reel_going-the-extra-mile.mp4","vid/reel_going-the-extra-mile.webp","Going the extra mile"]];
 // On set: the two shoot clips, then the @gvo.sound reels the team approved for the podcast page, in one swipe row.
-const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bring your own crew, or add GVO's. Bob Almighty, KingMAG Prod and Skandle are available to shoot and edit.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Request a quote</a>${NAV}</div></div>
+const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bring your own crew, or add GVO's. Our videographers and editors are available to shoot and cut it.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Request a quote</a>${NAV}</div></div>
  <div class="pday-row">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, content studio at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}<span class="pday-ig" data-igpod></span></div></div></section>`;
 const podIgTile=p=>`<figure class="worn-t pday-t pday-igt"><div class="worn-m">${igTile(p)}</div><figcaption><b>${esc(String(p.alt||'Podcast clip').slice(0,60))}</b><span class="worn-s"><a href="${esc(p.link)}" target="_blank" rel="noopener">Reel on @gvo.sound</a><span aria-hidden="true">→</span></span></figcaption></figure>`;
 function viewRoom(slug){
