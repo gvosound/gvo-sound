@@ -454,7 +454,7 @@ input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 /* shop */
 .pday{padding-bottom:0}
 .bagboy{padding-bottom:0}
-@media (min-width:761px){.sess.bb-row{grid-auto-columns:calc((100% - 14px)/2)}}
+
 .gtile .th img.lb{height:134%;margin-top:-17%}
 .pday-row{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .pday-ig{display:contents}
@@ -1528,6 +1528,8 @@ const plUrl=l=>'https://www.youtube.com/playlist?list='+encodeURIComponent(l.pla
 // Swap the hand-picked videos for the live playlists once they arrive. Anything that failed keeps its fallback.
 function fillVideos(root){if(!root||!root.isConnected)return;
  const ss=vList('sessions'),se=$('[data-vids="sessions"]',root);if(ss&&se)se.innerHTML=ss.videos.map(vCard).join('');
+ // BagBoy Network: the channel's newest full-length episodes. Titles drop the channel name; the date goes underneath.
+ const bb=vList('bagboy'),be=$('[data-vids="bagboy"]',root);if(bb&&be)be.innerHTML=bb.videos.map(v=>vCard({id:v.id,t:v.title.replace(/\s*[|·-]\s*BagBoy Network\s*$/i,''),s:vDate(v.published)})).join('');
  const ge=$('[data-vids="garden"]',root),gl=ss&&ss.videos.filter(v=>/garden/i.test(v.s));if(ge&&gl&&gl.length)ge.innerHTML=gardenTiles(gl);
  // Artist strips: any playlist in video-lists.js with an artist name lands under that artist's card.
  $$('[data-vids-artist]',root).forEach(el=>{const l=Object.values(YT||{}).find(x=>x.artist===el.dataset.vidsArtist&&x.ok&&x.videos.length);if(!l)return;
@@ -1944,7 +1946,7 @@ const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head">
 // Shot here: Skandle's BagBoy Network (Cory: almost every episode filmed at GVO, from a couple hundred subscribers
 // to 100K+; the channel showed 128K on Oct 29, 2026).
 const BAGBOY=[{id:'JoAuWwjZyT4',t:'100 million views, talking to my son',s:'BagBoy Network'},{id:'KgY4zWyNDrY',t:'The Zen Martin Show, #3',s:'BagBoy Network'}];
-const bagBoy=()=>`<section class="bagboy"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Built in this room</span><h2>BagBoy Network</h2><p class="lede">Almost every BagBoy Network episode was filmed here. The channel grew from a few hundred subscribers to more than 100K.</p></div><div class="row-end">${ext('https://www.youtube.com/@bagboynetwork','Watch the channel','btn btn-ghost')}</div></div><div class="sess bb-row">${BAGBOY.map(vCard).join('')}</div></div></section>`;
+const bagBoy=()=>`<section class="bagboy"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Built in this room</span><h2>BagBoy Network</h2><p class="lede">Almost every BagBoy Network episode was filmed here. The channel grew from a few hundred subscribers to more than 100K.</p></div><div class="row-end">${ext('https://www.youtube.com/@bagboynetwork','Watch the channel','btn btn-ghost')}${NAV}</div></div><div class="sess" data-vids="bagboy">${BAGBOY.map(vCard).join('')}</div></div></section>`;
 const podIgTile=p=>`<figure class="worn-t pday-t pday-igt"><div class="worn-m">${igTile(p)}</div><figcaption><b>${esc(String(p.alt||'Podcast clip').slice(0,60))}</b><span class="worn-s"><a href="${esc(p.link)}" target="_blank" rel="noopener">Reel on @gvo.sound</a><span aria-hidden="true">→</span></span></figcaption></figure>`;
 function viewRoom(slug){
  const r=ROOMS[slug],others=Object.entries(ROOMS).filter(([s])=>s!==slug);

@@ -6,9 +6,14 @@
 //   label     the heading on that strip
 //   takesFrom a video in this playlist and in one of these is shown only here
 //   max       how many videos to show, newest first
+//   fetch     read only this many from the top of the playlist (for a big channel's uploads)
+//   noShorts  the playlist has no Shorts, so skip the Shorts check
 export const VIDEO_LISTS = [
   { key: 'sessions', playlist: 'PLNs_QvLiR6oc', shows: 'Music page, Watch the sessions', max: 12 },
   { key: 'podcasts', playlist: 'PLeR8d2FeKKTY', shows: 'Podcast page, featured video and episode list', max: 12 },
+  // BagBoy Network (Skandle's channel, filmed at GVO). UULF + the channel id is YouTube's list of the channel's
+  // full-length uploads, newest first, with no Shorts in it, so only the newest few are read and none need a Shorts check.
+  { key: 'bagboy', playlist: 'UULFFNAkKsoeYX1pU8IN6sDB1A', shows: 'Content page, BagBoy Network row', max: 12, fetch: 12, noShorts: true },
   { key: 'flawless', playlist: 'PLcHLuAfRjBqxjg2GDrQZTcLNzA3lVuD2F', shows: 'Music page, Studio artists, under Flawless Breezyy', artist: 'Flawless Breezyy', label: 'Watch Flawless', takesFrom: ['sessions'], max: 20 },
 ];
 

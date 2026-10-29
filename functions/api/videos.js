@@ -20,11 +20,11 @@ async function fromFeed(playlist) {
   })).filter(v => v.id && v.published);
 }
 
-async function fromApi(playlist, key) {
+async function fromApi(playlist, key, fetchN) {
   const out = [];
   let page = '';
   for (let i = 0; i < 6; i++) { // 300 videos is plenty for one playlist
-    const u = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${encodeURIComponent(playlist)}&key=${encodeURIComponent(key)}${page ? '&pageToken=' + page : ''}`;
+    const u = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=${fetchN ? Math.min(50, fetchN) : 50}&playlistId=${encodeURIComponent(playlist)}&key=${encodeURIComponent(key)}${page ? '&pageToken=' + page : ''}`;
     const r = await fetch(u);
     const j = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error('api ' + r.status + ' ' + ((j.error && j.error.message) || ''));
@@ -32,6 +32,7 @@ async function fromApi(playlist, key) {
       const id = it.contentDetails && it.contentDetails.videoId, at = it.contentDetails && it.contentDetails.videoPublishedAt;
       if (id && at) out.push({ id, title: it.snippet.title, published: at }); // private and deleted videos have no publish date
     }
+    if (fetchN && out.length >= fetchN) break;
     if (!(page = j.nextPageToken)) break;
   }
   return out;
@@ -98,7 +99,7 @@ async function build(env, waitUntil) {
   const key = env.YOUTUBE_API_KEY;
   const raw = await Promise.all(VIDEO_LISTS.map(async l => {
     try {
-      const vids = key ? await fromApi(l.playlist, key) : await fromFeed(l.playlist);
+      const vids = key ? await fromApi(l.playlist, key, l.fetch) : (await fromFeed(l.playlist)).slice(0, l.fetch || 99);
       return { l, ok: true, vids };
     } catch (e) { console.log('videos: playlist failed', l.key, e && e.message); return { l, ok: false, vids: [] }; }
   }));
@@ -106,7 +107,7 @@ async function build(env, waitUntil) {
   const claimed = {};
   for (const { l, ok, vids } of raw) if (ok) for (const k of l.takesFrom || []) for (const v of vids) (claimed[k] = claimed[k] || new Set()).add(v.id);
 
-  const ids = [...new Set(raw.flatMap(x => x.vids.map(v => v.id)))];
+  const ids = [...new Set(raw.filter(x => !x.l.noShorts).flatMap(x => x.vids.map(v => v.id)))];
   const shorts = new Set();
   await Promise.all(ids.map(async id => { if (await isShort(id, waitUntil)) shorts.add(id); }));
 
