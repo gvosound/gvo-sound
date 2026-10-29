@@ -67,6 +67,7 @@ img{display:block;max-width:100%}
 .wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;line-height:.9;margin:0;text-wrap:balance;letter-spacing:-.01em}
 h2{font-size:clamp(2.2rem,6vw,4.6rem)}
+@media (max-width:480px){h2{font-size:min(2.2rem,8vw);font-stretch:112%}h1,h2,h3{overflow-wrap:break-word}}
 h3{font-size:1.2rem;letter-spacing:0}
 .eyebrow{font:600 .75rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--lav);display:flex;align-items:center;gap:10px}
 .eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
@@ -298,6 +299,7 @@ main{min-height:60vh}
 .facts small{font:.75rem/1.3 var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
 @media (max-width:760px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--line)}}
 .split{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.split>*{min-width:0}
 @media (max-width:900px){.split{grid-template-columns:1fr}}
 .split>*{min-width:0}
 .incl{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
@@ -349,7 +351,7 @@ main{min-height:60vh}
 @media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px}}
 .faq{border-top:1px solid var(--line)}
 .faq details{border-bottom:1px solid var(--line)}
-.faq summary{list-style:none;cursor:pointer;padding:18px 0;display:flex;justify-content:space-between;gap:20px;font-weight:600;font-size:1.05rem}
+.faq summary{list-style:none;cursor:pointer;padding:18px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:20px;font-weight:600;font-size:1.05rem;overflow-wrap:anywhere}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";font:400 1.4rem/1 var(--mono);color:var(--lav);transition:transform .3s}
 .faq details[open] summary::after{transform:rotate(45deg)}
@@ -1130,7 +1132,8 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .fit-tot small{display:block;font:600 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 .fit-tot b{font:900 1.5rem/1.1 var(--display);font-stretch:110%}
 .fit-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.looks-h{margin-top:clamp(56px,8vw,90px);display:grid;gap:12px;margin-bottom:22px}
+.looks-h{margin-top:clamp(56px,8vw,90px);display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:22px}
+.looks-h h3{overflow-wrap:anywhere}
 .looks-h h3{font-size:clamp(1.4rem,3vw,2.2rem)}
 .looks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .worn{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:28px 14px;margin-bottom:clamp(28px,4vw,44px)}
@@ -1802,7 +1805,7 @@ const ROOMS={
   title:'Podcast, Voiceover and Content Studio in Annapolis, MD | GVO Sound',
   desc:'Record a podcast, voiceover, social content or a commercial at GVO Sound in Annapolis. Multi-camera set and in-house video producers. Request a quote.',
   h1:'Content studio in Annapolis',
-  lede:'Podcasts, voiceovers, social content and commercials, shot and cut in house by GVO\'s video team. Every project gets its own quote.',
+  lede:'Podcasts, voiceovers, social content and commercials. Use the room with your own crew, or have GVO\'s video team shoot and edit. Every project gets its own quote.',
   facts:[['3','Producers on the team'],['Multi','Camera set'],['7','Days a week'],['Quote','Per project']],
   about:['The content set sits in the main studio at 109 Gibralter Ave, with seating for guests, cameras on stands and the GVO wall behind you.','Bob Almighty, KingMAG Prod and Skandle produce, shoot and edit. Tell us what you\'re making and the team calls you back with a quote.'],
   incl:['Experienced producers','Video production','Launch on multiple platforms','Studio rentals seven days a week','Licensed professionals'],
@@ -1812,7 +1815,7 @@ const ROOMS={
   faq:[
    ['How is content work priced?','Every project is quoted. Send a request and the team calls you back.'],
    ['Can I record a voiceover here?','Yes. Voiceovers, ads and narration are quoted like any other project. Send a request and the team calls you back.'],
-   ['Do you shoot video?','Yes. Video production is part of every package.'],
+   ['Do I have to use your video team?','No. Bring your own crew, or have Bob Almighty, KingMAG Prod and Skandle shoot and edit for you.'],
    ['Can you publish the episodes?','The team can launch your show on multiple platforms.'],
    ['What else do you produce?','Social media content and commercials.']
   ]}
@@ -1930,7 +1933,7 @@ function factsOf(r){return r.facts.filter(f=>f[2]==='season'?inSeason():f[2]==='
 // Content page: two clips from a content day, each linking to the quote form.
 const POD_DAY=[["vid/reel_content-day-bts.mp4","vid/reel_content-day-bts.webp","Content day, behind the scenes"],["vid/reel_going-the-extra-mile.mp4","vid/reel_going-the-extra-mile.webp","Going the extra mile"]];
 // On set: the two shoot clips, then the @gvo.sound reels the team approved for the podcast page, in one swipe row.
-const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bob Almighty, KingMAG Prod and Skandle shoot and edit every project, start to finish.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Request a quote</a>${NAV}</div></div>
+const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bring your own crew, or add GVO's. Bob Almighty, KingMAG Prod and Skandle are available to shoot and edit.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Request a quote</a>${NAV}</div></div>
  <div class="pday-row">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, content studio at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}<span class="pday-ig" data-igpod></span></div></div></section>`;
 const podIgTile=p=>`<figure class="worn-t pday-t pday-igt"><div class="worn-m">${igTile(p)}</div><figcaption><b>${esc(String(p.alt||'Podcast clip').slice(0,60))}</b><span class="worn-s"><a href="${esc(p.link)}" target="_blank" rel="noopener">Reel on @gvo.sound</a><span aria-hidden="true">→</span></span></figcaption></figure>`;
 function viewRoom(slug){
