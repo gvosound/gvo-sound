@@ -1180,6 +1180,36 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .cruise-bar li{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;background:var(--panel);font-size:.9rem}
 .cruise-bar span{color:var(--mute);font-family:var(--mono);font-size:.8rem}
 @media (max-width:860px){.cruise{grid-template-columns:1fr}.cruise-fl{position:static;max-width:420px}.cruise-cols{grid-template-columns:1fr}}
+.tmap{position:relative;margin:0 0 36px;border:1px solid var(--line);border-radius:var(--r);background:radial-gradient(120% 90% at 50% 40%,#12101a,var(--ink) 70%);padding:clamp(10px,2vw,22px)}
+.tmap-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tmap-scroll::-webkit-scrollbar{display:none}
+.tmap-m{position:relative;width:100%;aspect-ratio:1000/470}
+.tmap-m img{position:absolute;inset:0;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.tmap-pin{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center;z-index:2}
+.tmap-pin i{width:12px;height:12px;border-radius:50%;background:var(--lav);box-shadow:0 0 0 4px rgba(184,168,255,.22),0 0 18px rgba(184,168,255,.55);transition:transform .2s}
+.tmap-pin:hover i,.tmap-pin[aria-pressed="true"] i{transform:scale(1.35)}
+.tmap-pin[aria-pressed="true"] i{background:var(--bone)}
+.tmap-pin.next i{background:transparent;border:2px solid var(--lav);box-shadow:none;width:14px;height:14px}
+.tmap-pin.next::after{content:"";position:absolute;inset:6px;border-radius:50%;border:1px solid var(--lav);animation:tpulse 2.2s ease-out infinite}
+@keyframes tpulse{from{transform:scale(.6);opacity:.9}to{transform:scale(1.7);opacity:0}}
+@media (prefers-reduced-motion:reduce){.tmap-pin.next::after{animation:none;opacity:.5}}
+.tmap-home{position:absolute;display:flex;align-items:center;gap:5px;transform:translate(-4px,-4px);z-index:1;pointer-events:none}
+.tmap-home i{width:8px;height:8px;border-radius:2px;background:var(--bone)}
+.tmap-home em{font:600 .58rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--bone);font-style:normal}
+.tmap-card{position:absolute;left:clamp(14px,2.4vw,30px);z-index:3;width:min(320px,calc(100% - 28px));display:grid;gap:6px;padding:16px 16px 14px;border:1px solid var(--line);border-radius:var(--r);background:rgba(7,6,10,.94);backdrop-filter:blur(8px)}
+.tmap-card b{font:900 1.3rem/1 var(--display);font-stretch:110%;text-transform:uppercase}
+.tmap-card small{color:var(--mute);font-size:.85rem}
+.tmap-card .btn{justify-self:start;margin-top:6px}
+.tmap-t{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);color:var(--bone);text-decoration:none;font-size:.88rem}
+.tmap-t i{font-style:normal;color:var(--lav);white-space:nowrap}
+.tmap-x{position:absolute;top:8px;right:8px;width:30px;height:30px;border:0;background:none;color:var(--mute);cursor:pointer}
+.tmap-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tmap-list .chip.next{border-style:dashed}
+.tmap-key{display:flex;gap:18px;margin:12px 0 0;font:600 .62rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.tmap-key span{display:flex;align-items:center;gap:6px}.tmap-key i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.tmap-key .k1{background:var(--lav)}.tmap-key .k2{border:2px solid var(--lav)}.tmap-key .k3{background:var(--bone);border-radius:2px}
+.tmap-rowh{justify-content:space-between;margin-bottom:14px}
+@media (max-width:760px){.tmap-m{width:880px}.tmap-card{position:static;width:auto;margin-top:12px}.tmap-list{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.tmap-list .chip{flex-shrink:0}}
 .trips{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 48px)/5);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .trips .trip{scroll-snap-align:start}
 @media (max-width:1100px){.trips{grid-auto-columns:calc((100% - 24px)/3)}}
@@ -1538,16 +1568,45 @@ const CRUISE={t:'Love Sets Sail',sub:'Valentine\'s cruise',start:'2027-02-06',en
  inc:['Travel insurance','Sea-view stateroom, upgrades on request','Food at 20+ specialty eateries','Basic Wi-Fi','Non-alcoholic drinks','Onboard entertainment','Adults-only atmosphere','Tattoo parlor onboard'],
  bar:[[200,25],[300,50],[500,100]]};
 const TRIPS=[
- {id:'Ddrm_vAT4fm',r:1,p:'Puerto Rico',when:'Sep 2026',k:'Birthday trip',l:'A birthday run for two travelers and their crew.'},
- {id:'Dc7JX4cNj6x',r:1,p:'Tokyo, Japan',when:'Sep 2026',k:'Group trip · Part 2',l:'Tokyo after dark, round two.'},
- {id:'Dcbav8yJ_Zq',r:1,p:'Tokyo, Japan',when:'Aug 2026',k:'Group trip · Part 1',l:'Shinjuku signs, street cars and the first week in Japan.'},
- {id:'DbbEbMWt6Hl',r:1,p:'Hong Kong',when:'Jul 2026',k:'Quick 2-day stop',l:'Two days and a lot of double-decker buses.'},
- {id:'DY5Ngq8N_9T',r:1,p:'Krabi, Thailand',when:'May 2026',k:'Asia group trip · Part 4',l:'Palm roads and island days, with hosts and guides who live there.'},
- {id:'DYZmwk0FoBG',r:0,p:'South Korea',when:'May 2026',k:'Asia group trip',l:'The Korea photo dump, one full table at a time.'},
- {id:'DX9VnqktCtV',r:1,p:'Bangkok, Thailand',when:'May 2026',k:'Asia group trip · Part 3',l:'Temples, river views and Bangkok at full speed.'},
- {id:'DWJwUqoN7m1',r:1,p:'Boracay, Philippines',when:'Mar 2026',k:'Asia group trip · Part 1',l:'Where the Asia trip started: white sand and clear water.'},
- {id:'DEfrQLySHaQ',r:1,p:'Ibadan and Lagos, Nigeria',when:'Jan 2025',k:'Flawless abroad',l:'The grand opening of New Empire Hotel in Ibadan, and the trip that started the Africa plans.'}];
+ {id:'Ddrm_vAT4fm',r:1,ll:[18.22,-66.59],p:'Puerto Rico',when:'Sep 2026',k:'Birthday trip',l:'A birthday run for two travelers and their crew.'},
+ {id:'Dc7JX4cNj6x',r:1,ll:[35.68,139.69],p:'Tokyo, Japan',when:'Sep 2026',k:'Group trip · Part 2',l:'Tokyo after dark, round two.'},
+ {id:'Dcbav8yJ_Zq',r:1,ll:[35.68,139.69],p:'Tokyo, Japan',when:'Aug 2026',k:'Group trip · Part 1',l:'Shinjuku signs, street cars and the first week in Japan.'},
+ {id:'DbbEbMWt6Hl',r:1,ll:[22.32,114.17],p:'Hong Kong',when:'Jul 2026',k:'Quick 2-day stop',l:'Two days and a lot of double-decker buses.'},
+ {id:'DY5Ngq8N_9T',r:1,ll:[8.09,98.91],p:'Krabi, Thailand',when:'May 2026',k:'Asia group trip · Part 4',l:'Palm roads and island days, with hosts and guides who live there.'},
+ {id:'DYZmwk0FoBG',r:0,ll:[37.57,126.98],p:'South Korea',when:'May 2026',k:'Asia group trip',l:'The Korea photo dump, one full table at a time.'},
+ {id:'DX9VnqktCtV',r:1,ll:[13.76,100.5],p:'Bangkok, Thailand',when:'May 2026',k:'Asia group trip · Part 3',l:'Temples, river views and Bangkok at full speed.'},
+ {id:'DWJwUqoN7m1',r:1,ll:[11.97,121.92],p:'Boracay, Philippines',when:'Mar 2026',k:'Asia group trip · Part 1',l:'Where the Asia trip started: white sand and clear water.'},
+ {id:'DEfrQLySHaQ',r:1,ll:[7.0,3.7],p:'Ibadan and Lagos, Nigeria',when:'Jan 2025',k:'Flawless abroad',l:'The grand opening of New Empire Hotel in Ibadan, and the trip that started the Africa plans.'}];
 const cruiseOn=()=>nowET()<evDate({d:CRUISE.start});
+/* Travel map: Equal Earth projection, same numbers img/world.svg was drawn with (d3-geo, world-atlas 110m land,
+   rotated 10°, fit to 1000 x 470). A trip with ll:[lat,lng] becomes a pin; trips at the same place share one.
+   NEXT holds the trips still to come: hollow, pulsing pins. Move Africa to its city once the dates are out. */
+const NEXT=[{p:'Africa',ll:[2,21],k:'Next group trip',when:'Dates coming',to:'#trNotify',cta:'Get trip details'},
+ {p:'Love Sets Sail',ll:[23.6,-75.5],k:"Valentine's cruise · Miami, Grand Turk, Bimini",when:'Feb 2027',to:'#cruise',cta:'See the cruise',on:()=>cruiseOn()}];
+const HOME_PIN={p:'Annapolis, MD',ll:[38.97,-76.49]};
+const mapXY=([lat,lng])=>{const k=196.3792574617935,tx=495.2593858631084,ty=262.3590724339723,A1=1.340264,A2=-0.081106,A3=0.000893,A4=0.003796,M=Math.sqrt(3)/2;
+ const l=(lng-10)*Math.PI/180,th=Math.asin(M*Math.sin(lat*Math.PI/180)),t2=th*th,t6=t2*t2*t2;
+ return [(tx+k*l*Math.cos(th)/(M*(A1+3*A2*t2+t6*(7*A3+9*A4*t2))))/10,(ty-k*th*(A1+A2*t2+t6*(A3+A4*t2)))/4.7]};
+function tripPins(){const g=new Map();TRIPS.filter(t=>t.ll).forEach(t=>{const key=t.p;if(!g.has(key))g.set(key,{p:t.p,ll:t.ll,trips:[]});g.get(key).trips.push(t)});
+ return [...g.values(),...NEXT.filter(n=>!n.on||n.on()).map(n=>({...n,next:1}))]}
+const mapCard=pin=>pin.next
+ ?`<span class="eyebrow">Next · ${esc(pin.when)}</span><b>${esc(pin.p)}</b><small>${esc(pin.k)}</small><a class="btn btn-lav" href="${pin.to}">${esc(pin.cta)}</a>`
+ :`<span class="eyebrow">${pin.trips.length>1?pin.trips.length+' trips':esc(pin.trips[0].when)}</span><b>${esc(pin.p)}</b>${pin.trips.map(t=>`<a class="tmap-t" href="https://www.instagram.com/${t.r?'reel':'p'}/${t.id}/" target="_blank" rel="noopener" data-ig="${t.id}" data-igr="${t.r}"><span>${esc(t.when)} · ${esc(t.k)}</span><i>${t.r?'Watch':'View'} →</i></a>`).join('')}`;
+function tripMap(){const pins=tripPins(),[hx,hy]=mapXY(HOME_PIN.ll);
+ return `<div class="tmap rv"><div class="tmap-scroll"><div class="tmap-m"><img src="img/world.svg" alt="" width="1000" height="470">
+  <span class="tmap-home" style="left:${hx}%;top:${hy}%" title="Home base: GVO Sound, Annapolis"><i></i><em>Home</em></span>
+  ${pins.map((pin,i)=>{const [x,y]=mapXY(pin.ll);return `<button type="button" class="tmap-pin${pin.next?' next':''}" style="left:${x}%;top:${y}%" data-pin="${i}" aria-label="${esc(pin.p)}${pin.next?', next trip':''}" aria-pressed="false"><i></i></button>`}).join('')}
+ </div></div><div class="tmap-card" id="tmapCard" aria-live="polite" hidden></div>
+ <div class="tmap-list" role="list">${pins.map((pin,i)=>`<button type="button" class="chip${pin.next?' next':''}" data-pin="${i}" aria-pressed="false">${esc(pin.p.replace(/, .*$/,''))}${pin.next?' · next':''}</button>`).join('')}</div>
+ <p class="tmap-key"><span><i class="k1"></i>Been</span><span><i class="k2"></i>Next</span><span><i class="k3"></i>Home base</span></p></div>`}
+function wireMap(root){const m=$('.tmap',root);if(!m)return;const pins=tripPins(),card=$('#tmapCard',m);
+ const pick=i=>{const on=i!=null&&card.dataset.i!==String(i);$$('[data-pin]',m).forEach(b=>b.setAttribute('aria-pressed',String(on&&b.dataset.pin===String(i))));
+  if(!on){card.hidden=true;card.dataset.i='';return}card.dataset.i=i;card.innerHTML=`<button type="button" class="tmap-x" aria-label="Close">✕</button>`+mapCard(pins[i]);card.hidden=false;
+  // Desktop: the card sits over the empty South Pacific, at the bottom-left corner of the map itself.
+  const mm=$('.tmap-m',m);card.style.top=matchMedia('(max-width:760px)').matches?'':(mm.offsetTop+mm.offsetHeight-card.offsetHeight-12)+'px';
+  const b=$(`.tmap-pin[data-pin="${i}"]`,m),sc=$('.tmap-scroll',m);if(b&&sc.scrollWidth>sc.clientWidth)sc.scrollTo({left:b.offsetLeft-sc.clientWidth/2,behavior:reduce?'auto':'smooth'})};
+ m.addEventListener('click',e=>{if(e.target.closest('.tmap-x')){pick(null);return}const b=e.target.closest('[data-pin]');if(b)pick(+b.dataset.pin)});
+ const sc=$('.tmap-scroll',m);if(sc.scrollWidth>sc.clientWidth)sc.scrollLeft=(sc.scrollWidth-sc.clientWidth)*.9}
 
 
 const IG={main:'gvo.sound',events:'gvosound.events',clothing:'gvosound.clothing',travel:'gvosound.travel'};
@@ -2069,7 +2128,9 @@ function viewTravel(){
   <div class="ev-empty rv"><div><span class="eyebrow">Next group trip</span><h3>Africa</h3><p>Dates and details are coming. Flawless has spent time in Ibadan and Lagos, and the next GVO group trip heads to Africa. Get on the list and you'll hear first.</p></div><form id="trNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Get trip details</button></form><p class="ev-follow">Or DM "Africa" to <a class="link" href="${igUrl(IG.travel)}" target="_blank" rel="noopener">@${IG.travel}</a>.</p></div>
  </div></section>
  <section style="padding-top:0"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Where GVO has been</span><h2>Trip log</h2><p class="lede">Boracay to Bangkok, Korea to Tokyo, Hong Kong to Puerto Rico. Tap a trip to watch it here.</p></div>${NAV}</div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Where GVO has been</span><h2>Trip log</h2><p class="lede">Boracay to Bangkok, Korea to Tokyo, Hong Kong to Puerto Rico. Tap a pin or a trip to watch it here.</p></div></div>
+  ${tripMap()}
+  <div class="row-end tmap-rowh"><span class="eyebrow">Every trip</span>${NAV}</div>
   <div class="trips">${TRIPS.map(tripCard).join('')}</div>
   <p class="dark-fine rv" style="margin:18px 0 0">Trip videos shot by Flawless on a DJI Pocket 3 and edited by Bob Almighty.</p>
  </div></section>
@@ -2457,6 +2518,7 @@ function wire(r){
   const nf=$('#evNotify',main);if(nf){armForm(nf);nf.addEventListener('submit',async e=>{e.preventDefault();const i=nf.elements.contact;if(!i.value.trim()){i.focus();toast('Add an email or phone number');return}const c=i.value.trim(),res=await sendForm(nf,'notify',{list:'Next event',contact:c});if(res)formDone(nf,res,{to:c.includes('@')?c:'',small:true,eyebrow:'Signed up',title:"You're on the list",body:`When the date and flyer drop, ${esc(c.includes('@')?c:fmtPh(c))} gets one message about it.`})})}
  }
  if(r==='travel'){
+  wireMap(main);
   const ty=$('#trType',main);if(ty)ty.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$$('.chip',ty).forEach(x=>x.setAttribute('aria-pressed',x===c))});
   $$('[data-trip]',main).forEach(a=>a.addEventListener('click',()=>{const c=[...$$('.chip',ty)].find(x=>x.textContent===a.dataset.trip);if(c)c.click()}));
   const fm=$('#trForm',main);if(fm){armForm(fm);fm.addEventListener('submit',async e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.required&&!x.checkValidity());if(bad){bad.focus();toast('Add your '+bad.name);return}const t=$('.chip[aria-pressed="true"]',ty).textContent,v=n=>fm.elements[n].value.trim();
