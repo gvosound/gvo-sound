@@ -2,7 +2,9 @@
 # The new site uses hash routes, so each rule points at /#<page>. Specific product rules come before the catch-all.
 /sound-studio  /#recording-studio  301
 /photo-studio  /#photo-studio  301
-/podcast-taping  /#podcast-studio  301
+/podcast-taping  /#content-studio  301
+/podcast-studio  /#content-studio  301
+/content-studio  /#content-studio  301
 /category/all-products  /#shop  301
 /product-page/gvo-x-ace-distressed-tee  /#product-gvo-x-ace-distressed-tee  301
 /product-page/lose-a-point-tee  /#product-prove-a-point-tee  301

@@ -140,7 +140,7 @@ body.srch-on{overflow:hidden}
 @media (max-width:960px){.nav ul{display:none}.menu-btn{display:block}.nav .cart-btn{margin-left:auto}.nav .book-top{display:none}}
 .sheet{position:fixed;inset:0;z-index:85;background:var(--ink);padding:calc(90px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;align-content:start;gap:4px;animation:fade .3s var(--ease)}
 .sheet a{font:900 2.1rem/1.15 var(--display);font-stretch:120%;text-transform:uppercase;text-decoration:none;padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.sheet a small{font:600 .7rem var(--mono);color:var(--mute);letter-spacing:.1em}
+.sheet a small{font:600 .7rem var(--mono);color:var(--mute);letter-spacing:.1em;white-space:nowrap;flex-shrink:0;margin-left:12px}
 .sheet .x{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px))}
 @keyframes fade{from{opacity:0}}
 
@@ -1345,7 +1345,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
     <nav aria-label="Main"><ul>
       <li><a href="#recording-studio">Recording</a></li>
       <li><a href="#photo-studio">Photo</a></li>
-      <li><a href="#podcast-studio">Content</a></li>
+      <li><a href="#content-studio">Content</a></li>
       <li><a href="#music">Music</a></li>
       <li><a href="#events">Events</a></li>
       <li><a href="#travel">Travel</a></li>
@@ -1363,7 +1363,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
   <button class="sheet-srch" type="button" data-open-search><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Search pieces, studios, music</button>
   <a href="#recording-studio">Recording <small>From $150</small></a>
   <a href="#photo-studio">Photo <small>From $50</small></a>
-  <a href="#podcast-studio">Content <small>Podcasts, voiceovers</small></a>
+  <a href="#content-studio">Content <small>Quote</small></a>
   <a href="#music">Music <small>Stream</small></a>
   <a href="#events">Events <small>Parties</small></a>
   <a href="#travel">Travel <small>Trips</small></a>
@@ -1388,7 +1388,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
         <address>GVO Sound LLC<br>109 Gibralter Ave<br>Annapolis, MD 21401<br>(443) 292-6753</address>
         <a class="f-rev" href="https://search.google.com/local/writereview?placeid=ChIJDbG7oHH3t4kRyg4SLB9TxSs" target="_blank" rel="noopener">★ Leave us a Google review</a>
       </div>
-      <div><h4>Studios</h4><ul><li><a href="#recording-studio">Recording studio</a></li><li><a href="#photo-studio">Photo studio</a></li><li><a href="#podcast-studio">Content studio</a></li><li><a href="#music">Music</a></li><li><a href="#events">Events</a></li><li><a href="#travel">Travel</a></li><li><a href="#book">Book a session</a></li></ul></div>
+      <div><h4>Studios</h4><ul><li><a href="#recording-studio">Recording studio</a></li><li><a href="#photo-studio">Photo studio</a></li><li><a href="#content-studio">Content studio</a></li><li><a href="#music">Music</a></li><li><a href="#events">Events</a></li><li><a href="#travel">Travel</a></li><li><a href="#book">Book a session</a></li></ul></div>
       <div><h4>Shop</h4><ul><li><a href="#shop">All apparel</a></li><li><a href="#product-world-tour-cheetah-hoodie">Cheetah Hoodie</a></li><li><a href="#product-gvo-x-ace-distressed-tee">GVO x Ace Tee</a></li><li><a href="#product-gvo-beanie">GVO Beanie</a></li></ul></div>
       <div><h4>Follow</h4><ul><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram @gvo.sound</a></li><li><a href="https://www.instagram.com/gvosound.events/" target="_blank" rel="noopener">GVO Events</a></li><li><a href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">GVO Clothing</a></li><li><a href="https://www.instagram.com/gvosound.travel/" target="_blank" rel="noopener">GVO Travel</a></li><li><a href="https://open.spotify.com/artist/5eZfmZxf0hNUuC3GERdI2A" target="_blank" rel="noopener">Spotify</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
     </div>
@@ -1739,7 +1739,7 @@ const ROOMS={
    ['Can I add time during the shoot?','Extra time on the holiday special is $20 per 30 minutes, when nobody is booked after you.','season'],
    ['What is the cancellation policy?','Full price is paid up front, and there are no refunds. To switch to another time, call or text (443) 292-6753 no later than 2 hours before your session.']
   ]},
- 'podcast-studio':{k:'pod',short:'Content',img:'pod_set',
+ 'content-studio':{k:'pod',short:'Content',img:'pod_set',
   title:'Podcast, Voiceover and Content Studio in Annapolis, MD | GVO Sound',
   desc:'Record a podcast, voiceover, social content or a commercial at GVO Sound in Annapolis. Multi-camera set and in-house video producers. Request a quote.',
   h1:'Content studio in Annapolis',
@@ -2359,7 +2359,7 @@ function srchIndex(){
  Object.entries(ROOMS).forEach(([slug,r])=>add('Studios',r.h1.replace(' in Annapolis',''),r.k==='pod'?'Quoted per project':r.facts[0].join(' '),'#'+slug,[r.short,r.lede,(r.gear||[]).join(' '),(r.incl||[]).join(' '),'book booking session rent'].join(' '),imgSrc(r.img),1));
  REL.forEach(x=>add('Music',x.t,'by '+x.a,'#music/'+x.id,[x.a,x.tag||'','song single listen stream preview'].join(' '),imgSrc(x.c)));
  ARTISTS.forEach(a=>add('Music',a.n,a.r,'#music','artist '+a.r,a.img?imgSrc(a.img):''));
- TEAM.forEach(m=>add('Team',m.n,m.r,m.g==='photo'?'#photo-studio':m.g==='pod'?'#podcast-studio':'#recording-studio','@'+m.ig+' '+m.r,m.img?imgSrc(m.img):''));
+ TEAM.forEach(m=>add('Team',m.n,m.r,m.g==='photo'?'#photo-studio':m.g==='pod'?'#content-studio':'#recording-studio','@'+m.ig+' '+m.r,m.img?imgSrc(m.img):''));
  const today=new Date().toISOString().slice(0,10);
  EVENTS.filter(e=>e.d>=today).forEach(e=>add('Events',e.t,new Date(e.d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+e.v,'#events',[e.k||'',e.v,e.c,'party tickets rsvp'].join(' '),e.fl?imgSrc(e.fl):''));
  TRIPS.forEach(t=>add('Travel',t.p,[t.k,t.when].filter(Boolean).join(' · '),'#travel',(t.l||'')+' trip travel',imgSrc(igImg('tr',t.id))));
@@ -2407,7 +2407,9 @@ document.addEventListener('keydown',e=>{
 const main=$('#main');let route='home',cleanup=[],popNav=false;const scrollMem={};
 let navIdx=0;try{history.scrollRestoration='manual'}catch(e){}addEventListener('popstate',e=>{popNav=!!(e.state&&e.state.gvo!=null)});
 const isRoute=h=>!!(ROOMS[h]||h==='book'||h==='shop'||h==='music'||h==='events'||h==='travel'||h.startsWith('product-')||(h.startsWith('music/')&&relById(h.slice(6))));
-function parse(){const h=decodeURIComponent(location.hash.slice(1)).split('?')[0];if(!h)return'home';return isRoute(h)?h:null}
+// Renamed pages: an old link (shared before the rename) lands on the new address.
+const MOVED={'podcast-studio':'content-studio'};
+function parse(){let h=decodeURIComponent(location.hash.slice(1)).split('?')[0];if(!h)return'home';if(MOVED[h]){const q=location.hash.split('?')[1];history.replaceState(history.state,'','#'+MOVED[h]+(q?'?'+q:''));h=MOVED[h]}return isRoute(h)?h:null}
 function render(r,opts={}){
  cleanup.forEach(f=>f());cleanup=[];
  scrollMem[route]=scrollY;

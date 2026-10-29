@@ -93,7 +93,7 @@ Apple Pay shows only after gvosound.com is registered for Apple Pay in the Squar
 
 ## Launch checklist
 
-- Split views into static pages: `/recording-studio`, `/photo-studio`, `/podcast-studio`, `/book`, `/shop`, `/shop/<product>`
+- Split views into static pages: `/recording-studio`, `/photo-studio`, `/content-studio`, `/book`, `/shop`, `/shop/<product>`
 - Generate `sitemap.xml`, set canonical URLs, remove noindex
 - Keep the Meta pixel on booking events
 - Transfer gvosound.com to Cloudflare, set up Email Routing to Gmail
