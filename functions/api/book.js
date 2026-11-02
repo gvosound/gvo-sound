@@ -1,11 +1,13 @@
 // POST /api/book: pays for a studio session in full, then puts it on the Square Appointments calendar.
 // Order: check the time is still open, create the order (tax applied by Square), take the payment,
 // create the booking. If the booking fails after payment, the payment is refunded in full automatically.
+// Square Appointments confirms with the customer, but sends the studio nothing for API bookings, so every
+// booking sends its own studio alert (bookingAlert, to BOOKING_ALERT_TO). That email never blocks the booking.
 // Body: { attempt, sourceId, service, start, team, contact:{name,phone,email}, people, notes, photographer, lines:[{v,q}], expectTotal }
 import { sq, cfg, json, fail, readBody, idem, money, cents, clean, findOrCreateCustomer } from '../_lib/square.js';
 import { loadCatalog } from '../_lib/catalog.js';
 import { shopLines, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
-import { emailCfg, sendEmail, bookingMerchAlert } from '../_lib/email.js';
+import { emailCfg, sendEmail, bookingAlert } from '../_lib/email.js';
 import { serviceOf, bookingOrder, searchSlots, teamNames, allowedTeam, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
 
 const ET = { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
@@ -101,14 +103,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     const teamName = names || await teamNames(env).catch(() => new Map());
 
-    // Square Appointments texts and emails the customer. Cory gets a front-desk note only when merch rides along.
-    if (merch.length) {
-      const mail = (async () => {
-        const msg = bookingMerchAlert(emailCfg(env, new URL(request.url).origin), { order: created, idx: shopIndex(cat), contact, when, session: s.name, team: teamName.get(slot.team) });
-        if (msg) await sendEmail(env, msg);
-      })().catch(e => console.log('email error', e && e.message));
-      if (waitUntil) waitUntil(mail); else await mail;
-    }
+    // Studio alert for every booking. Runs after the response; any error is logged and the booking stands.
+    const mail = (async () => {
+      if (!env.RESEND_API_KEY) { console.log('booking alert skipped: RESEND_API_KEY not set', ref); return; }
+      const msg = bookingAlert(emailCfg(env, new URL(request.url).origin), {
+        order: created, idx: shopIndex(cat), contact, when, session: s.name, team: teamName.get(slot.team),
+        mins: slot.mins || s.mins, people, notes: clean(b.notes || '', 2000), photographer: b.photographer ? clean(b.photographer, 60) : '', total, ref,
+      });
+      const r = await sendEmail(env, msg);
+      console.log(r && r.ok ? 'booking alert sent' : 'booking alert not sent', ref);
+    })().catch(e => console.log('booking alert error', ref, e && e.message));
+    if (waitUntil) waitUntil(mail); else await mail;
     return json({
       ok: true,
       bookingId: booking.id,

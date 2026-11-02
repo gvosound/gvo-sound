@@ -1,8 +1,10 @@
 // Confirmation emails, sent through Resend (resend.com) with the RESEND_API_KEY secret.
 // Square sends no receipt email for orders placed through its API, so the site sends its own:
 //   - the customer gets an order confirmation
-//   - Cory gets a copy of every web order, and a front-desk note when a booking includes merch
-// Bookings themselves are confirmed by Square Appointments (text and email), so no customer email for those.
+//   - Cory gets a copy of every web order
+//   - the studio gets an alert for every booking (BOOKING_ALERT_TO), with any merch to bag in the same email
+// Square sends no staff notification for bookings created through the Bookings API, so that alert is the only
+// heads-up the studio gets. Square Appointments still texts and emails the customer their confirmation.
 // Email never blocks a sale: if the key is missing or Resend is down, the order still goes through.
 import { cents } from './square.js';
 import { SITE_NAMES } from './site-products.js';
@@ -27,6 +29,7 @@ export function emailCfg(env, origin) {
     from: env.EMAIL_FROM || 'GVO Sound Clothing <clothing@gvosound.com>', // shop orders
     infoFrom: env.EMAIL_FROM_INFO || 'GVO Sound <info@gvosound.com>',   // forms and studio notes
     alertTo: (env.ORDER_ALERT_TO || STUDIO.gmail).split(/[\s,]+/).filter(Boolean),
+    bookingAlertTo: (env.BOOKING_ALERT_TO || 'gvosoundllc@gmail.com,cmcghee@gvosound.com').split(/[\s,]+/).filter(Boolean),
     replyTo: env.EMAIL_REPLY_TO || STUDIO.gmail,
     site: (env.SITE_URL || 'https://gvosound.com').replace(/\/$/, ''), // links in emails always point at the live domain
   };
@@ -174,23 +177,51 @@ export function orderAlert(cfg, { order, idx, contact, fulfillment }) {
   };
 }
 
-/* ---------- front-desk note when a booking includes merch ---------- */
-export function bookingMerchAlert(cfg, { order, idx, contact, when, session, team }) {
-  const lines = emailLines(order, idx).slice(1); // first line is the session
-  if (!lines.length) return null;
-  const ref = order.reference_id || order.id;
+/* ---------- studio alert for every web booking, with any merch to bag ---------- */
+const hrs = m => { const h = m / 60; return h === 1 ? '1 hour' : Number.isInteger(h) ? `${h} hours` : `${m} minutes`; };
+export function bookingAlert(cfg, { order, idx, contact, when, session, team, mins, people, notes, photographer, total, ref }) {
+  const merch = emailLines(order, idx).slice(1); // first line is the session
+  const tel = String(contact.phone || '').replace(/\D/g, '').replace(/^(?=\d{10}$)/, '1');
+  const photo = photographer && photographer !== 'none' ? String(photographer) : '';
+  const row = (k, v) => `<tr><td valign="top" style="padding:7px 12px 7px 0;border-bottom:1px solid ${C.line};color:${C.mute};white-space:nowrap;">${k}</td><td style="padding:7px 0;border-bottom:1px solid ${C.line};">${v}</td></tr>`;
   const body = [
-    h1('Bag merch for a session'),
-    p(`<b>${esc(contact.name)}</b> · ${esc(when)}${team ? ' with ' + esc(team) : ''}<br>${esc(session)} · booking ${esc(ref)}`, `color:${C.mute};font-size:14px;`),
-    label('Have these at the front desk'),
-    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;">${lines.map(l => `<tr><td style="padding:7px 0;border-bottom:1px solid ${C.line};"><b>${esc(l.name)}</b>${l.opts ? ` · ${esc(l.opts)}` : ''}</td><td align="right" style="padding:7px 0;border-bottom:1px solid ${C.line};">× ${l.qty}</td></tr>`).join('')}</table>`,
-    p('Paid online with the session. Mark the order picked up in Square when they collect it.', `color:${C.mute};font-size:13px;`),
-  ].join('\n');
+    h1(`New booking: ${esc(session)}`),
+    p(`<b>${esc(when)}</b> (Eastern) · booking ${esc(ref)}`, `color:${C.mute};font-size:14px;`),
+    label('Session'),
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;">${[
+      row('Session', esc(session)),
+      row('When', `${esc(when)} ET`),
+      row('Length', esc(hrs(mins))),
+      row('With', esc(team || 'Any available')),
+      row('People', esc(people)),
+      photo ? row('Photographer', `${esc(photo)} (paid separately)`) : '',
+      row('Paid', `${usd(total)} online`),
+      row('Code', esc(ref)),
+    ].join('')}</table>`,
+    label('Customer'),
+    p(`<b>${esc(contact.name)}</b>${contact.phone ? `<br><a href="tel:+${tel}" style="color:${C.text};">${esc(phoneFmt(contact.phone))}</a>` : ''}${contact.email ? `<br><a href="mailto:${esc(contact.email)}" style="color:${C.text};">${esc(contact.email)}</a>` : ''}`),
+    notes ? label('Customer notes') : '',
+    notes ? p(esc(notes).replace(/\n/g, '<br>')) : '',
+    merch.length ? label('Bag these items') : '',
+    merch.length ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;">${merch.map(l => `<tr><td style="padding:7px 0;border-bottom:1px solid ${C.line};"><b>${esc(l.name)}</b>${l.opts ? ` · ${esc(l.opts)}` : ''}</td><td align="right" style="padding:7px 0;border-bottom:1px solid ${C.line};">× ${l.qty}</td></tr>`).join('')}</table>` : '',
+    merch.length ? p('Paid with the session. Have them at the front desk and mark the order picked up in Square when they collect it.', `color:${C.mute};font-size:13px;`) : '',
+    button('https://app.squareup.com/appointments/calendar', 'Open the Appointments calendar'),
+  ].filter(Boolean).join('\n');
+  const text = [
+    `New booking: ${session}, ${when} ET`,
+    `Length: ${hrs(mins)}`, `With: ${team || 'Any available'}`, `People: ${people}`,
+    photo ? `Photographer: ${photo} (paid separately)` : '',
+    `Paid: ${usd(total)}`, `Code: ${ref}`, '',
+    contact.name, contact.phone ? phoneFmt(contact.phone) : '', contact.email || '',
+    notes ? `\nNotes: ${notes}` : '',
+    merch.length ? '\nBag these items:\n' + merch.map(l => `${l.name}${l.opts ? ' (' + l.opts + ')' : ''} x ${l.qty}`).join('\n') : '',
+    '', 'Calendar: https://app.squareup.com/appointments/calendar',
+  ].filter(x => x !== '').join('\n');
   return {
-    from: cfg.infoFrom, to: cfg.alertTo, reply_to: contact.email || cfg.replyTo,
-    subject: `Bag merch for ${contact.name}, ${when}`,
-    html: shell({ site: cfg.site, preheader: `${lines.length} item(s) for a session`, body, staff: true }),
-    text: [`Bag merch for ${contact.name}, ${when}`, ...lines.map(l => `${l.name}${l.opts ? ' (' + l.opts + ')' : ''} x ${l.qty}`)].join('\n'),
+    from: cfg.infoFrom, to: cfg.bookingAlertTo, reply_to: contact.email || cfg.replyTo,
+    subject: `New booking: ${session}, ${when}, ${contact.name}`,
+    html: shell({ site: cfg.site, preheader: `${hrs(mins)} · ${people} ${people === 1 ? 'person' : 'people'} · ${usd(total)} paid${merch.length ? ' · merch to bag' : ''}`, body, staff: true }),
+    text,
   };
 }
 
