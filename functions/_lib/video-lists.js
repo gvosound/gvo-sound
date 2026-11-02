@@ -14,6 +14,8 @@ export const VIDEO_LISTS = [
   // BagBoy Network (Skandle's channel, filmed at GVO). UULF + the channel id is YouTube's list of the channel's
   // full-length uploads, newest first, with no Shorts in it, so only the newest few are read and none need a Shorts check.
   { key: 'bagboy', playlist: 'UULFFNAkKsoeYX1pU8IN6sDB1A', shows: 'Content page, BagBoy Network row', max: 12, fetch: 12, noShorts: true },
+  { key: 'tmc', playlist: 'UULFyCHXvn4XXE4Qf2EbzFXqYQ', shows: 'Music page, Studio artists, under Tmcthedon', artist: 'Tmcthedon', label: 'Watch TMC', max: 12, fetch: 12, noShorts: true },
+  { key: 'manny', playlist: 'UULFK_VcEZMqhLaKyBUKL9H3CQ', shows: 'Music page, Studio artists, under Mannywellz', artist: 'Mannywellz', label: 'Watch Mannywellz', max: 12, fetch: 12, noShorts: true },
   { key: 'flawless', playlist: 'PLcHLuAfRjBqxjg2GDrQZTcLNzA3lVuD2F', shows: 'Music page, Studio artists, under Flawless Breezyy', artist: 'Flawless Breezyy', label: 'Watch Flawless', takesFrom: ['sessions'], max: 20 },
 ];
 

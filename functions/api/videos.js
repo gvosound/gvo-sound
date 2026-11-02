@@ -128,7 +128,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const cache = caches.default;
   const url = new URL(request.url), fresh = url.searchParams.has('fresh');
   // Bump the version when VIDEO_LISTS changes, so every edge drops its old copy at once.
-  const key = new Request(url.origin + '/api/videos?v=2');
+  const key = new Request(url.origin + '/api/videos?v=3');
   if (!fresh) { const hit = await cache.match(key); if (hit) return hit; }
   let body;
   try { body = await build(env, waitUntil); } catch (e) { body = { ok: false, lists: {} }; }

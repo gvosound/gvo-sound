@@ -908,6 +908,7 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
 .art .cv{width:76px;border-radius:50%}
 .art b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase;display:block}
 .art small{color:var(--mute);font-size:.85rem;display:block;margin:2px 0 6px}
+.art-l{display:flex;flex-wrap:wrap;gap:6px 14px}
 .art a{font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lav);text-decoration:none}
 .submit{border:1px dashed rgba(185,178,255,.45);border-radius:var(--r);padding:clamp(18px,3vw,28px);display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(18px,3vw,36px);margin-top:18px;background:rgba(185,178,255,.04)}
 .submit h3{font-size:clamp(1.4rem,2.6vw,2rem);line-height:.95;margin:0 0 10px}
@@ -1499,9 +1500,12 @@ const REL=[
 ];
 const FEATURED='ride-for-me';
 const ARTISTS=[
- {n:'Flawless Breezyy',r:'GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',img:'t_cory'},
- {n:'BoobBlack',r:'GVO team engineer. Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',img:'c_boob'},
- {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',img:'c_need'}
+ {n:'Flawless Breezyy',r:'GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',ig:'flawlessbreezyy',img:'t_cory'},
+ {n:'BoobBlack',r:'GVO team engineer. Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',ig:'boobiecaldwell',img:'c_boob'},
+ {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',img:'c_need'},
+ // Checked Nov 2, 2026: Spotify, Apple Music (itunes lookup), YouTube channel and its linked Instagram. Photos are Spotify's artist images.
+ {n:'Tmcthedon',r:'Rap. The Garden, Ep. 7',sp:'artist/2Oq48y2ccWDR5IepmZnnXH',am:'1451364553',yt:'@tmcthedon',ig:'tmcthedon',img:'https://i.scdn.co/image/ab67616100005174e3473c843ec26adb695dcb25'},
+ {n:'Mannywellz',r:'R&B and Afropop',sp:'artist/3fP3g1UvspOUHoeT4QUoLL',am:'899607814',yt:'@Mannywellzz',ig:'mannywellz',img:'https://i.scdn.co/image/ab6761610000517431aba4501a2e10e383e3e33b'}
 ];
 /* Videos: the site asks /api/videos for each YouTube playlist (functions/_lib/video-lists.js), newest first.
    SESS and the Platform 16¾ episode below are what shows if YouTube can't be reached. */
@@ -1529,7 +1533,7 @@ const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria
 function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.sess,.pday-row,.trips,.worn,.looks',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
 addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
-const loadVids=()=>vidsP||(vidsP=api('videos?v=2').then(j=>YT=j.lists||{}).catch(()=>YT={}));
+const loadVids=()=>vidsP||(vidsP=api('videos?v=3').then(j=>YT=j.lists||{}).catch(()=>YT={}));
 const vList=k=>YT&&YT[k]&&YT[k].ok&&YT[k].videos.length?YT[k]:null;
 const plUrl=l=>'https://www.youtube.com/playlist?list='+encodeURIComponent(l.playlist);
 // Swap the hand-picked videos for the live playlists once they arrive. Anything that failed keeps its fallback.
@@ -1801,7 +1805,7 @@ const ROOMS={
   desc:'Rent a lit, soundproofed photo studio in Annapolis from $50 an hour. Strobes, RGB lights, backdrops and mirrors included. Book a GVO photographer or bring your own.',
   h1:'Photo studio rental in Annapolis',
   lede:'A lit, soundproofed room for portraits, product and promo. Rent the room by the hour, or book a GVO photographer with it.',
-  facts:[['$50','Per hour'],['1–5 hrs','Rental blocks'],['6','Lights on set'],['$150','Holiday shoot + 20 edits','season'],['Optional','GVO photographer','off']],
+  facts:[['$50','Per hour'],['2–5 hrs','Rental blocks'],['6','Lights on set'],['$150','Holiday shoot + 20 edits','season'],['Optional','GVO photographer','off']],
   about:['The photo studio shares the building with the recording rooms at 109 Gibralter Ave. It is soundproofed, so a shoot runs without noise from the hall, and it comes lit and ready.','Rates cover the room and the gear. Want someone behind the camera? Book Dym Archives or Smooth with your session, or bring your own photographer.'],
   incl:['2 Neewer flash strobes','2 Neewer continuous strobes','2 GVM RGB lights with Bluetooth','5-in-1 reflector: white, black, gold, silver','1 backdrop color of your choice','Mirrors and a white product box'],
   gear:['Flash strobes','Continuous strobes','RGB lights','Reflector','Color backdrops','Product box'],
@@ -1899,7 +1903,7 @@ function viewHome(){
  <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
 
  <section id="rooms"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three studios · one address</span><h2>The studios</h2></div><p class="lede">Recording: 2–12 hour sessions. Photo: 1–5 hours. Content: quoted per project.</p></div>
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three studios · one address</span><h2>The studios</h2></div><p class="lede">Recording: 2–12 hour sessions. Photo: 2–5 hours. Content: quoted per project.</p></div>
   <div class="rooms" id="roomsEl">${Object.entries(ROOMS).map(([slug,r],i)=>`<div class="room" role="button" tabindex="0" aria-expanded="${i===0}" data-slug="${slug}">
    ${imgT(r.card||r.img,r.cardAlt||'')}
    <div class="room-label"><small>${({rec:'Engineer and mix included',photo:'Lit, soundproofed, ready to shoot',pod:'Podcasts, voiceovers, video'})[r.k]}</small><b>${r.h1.replace(' in Annapolis','')}</b></div>
@@ -2036,7 +2040,7 @@ function viewMusic(slug){
  </div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
-  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${ext(SPO+a.sp,'Follow on Spotify →')}</div></div><div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div>`).join('')}</div>
+  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small><span class="art-l">${[a.sp&&ext(SPO+a.sp,'Spotify'),a.am&&ext('https://music.apple.com/us/artist/'+a.am,'Apple Music'),a.yt&&ext('https://www.youtube.com/'+a.yt,'YouTube'),a.ig&&ext('https://www.instagram.com/'+a.ig+'/','Instagram')].filter(Boolean).join('')}</span></div></div><div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div>`).join('')}</div>
   <div class="submit rv"><div><span class="eyebrow">Made music at GVO?</span><h3>Get your song on this page</h3><p>Send your links from any platform, a single or a whole project. The team reviews every submission before anything goes live.</p></div>
    <form id="subForm" novalidate>
     <input name="artist" placeholder="Artist name *" required autocomplete="nickname" aria-label="Artist name">
