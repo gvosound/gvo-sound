@@ -6,9 +6,8 @@ import { badRequest } from './orders.js';
 export const LEAD_MS = 2 * 3600e3;
 export const MAX_PEOPLE = 5;
 export const BOOKABLE = ['rec', 'photo', 'holiday'];
-// Shortest session that books online, by kind. 1-hour recording and photo sessions stay in Square but don't book
-// online. The holiday photo special is its own kind and keeps its 1 hour.
-export const MIN_HRS = { rec: 2, photo: 2 };
+// Shortest session that books online, by kind. A 1-hour recording session stays in Square but is request-only.
+export const MIN_HRS = { rec: 2 };
 // Square team members who never take an online booking for that kind, matched by display name.
 // Cory doesn't engineer sessions, and "No Photographer Needed" is a photo-studio placeholder.
 const OFF_TEAM = { rec: [/^cory\b/i, /no photographer/i] };
@@ -17,7 +16,7 @@ export function serviceOf(cat, id) {
   const s = cat.services.find(x => x.id === id);
   if (!s || !BOOKABLE.includes(s.kind)) throw badRequest('That session type is not bookable online. Call or text the studio at (443) 292-6753.');
   if (s.price == null) throw badRequest('That session has no set price in Square yet. Call or text the studio at (443) 292-6753.');
-  if (MIN_HRS[s.kind] && s.hrs < MIN_HRS[s.kind]) throw badRequest(`${s.kind === 'photo' ? 'Photo studio' : 'Recording'} sessions book online from ${MIN_HRS[s.kind]} hours. To request a shorter session, call or text the studio at (443) 292-6753.`);
+  if (MIN_HRS[s.kind] && s.hrs < MIN_HRS[s.kind]) throw badRequest('Recording sessions book online from 2 hours. To request 1 hour, call or text the studio at (443) 292-6753.');
   return s;
 }
 
