@@ -909,6 +909,15 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
 .art b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase;display:block}
 .art small{color:var(--mute);font-size:.85rem;display:block;margin:2px 0 6px}
 .art-l{display:flex;flex-wrap:wrap;gap:6px 14px}
+.fam .art-songs{grid-column:1/-1}
+.art-songs{display:grid;gap:12px}
+.art-songs .hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.art-songs .hd small{color:var(--mute);font-size:.85rem}
+.art-songs-r{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,calc((100% - 36px)/4));gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
+.asong{scroll-snap-align:start;display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:10px;background:var(--ink)}
+.asong .cv{width:64px;aspect-ratio:1;border-radius:6px;overflow:hidden}.asong .cv img{width:100%;height:100%;object-fit:cover;display:block}
+.asong b{display:block;font-weight:600;margin-bottom:4px}.asong span{display:flex;gap:12px;flex-wrap:wrap}
+.asong a{font:600 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lav);text-decoration:none}
+@media (max-width:760px){.art-songs-r{grid-auto-columns:78%}}
 .art a{font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lav);text-decoration:none}
 .submit{border:1px dashed rgba(185,178,255,.45);border-radius:var(--r);padding:clamp(18px,3vw,28px);display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(18px,3vw,36px);margin-top:18px;background:rgba(185,178,255,.04)}
 .submit h3{font-size:clamp(1.4rem,2.6vw,2rem);line-height:.95;margin:0 0 10px}
@@ -1505,7 +1514,9 @@ const ARTISTS=[
  {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',img:'c_need'},
  // Checked Nov 2, 2026: Spotify, Apple Music (itunes lookup), YouTube channel and its linked Instagram. Photos are Spotify's artist images.
  {n:'Tmcthedon',r:'Rap. The Garden, Ep. 7',sp:'artist/2Oq48y2ccWDR5IepmZnnXH',am:'1451364553',yt:'@tmcthedon',ig:'tmcthedon',img:'https://i.scdn.co/image/ab67616100005174e3473c843ec26adb695dcb25'},
- {n:'Mannywellz',r:'R&B and Afropop',sp:'artist/3fP3g1UvspOUHoeT4QUoLL',am:'899607814',yt:'@Mannywellzz',ig:'mannywellz',img:'https://i.scdn.co/image/ab6761610000517431aba4501a2e10e383e3e33b'}
+ {n:'Mannywellz',r:'R&B and Afropop',sp:'artist/3fP3g1UvspOUHoeT4QUoLL',am:'899607814',yt:'@Mannywellzz',ig:'mannywellz',img:'https://i.scdn.co/image/ab6761610000517431aba4501a2e10e383e3e33b',
+  // Recorded at GVO (from Cory's credits list). All four are on the album Small Chops.
+  songs:[['Holy Father','00vCyoqwYo7JmwjCzDTjyy'],['Zeze','7tmcpNYsAgxNzKVjITVYsj'],['You Are From God','75g0Gi8OvZSICyl6Ej7yAf'],['Cry On You','488d0odzx7GHa427jIvnDv']],songsFrom:'Small Chops',cover:'https://i.scdn.co/image/ab67616d00001e0211614d8f9b2d0714d2396bae'}
 ];
 /* Videos: the site asks /api/videos for each YouTube playlist (functions/_lib/video-lists.js), newest first.
    SESS and the Platform 16¾ episode below are what shows if YouTube can't be reached. */
@@ -1556,6 +1567,7 @@ const EVB='https://www.eventbrite.com/e/';
 const EVB_ORG='https://www.eventbrite.com/o/gvo-sound-studios-cory-mcghee-72154308173';
 const EBIC='<svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 12.4h8.6c.2-2.4-1.6-4.3-4-4.3-2.4 0-4.2 1.8-4.2 4.1 0 2.4 1.8 4.1 4.3 4.1 1.5 0 2.6-.5 3.4-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 const EVENTS=[
+ {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2026-11-27',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-2004232974780',k:'R&B & Vibes · Black Friday',fl:'https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1197082613%2F106612367883%2F1%2Foriginal.20261102-144937?crop=focalpoint&fit=crop&w=940&auto=format%2Ccompress&q=75&sharp=10&fp-x=0.569&fp-y=0.194&s=1b0d01b18ceb911e0e299bf869768126',lu:'DJ Mo · Buddy\'s birthday · All black dress code · Free parking'},
  {t:'GVO Sound 4-Year Anniversary: Networking Night',d:'2026-10-30',tm:'6:30 PM – 2 AM',v:'GVO Sound Studios',a:'109 Gibralter Ave',c:'Annapolis, MD',url:'https://posh.vip/e/gvo-sound-anniversary-networking-event',k:'Halloween Weekend · At the studio',fl:'f_anniv',cta:'RSVP',lu:'Free food · Discounted clothing · Discounted pre-booked studio time · Cash bar'},
  {t:'The Day After: Ravens Watch Party',d:'2026-11-01',tm:'1 PM – 6 PM',v:'Mugshots',a:'31 E Cross St',c:'Baltimore, MD',url:'https://posh.vip/e/the-day-after-ravens-watch-party',k:'Halloween Weekend · Day party',fl:'f_ravens',cta:'RSVP'},
  {t:'Trick or Freak! Halloween Costume Party',d:'2026-10-31',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-trick-or-freak-halloween-costume-party-tickets-2002808913374',k:'Halloween Weekend',fl:'f_trick',lu:'DJ Mo @moxlloyd · Hosted by @flawlessbreezyy, @moxlloyd and @rvre.form_ · MC @dmanspop1128',x:'Costumes encouraged, not required.'},
@@ -2040,7 +2052,7 @@ function viewMusic(slug){
  </div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
-  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small><span class="art-l">${[a.sp&&ext(SPO+a.sp,'Spotify'),a.am&&ext('https://music.apple.com/us/artist/'+a.am,'Apple Music'),a.yt&&ext('https://www.youtube.com/'+a.yt,'YouTube'),a.ig&&ext('https://www.instagram.com/'+a.ig+'/','Instagram')].filter(Boolean).join('')}</span></div></div><div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div>`).join('')}</div>
+  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small><span class="art-l">${[a.sp&&ext(SPO+a.sp,'Spotify'),a.am&&ext('https://music.apple.com/us/artist/'+a.am,'Apple Music'),a.yt&&ext('https://www.youtube.com/'+a.yt,'YouTube'),a.ig&&ext('https://www.instagram.com/'+a.ig+'/','Instagram')].filter(Boolean).join('')}</span></div></div>${a.songs?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · Recorded at GVO</span><small>${a.songs.length} songs from ${esc(a.songsFrom)}</small></div><div class="art-songs-r">${a.songs.map(([t,id])=>`<div class="asong"><span class="cv">${imgT(a.cover,`${t} cover art`)}</span><div><b>${esc(t)}</b><span>${ext(SPO+'track/'+id,'Spotify')}${ext('https://song.link/s/'+id,'All platforms')}</span></div></div>`).join('')}</div></div>`:''}<div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div>`).join('')}</div>
   <div class="submit rv"><div><span class="eyebrow">Made music at GVO?</span><h3>Get your song on this page</h3><p>Send your links from any platform, a single or a whole project. The team reviews every submission before anything goes live.</p></div>
    <form id="subForm" novalidate>
     <input name="artist" placeholder="Artist name *" required autocomplete="nickname" aria-label="Artist name">
