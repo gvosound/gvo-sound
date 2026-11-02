@@ -187,6 +187,7 @@ export function bookingAlert(cfg, { order, idx, contact, when, session, team, mi
   const body = [
     h1(`New booking: ${esc(session)}`),
     p(`<b>${esc(when)}</b> (Eastern) · booking ${esc(ref)}`, `color:${C.mute};font-size:14px;`),
+    p(`<b>This booking is paid. In Square Appointments it will still show as due. Don't check it out.</b>`, `background:#fff4d6;border-left:3px solid #c98a00;padding:10px 12px;font-size:14px;`),
     label('Session'),
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;">${[
       row('Session', esc(session)),
@@ -209,6 +210,7 @@ export function bookingAlert(cfg, { order, idx, contact, when, session, team, mi
   ].filter(Boolean).join('\n');
   const text = [
     `New booking: ${session}, ${when} ET`,
+    "This booking is paid. In Square Appointments it will still show as due. Don't check it out.",
     `Length: ${hrs(mins)}`, `With: ${team || 'Any available'}`, `People: ${people}`,
     photo ? `Photographer: ${photo} (paid separately)` : '',
     `Paid: ${usd(total)}`, `Code: ${ref}`, '',

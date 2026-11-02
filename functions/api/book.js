@@ -68,7 +68,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
     let booking;
     try {
       const sellerNote = [
-        `Paid in full online: ${(total / 100).toFixed(2)} USD. Order ${created.id}, payment ${payment.id}.`,
+        // First line staff see. Appointments can't link a booking to its payment, so it shows the session as due.
+        `PAID ONLINE: $${(total / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} on gvosound.com. Do not check out. Ref ${ref}.`,
+        `Order ${created.id}, payment ${payment.id}.`,
         b.photographer && b.photographer !== 'none' ? `Photographer requested: ${clean(b.photographer, 60)} (paid separately).` : '',
         merch.length ? 'Merch to bag at the front desk: see the order.' : '',
       ].filter(Boolean).join(' ');
