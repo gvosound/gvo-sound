@@ -529,6 +529,9 @@ a.mcred:hover{text-decoration:underline}
 .pdp-main{aspect-ratio:4/5;max-width:100%;border-radius:var(--r);overflow:hidden;background:#ece9e4;position:relative;cursor:zoom-in}
 .pdp-main img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease)}
 .pdp-main.zoom img{transform:scale(1.8)}
+/* Wide group shots fit whole inside the frame, over a blurred copy of the same photo, so nobody gets cropped out. */
+.pdp-main.wide::before{content:'';position:absolute;inset:-30px;background:var(--wbg) center/cover no-repeat;filter:blur(26px) brightness(.55);z-index:0}
+.pdp-main.wide img{object-fit:contain;position:relative;z-index:1}
 .pdp-main video{width:100%;height:100%;object-fit:cover;display:block;background:#ece9e4}
 .pdp-main.is-vid{cursor:default}
 .pdp-th{max-height:min(780px,calc(100svh - 160px));overflow-y:auto;scrollbar-width:none}
@@ -3244,7 +3247,9 @@ function wireProduct(id){
  if(pm&&th){
   let cur=0;
   const n=()=>th.children.length;
-  const show=i=>{cur=(i+n())%n();pm.classList.remove('zoom');pm.innerHTML=galSlide(p,G.color,cur);$$('button',th).forEach((b,k)=>b.setAttribute('aria-pressed',k===cur));const b=th.children[cur];if(b)b.scrollIntoView({block:'nearest',inline:'nearest'});pm.classList.toggle('is-vid',!!$('video',pm));wireVideos(main)};
+  // Fit check runs once the photo has its real size: wider than tall means show all of it.
+  const fit=()=>{const im=$('img',pm);pm.classList.remove('wide');if(!im)return;const go=()=>{if(im.naturalWidth>im.naturalHeight*1.05){pm.style.setProperty('--wbg',`url("${im.currentSrc||im.src}")`);pm.classList.add('wide')}};im.complete&&im.naturalWidth?go():im.addEventListener('load',go,{once:true})};
+  const show=i=>{cur=(i+n())%n();pm.classList.remove('zoom');pm.innerHTML=galSlide(p,G.color,cur);fit();$$('button',th).forEach((b,k)=>b.setAttribute('aria-pressed',k===cur));const b=th.children[cur];if(b)b.scrollIntoView({block:'nearest',inline:'nearest'});pm.classList.toggle('is-vid',!!$('video',pm));wireVideos(main)};
   const miss=()=>{let m=$('#pdpMiss',main);if(!m){m=document.createElement('p');m.id='pdpMiss';m.className='pdp-miss';th.parentNode.appendChild(m)}
    m.hidden=!colorMiss(p,G.color);m.textContent=m.hidden?'':`No photos of ${G.color} yet. These show the other colors.`};
   G.redraw=()=>{th.innerHTML=galThumbs(p,G.color);show(0);miss()};miss();
@@ -3254,7 +3259,7 @@ function wireProduct(id){
   pm.onmouseleave=()=>pm.classList.remove('zoom');
   let tx=null;pm.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
   pm.addEventListener('touchend',e=>{if(tx==null)return;const d=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(d)>40)show(cur+(d<0?1:-1))},{passive:true});
-  pm.classList.toggle('is-vid',!!$('video',pm));
+  pm.classList.toggle('is-vid',!!$('video',pm));fit();
  }
  $('#pdpAdd').onclick=()=>{if(needC()){const c=$('#pdpColor');if(c){c.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'});c.classList.remove('nudge');void c.offsetWidth;c.classList.add('nudge');const f=$('.sz:not([data-v=""]):not([disabled])',c);f&&f.focus({preventScroll:true})}return}if(SQ.live&&isAv(sel))addToBag(id,sel.join('/'))};
 }
