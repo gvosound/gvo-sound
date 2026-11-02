@@ -3,16 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://gvosound.com/">
+<meta property="og:url" content="https://gvosound.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GVO Sound">
 <meta property="og:title" content="GVO Sound | Recording, Photo and Podcast Studio in Annapolis, MD">
 <meta property="og:description" content="Recording, photo and content studios at 109 Gibralter Ave, Annapolis. Podcasts and voiceovers too. Engineer and mixing included.">
-<meta property="og:image" content="https://gvo-sound.pages.dev/img/og-image.png">
+<meta property="og:image" content="https://gvosound.com/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="GVO Sound logo">
-<meta name="twitter:image" content="https://gvo-sound.pages.dev/img/og-image.png">
+<meta name="twitter:image" content="https://gvosound.com/img/og-image.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64.png">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
@@ -24,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":["RecordingStudio","LocalBusiness"],"@id":"https://www.gvosound.com/#business","name":"GVO Sound","legalName":"GVO Sound LLC","url":"https://www.gvosound.com","telephone":"+1-443-292-6753","email":"gvosoundllc@gmail.com","foundingDate":"2020","priceRange":"$50-$720",
+{"@context":"https://schema.org","@type":["RecordingStudio","LocalBusiness"],"@id":"https://gvosound.com/#business","name":"GVO Sound","legalName":"GVO Sound LLC","url":"https://gvosound.com","telephone":"+1-443-292-6753","email":"gvosoundllc@gmail.com","foundingDate":"2020","priceRange":"$50-$720",
 "address":{"@type":"PostalAddress","streetAddress":"109 Gibralter Ave","addressLocality":"Annapolis","addressRegion":"MD","postalCode":"21401","addressCountry":"US"},
 "geo":{"@type":"GeoCoordinates","latitude":38.983098,"longitude":-76.529526},
 "openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"}],
@@ -1135,11 +1136,16 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .fit-tot small{display:block;font:600 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 .fit-tot b{font:900 1.5rem/1.1 var(--display);font-stretch:110%}
 .fit-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.looks-h{margin-top:clamp(56px,8vw,90px);display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:22px}
+.looks-h{margin-top:clamp(56px,8vw,90px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 20px;margin-bottom:22px}
+.looks-h>div:first-child{display:grid;gap:12px;min-width:0}
+.looks-h2{margin-top:clamp(36px,5vw,56px)}
 .looks-h h3{overflow-wrap:anywhere}
 .looks-h h3{font-size:clamp(1.4rem,3vw,2.2rem)}
-.looks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.worn{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:28px 14px;margin-bottom:clamp(28px,4vw,44px)}
+.looks{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+.look{scroll-snap-align:start}
+.worn{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 56px)/5);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+.worn-t{scroll-snap-align:start}
+@media (max-width:1100px){.worn{grid-auto-columns:calc((100% - 28px)/3)}.looks{grid-auto-columns:calc((100% - 28px)/3)}}
 .worn-t{margin:0;display:grid;gap:12px;align-content:start}
 .worn-m{position:relative;aspect-ratio:3/4;background:var(--panel);overflow:hidden;border-radius:var(--r)}
 .worn-m img,.worn-m video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
@@ -1153,7 +1159,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .worn-s a:hover{color:var(--bone);border-color:var(--lav)}
 .worn-s i{font-style:normal;color:var(--line)}
 .worn-s>span{color:var(--lav);font-size:.8rem}
-@media (max-width:760px){.worn{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.worn-t{scroll-snap-align:start}}
+@media (max-width:760px){.worn{grid-auto-columns:72%}}
 .look{display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink)}
 .look-ph{display:block;aspect-ratio:4/5;overflow:hidden;background:var(--panel)}
 .look-ph img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
@@ -1165,7 +1171,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .look-p a{font-size:.78rem;border:1px solid var(--line);border-radius:40px;padding:4px 9px;text-decoration:none;color:#d4cfd9}
 .look-p a:hover{border-color:var(--lav);color:var(--bone)}
 .look-b .btn{margin-top:4px;padding:11px 14px}
-@media (max-width:560px){.looks{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:74%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}.look{scroll-snap-align:start}}
+@media (max-width:760px){.looks{grid-auto-columns:74%}}
 /* travel */
 .trhero h1{font-size:clamp(2.3rem,5vw,4.4rem)}
 .trhero{background:radial-gradient(900px 420px at 85% 0%,rgba(185,178,255,.14),transparent 60%)}
@@ -1428,7 +1434,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
       <div><h4>Shop</h4><ul><li><a href="#shop">All apparel</a></li><li><a href="#product-world-tour-cheetah-hoodie">Cheetah Hoodie</a></li><li><a href="#product-gvo-x-ace-distressed-tee">GVO x Ace Tee</a></li><li><a href="#product-gvo-beanie">GVO Beanie</a></li></ul></div>
       <div><h4>Follow</h4><ul><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram @gvo.sound</a></li><li><a href="https://www.instagram.com/gvosound.events/" target="_blank" rel="noopener">GVO Events</a></li><li><a href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">GVO Clothing</a></li><li><a href="https://www.instagram.com/gvosound.travel/" target="_blank" rel="noopener">GVO Travel</a></li><li><a href="https://open.spotify.com/artist/5eZfmZxf0hNUuC3GERdI2A" target="_blank" rel="noopener">Spotify</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
     </div>
-    <div class="fbase"><span>GVO Sound LLC · Good Vibes Only · Annapolis, MD · Est. 2020</span><span class="by-sc">Demo build by <img src="img/siani-creates.png" alt="Siani Creates" width="35" height="13"></span></div>
+    <div class="fbase"><span>GVO Sound LLC · Good Vibes Only · Annapolis, MD · Est. 2020</span><span class="by-sc">Site by <img src="img/siani-creates.png" alt="Siani Creates" width="35" height="13"></span></div>
   </div>
 </footer>
 
@@ -1437,7 +1443,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
   <a class="btn btn-lav" href="#book">Book a session</a>
 </nav>
 
-<button class="notes-toggle" id="notesToggle" type="button" aria-pressed="false">Build notes</button>
+<button class="notes-toggle" id="notesToggle" type="button" aria-pressed="false" hidden>Build notes</button>
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" hidden aria-label="Bag">
   <div class="drawer-h"><h3>Your bag</h3><button class="x" id="closeCart" type="button" aria-label="Close bag">✕</button></div>
@@ -1455,7 +1461,8 @@ const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelect
 const m2=n=>'$'+n.toFixed(2), m0=n=>'$'+(Number.isInteger(n)?n:n.toFixed(2));
 const TAX=0.06, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let notesOn=false;
-const SITE='https://www.gvosound.com';
+// Build notes are for Siani and the team: the toggle only shows with ?notes in the address.
+const SITE='https://gvosound.com';
 
 /* ================= data ================= */
 const REC={2:150,3:210,4:260,5:325,6:360,7:420,8:480,9:540,10:600,11:660,12:720};
@@ -1519,7 +1526,7 @@ const gFix=id=>`this.onerror=null;this.onload=null;this.classList.add('lb');this
 const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="${gFix(esc(v.id))}" onload="if(this.naturalWidth<200){${gFix(esc(v.id))}}" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria-label="Scroll back">←</button><button type="button" data-row="1" aria-label="Scroll forward">→</button></div>';
 // Arrows only show when their row has more than fits.
-function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.art-strip,section'),r=box&&$('.sess,.pday-row,.trips',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
+function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.sess,.pday-row,.trips,.worn,.looks',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
 addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos?v=2').then(j=>YT=j.lists||{}).catch(()=>YT={}));
@@ -2261,9 +2268,11 @@ function viewFit(){
    </div>
   </div>
   ${note('How the board works','Every piece is a real GVO product photo with the background cut away, so the fit you build is what ships. Prices and stock come from the same catalog as the rack, so a sold-out size shows here too. A fit link opens the board with the same pieces, which makes it easy to share a fit on Instagram. Pieces without a clean flat-lay photo (the tracksuit, the cozy pants, the golf set, the dirtbike jersey) join the board once they are shot flat on one backdrop.')}
-  <div class="looks-h rv"><span class="eyebrow">Worn by GVO</span><h3>Real fits from @${IG.clothing}</h3></div>
+  <div class="rowbox"><div class="looks-h rv"><div><span class="eyebrow">Worn by GVO</span><h3>Real fits</h3></div><div class="row-end">${ext(igUrl(IG.clothing),'@'+IG.clothing,'link')}${NAV}</div></div>
   <div class="worn" id="worn">${WORN.map(wornTile).join('')}</div>
-  <div class="looks">${LOOKS.map((l,i)=>`<article class="look rv"><a class="look-ph" ${l.ig?`href="https://www.instagram.com/p/${l.ig}/" target="_blank" rel="noopener" data-ig="${l.ig}" data-igr="0"`:`href="#product-${l.shop?l.shop[0]:Object.values(FIT).flat().find(o=>o.f===l.fit.top).id}"`} aria-label="${l.t}">${imgT(l.img,l.t+', '+l.who)}</a><div class="look-b"><b>${l.t}</b><small>${l.who}</small><div class="look-p">${(l.fit?Object.values(l.fit).filter(Boolean).map(f=>Object.values(FIT).flat().find(o=>o.f===f)).map(o=>`<a href="#product-${o.id}">${o.p.n}</a>`):l.shop.filter(id=>prodById(id)).map(id=>`<a href="#product-${id}">${prodById(id).n}</a>`)).join('')}</div>${l.fit?`<button type="button" class="btn btn-ghost" data-look="${i}">Build this fit</button>`:`<a class="btn btn-ghost" href="#product-${l.shop[0]}">Shop the look</a>`}</div></article>`).join('')}</div>
+  </div>
+  <div class="rowbox"><div class="looks-h looks-h2"><div><span class="eyebrow">Shop the look</span><h3>Looks from Instagram</h3></div><div class="row-end">${NAV}</div></div>
+  <div class="looks">${LOOKS.map((l,i)=>`<article class="look rv"><a class="look-ph" ${l.ig?`href="https://www.instagram.com/p/${l.ig}/" target="_blank" rel="noopener" data-ig="${l.ig}" data-igr="0"`:`href="#product-${l.shop?l.shop[0]:Object.values(FIT).flat().find(o=>o.f===l.fit.top).id}"`} aria-label="${l.t}">${imgT(l.img,l.t+', '+l.who)}</a><div class="look-b"><b>${l.t}</b><small>${l.who}</small><div class="look-p">${(l.fit?Object.values(l.fit).filter(Boolean).map(f=>Object.values(FIT).flat().find(o=>o.f===f)).map(o=>`<a href="#product-${o.id}">${o.p.n}</a>`):l.shop.filter(id=>prodById(id)).map(id=>`<a href="#product-${id}">${prodById(id).n}</a>`)).join('')}</div>${l.fit?`<button type="button" class="btn btn-ghost" data-look="${i}">Build this fit</button>`:`<a class="btn btn-ghost" href="#product-${l.shop[0]}">Shop the look</a>`}</div></article>`).join('')}</div></div>
  </div></section>`;
 }
 /* Worn at GVO: clips and photos from Cory's album. Each links to its pieces and to the photo studio it was shot in. */
@@ -2662,7 +2671,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
- const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.art-strip,section'),r=box&&$('.sess,.pday-row,.trips',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
+ const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.rowbox,.art-strip,section'),r=box&&$('.sess,.pday-row,.trips,.worn,.looks',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
  const cb=e.target.closest('[data-cats]');if(cb){const c=$('#cat');if(c)c.scrollBy({left:+cb.dataset.cats*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const gb=e.target.closest('[data-grow]');if(gb){const c=$('#grow');c.scrollBy({left:+gb.dataset.grow*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const sb=e.target.closest('[data-igs]');if(sb){const c=sb.closest('.igb').querySelector('.igb-c');c.scrollBy({left:+sb.dataset.igs*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
@@ -3207,6 +3216,7 @@ const onScroll=()=>{const y=scrollY,h=document.documentElement.scrollHeight-inne
 addEventListener('scroll',onScroll,{passive:true});
 let tto;function toast(m){const t=$('#toast');t.hidden=true;void t.offsetWidth;t.textContent=m;t.hidden=false;clearTimeout(tto);tto=setTimeout(()=>t.hidden=true,2800)}
 function copy(b){const v=b.dataset.copy;const sel=()=>{const s=b.previousElementSibling,r=document.createRange();r.selectNodeContents(s);getSelection().removeAllRanges();getSelection().addRange(r);toast('Selected. Copy it with your keyboard.')};if(navigator.clipboard)navigator.clipboard.writeText(v).then(()=>toast('Copied '+v)).catch(sel);else sel()}
+if(/[?&]notes\b/.test(location.search))$('#notesToggle').hidden=false;
 $('#notesToggle').onclick=e=>{notesOn=!notesOn;e.currentTarget.setAttribute('aria-pressed',notesOn);e.currentTarget.textContent=notesOn?'Hide notes':'Build notes';$$('.note,.sync').forEach(n=>n.hidden=!notesOn);if(notesOn&&!$('.note:not([hidden])'))toast('No notes on this view')};
 
 /* intro bats: the V in GVO is a bat, traced from the logo itself.

@@ -1,6 +1,6 @@
 # GVO Sound website
 
-Demo build of the new gvosound.com for GVO Sound LLC, 109 Gibralter Ave, Annapolis, MD.
+The gvosound.com site for GVO Sound LLC, 109 Gibralter Ave, Annapolis, MD.
 
 ## What's here
 
@@ -97,5 +97,4 @@ Apple Pay shows only after gvosound.com is registered for Apple Pay in the Squar
 - Generate `sitemap.xml`, set canonical URLs, remove noindex
 - Keep the Meta pixel on booking events
 - Transfer gvosound.com to Cloudflare, set up Email Routing to Gmail
-- Switch og:image and twitter:image from gvo-sound.pages.dev to https://www.gvosound.com/img/og-image.png
 - Cancel Wix only after the domain transfer completes

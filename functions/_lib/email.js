@@ -28,7 +28,7 @@ export function emailCfg(env, origin) {
     infoFrom: env.EMAIL_FROM_INFO || 'GVO Sound <info@gvosound.com>',   // forms and studio notes
     alertTo: (env.ORDER_ALERT_TO || STUDIO.gmail).split(/[\s,]+/).filter(Boolean),
     replyTo: env.EMAIL_REPLY_TO || STUDIO.gmail,
-    site: (env.SITE_URL || origin || 'https://www.gvosound.com').replace(/\/$/, ''),
+    site: (env.SITE_URL || 'https://gvosound.com').replace(/\/$/, ''), // links in emails always point at the live domain
   };
 }
 
