@@ -229,8 +229,8 @@ export function formConfirmation(cfg, form, f) {
     subject = 'We got your music';
     intro = 'Thanks for sending your music to GVO Sound. Songs picked for the site go up on the music page at gvosound.com/music.';
   } else if (form === 'notify' && f.list === 'Next event') {
-    subject = "You're on the list for the next GVO event";
-    intro = "You're on the list for the next GVO Sound event. When the date and flyer drop, you get one email about it. That's all this list is for.";
+    subject = "You're on the GVO events list";
+    intro = "You're on the list for GVO Sound events. When a new date drops, you get an email with the flyer and ticket link. That's all this list is for.";
     close = 'Want off the list? Reply "remove" and you\'re out.'; closeText = close;
   } else if (form === 'notify' && f.list === 'Africa trip') {
     subject = "You're on the list for the Africa trip";
