@@ -902,14 +902,22 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
 .rel .ln a{color:var(--lav);text-decoration:none;padding-block:6px}
 .rel .ln a:hover{color:var(--bone)}
 .rel[aria-current="true"] .cv{outline:2px solid var(--lav);outline-offset:3px}
-.fam{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));grid-auto-flow:row dense;gap:14px}
-.fam .art-strip{grid-column:1/-1;margin-top:0}
+.fam{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 10px;scrollbar-width:thin}
+.fam .art{scroll-snap-align:start;cursor:pointer;transition:border-color .2s,background .2s}
+.fam .art:hover{border-color:var(--mute)}
+.fam .art[aria-selected="true"]{border-color:var(--lav);background:linear-gradient(180deg,rgba(184,168,255,.12),var(--ink) 70%)}
+.fam .art:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+@media (max-width:1100px){.fam{grid-auto-columns:calc((100% - 28px)/3)}}
+@media (max-width:760px){.fam{grid-auto-columns:82%}}
+.art-panel{margin-top:26px;display:grid;gap:26px}
+.art-panel .art-strip{margin-top:0}
+.art-songs .hd .cat-nav{margin-left:auto}
+.art-none{margin:0;color:var(--mute)}.art-none a{color:var(--lav)}
 .art{display:grid;grid-template-columns:76px 1fr;gap:16px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:14px;background:var(--ink)}
 .art .cv{width:76px;border-radius:50%}
 .art b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase;display:block}
 .art small{color:var(--mute);font-size:.85rem;display:block;margin:2px 0 6px}
 .art-l{display:flex;flex-wrap:wrap;gap:6px 14px}
-.fam .art-songs{grid-column:1/-1}
 .art-songs{display:grid;gap:12px}
 .art-songs .hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.art-songs .hd small{color:var(--mute);font-size:.85rem}
 .art-songs-r{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,calc((100% - 36px)/4));gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
@@ -1509,9 +1517,9 @@ const REL=[
 ];
 const FEATURED='ride-for-me';
 const ARTISTS=[
- {n:'Flawless Breezyy',r:'GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',ig:'flawlessbreezyy',img:'t_cory'},
- {n:'BoobBlack',r:'GVO team engineer. Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',ig:'boobiecaldwell',img:'c_boob'},
- {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',img:'c_need'},
+ {n:'Flawless Breezyy',r:'GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',am:'1465299968',yt:'@FlawlessBreezyy',ig:'flawlessbreezyy',img:'t_cory'},
+ {n:'BoobBlack',r:'GVO team engineer. Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',am:'1438057644',ig:'boobiecaldwell',img:'c_boob'},
+ {n:'A. Brooks',r:'Need to know, with Flawless Breezyy',sp:'artist/6StxpIJIGQ2lnawter7Tem',yt:'@a.brooks',img:'c_need'},
  // Checked Nov 2, 2026: Spotify, Apple Music (itunes lookup), YouTube channel and its linked Instagram. Photos are Spotify's artist images.
  {n:'Tmcthedon',r:'Rap. The Garden, Ep. 7',sp:'artist/2Oq48y2ccWDR5IepmZnnXH',am:'1451364553',yt:'@tmcthedon',ig:'tmcthedon',img:'https://i.scdn.co/image/ab67616100005174e3473c843ec26adb695dcb25'},
  {n:'Mannywellz',r:'R&B and Afropop',sp:'artist/3fP3g1UvspOUHoeT4QUoLL',am:'899607814',yt:'@Mannywellzz',ig:'mannywellz',img:'https://i.scdn.co/image/ab6761610000517431aba4501a2e10e383e3e33b',
@@ -1541,7 +1549,7 @@ const gFix=id=>`this.onerror=null;this.onload=null;this.classList.add('lb');this
 const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="${gFix(esc(v.id))}" onload="if(this.naturalWidth<200){${gFix(esc(v.id))}}" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria-label="Scroll back">←</button><button type="button" data-row="1" aria-label="Scroll forward">→</button></div>';
 // Arrows only show when their row has more than fits.
-function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.sess,.pday-row,.trips,.worn,.looks',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
+function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
 addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos?v=3').then(j=>YT=j.lists||{}).catch(()=>YT={}));
@@ -1660,6 +1668,9 @@ function fillIg(root){if(!root||!root.isConnected||!IGD)return;
  $$('[data-igfeed]',root).forEach(b=>{const k=b.dataset.igfeed,a=IGD.accounts&&IGD.accounts[k],list=a?(a.ok?a.posts:null):((IGD.approved||{})[k]||null);
   if(list&&list.length){$('.igb-t',b).innerHTML=list.map(igTile).join('');b.hidden=false;b.classList.add('in')}});
  const pe=$('[data-igpod]',root),pl=(IGD.approved||{}).podcast;if(pe&&pl&&pl.length)pe.innerHTML=pl.map(podIgTile).join('');rowNavs(root)}
+function pickArt(i){$$('.fam [data-art]',main).forEach(c=>c.setAttribute('aria-selected',String(+c.dataset.art===i)));$$('[data-artp]',main).forEach(p=>p.hidden=+p.dataset.artp!==i);rowNavs(main)}
+document.addEventListener('keydown',e=>{const c=e.target.closest&&e.target.closest('.fam [data-art]');if(c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pickArt(+c.dataset.art)}});
+const artLinks=a=>`<span class="art-l">${[a.sp&&ext(SPO+a.sp,'Spotify'),a.am&&ext('https://music.apple.com/us/artist/'+a.am,'Apple Music'),a.yt&&ext('https://www.youtube.com/'+a.yt,'YouTube'),a.ig&&ext('https://www.instagram.com/'+a.ig+'/','Instagram')].filter(Boolean).join('')}</span>`;
 const relById=id=>REL.find(x=>x.id===id);
 const spUrl=x=>SPO+x.k+'/'+x.sp;
 const allUrl=x=>(x.k==='track'?'https://song.link/s/':'https://album.link/s/')+x.sp;
@@ -1935,7 +1946,7 @@ function viewHome(){
     <div><span class="eyebrow">Out now · ${f.tag}</span><h3>${f.t}</h3><p>${f.a}</p>
      <div class="plat">${f.pv?`<button class="btn btn-lav" type="button" data-play="${f.id}" data-lbl="1" aria-pressed="false">Play preview</button>`:''}${ext(spUrl(f),SPIC+'Spotify','btn btn-ghost')}${ext(allUrl(f),'All platforms','btn btn-ghost')}</div></div></div>
    <div><div class="np-list">${REL.filter(x=>x.id!==f.id).slice(0,4).map(x=>`<div class="trk">${x.pv?`<button class="trk-play" type="button" data-play="${x.id}" aria-pressed="false" aria-label="Play a preview of ${x.t}">`:`<a class="trk-play" href="${spUrl(x)}" target="_blank" rel="noopener">`}<span class="cv">${imgT(x.c,'')}</span><span><b>${x.t}</b><small>${x.a}</small></span><span class="go" aria-hidden="true"></span>${x.pv?'</button>':'</a>'}${ext(spUrl(x),SPIC+'<span class="sr">Open '+x.t+' on Spotify</span>','trk-sp')}</div>`).join('')}</div>
-    <div class="np-more"><span class="plat-note">Studio artists: ${ARTISTS.slice(1).map(a=>a.n).join(', ')}</span><a class="link" href="#music">See the catalog and sessions →</a></div></div>
+    <div class="np-more"><span class="plat-note">Studio artists: ${ARTISTS.slice(1).map(a=>a.n).join(', ')}</span><a class="link" href="#music?to=artists">See the studio artists →</a></div></div>
   </div>`})()}
  </div></section>
  <section id="team" style="background:var(--ink-2)"><div class="wrap">
@@ -2046,13 +2057,11 @@ function viewMusic(slug){
    </div>
   </div>
  </div></section>
- <section><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Flawless Breezyy</span><h2>The catalog</h2><p class="lede">Flawless owns GVO and records here. Press play on any cover for a preview.</p></div><div class="igb-nav cat-nav"><button type="button" data-cats="-1" aria-label="Scroll back">←</button><button type="button" data-cats="1" aria-label="Scroll forward">→</button></div></div>
-  <div class="cat" id="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><div class="cvw"><a class="cv" href="#music/${x.id}" aria-label="Feature ${x.t} at the top">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Featured</span>':''}</a>${pvBtn(x)}</div><a class="rel-t" href="#music/${x.id}"><b>${x.t}</b><small>${x.a}</small></a><div class="ln">${ext(spUrl(x),SPIC+'Spotify')}<span aria-hidden="true">·</span>${ext(allUrl(x),'All platforms')}</div></div>`).join('')}</div>
- </div></section>
- <section style="background:var(--ink-2)"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2></div><p class="lede">Artists who cut records on Gibralter Ave. Follow them where you listen.</p></div>
-  <div class="fam">${ARTISTS.map(a=>`<div class="art rv"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small><span class="art-l">${[a.sp&&ext(SPO+a.sp,'Spotify'),a.am&&ext('https://music.apple.com/us/artist/'+a.am,'Apple Music'),a.yt&&ext('https://www.youtube.com/'+a.yt,'YouTube'),a.ig&&ext('https://www.instagram.com/'+a.ig+'/','Instagram')].filter(Boolean).join('')}</span></div></div>${a.songs?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · Recorded at GVO</span><small>${a.songs.length} songs from ${esc(a.songsFrom)}</small></div><div class="art-songs-r">${a.songs.map(([t,id])=>`<div class="asong"><span class="cv">${imgT(a.cover,`${t} cover art`)}</span><div><b>${esc(t)}</b><span>${ext(SPO+'track/'+id,'Spotify')}${ext('https://song.link/s/'+id,'All platforms')}</span></div></div>`).join('')}</div></div>`:''}<div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div>`).join('')}</div>
+ <section style="background:var(--ink-2)" id="artists"><div class="wrap">
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2><p class="lede">Artists who cut records on Gibralter Ave. Pick one to hear what they made here.</p></div><div class="row-end">${NAV}</div></div>
+  <div class="fam" role="tablist" aria-label="Studio artists">${ARTISTS.map((a,i)=>`<div class="art" role="tab" tabindex="0" aria-selected="${i===0}" aria-controls="artp${i}" data-art="${i}"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${artLinks(a)}</div></div>`).join('')}</div>
+  ${ARTISTS.map((a,i)=>`<div class="art-panel" id="artp${i}" role="tabpanel" data-artp="${i}"${i?' hidden':''}>${i===0?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · The catalog</span><small>Flawless owns GVO and records here. Press play on any cover for a preview.</small><div class="igb-nav cat-nav"><button type="button" data-cats="-1" aria-label="Scroll back">←</button><button type="button" data-cats="1" aria-label="Scroll forward">→</button></div></div>
+  <div class="cat" id="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><div class="cvw"><a class="cv" href="#music/${x.id}" aria-label="Feature ${x.t} at the top">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Featured</span>':''}</a>${pvBtn(x)}</div><a class="rel-t" href="#music/${x.id}"><b>${x.t}</b><small>${x.a}</small></a><div class="ln">${ext(spUrl(x),SPIC+'Spotify')}<span aria-hidden="true">·</span>${ext(allUrl(x),'All platforms')}</div></div>`).join('')}</div></div>`:a.songs?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · Recorded at GVO</span><small>${a.songs.length} songs from ${esc(a.songsFrom)}</small></div><div class="art-songs-r">${a.songs.map(([t,id])=>`<div class="asong"><span class="cv">${imgT(a.cover,`${t} cover art`)}</span><div><b>${esc(t)}</b><span>${ext(SPO+'track/'+id,'Spotify')}${ext('https://song.link/s/'+id,'All platforms')}</span></div></div>`).join('')}</div></div>`:`<p class="art-none">${a.r}. Listen to ${esc(a.n)} on ${ext(SPO+a.sp,'Spotify')}.</p>`}<div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div></div>`).join('')}
   <div class="submit rv"><div><span class="eyebrow">Made music at GVO?</span><h3>Get your song on this page</h3><p>Send your links from any platform, a single or a whole project. The team reviews every submission before anything goes live.</p></div>
    <form id="subForm" novalidate>
     <input name="artist" placeholder="Artist name *" required autocomplete="nickname" aria-label="Artist name">
@@ -2687,7 +2696,8 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
- const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.rowbox,.art-strip,section'),r=box&&$('.sess,.pday-row,.trips,.worn,.looks',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
+ const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
+ const at=e.target.closest('.fam [data-art]');if(at&&!e.target.closest('a')){pickArt(+at.dataset.art);return}
  const cb=e.target.closest('[data-cats]');if(cb){const c=$('#cat');if(c)c.scrollBy({left:+cb.dataset.cats*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const gb=e.target.closest('[data-grow]');if(gb){const c=$('#grow');c.scrollBy({left:+gb.dataset.grow*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
  const sb=e.target.closest('[data-igs]');if(sb){const c=sb.closest('.igb').querySelector('.igb-c');c.scrollBy({left:+sb.dataset.igs*c.clientWidth*.8,behavior:reduce?'auto':'smooth'});return}
