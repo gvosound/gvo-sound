@@ -36,6 +36,7 @@ The shop, checkout and booking run on GVO's Square account through Pages Functio
 | `POST /api/form` | Site forms: checks fields, screens out bots, sends the row to the form sheet's Apps Script |
 | `GET /api/videos` | Every YouTube playlist in `functions/_lib/video-lists.js`, newest first, Shorts left out. Cached 1 hour. `?fresh=1` skips the cache |
 | `GET /api/ig` | Latest posts from each account in `functions/_lib/ig-accounts.js`, read through graph.facebook.com at most once an hour, plus the @gvo.sound posts approved in the Social posts tab. Last good list kept in KV |
+| `GET /api/reviews` | Google rating and review count from the Places API (cached 24 hours), plus the reviews ticked in the Reviews tab of the form sheet (cached 1 hour). Falls back to the page's own values |
 | `POST /api/book` | Checks the time is still open, takes full payment, then creates the booking. If the booking fails, the payment is refunded |
 
 Settings, in Pages > Settings > Variables and Secrets, for Production and Preview:
@@ -56,6 +57,7 @@ Settings, in Pages > Settings > Variables and Secrets, for Production and Previe
 | `FORMS_URL` | Secret | Web app URL of the Apps Script on the form sheet |
 | `FORMS_SECRET` | Secret | Shared secret; the same value is the sheet script's FORM_SECRET property |
 | `YOUTUBE_API_KEY` | Secret | Optional. With it, /api/videos reads every video in each playlist through the YouTube Data API. Without it, the public feed, which only carries the first 15 in playlist order |
+| `GOOGLE_PLACES_KEY` | Secret | Google Maps Platform API key that reads GVO's rating and review count for /api/reviews. Made in Google Cloud Console > APIs & Services > Credentials, in the project with Places API (New) turned on, and restricted to Places API (New). To replace it: create a new key there with the same restriction, paste it over this secret in Cloudflare, redeploy, then delete the old key in Google Cloud. Without it, the site shows the fallback rating in `GOOG` |
 | `IG_TOKEN_SOUND`, `IG_TOKEN_EVENTS`, `IG_TOKEN_CLOTHING`, `IG_TOKEN_TRAVEL` | Secret | System-user tokens from the GVO Website Meta app, one per account. They don't expire |
 | `IG_KV` | KV binding | Namespace that holds each feed's last good list and the approved posts. Without it, /api/ig caches for an hour and has no stale fallback |
 

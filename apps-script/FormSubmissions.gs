@@ -1,3 +1,4 @@
+// SETUP FOR THIS VERSION: after pasting it, run setupReviews once, then Deploy > Manage deployments > edit > Version: New version.
 /**
  * GVO Website Form Submissions: receives each form from gvosound.com, adds a row to the right tab,
  * and emails the GVO Gmail.
@@ -17,12 +18,21 @@
  *      It adds an hourly trigger that asks the site to read @gvo.sound, so new posts land in the tab
  *      even when nobody visits. Tick Approved on a row and pick Show on (Music, Podcast or Both).
  *      The post shows on the site within the hour.
+ *
+ * Reviews on the site (Reviews tab):
+ *   6. Pick "setupReviews" and click Run, once. It makes the Reviews tab with today's six site reviews, all ticked.
+ *      Tick Show to put a review on the site, untick to take it off. Changes show within the hour.
+ *      Every shown review is in the home page slider. Show on picks the room page that shows the full review:
+ *      Recording, Photo or Podcast. Home = home page only. All = any room page that has no review of its own.
  */
 
 const ALERT_TO = 'gvosoundllc@gmail.com';
 const SITE = 'https://gvo-sound-329.pages.dev'; // keeps working after launch, same Cloudflare project
 const SOCIAL_TAB = 'Social posts';
 // Social posts columns: A Post link, B Account, C Date, D Caption, E Media type, F Approved, G Show on, H Post ID
+const REVIEWS_TAB = 'Reviews';
+// Reviews columns: A Name, B Stars, C Review, D Date, E Source, F Short quote, G Show on, H Show
+const REVIEW_ON = ['Home', 'Recording', 'Photo', 'Podcast', 'All'];
 const KINDS = { IMAGE: 'Photo', VIDEO: 'Reel or video', CAROUSEL_ALBUM: 'Carousel' };
 
 // Tab name and column order for each form. "Received" is always column A.
@@ -50,6 +60,7 @@ function doPost(e) {
   const secret = PropertiesService.getScriptProperties().getProperty('FORM_SECRET');
   if (!secret || body.secret !== secret) return out({ ok: false, error: 'forbidden' });
   if (body.action === 'social') return out(social(body));
+  if (body.action === 'reviews') return out(reviews());
   const form = FORMS[body.form];
   if (!form) return out({ ok: false, error: 'unknown form' });
   const f = body.fields || {};
@@ -166,6 +177,65 @@ function refreshSocial() {
   const secret = PropertiesService.getScriptProperties().getProperty('FORM_SECRET');
   const r = UrlFetchApp.fetch(SITE + '/api/ig?refresh=1', { headers: { 'X-Refresh-Key': secret }, muteHttpExceptions: true });
   console.log('Site answered ' + r.getResponseCode());
+}
+
+// The site asks for the ticked rows, in sheet order. Show is a checkbox on every row, so the last row comes from Name.
+function reviews() {
+  const sh = SpreadsheetApp.getActive().getSheetByName(REVIEWS_TAB);
+  if (!sh) return { ok: true, reviews: [] };
+  const last = sh.getLastRow();
+  if (last < 3) return { ok: true, reviews: [] };
+  const rows = sh.getRange(3, 1, last - 2, 8).getValues();
+  const tz = Session.getScriptTimeZone();
+  const list = rows.filter(r => String(r[0]).trim() && String(r[2]).trim() && r[7] === true).map(r => ({
+    name: String(r[0]).trim(),
+    stars: Number(r[1]) || 5,
+    text: String(r[2]).trim(),
+    date: r[3] instanceof Date ? Utilities.formatDate(r[3], tz, 'yyyy-MM-dd') : String(r[3] || '').trim(),
+    source: String(r[4] || '').trim(),
+    quote: String(r[5] || '').trim(),
+    on: String(r[6] || 'Home').trim(),
+  }));
+  return { ok: true, reviews: list };
+}
+
+// Run once from the editor. Makes the Reviews tab and fills it with the six reviews on the site today, all ticked.
+// If the tab already exists it is left alone.
+function setupReviews() {
+  const ss = SpreadsheetApp.getActive();
+  if (ss.getSheetByName(REVIEWS_TAB)) { console.log('The Reviews tab already exists. Nothing changed.'); return; }
+  const sh = ss.insertSheet(REVIEWS_TAB);
+  const ROWS = 200;
+  if (sh.getMaxRows() < ROWS + 2) sh.insertRowsAfter(sh.getMaxRows(), ROWS + 2 - sh.getMaxRows());
+  sh.getRange(1, 1).setValue('Reviews on gvosound.com. Tick Show to put one on the site, untick to take it off (shows within the hour). ' +
+    'Every shown review is in the home page slider. Show on picks the room page for the full review: Home = home only, All = any room page without its own. ' +
+    'Copy Google reviews word for word. Short quote is optional: a line from the review for the home slider.').setFontWeight('bold').setWrap(true);
+  sh.getRange(1, 1, 1, 8).merge();
+  sh.setRowHeight(1, 60);
+  sh.getRange(2, 1, 1, 8).setValues([['Name', 'Stars', 'Review', 'Date', 'Source', 'Short quote', 'Show on', 'Show']]).setFontWeight('bold');
+  sh.setFrozenRows(2);
+  const seed = [
+    ["William Marsters Jr.", 5, "My first time at GVO and the studio had Great Energy and absolutely incredible talent to work with and produced exactly how I envisioned my song ending up. 100% recommend any artist going here!", "", "Other", "Produced exactly how I envisioned my song ending up.", "Recording"],
+    ["Good News Threads", 5, "Best studio in the DMV! The location is perfect for any area in the DMV. The space is amazing & perfect for any artist to perform, host a listening party, have a photoshoot, record a podcast, host a girls in the studio night, and more!", "", "Google", "Best studio in the DMV!", "Podcast"],
+    ["Janisse Sellman", 5, "GREAT EXPERIENCE very fun for my daughter’s 7th birthday they made so many songs the engineer was GREAT really patient and calm. Loved everything", "", "Google", "The engineer was GREAT really patient and calm.", "Home"],
+    ["Kennedy Trusty", 5, "I have used the photography studio multiple times! It is always clean and ready to go at booking time! Owner is very flexible with your needs. All times I brought my own photographer and only utilized the space. Equipment is in great condition and available to use! I will be returning!", "", "Google", "Always clean and ready to go at booking time!", "Photo"],
+    ["MyCityM", 5, "Amazing full service sound studio, and photography studio. Great athleisurewear as well. The owner Cory aka Flawless is one of the most genuine, dedicated, hard working and community oriented business owners in the region.", "", "Other", "Amazing full service sound studio.", "Home"],
+    ["Nyia C", 5, "GVO Sounds Studios is an awesome multifaceted makers space. You can record music, learn how to make music, take photos, buy clothing, and a lot more. The owner and his colleagues are amazing. They always provide excellent service at GVO Sounds Studio.", "", "Other", "They always provide excellent service.", "Home"]
+  ];
+  sh.getRange(3, 1, seed.length, 7).setValues(seed);
+  sh.getRange(3, 8, ROWS, 1).insertCheckboxes();
+  sh.getRange(3, 8, seed.length, 1).check();
+  const list = vals => SpreadsheetApp.newDataValidation().requireValueInList(vals, true).setAllowInvalid(false).build();
+  sh.getRange(3, 7, ROWS, 1).setDataValidation(list(REVIEW_ON));
+  sh.getRange(3, 5, ROWS, 1).setDataValidation(list(['Google', 'Other']));
+  sh.getRange(3, 2, ROWS, 1).setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(1, 5).setAllowInvalid(false).build());
+  sh.getRange(3, 4, ROWS, 1).setNumberFormat('mmm d, yyyy');
+  sh.getRange(3, 3, ROWS, 1).setWrap(true);
+  sh.getRange(3, 6, ROWS, 1).setWrap(true);
+  sh.setColumnWidth(1, 170); sh.setColumnWidth(2, 60); sh.setColumnWidth(3, 420); sh.setColumnWidth(4, 100);
+  sh.setColumnWidth(5, 80); sh.setColumnWidth(6, 260); sh.setColumnWidth(7, 100); sh.setColumnWidth(8, 60);
+  sh.getRange(2, 1, ROWS + 1, 8).setVerticalAlignment('top');
+  console.log('Reviews tab made with ' + seed.length + ' reviews, all ticked.');
 }
 
 function doGet() { return out({ ok: true, service: 'GVO form submissions' }); }
