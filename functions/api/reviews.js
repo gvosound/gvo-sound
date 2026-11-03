@@ -55,7 +55,7 @@ async function placeInfo(env) {
 const str = (v, n) => String(v == null ? '' : v).replace(/^'/, '').trim().slice(0, n);
 
 async function sheetReviews(env) {
-  if (!env.FORMS_URL || !env.FORMS_SECRET) return { value: null, ok: false };
+  if (!env.FORMS_URL || !env.FORMS_SECRET) return { value: { error: 'FORMS_URL or FORMS_SECRET not set' }, ok: false };
   try {
     const r = await fetch(env.FORMS_URL, {
       method: 'POST', redirect: 'follow',
@@ -65,7 +65,11 @@ async function sheetReviews(env) {
     const t = await r.text();
     let j = {};
     try { j = JSON.parse(t); } catch (e) {}
-    if (!j.ok || !Array.isArray(j.reviews)) { console.log('reviews: sheet answered', r.status, t.slice(0, 200)); return { value: null, ok: false }; }
+    if (!j.ok || !Array.isArray(j.reviews)) {
+      console.log('reviews: sheet answered', r.status, t.slice(0, 200));
+      // The script's own error ("unknown form" means the sheet still runs the old script version).
+      return { value: { error: j.error ? String(j.error).slice(0, 80) : 'sheet answered ' + r.status + (t.trim().startsWith('<') ? ' with a web page' : '') }, ok: false };
+    }
     const list = j.reviews.map(x => ({
       name: str(x.name, 80),
       stars: Math.max(1, Math.min(5, Math.round(Number(x.stars) || 5))),
@@ -78,14 +82,14 @@ async function sheetReviews(env) {
     return { value: list, ok: true };
   } catch (e) {
     console.log('reviews: sheet call failed', e && e.message);
-    return { value: null, ok: false };
+    return { value: { error: 'sheet call failed' }, ok: false };
   }
 }
 
 export async function onRequestGet({ env, waitUntil }) {
   const [place, reviews] = await Promise.all([
     cached('place-v1', DAY, () => placeInfo(env), waitUntil),
-    cached('sheet-v1', HOUR, () => sheetReviews(env), waitUntil),
+    cached('sheet-v2', HOUR, () => sheetReviews(env), waitUntil),
   ]);
   return json({
     ok: true,
@@ -94,6 +98,7 @@ export async function onRequestGet({ env, waitUntil }) {
     url: (place && place.url) || FALLBACK.url,
     write: FALLBACK.write,
     live: !!place,
-    reviews: reviews && reviews.length ? reviews : null,
+    reviews: Array.isArray(reviews) && reviews.length ? reviews : null,
+    sheet: Array.isArray(reviews) ? `${reviews.length} shown` : (reviews && reviews.error) || 'not read',
   });
 }
