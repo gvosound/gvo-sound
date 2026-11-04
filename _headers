@@ -20,3 +20,7 @@
 # Shop review page for Cory: never in search, even after launch
 /review/*
   X-Robots-Tag: noindex, nofollow
+
+# Developer notes: readable, never in search
+/docs/*
+  X-Robots-Tag: noindex, nofollow

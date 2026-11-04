@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /review/
 Disallow: /sms-alerts
+Disallow: /docs/

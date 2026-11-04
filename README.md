@@ -6,7 +6,8 @@ The gvosound.com site for GVO Sound LLC, 109 Gibralter Ave, Annapolis, MD.
 
 - `index.html` is the whole demo: homepage, recording, photo and podcast studio pages, booking, music, shop and product pages. Pages switch by URL hash (`#recording-studio`, `#music`, `#music/ride-for-me`, `#shop`, `#product-worker-jacket`).
 - `img/` holds the studio, team and product photos, pulled from the current Wix site and converted to WebP.
-- `robots.txt` and `_headers` keep this preview out of Google. Remove both noindex rules at launch.
+- `robots.txt` keeps `/review/` and `/sms-alerts` out of search; `_headers` adds noindex to `/review/*` and `/docs/*`.
+- `docs/` holds the developer handoff notes. Start with `docs/ARCHITECTURE.md`.
 
 ## Deploy (Cloudflare Pages)
 
@@ -85,18 +86,14 @@ Apple Pay shows only after gvosound.com is registered for Apple Pay in the Squar
 
 | Piece | Tool | Owner |
 | --- | --- | --- |
-| Domain | Cloudflare Registrar (transfer from Wix; registered 2020-03-06, paid through 2027-03-06) | Cory |
+| Domain | Porkbun (transferred from Wix Oct 27 to Nov 2, 2026), nameservers on Cloudflare | Cory |
 | Site | GitHub + Cloudflare Pages | Siani builds, Cory owns |
 | Money and stock | Square: bookings, deposits, merch catalog and inventory, studio register, payouts | Cory (existing account) |
 | Square bridge | Pages Functions in `functions/` holding the Square access token as a secret (never in browser code) | Siani |
 | Forms and leads | Google Sheet "GVO Website Form Submissions": podcast quotes, event inquiries, travel requests, music submissions, notify lists. An Apps Script on the sheet (`apps-script/FormSubmissions.gs`) adds each row and emails the GVO Gmail | Cory |
-| Email | Cloudflare Email Routing: hello@gvosound.com forwards to gvosoundllc@gmail.com | Cory |
+| Email | Google Workspace for @gvosound.com; site emails through Resend | Ashley (Workspace admin) |
 
 
-## Launch checklist
+## More
 
-- Split views into static pages: `/recording-studio`, `/photo-studio`, `/content-studio`, `/book`, `/shop`, `/shop/<product>`
-- Generate `sitemap.xml`, set canonical URLs, remove noindex
-- Keep the Meta pixel on booking events
-- Transfer gvosound.com to Cloudflare, set up Email Routing to Gmail
-- Cancel Wix only after the domain transfer completes
+Launched November 2, 2026. See `docs/ARCHITECTURE.md` (how it's built), `docs/RUNBOOK.md` (fixes) and `docs/HISTORY.md` (how it got here).
