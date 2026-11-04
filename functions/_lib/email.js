@@ -179,12 +179,15 @@ export function orderAlert(cfg, { order, idx, contact, fulfillment }) {
 
 /* ---------- studio alert for every web booking, with any merch to bag ---------- */
 const hrs = m => { const h = m / 60; return h === 1 ? '1 hour' : Number.isInteger(h) ? `${h} hours` : `${m} minutes`; };
-export function bookingAlert(cfg, { order, idx, contact, when, session, team, mins, people, notes, photographer, total, ref }) {
+export function bookingAlert(cfg, { order, idx, contact, when, session, team, mins, people, notes, photographer, total, ref, status }) {
+  const PENDING = "Square shows this booking as pending. Open it in Square Appointments and accept it so it holds the time.";
+  const pending = !!status && status !== 'ACCEPTED';
   const merch = emailLines(order, idx).slice(1); // first line is the session
   const tel = String(contact.phone || '').replace(/\D/g, '').replace(/^(?=\d{10}$)/, '1');
   const photo = photographer && photographer !== 'none' ? String(photographer) : '';
   const row = (k, v) => `<tr><td valign="top" style="padding:7px 12px 7px 0;border-bottom:1px solid ${C.line};color:${C.mute};white-space:nowrap;">${k}</td><td style="padding:7px 0;border-bottom:1px solid ${C.line};">${v}</td></tr>`;
   const body = [
+    pending ? p(`<b>${PENDING}</b>`, `background:#fde4e1;border-left:3px solid #c62a23;padding:10px 12px;font-size:14px;`) : '',
     h1(`New booking: ${esc(session)}`),
     p(`<b>${esc(when)}</b> (Eastern) · booking ${esc(ref)}`, `color:${C.mute};font-size:14px;`),
     p(`<b>This booking is paid. In Square Appointments it will still show as due. Don't check it out.</b>`, `background:#fff4d6;border-left:3px solid #c98a00;padding:10px 12px;font-size:14px;`),
@@ -209,6 +212,7 @@ export function bookingAlert(cfg, { order, idx, contact, when, session, team, mi
     button('https://app.squareup.com/appointments/calendar', 'Open the Appointments calendar'),
   ].filter(Boolean).join('\n');
   const text = [
+    pending ? PENDING : '',
     `New booking: ${session}, ${when} ET`,
     "This booking is paid. In Square Appointments it will still show as due. Don't check it out.",
     `Length: ${hrs(mins)}`, `With: ${team || 'Any available'}`, `People: ${people}`,
