@@ -1190,6 +1190,8 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .looks-h h3{font-size:clamp(1.4rem,3vw,2.2rem)}
 .looks{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .look{scroll-snap-align:start}
+.evrack{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 56px)/5);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}.evrack>*{scroll-snap-align:start}
+@media (max-width:1100px){.evrack{grid-auto-columns:calc((100% - 28px)/3)}}@media (max-width:760px){.evrack{grid-auto-columns:62%}}
 .worn{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 56px)/5);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .worn-t{scroll-snap-align:start}
 @media (max-width:1100px){.worn{grid-auto-columns:calc((100% - 28px)/3)}.looks{grid-auto-columns:calc((100% - 28px)/3)}}
@@ -1595,7 +1597,7 @@ const gFix=id=>`this.onerror=null;this.onload=null;this.classList.add('lb');this
 const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="${gFix(esc(v.id))}" onload="if(this.naturalWidth<200){${gFix(esc(v.id))}}" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria-label="Scroll back">←</button><button type="button" data-row="1" aria-label="Scroll forward">→</button></div>';
 // Arrows only show when their row has more than fits.
-function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
+function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks,.evrack',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
 addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos?v=3').then(j=>YT=j.lists||{}).catch(()=>YT={}));
@@ -2179,6 +2181,8 @@ function evRow(e,big){const d=evDate(e),L=evLink(e);return `<article class="ev${
 const evIn=e=>{const t=nowET();t.setHours(0,0,0,0);const n=Math.round((evDate(e)-t)/864e5);return n===0?'Tonight':n===1?'Tomorrow':'In '+n+' days'};
 function evCard(e){const d=evDate(e),L=evLink(e);return `<article class="evc rv${e.sample?' sample':''}"><a class="evc-f" href="${L||'#upcoming'}" ${L?'target="_blank" rel="noopener"':''}>${e.fl?imgT(e.fl,`${e.t} flyer`):'<span class="evc-nf"><span class="mark"></span></span>'}<span class="evc-d"><b>${d.getDate()}</b><small>${MON[d.getMonth()]}</small></span></a><div class="evc-i"><span class="eyebrow">${e.sample?'Sample listing':e.k} · ${evIn(e)}</span><h3>${e.t}</h3><p>${DOW[d.getDay()]} · ${e.tm}<br>${e.v} · ${e.c}</p>${e.lu?`<p class="ev-lu">${e.lu}</p>`:''}${e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${L}" target="_blank" rel="noopener">${e.cta||'Tickets'}</a>`}</div></article>`}
 function evPastCard(e){const d=evDate(e);return `<a class="evp rv" href="${evLink(e)}" target="_blank" rel="noopener"><span class="evp-f">${imgT(e.fl,`${e.t} flyer`)}</span><span class="evp-i"><small>${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} · ${e.c.replace(', MD','')}</small><b>${e.t}</b></span></a>`}
+// Events page shop row: pieces for a night out, loudest first.
+const EV_RACK=['world-tour-cheetah-hoodie','gvo-x-ace-distressed-tee','gvo-bodysuit','world-tour-tee-black','collective-set-shirt','pain-is-temporary-dirtbike-jersey','worker-jacket','no-art-for-today-tee','gvo-golf-set-shirt','world-tour-tee-white','gvo-muscle-tee','gvo-beanie'];
 function viewEvents(){
  const up=evUp(),past=evPast(),cities=new Set(EVENTS.map(e=>e.c)).size;
  return `<div class="view" data-v="events">
@@ -2200,6 +2204,11 @@ function viewEvents(){
  <section style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Run it back</span><h2>Past events</h2></div><p class="lede">R&amp;B &amp; Vibes is the flagship. The rest are one-night themes: all-white rooftops, era battles, county against city.</p></div>
   <div class="evp-g">${past.map(e=>e.fl?evPastCard(e):evRow(e,0)).join('')}</div>
+ </div></section>
+ <section style="padding-top:0"><div class="wrap">
+  <div class="rowbox"><div class="looks-h rv" style="margin-top:0"><div><span class="eyebrow">From the rack</span><h3>Wear it to the event.</h3></div><div class="row-end"><a class="link" href="#shop">Shop the rack →</a>${NAV}</div></div>
+  <div class="evrack">${EV_RACK.map(prodById).filter(p=>p&&p.img.length).map(prodCard).join('')}</div>
+  </div>
  </div></section>
  <section style="background:var(--ink-2)"><div class="wrap">
   ${igBand(IG.events,'GVO Sound Events','Maryland based. Distinctive vibe curators. Tap a reel to watch it here.','events')}
@@ -2814,7 +2823,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
- const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
+ const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks,.evrack',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
  const lb=e.target.closest('[data-listen]');if(lb){e.preventDefault();openListen(lb.dataset.listen);return}
  if(e.target.id==='lsnX'||e.target.id==='lsn'){closeListen();return}
  const at=e.target.closest('.fam [data-art]');if(at&&!e.target.closest('a')){pickArt(+at.dataset.art);return}
