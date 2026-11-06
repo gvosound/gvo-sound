@@ -2006,7 +2006,7 @@ function fmtH(h){h=((h%24)+24)%24;return h===0?'12AM':(h%12||12)+(h<12?'AM':'PM'
 function openState(){return{open:1}}
 const statusTxt=()=>'Studio open 24/7 · by appointment';
 const hoursRows=()=>{const t=nowET().getDay();return [1,2,3,4,5,6,0].map(d=>`<tr class="${d===t?'today':''}"><td>${DAYN[d]}</td><td>${SHOP_HRS[d]}</td></tr>`).join('')};
-const VIDS={s_artist1:['v_artist1','s_artist1'],s_artist2:['v_artist2','s_artist2'],s_artist3:['v_artist3','s_artist3'],s_artist4:['v_artist4','s_artist4'],s_artist5:['v_artist5','v_artist5_poster']};
+const VIDS={s_artist1:['v_artist1','s_artist1'],s_artist2:['v_artist2','s_artist2'],s_artist3:['v_artist3','s_artist3'],s_artist4:['v_artist4','s_artist4'],s_artist5:['v_artist5','v_artist5_poster'],v_lounge:['v_lounge','v_lounge_poster']};
 const media=(f,alt)=>VIDS[f]?`<video class="lv" muted loop playsinline preload="none" poster="img/${VIDS[f][1]}.webp" data-src="vid/${VIDS[f][0]}.mp4" aria-label="${alt}"></video>`:`<img src="${imgSrc(f)}" alt="${alt}" loading="lazy" draggable="false" referrerpolicy="no-referrer">`;
 let vidIO=null;
 function wireVideos(root){
@@ -2072,7 +2072,7 @@ function viewHome(){
  </div></section>
  <section id="booth" style="padding-top:0"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">GVO Sound Studios</span><h2>In the booth</h2></div><div class="reel-nav"><a class="btn btn-ghost" href="#music?to=sessions">Watch the sessions</a><button type="button" data-reel="-1" aria-label="Scroll back">←</button><button type="button" data-reel="1" aria-label="Scroll forward">→</button></div></div>
-  <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session',1],['r_2','Live take']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}">${media(f,c+' at GVO Sound')}<figcaption>${c}</figcaption></figure>`).join('')}<a class="shot shot-more" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>Watch the full sessions</b><span class="link">Go to the videos →</span></a></div>
+  <div class="reel" id="reel">${[['s_artist1','Vocal booth'],['sound_room','Control room',1],['s_artist2','Tracking'],['s_mic','The booth mic'],['s_artist4','Playback'],['pod_3','Podcast set',1],['s_artist3','Session'],['booth_dark','Iso booth',1],['s_artist5','Session',1],['v_lounge','The lounge']].map(([f,c,w])=>`<figure class="shot${w?' wide':''}">${media(f,c+' at GVO Sound')}<figcaption>${c}</figcaption></figure>`).join('')}<a class="shot shot-more" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>Watch the full sessions</b><span class="link">Go to the videos →</span></a></div>
  </div></section>
 
  <section id="stream" style="padding-top:0"><div class="wrap">
