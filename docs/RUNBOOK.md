@@ -25,7 +25,7 @@ Fixes for what has gone wrong before or is likely to. Newest lessons first in ea
 | Symptom | Fix |
 | --- | --- |
 | Booking shows "$ due" in Square | Expected; see ARCHITECTURE known limits. The seller note says it's paid |
-| Booking shows "Pending confirmation" and isn't on the calendar | Seen once, Nov 4, 2026, with "Accept bookings automatically" on. Cause not confirmed: either the setting was off when the booking came in, or Square holds API bookings as pending on this account. Accept it in Square. If the next site booking is also pending, check the `status` Square returns from `POST /v2/bookings` |
+| Booking "isn't on the calendar" | The Square calendar was set to View: Only me, which hides bookings assigned to other team members (found Nov 6, 2026). Set View to all team members. A "Pending confirmation" label on the customer may still show; if a booking stays pending, check the `status` Square returns from `POST /v2/bookings` |
 | No booking alert email | Check `RESEND_API_KEY` is set and Cloudflare's function logs for "booking alert skipped". Recipients are `BOOKING_ALERT_TO` |
 | Every 2-hour booking lands on the "Boobie" variation | It's the only 2-hour recording variation open for online booking in Square. Rename it there |
 | A team member shouldn't take online bookings | Add their display name pattern to `OFF_TEAM` in `functions/_lib/booking.js` |
