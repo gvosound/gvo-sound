@@ -1321,6 +1321,8 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .evc-i p.ev-lu{color:#d7d2dc}
 .evc-i .btn{justify-self:start;margin-top:6px}
 .evc.sample{border-style:dashed}
+/* One upcoming event: flyer beside the details instead of a full-width 4:5 flyer. */
+@media (min-width:760px){.evc:only-child{grid-template-columns:minmax(0,420px) 1fr;grid-template-rows:auto}}
 .evp-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,44vw),1fr));gap:22px 14px}
 .evp{display:grid;gap:10px;text-decoration:none;align-content:start}
 .evp-f{display:block;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;background:var(--panel)}
@@ -1623,7 +1625,7 @@ const EVB='https://www.eventbrite.com/e/';
 const EVB_ORG='https://www.eventbrite.com/o/gvo-sound-studios-cory-mcghee-72154308173';
 const EBIC='<svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 12.4h8.6c.2-2.4-1.6-4.3-4-4.3-2.4 0-4.2 1.8-4.2 4.1 0 2.4 1.8 4.1 4.3 4.1 1.5 0 2.6-.5 3.4-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 const EVENTS=[
- {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2026-11-27',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-2004232974780',k:'R&B & Vibes · Black Friday',fl:'https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1197082613%2F106612367883%2F1%2Foriginal.20261102-144937?crop=focalpoint&fit=crop&w=940&auto=format%2Ccompress&q=75&sharp=10&fp-x=0.569&fp-y=0.194&s=1b0d01b18ceb911e0e299bf869768126',lu:'DJ Mo · Buddy\'s birthday · All black dress code · Free parking'},
+ {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2026-11-27',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-2004232974780',k:'R&B & Vibes · Black Friday',fl:'f_buddy-2026',lu:'DJ Mo · Buddy\'s birthday · All black dress code · Free parking'},
  {t:'GVO Sound 4-Year Anniversary: Networking Night',d:'2026-10-30',tm:'6:30 PM – 2 AM',v:'GVO Sound Studios',a:'109 Gibralter Ave',c:'Annapolis, MD',url:'https://posh.vip/e/gvo-sound-anniversary-networking-event',k:'Halloween Weekend · At the studio',fl:'f_anniv',cta:'RSVP',lu:'Free food · Discounted clothing · Discounted pre-booked studio time · Cash bar'},
  {t:'The Day After: Ravens Watch Party',d:'2026-11-01',tm:'1 PM – 6 PM',v:'Mugshots',a:'31 E Cross St',c:'Baltimore, MD',url:'https://posh.vip/e/the-day-after-ravens-watch-party',k:'Halloween Weekend · Day party',fl:'f_ravens',cta:'RSVP'},
  {t:'Trick or Freak! Halloween Costume Party',d:'2026-10-31',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-trick-or-freak-halloween-costume-party-tickets-2002808913374',k:'Halloween Weekend',fl:'f_trick',lu:'DJ Mo @moxlloyd · Hosted by @flawlessbreezyy, @moxlloyd and @rvre.form_ · MC @dmanspop1128',x:'Costumes encouraged, not required.'},
