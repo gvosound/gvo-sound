@@ -3089,7 +3089,7 @@ function staffList(){
  if(B.room==='photo'){const ph=team.filter(t=>!/no photographer|cory/i.test(t.n)).map(t=>{const n=t.n.trim(),m=teamPic(n);return{k:n,n,s:'Rate paid separately',img:m&&m.img}});
   return[{k:'none',n:'No photographer',s:'Bringing my own'},...(ph.length?ph:[{k:'Dym Archives',n:'Dym Archives',s:'Rate paid separately',img:'t_dym'},{k:'Smooth',n:'Smooth',s:'Rate paid separately',img:'t_smooth'}])]}
  const role=B.room==='rec'?'engineer':'photographer';
- return[{k:'any',n:'First available',s:'Any '+role},...team.map(t=>{const m=teamPic(t.n);return{k:t.id,n:t.n,s:m?m.r:(B.room==='rec'?'Engineer':'Photographer'),img:m&&m.img}})];
+ return[{k:'any',n:'First available',s:'Any '+role},...team.filter(t=>!/no photographer/i.test(t.n)).map(t=>{const m=teamPic(t.n);return{k:t.id,n:t.n,s:m?m.r:(B.room==='rec'?'Engineer':'Photographer'),img:m&&m.img}})];
 }
 const keyOf=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function days(){const out=[],n=nowET();n.setHours(0,0,0,0);for(let i=0;i<14;i++){const d=new Date(n);d.setDate(n.getDate()+i);out.push(d)}return out}
