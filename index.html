@@ -1307,6 +1307,25 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .ev-wk .mark{width:46px;flex:none}
 .ev-wk b{display:block;font:900 1.15rem var(--display);font-stretch:115%;text-transform:uppercase}
 .ev-wk small{font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#e9b3b0}
+.promo{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;opacity:0;transition:opacity .25s}
+.promo.on{opacity:1}
+.promo-bg{position:absolute;inset:0;background:rgba(5,4,8,.72);backdrop-filter:blur(4px)}
+.promo-card{position:relative;width:min(560px,100%);max-height:calc(100svh - 32px);overflow:auto;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 40px 80px -20px rgba(0,0,0,.8);transform:translateY(14px);transition:transform .3s var(--ease)}
+.promo.on .promo-card{transform:none}
+.promo-x{position:absolute;right:10px;top:10px;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(10,9,14,.8);color:var(--bone);font-size:1.4rem;line-height:1;cursor:pointer}
+.promo-ev{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:22px 22px 20px}
+.promo-fl{display:block;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden}.promo-fl img{width:100%;height:100%;object-fit:cover}
+.promo-ev>div{display:grid;gap:8px;align-content:start;min-width:0;padding-right:30px}
+.promo h2{font-size:clamp(1.25rem,3.4vw,1.6rem);line-height:1;margin:0;text-wrap:balance}
+.promo-cd{margin:0;font:700 .95rem var(--mono);color:var(--lav);font-variant-numeric:tabular-nums}
+.promo-m{margin:0;color:var(--mute);font-size:.88rem}
+.promo-cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.promo-sale{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:20px 22px 22px;border-top:1px solid var(--line);background:linear-gradient(90deg,rgba(185,178,255,.12),transparent)}
+.promo-sale .big{font:900 2.6rem/.9 var(--display);color:var(--lav);text-align:center}.promo-sale .big small{display:block;font:700 .62rem var(--mono);letter-spacing:.16em;text-transform:uppercase;margin-top:4px}
+.promo-sale>div:last-child{display:grid;gap:6px}.promo-sale p{margin:0;color:var(--mute);font-size:.9rem}
+.promo-sale h2{font-size:1.15rem}
+@media (max-width:560px){.promo{place-items:end center;padding:0}.promo-card{width:100%;border-radius:var(--r) var(--r) 0 0;padding-bottom:env(safe-area-inset-bottom,0px);max-height:88svh}.promo-ev{grid-template-columns:96px 1fr;gap:14px;padding:18px 16px 16px}.promo-sale{padding:16px}.promo-sale .big{font-size:2.1rem}}
+@media (prefers-reduced-motion:reduce){.promo,.promo-card{transition:none}}
 .evx{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:clamp(20px,3vw,40px);padding:clamp(14px,2vw,22px);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2);margin-bottom:18px}
 .evx::before{content:'';position:absolute;inset:-40px;z-index:-2;background:var(--fl) center/cover no-repeat;filter:blur(40px) saturate(1.1);opacity:.35}
 .evx::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,9,14,.55),rgba(10,9,14,.92) 55%)}
@@ -2729,7 +2748,7 @@ function wire(r){
  updateBar();
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
  wireVideos(main);setTimeout(rowNavs,60);
- if(r==='home')wireHome();
+ if(r==='home'){wireHome();maybePromo()}
  if(r==='events'){
   startCountdowns();
   const evClick=ev=>{const ic=ev.target.closest('[data-ics]');if(ic){const e=evByDay(ic.dataset.ics);if(!e)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([evIcs(e)],{type:'text/calendar'}));a.download='gvo-'+e.d+'.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);return}
@@ -2802,6 +2821,29 @@ function paintReviews(){
 }
 /* home */
 let audio=null;
+/* Home pop-up: the next party and the in-store sale. Shows once, 2.5 s after the home page opens.
+   Closing it keeps it away for 3 days, or until the next party changes. Browser storage is optional: without it, it shows once per visit. */
+let promoShown=false;
+function promoHTML(e){
+ const two=n=>String(n).padStart(2,'0');let ev='';
+ if(e){const d=evDate(e),L=evLink(e);
+  ev=`<section class="promo-ev">${e.fl?`<a class="promo-fl" href="${L}" target="_blank" rel="noopener">${imgT(e.fl,`${e.t} flyer`)}</a>`:''}<div><span class="eyebrow">Next party · ${DOW[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()}</span><h2 id="promoT">${e.t.replace(/-/g,'‑')}</h2><p class="promo-cd" data-pcd></p><p class="promo-m">${e.v} · ${e.c.replace(', MD','')}${e.tags?' · '+e.tags.slice(0,2).join(' · '):''}</p><div class="promo-cta"><a class="btn btn-lav" href="${L}" target="_blank" rel="noopener">Get tickets</a><a class="btn btn-ghost" href="#events">Details</a></div></div></section>`}
+ const sale=STORE_SALE?`<section class="promo-sale"><div class="big">30%<small>Off</small></div><div><span class="eyebrow">In store only</span><h2${e?'':' id="promoT"'}>30% off everything in the shop</h2><p>While stock lasts, at 109 Gibralter Ave. Not on the site. Open today ${SHOP_HRS[nowET().getDay()]}.</p><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Get directions →</a></div></section>`:'';
+ return `<div class="promo" role="dialog" aria-modal="true" aria-labelledby="promoT"><div class="promo-bg" data-pclose></div><div class="promo-card"><button type="button" class="promo-x" data-pclose aria-label="Close">×</button>${ev}${sale}</div></div>`}
+function maybePromo(){
+ if(promoShown)return;const e=evUp().find(x=>!x.sample),key=e?e.d:'sale';
+ if(!e&&!STORE_SALE)return;
+ try{const v=JSON.parse(localStorage.getItem('gvo-promo')||'null');if(v&&v.k===key&&Date.now()-v.t<3*864e5)return}catch(x){}
+ setTimeout(()=>{if(route!=='home'||promoShown||document.querySelector('.promo'))return;promoShown=true;
+  const back=document.activeElement,w=document.createElement('div');w.innerHTML=promoHTML(e);const el=w.firstElementChild;document.body.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('on'));
+  const cd=$('[data-pcd]',el),{st}=e?evSpan(e):{};let iv=null;
+  const tick=()=>{if(!cd||!st)return;const ms=st-new Date();if(ms<=0){cd.textContent='Happening tonight';return}const m=Math.floor(ms/6e4);cd.textContent=`Doors in ${Math.floor(m/1440)}d ${String(Math.floor(m%1440/60)).padStart(2,'0')}h ${String(m%60).padStart(2,'0')}m`};
+  tick();iv=setInterval(tick,3e4);
+  const close=()=>{clearInterval(iv);el.classList.remove('on');document.removeEventListener('keydown',esc);try{localStorage.setItem('gvo-promo',JSON.stringify({k:key,t:Date.now()}))}catch(x){}setTimeout(()=>el.remove(),250);if(back&&back.focus)back.focus({preventScroll:true})};
+  const esc=ev=>{if(ev.key==='Escape')close();if(ev.key==='Tab'){const f=[...el.querySelectorAll('a,button')];const a=f[0],z=f[f.length-1];if(ev.shiftKey&&document.activeElement===a){ev.preventDefault();z.focus()}else if(!ev.shiftKey&&document.activeElement===z){ev.preventDefault();a.focus()}}};
+  el.addEventListener('click',ev=>{if(ev.target.closest('[data-pclose]')||ev.target.closest('a'))close()});
+  document.addEventListener('keydown',esc);$('.promo-x',el).focus({preventScroll:true})},2500)}
 function wireHome(){
  wireRq();
  const hero=$('#hero');
