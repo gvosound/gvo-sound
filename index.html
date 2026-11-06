@@ -840,7 +840,7 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
   .hero-row{grid-template-columns:1fr 1fr;gap:24px 32px}
 }
 @media (max-width:979px){.hero-main{display:grid;gap:22px;min-width:0}}
-@media (prefers-reduced-motion:reduce){.hero-reel video{display:none}.hero-reel{background:url(img/hero_poster.webp) center/cover}}
+@media (prefers-reduced-motion:reduce){.hero-reel video{display:none}.hero-reel{background:url(img/hero_poster-v2.webp) center/cover}}
 /* ---- door: photo on top, info in three columns ---- */
 .door{grid-template-columns:1fr}
 .door-ph{min-height:0;height:clamp(220px,26vw,340px)}
@@ -1973,7 +1973,7 @@ const doorHTML=()=>`<div class="door rv" id="visit"><div class="door-ph">${imgT(
 function viewHome(){
  return `<div class="view" data-v="home">
  <section class="hero" id="hero">
-  <div class="hero-bg"><video class="hero-vid" muted loop playsinline preload="none" poster="img/hero_poster.webp" data-src="vid/v_hero.mp4" aria-hidden="true"></video><img src="img/sound_room.webp" alt="GVO control room with the GVO bat logo on the screens, studio monitors and a console desk" fetchpriority="high"></div>
+  <div class="hero-bg"><video class="hero-vid" muted loop playsinline preload="none" poster="img/hero_poster-v2.webp" data-src="vid/v_hero-v2.mp4" aria-hidden="true"></video><img src="img/sound_room.webp" alt="GVO control room with the GVO bat logo on the screens, studio monitors and a console desk" fetchpriority="high"></div>
   <div class="hero-dim"></div>
   <div class="wrap hero-inner">
    <div class="hero-main">
@@ -1992,7 +1992,7 @@ function viewHome(){
    </div>
    ${seoNote(META.home)}
    </div>
-   <figure class="hero-reel" aria-label="GVO Sound promo video"><video class="reel-vid" muted loop playsinline preload="none" poster="img/hero_poster.webp"></video><figcaption><span class="dot"></span>Now playing · GVO Sound</figcaption></figure>
+   <figure class="hero-reel" aria-label="GVO Sound promo video"><video class="reel-vid" muted loop playsinline preload="none" poster="img/hero_poster-v2.webp"></video><figcaption><span class="dot"></span>Now playing · GVO Sound</figcaption></figure>
   </div>
  </section>
  <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
@@ -2054,7 +2054,7 @@ function viewRoom(slug){
  const team=TEAM.filter(m=>m.g===r.team);
  const best=r.rates?Math.min(...r.rates.map(([h,p])=>p/h)):0;
  return `<div class="view" data-v="${slug}">
- <section class="phero">${imgT(r.img,`${r.short} studio at GVO Sound, Annapolis`,0)}${r.k==='rec'?'<video class="lv phero-vid" muted loop playsinline preload="none" poster="img/hero_poster.webp" data-src="vid/v_hero.mp4" aria-hidden="true"></video>':''}
+ <section class="phero">${imgT(r.img,`${r.short} studio at GVO Sound, Annapolis`,0)}${r.k==='rec'?'<video class="lv phero-vid" muted loop playsinline preload="none" poster="img/hero_poster-v2.webp" data-src="vid/v_hero-v2.mp4" aria-hidden="true"></video>':''}
   <div class="wrap">${crumbs([['Home','#'],[r.h1.replace(' in Annapolis',''),'']])}
    <h1>${r.h1}</h1><p>${r.lede}</p>
    <div class="ctas" style="margin:0">${r.k==='pod'?'<a class="btn btn-lav" href="#desk">Request a quote</a>':'<a class="btn btn-lav" href="#desk">Book this studio</a>'}<a class="btn btn-ghost" href="#faq">Questions</a></div>
@@ -2708,7 +2708,7 @@ function wireHome(){
  const words=[...(STORE_SALE?['30% off in store']:[]),'Good Vibes Only','Now booking','Open 24/7 by appointment','Engineer and mix included','Recording · Photo · Content','109 Gibralter Ave, Annapolis','Est. 2020'];
  const seg=words.map(w=>`<span>${w}<i class="mark"></i></span>`).join('');$('#track').innerHTML=seg+seg;
  startViz();
- if(!reduce){const srcs='<source src="vid/v_hero.mp4" type="video/mp4"><source src="vid/v_hero.webm" type="video/webm">';
+ if(!reduce){const srcs='<source src="vid/v_hero-v2.mp4" type="video/mp4"><source src="vid/v_hero-v2.webm" type="video/webm">';
   const go=v=>{if(!v||v.dataset.on)return;v.dataset.on=1;v.innerHTML=srcs;v.load();v.play().catch(()=>{})};
   if(matchMedia('(max-width:760px)').matches)go($('.hero-vid',main));
   else if(matchMedia('(min-width:980px)').matches)go($('.reel-vid',main))}
