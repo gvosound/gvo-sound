@@ -1306,6 +1306,29 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .ev-wk .mark{width:46px;flex:none}
 .ev-wk b{display:block;font:900 1.15rem var(--display);font-stretch:115%;text-transform:uppercase}
 .ev-wk small{font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#e9b3b0}
+.evx{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:clamp(20px,3vw,40px);padding:clamp(14px,2vw,22px);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2);margin-bottom:18px}
+.evx::before{content:'';position:absolute;inset:-40px;z-index:-2;background:var(--fl) center/cover no-repeat;filter:blur(40px) saturate(1.1);opacity:.35}
+.evx::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,9,14,.55),rgba(10,9,14,.92) 55%)}
+.evx-f{position:relative;display:block;aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+.evx-f img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}.evx-f:hover img{transform:scale(1.03)}
+.evx-i{display:grid;gap:16px;align-content:center;min-width:0}
+.evx-i h3{font-size:clamp(1.6rem,3.2vw,2.6rem);line-height:.95;margin:0;text-wrap:balance}
+.cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:440px}
+.cd-u{display:grid;justify-items:center;gap:4px;padding:12px 6px 10px;border:1px solid rgba(185,178,255,.35);border-radius:var(--r);background:rgba(185,178,255,.07)}
+.cd-u b{font:700 clamp(1.6rem,3.4vw,2.4rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--bone)}
+.cd-u small{font:600 .6rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.cd.soon .cd-u{border-color:var(--lav);background:rgba(185,178,255,.16)}
+.cd-now{grid-column:1/-1;margin:0;font:700 1.05rem var(--display);color:var(--lav)}
+.evx-facts{display:grid;gap:10px;margin:0}
+.evx-facts>div{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:baseline}
+.evx-facts dt{font:600 .65rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.evx-facts dd{margin:0;color:var(--bone);font-size:.98rem;line-height:1.45}
+.evx-map{color:var(--lav);font-size:.9rem;text-underline-offset:3px}
+.evx-tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.evx-tags li{font:600 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--bone);background:rgba(255,255,255,.04)}
+.evx-cta{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:760px){.evx{grid-template-columns:1fr}.evx::after{background:linear-gradient(180deg,rgba(10,9,14,.5),rgba(10,9,14,.94) 40%)}.evx-f{max-width:none}.evx-cta .btn{flex:1 1 auto;justify-content:center}}
+@media (prefers-reduced-motion:reduce){.evx-f img{transition:none}}
 .evc-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px;margin-bottom:18px}
 .evc{display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ink-2)}
 .evc-f{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:var(--panel)}
@@ -1625,7 +1648,7 @@ const EVB='https://www.eventbrite.com/e/';
 const EVB_ORG='https://www.eventbrite.com/o/gvo-sound-studios-cory-mcghee-72154308173';
 const EBIC='<svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 12.4h8.6c.2-2.4-1.6-4.3-4-4.3-2.4 0-4.2 1.8-4.2 4.1 0 2.4 1.8 4.1 4.3 4.1 1.5 0 2.6-.5 3.4-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 const EVENTS=[
- {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2026-11-27',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-2004232974780',k:'R&B & Vibes · Black Friday',fl:'f_buddy-nov27',lu:'DJ Mo · Buddy\'s birthday · All black dress code · Free parking'},
+ {t:'R&B & Vibes: Buddy B-Day Bash (All Black)',d:'2026-11-27',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-rb-vibes-buddy-b-day-bash-all-black-event-tickets-2004232974780',k:'R&B & Vibes · Black Friday',fl:'f_buddy-nov27',lu:'DJ Mo · Buddy\'s birthday · All black dress code · Free parking',tags:['25 and up','All black dress code','Buddy\'s birthday','Free parking'],crew:[['Sounds','DJ Mo'],['Hosts','Bud x Flawless x El'],['Photos','DymArchives']]},
  {t:'GVO Sound 4-Year Anniversary: Networking Night',d:'2026-10-30',tm:'6:30 PM – 2 AM',v:'GVO Sound Studios',a:'109 Gibralter Ave',c:'Annapolis, MD',url:'https://posh.vip/e/gvo-sound-anniversary-networking-event',k:'Halloween Weekend · At the studio',fl:'f_anniv',cta:'RSVP',lu:'Free food · Discounted clothing · Discounted pre-booked studio time · Cash bar'},
  {t:'The Day After: Ravens Watch Party',d:'2026-11-01',tm:'1 PM – 6 PM',v:'Mugshots',a:'31 E Cross St',c:'Baltimore, MD',url:'https://posh.vip/e/the-day-after-ravens-watch-party',k:'Halloween Weekend · Day party',fl:'f_ravens',cta:'RSVP'},
  {t:'Trick or Freak! Halloween Costume Party',d:'2026-10-31',tm:'9:30 PM – 2 AM',v:'Sidelines Sports Bar & Grill',a:'105 Chesapeake Center Court',c:'Glen Burnie, MD',u:'gvo-sound-presents-trick-or-freak-halloween-costume-party-tickets-2002808913374',k:'Halloween Weekend',fl:'f_trick',lu:'DJ Mo @moxlloyd · Hosted by @flawlessbreezyy, @moxlloyd and @rvre.form_ · MC @dmanspop1128',x:'Costumes encouraged, not required.'},
@@ -2181,6 +2204,39 @@ function viewMusic(slug){
 
 function evRow(e,big){const d=evDate(e),L=evLink(e);return `<article class="ev${big?' up':''}${e.sample?' sample':''} rv"><div class="ev-date"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b><small>${MON[d.getMonth()]} ${d.getFullYear()}</small></div><div class="ev-i"><span class="eyebrow">${e.sample?'Sample listing · ':''}${e.k}</span><h3>${e.t}</h3><p>${[e.v,e.c,e.tm].filter(Boolean).join(' · ')}</p></div>${big?(e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${L}" target="_blank" rel="noopener">Tickets</a>`):`<a class="ev-go" href="${L}" target="_blank" rel="noopener" aria-label="${e.t} on Eventbrite">↗</a>`}</article>`}
 const evIn=e=>{const t=nowET();t.setHours(0,0,0,0);const n=Math.round((evDate(e)-t)/864e5);return n===0?'Tonight':n===1?'Tomorrow':'In '+n+' days'};
+/* Next event, featured: flyer, a live countdown to doors, the details, and tickets, calendar and share. */
+// '9:30 PM' on a YYYY-MM-DD date in Eastern time -> Date. Tries EST and EDT and keeps the one that reads back right.
+function etAt(day,t){const m=String(t||'').match(/(\d{1,2})(?::(\d{2}))?\s*([AP]M)/i);if(!m)return null;let h=+m[1]%12+(/p/i.test(m[3])?12:0);const mi=+(m[2]||0);
+ for(const off of ['-05:00','-04:00']){const d=new Date(`${day}T${String(h).padStart(2,'0')}:${String(mi).padStart(2,'0')}:00${off}`);const hh=+new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'numeric',hourCycle:'h23'}).format(d);if(hh===h)return d}return null}
+function evSpan(e){const [a,b]=String(e.tm||'').split(/\s*[–-]\s*/),st=etAt(e.d,a);let en=etAt(e.d,b);if(st&&en&&en<=st)en=new Date(en.getTime()+864e5);return{st,en}}
+function evFeature(e){const d=evDate(e),L=evLink(e),{st,en}=evSpan(e),addr=`${e.a}, ${e.c}`;
+ return `<article class="evx rv" style="--fl:url('${e.fl?imgSrc(e.fl):''}')">
+  <a class="evx-f" href="${L}" target="_blank" rel="noopener">${e.fl?imgT(e.fl,`${e.t} flyer`):'<span class="evc-nf"><span class="mark"></span></span>'}<span class="evc-d"><b>${d.getDate()}</b><small>${MON[d.getMonth()]}</small></span></a>
+  <div class="evx-i">
+   <span class="eyebrow">Next up · ${e.k}</span>
+   <h3>${e.t.replace(/-/g,'\u2011')}</h3>
+   ${st?`<div class="cd" data-cd="${st.toISOString()}" data-end="${en?en.toISOString():''}" role="timer" aria-live="off" aria-label="Countdown to doors">
+    <div class="cd-u"><b data-u="d">00</b><small>Days</small></div><div class="cd-u"><b data-u="h">00</b><small>Hours</small></div><div class="cd-u"><b data-u="m">00</b><small>Min</small></div><div class="cd-u"><b data-u="s">00</b><small>Sec</small></div>
+    <p class="cd-now" hidden></p></div>`:''}
+   <dl class="evx-facts">
+    <div><dt>When</dt><dd>${DOW[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()} · ${e.tm}</dd></div>
+    <div><dt>Where</dt><dd>${e.v}<br><a class="evx-map" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.v+', '+addr)}" target="_blank" rel="noopener">${addr} ↗</a></dd></div>
+    ${(e.crew||[]).map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
+   </dl>
+   ${e.tags?`<ul class="evx-tags">${e.tags.map(t=>`<li>${t}</li>`).join('')}</ul>`:''}
+   <div class="evx-cta"><a class="btn btn-lav" href="${L}" target="_blank" rel="noopener">${e.cta||'Get tickets'}</a>${st?`<button type="button" class="btn btn-ghost" data-ics="${e.d}">Add to calendar</button>`:''}<button type="button" class="btn btn-ghost" data-evshare="${e.d}">Share</button></div>
+  </div>
+ </article>`}
+const evByDay=d=>EVENTS.find(x=>x.d===d);
+function evIcs(e){const {st,en}=evSpan(e),z=t=>t.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),L=evLink(e);
+ return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//GVO Sound//Events//EN','BEGIN:VEVENT',`UID:${e.d}-${(e.u||e.t).slice(-24)}@gvosound.com`,`DTSTAMP:${z(new Date())}`,`DTSTART:${z(st)}`,`DTEND:${z(en||new Date(st.getTime()+4*36e5))}`,`SUMMARY:${e.t.replace(/[,;]/g,'\\$&')}`,`LOCATION:${(e.v+', '+e.a+', '+e.c).replace(/[,;]/g,'\\$&')}`,`DESCRIPTION:Tickets: ${L}`,`URL:${L}`,'END:VEVENT','END:VCALENDAR'].join('\r\n')}
+// Ticks once a second while the events page is open.
+function startCountdowns(){const els=$$('.cd',main);if(!els.length)return;const two=n=>String(n).padStart(2,'0');
+ const tick=()=>els.forEach(c=>{const st=new Date(c.dataset.cd),en=c.dataset.end?new Date(c.dataset.end):null,now=new Date(),ms=st-now,nw=$('.cd-now',c);
+  if(ms<=0){$$('.cd-u',c).forEach(u=>u.hidden=true);nw.hidden=false;nw.textContent=en&&now<en?'Happening now. Doors are open.':'That\'s a wrap. See you at the next one.';return}
+  const s=Math.floor(ms/1e3);$('[data-u="d"]',c).textContent=two(Math.floor(s/86400));$('[data-u="h"]',c).textContent=two(Math.floor(s%86400/3600));$('[data-u="m"]',c).textContent=two(Math.floor(s%3600/60));$('[data-u="s"]',c).textContent=two(s%60);
+  c.classList.toggle('soon',ms<864e5)});
+ tick();const iv=setInterval(tick,1000);cleanup.push(()=>clearInterval(iv))}
 function evCard(e){const d=evDate(e),L=evLink(e);return `<article class="evc rv${e.sample?' sample':''}"><a class="evc-f" href="${L||'#upcoming'}" ${L?'target="_blank" rel="noopener"':''}>${e.fl?imgT(e.fl,`${e.t} flyer`):'<span class="evc-nf"><span class="mark"></span></span>'}<span class="evc-d"><b>${d.getDate()}</b><small>${MON[d.getMonth()]}</small></span></a><div class="evc-i"><span class="eyebrow">${e.sample?'Sample listing':e.k} · ${evIn(e)}</span><h3>${e.t}</h3><p>${DOW[d.getDay()]} · ${e.tm}<br>${e.v} · ${e.c}</p>${e.lu?`<p class="ev-lu">${e.lu}</p>`:''}${e.sample?'<span class="btn btn-lav" aria-disabled="true">Tickets</span>':`<a class="btn btn-lav" href="${L}" target="_blank" rel="noopener">${e.cta||'Tickets'}</a>`}</div></article>`}
 function evPastCard(e){const d=evDate(e);return `<a class="evp rv" href="${evLink(e)}" target="_blank" rel="noopener"><span class="evp-f">${imgT(e.fl,`${e.t} flyer`)}</span><span class="evp-i"><small>${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} · ${e.c.replace(', MD','')}</small><b>${e.t}</b></span></a>`}
 // Events page shop row: pieces for a night out, loudest first.
@@ -2200,7 +2256,7 @@ function viewEvents(){
  </div></section>
  <section id="upcoming"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">On the calendar</span><h2>Upcoming</h2></div>${note('Upcoming slot','Events list themselves from Eventbrite: a new listing shows here, then moves to Past the morning after. <button type="button" class="chip" data-evsample style="margin-top:10px">'+(evSample?'Back to today':'Preview a new listing')+'</button>')}</div>
-  ${up.length?`${up.filter(e=>e.k.startsWith('Halloween')).length>1?`<div class="ev-wk rv"><span class="mark"></span><div><b>GVO Weeknd · Halloween</b><small>3 parties, 1 weekend · Oct 30 – Nov 1 · 4 years of GVO</small></div></div>`:''}<div class="evc-g">${up.map(evCard).join('')}</div>`:''}
+  ${up.length?`${up.filter(e=>e.k.startsWith('Halloween')).length>1?`<div class="ev-wk rv"><span class="mark"></span><div><b>GVO Weeknd · Halloween</b><small>3 parties, 1 weekend · Oct 30 – Nov 1 · 4 years of GVO</small></div></div>`:''}${up[0]&&!up[0].sample?evFeature(up[0]):''}${(up[0]&&!up[0].sample?up.slice(1):up).length?`<div class="evc-g">${(up[0]&&!up[0].sample?up.slice(1):up).map(evCard).join('')}</div>`:''}`:''}
   <div class="ev-empty rv"><div><span class="eyebrow">Never miss a GVO night</span><h3>Get the next date first</h3><p>Leave your email or number and you'll hear about every new GVO event the day the flyer and tickets drop.</p></div><form id="evNotify" novalidate><input name="contact" type="text" placeholder="Email or phone" required autocomplete="email"><button class="btn btn-lav" type="submit">Notify me</button></form><p class="ev-follow">Or follow GVO Sound Events on <a class="link" href="${EVB_ORG}" target="_blank" rel="noopener">Eventbrite</a> to get new dates by email, or turn on post alerts at <a class="link" href="${igUrl(IG.events)}" target="_blank" rel="noopener">@${IG.events}</a>.</p></div>
  </div></section>
  <section style="padding-top:0"><div class="wrap">
@@ -2674,6 +2730,11 @@ function wire(r){
  wireVideos(main);setTimeout(rowNavs,60);
  if(r==='home')wireHome();
  if(r==='events'){
+  startCountdowns();
+  const evClick=ev=>{const ic=ev.target.closest('[data-ics]');if(ic){const e=evByDay(ic.dataset.ics);if(!e)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([evIcs(e)],{type:'text/calendar'}));a.download='gvo-'+e.d+'.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);return}
+   const sh=ev.target.closest('[data-evshare]');if(sh){const e=evByDay(sh.dataset.evshare);if(!e)return;const url=evLink(e)||location.href,d=evDate(e),text=`${e.t} · ${MON[d.getMonth()]} ${d.getDate()} at ${e.v}`;
+    if(navigator.share)navigator.share({title:e.t,text,url}).catch(()=>{});else{try{navigator.clipboard.writeText(url).then(()=>toast('Ticket link copied'),()=>toast(url))}catch(x){toast(url)}}}};
+  main.addEventListener('click',evClick);cleanup.push(()=>main.removeEventListener('click',evClick));
   const ty=$('#inqType',main);if(ty)ty.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;$$('.chip',ty).forEach(x=>x.setAttribute('aria-pressed',x===c))});
   const fm=$('#inqForm',main);if(fm){armForm(fm);fm.addEventListener('submit',async e=>{e.preventDefault();const bad=[...fm.elements].find(x=>x.name&&x.required&&!x.checkValidity());if(bad){bad.focus();toast('Add your '+(bad.name==='msg'?'details':bad.name));return}const t=$('.chip[aria-pressed="true"]',ty).textContent,v=n=>fm.elements[n].value.trim();
    const em=v('email'),res=await sendForm(fm,'event',{type:t,name:v('name'),email:em,phone:v('phone'),org:v('org'),when:v('when'),city:v('city'),details:v('msg')});if(res)formDone(fm,res,{to:em,eyebrow:'Inquiry received',title:'Talk soon',body:`Someone from the GVO team will reply to ${esc(em)} within 48 hours.`,again:'Send another inquiry'})})}
