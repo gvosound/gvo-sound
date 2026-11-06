@@ -517,10 +517,11 @@ a.mcred:hover{text-decoration:underline}
 @media (max-width:900px){.pdp{grid-template-columns:1fr}}
 .pdp>*{min-width:0}
 .pdp-gal{display:grid;grid-template-columns:72px 1fr;gap:10px}
-.pdp-th{display:grid;gap:8px;align-content:start}
-.pdp-th button{padding:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#ece9e4;aspect-ratio:4/5}
+.pdp-th{display:grid;gap:8px;align-content:start;grid-auto-rows:max-content}
+/* The picture fills the 4:5 tile without setting its size, so tall video posters can't stretch a tile into the next one. */
+.pdp-th button{position:relative;display:block;width:100%;min-height:0;padding:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#ece9e4;aspect-ratio:4/5}
 .pdp-th button[aria-pressed="true"]{border-color:var(--lav);box-shadow:0 0 0 1px var(--lav)}
-.pdp-th img{width:100%;height:100%;object-fit:cover}
+.pdp-th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .q-hint{display:block;margin:2px 0 6px;font:500 .78rem var(--body,inherit);color:var(--mute);text-transform:none;letter-spacing:0}
 #pdpColor.nudge h3{animation:nudge .6s ease 2}@keyframes nudge{50%{color:var(--lav)}}
 .pdp-miss{grid-column:1/-1;order:3;margin:2px 0 0;font:600 .72rem/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
