@@ -270,7 +270,8 @@ main{min-height:60vh}
 .chip[aria-pressed="true"]{background:var(--bone);color:var(--ink);border-color:var(--bone)}
 .team{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,44vw),1fr));gap:14px}
 .member{position:relative;border-radius:var(--r);overflow:hidden;background:var(--panel);aspect-ratio:5/6;max-width:100%;transition:opacity .4s,transform .4s var(--ease);margin:0}
-.member.dim{opacity:.18;transform:scale(.97)}
+.member[hidden]{display:none}.member.t-in{animation:tIn .35s var(--ease) both}@keyframes tIn{from{opacity:0;transform:translateY(8px)}}@media (prefers-reduced-motion:reduce){.member.t-in{animation:none}}
+#teamFilters .chip small{margin-left:7px;opacity:.6;font-size:.85em}
 .member img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .5s,transform .8s var(--ease)}
 .member:hover img{filter:none;transform:scale(1.04)}
 .member .mk{position:absolute;inset:0;display:grid;place-items:center;background:var(--ink-2)}
@@ -1191,12 +1192,6 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 .looks-h h3{font-size:clamp(1.4rem,3vw,2.2rem)}
 .looks{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 42px)/4);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
 .look{scroll-snap-align:start}
-.tmrow{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 56px)/5);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}.tmrow>*{scroll-snap-align:start}
-@media (max-width:1100px){.tmrow{grid-auto-columns:calc((100% - 28px)/3)}}@media (max-width:760px){.tmrow{grid-auto-columns:44%;gap:10px}}
-.tm-box .tm-h{margin-top:clamp(30px,4vw,44px);margin-bottom:16px}.tm-h h3 small{font:600 .8rem var(--mono);color:var(--mute);letter-spacing:.1em;vertical-align:middle;margin-left:6px}
-.tm-own{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:clamp(18px,3vw,36px);align-items:center;max-width:760px}
-.tm-own-t p{margin:10px 0 0;color:var(--mute);max-width:46ch}
-@media (max-width:760px){.tm-box .tm-h{gap:0;margin-bottom:8px;margin-top:28px}.tm-own{grid-template-columns:42% 1fr;gap:16px}.tm-own .member .cap{padding:30px 10px 10px}.tm-own .member .cap b{font-size:.95rem}.tm-own-t p{font-size:.92rem}}
 .evrack{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 56px)/5);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}.evrack>*{scroll-snap-align:start}
 @media (max-width:1100px){.evrack{grid-auto-columns:calc((100% - 28px)/3)}}@media (max-width:760px){.evrack{grid-auto-columns:62%}}
 .worn{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 56px)/5);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
@@ -1648,7 +1643,7 @@ const gFix=id=>`this.onerror=null;this.onload=null;this.classList.add('lb');this
 const gardenTiles=list=>`<a class="gcard" href="#music?to=sessions"><span class="eyebrow">GVO Sound Network</span><b>The Garden</b><p>Live sessions shot in this booth.</p><i>Watch the sessions →</i></a>`+list.map(v=>`<a class="gtile" href="#music?to=sessions" aria-label="${esc(v.t)}, ${esc(v.s)}. Watch it on the music page"><span class="th">${v.img?imgT(v.img,''):`<img src="https://i.ytimg.com/vi/${esc(v.id)}/hq720.jpg" onerror="${gFix(esc(v.id))}" onload="if(this.naturalWidth<200){${gFix(esc(v.id))}}" alt="" loading="lazy">`}</span><span class="pmark" aria-hidden="true"></span><span class="gt"><small>${esc(v.s.replace(/^The Garden · /,''))}</small><b>${esc(v.t)}</b></span></a>`).join('');
 const NAV='<div class="igb-nav row-nav"><button type="button" data-row="-1" aria-label="Scroll back">←</button><button type="button" data-row="1" aria-label="Scroll forward">→</button></div>';
 // Arrows only show when their row has more than fits.
-function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks,.evrack,.tmrow',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
+function rowNavs(root){$$('.row-nav',root||main).forEach(n=>{const box=n.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks,.evrack',box);n.hidden=!r||r.scrollWidth<=r.clientWidth+4})}
 addEventListener('resize',()=>rowNavs());
 let YT=null,vidsP=null;
 const loadVids=()=>vidsP||(vidsP=api('videos?v=3').then(j=>YT=j.lists||{}).catch(()=>YT={}));
@@ -2033,11 +2028,6 @@ const crumbs=list=>`<ol class="crumbs" aria-label="Breadcrumb">${list.map(([l,h]
 const prodCard=p=>{const badge=p.s?`<span class="badge sale">${Math.round((1-p.s/p.p)*100)}% off</span>`:p.flag?`<span class="badge">${p.flag}</span>`:'';const colors=(p.o.find(o=>o.t==='Color')||{v:[]}).v.length;
  return `<a class="prod rv" href="#product-${p.id}"><div class="pic">${badge}${p.img.length?imgT(sm(p.img[0]),p.n)+(p.img[1]?imgT(sm(p.img[1]),'',1,'b'):''):'<div class="nophoto"><span class="mark"></span><small>Photo coming</small></div>'}</div><div class="meta"><span class="name">${p.n}${colors>1||isLtd(p)?`<small class="cols">${[colors>1?colors+' colors':'',isLtd(p)?'<span class="ltd">Limited</span>':''].filter(Boolean).join(' · ')}</small>`:''}</span><span class="price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</span></div></a>`};
 const memberCard=m=>`<figure class="member" data-g="${m.g}${m.also?' '+m.also:''}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span>${m.ig?`<a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a>`:''}</figcaption></figure>`;
-// Homepage team: Cory up top, then one swipe row per discipline. A member with also:'pod' shows in two rows.
-const TEAM_ROWS=[['rec','Engineers','#recording-studio','Book the recording studio'],['photo','Photographers','#photo-studio','Book the photo studio'],['pod','Production','#content-studio','See the content studio']];
-const teamRows=()=>{const own=TEAM.find(m=>m.own);
- return (own?`<div class="tm-own rv">${memberCard(own)}<div class="tm-own-t"><p>Cory McGhee, known as Flawless, founded GVO Sound. Every engineer, photographer and producer below works out of his studio at 109 Gibralter Ave.</p></div></div>`:'')+
- TEAM_ROWS.map(([g,h,href,cta])=>{const l=TEAM.filter(m=>m.g===g||m.also===g);return `<div class="rowbox tm-box"><div class="looks-h tm-h"><div><h3>${h} <small>${l.length}</small></h3></div><div class="row-end"><a class="link" href="${href}">${cta} →</a>${NAV}</div></div><div class="tmrow">${l.map(memberCard).join('')}</div></div>`}).join('')};
 const doorHTML=()=>`<div class="door rv" id="visit"><div class="door-ph">${imgT('pod_3','The GVO studio floor with the GVO logo wall')}</div><div class="door-info">
  <div><h3>Pull up</h3><p class="addr">109 Gibralter Ave<br>Annapolis, MD 21401</p><p style="margin:12px 0 0"><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Open in Maps →</a></p></div>
  <div><h3>Studio</h3><p class="hrs-big">Open 24/7</p><p class="hrs-note">By appointment only. Book at least 2 hours ahead.</p><h3 style="margin-top:20px">Shop in person</h3><table class="hours">${hoursRows()}</table><p class="hrs-note">Shop hours can change, so check <a class="link" href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">@gvosound.clothing</a> before you come. <a class="link" href="#shop">Shop online 24/7 →</a></p></div>
@@ -2097,8 +2087,8 @@ function viewHome(){
   </div>`})()}
  </div></section>
  <section id="team" style="background:var(--ink-2)"><div class="wrap">
-  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Behind the glass</span><h2>The team</h2></div></div>
-  ${teamRows()}
+  <div class="sec-head rv"><div class="hd"><span class="eyebrow">Behind the glass</span><h2>The team</h2></div><div class="filters" id="teamFilters"></div></div>
+  <div class="team" id="teamGrid">${TEAM.map(memberCard).join('')}</div>
   </div></section>
  <section class="reviews"><div class="wrap" id="revHome">${homeRevHTML()} </div></section>
  <section><div class="wrap">
@@ -2880,7 +2870,11 @@ function wireHome(){
  const end=()=>{dx=null;reel.classList.remove('drag')};reel.addEventListener('pointerup',end);reel.addEventListener('pointercancel',end);
  reel.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
  // team filter
-
+ const TF=[['all','Everyone'],['rec','Engineers'],['photo','Photographers'],['pod','Production']];let tf='all';
+ // A real filter: cards outside the pick are removed and the grid closes up. Cory shows under Everyone only, so each count matches its cards.
+ const tIn=(g,k)=>k==='all'||g.split(' ').includes(k),tN=k=>TEAM.filter(m=>tIn(m.g+(m.also?' '+m.also:''),k)&&(k==='all'||!m.own)).length;
+ const rTF=()=>{$('#teamFilters').innerHTML=TF.map(([k,l])=>`<button type="button" class="chip" aria-pressed="${k===tf}" data-k="${k}">${l}<small>${tN(k)}</small></button>`).join('');$$('.member',$('#teamGrid')).forEach(el=>{const show=tIn(el.dataset.g,tf)&&(tf==='all'||el.dataset.g!=='all');if(show&&el.hidden){el.classList.remove('t-in');void el.offsetWidth;el.classList.add('t-in')}el.hidden=!show})};
+ $('#teamFilters').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){tf=b.dataset.k;rTF()}});rTF();
  const iv=setInterval(()=>{const s=$('#status');if(!s)return;const st=openState();s.classList.toggle('open',!!st.open);$('.st',s).textContent=statusTxt()},60000);
  const s=$('#status');s.classList.toggle('open',!!openState().open);
  cleanup.push(()=>clearInterval(iv));
@@ -2938,7 +2932,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-msnd]');if
 document.addEventListener('click',e=>{const b=e.target.closest('[data-yt]');if(!b)return;e.preventDefault();if(!P.au.paused)P.au.pause();const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0`;f.title=b.getAttribute('aria-label');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;b.replaceWith(f)});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-play]');if(b){e.preventDefault();pToggle(b.dataset.play||P.id)}});
 document.addEventListener('click',e=>{
- const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks,.evrack,.tmrow',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
+ const rb=e.target.closest('[data-row]');if(rb){const box=rb.closest('.rowbox,.art-strip,section'),r=box&&$('.fam,.sess,.pday-row,.trips,.worn,.looks,.evrack',box);if(r)r.scrollBy({left:+rb.dataset.row*r.clientWidth*.9,behavior:reduce?'auto':'smooth'});return}
  const lb=e.target.closest('[data-listen]');if(lb){e.preventDefault();openListen(lb.dataset.listen);return}
  if(e.target.id==='lsnX'||e.target.id==='lsn'){closeListen();return}
  const at=e.target.closest('.fam [data-art]');if(at&&!e.target.closest('a')){pickArt(+at.dataset.art);return}
