@@ -1604,9 +1604,13 @@ const REL=[
  {id:'you-said',t:'You Said!',a:'Flawless Breezyy, BoobBlack',c:'c_yousaid',k:'album',sp:'4CJvWJFuQVcUW7fgM2h0fP',tag:'Single',pv:'yousaid'},
  {id:'need-to-know',t:'Need to know',a:'A. Brooks & Flawless Breezyy',c:'c_need',k:'album',sp:'2DPjHXoZAXKYbiFMDumEOL',tag:'Single',pv:'need'},
  {id:'savage',t:'Savage!',a:'Flawless Breezyy',c:'c_savage',k:'album',sp:'0YsngE5Rw4PLRHrnwgVOJz',tag:'Single',pv:'savage'},
- {id:'sixteen',t:'SIXTEEN',a:'Flawless Breezyy',c:'c_sixteen',k:'album',sp:'2GjLf9BPCE8ed5Y4JhB5rL',tag:'Project',pv:'sixteen'}
+ {id:'sixteen',t:'SIXTEEN',a:'Flawless Breezyy',c:'c_sixteen',k:'album',sp:'2GjLf9BPCE8ed5Y4JhB5rL',tag:'Project',pv:'sixteen'},
+ // Recorded at GVO for another artist (ext): listed in the catalog, left out of Flawless Breezyy's schema track list. Preview is Apple's 30-second clip.
+ {id:'holy-father',t:'Holy Father',a:'Mannywellz',c:'c_holy',k:'track',sp:'00vCyoqwYo7JmwjCzDTjyy',tag:'Small Chops',pv:'holy',ext:1}
 ];
 const FEATURED='ride-for-me';
+// The homepage header player. The Music page keeps FEATURED at its top.
+const HERO_TRACK='holy-father';
 const ARTISTS=[
  {n:'Flawless Breezyy',r:'GVO founder',sp:'artist/5eZfmZxf0hNUuC3GERdI2A',am:'1465299968',yt:'@FlawlessBreezyy',ig:'flawlessbreezyy',img:'t_cory'},
  {n:'BoobBlack',r:'GVO team engineer. Never Change, Broken Heart, Bad with Mooki2x',sp:'artist/3VwxQRxPn86ZKj3YjqpXVp',am:'1438057644',ig:'boobiecaldwell',img:'c_boob'},
@@ -2049,9 +2053,9 @@ function viewHome(){
      <div class="ctas"><a class="btn btn-lav" href="#book">Book a session</a><a class="btn btn-ghost" href="#recording-studio">See the studio</a></div></div>
     <div class="deck">
      <div class="deck-top"><span>Recorded at GVO</span><a href="#music">All music →</a></div>
-     ${(()=>{const f=relById(FEATURED);return `<div class="dk-trk"><span class="cv">${imgT(f.c,`${f.t} cover art`)}</span><div><b>${f.t}</b><small>${f.a}</small></div>${pvBtn(f)}</div>`})()}
+     ${(()=>{const f=relById(HERO_TRACK);return `<div class="dk-trk"><span class="cv">${imgT(f.c,`${f.t} cover art`)}</span><div><b>${f.t}</b><small>${f.a}</small></div>${pvBtn(f)}</div>`})()}
      <canvas id="viz" aria-hidden="true"></canvas>
-     <div class="dk-time" data-feat="${FEATURED}"><span id="dkT">Tap play for a preview</span><span id="dkD"></span></div>
+     <div class="dk-time" data-feat="${HERO_TRACK}"><span id="dkT">Tap play for a preview</span><span id="dkD"></span></div>
      <div class="specs"><div><b>$75</b><small>Per hour, 2-hr session</small></div><div><b>24/7</b><small>By appointment</small></div><div><b>5</b><small>People per session</small></div></div>
     </div>
    </div>
@@ -2635,7 +2639,7 @@ function ldFor(route){
   {"@type":"FAQPage","mainEntity":live(r.faq).map(([q,a])=>({"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}}))},
   bc([['Home','/'],[r.h1,'/'+route]])]}}
  if(route.startsWith('product-')){const p=prodById(route.slice(8));if(p)return{"@context":"https://schema.org","@graph":[{"@type":"Product","name":p.n,"brand":{"@type":"Brand","name":"GVO Sound"},"image":p.img[0]?`${SITE}/img/${p.img[0]}.webp`:undefined,"offers":{"@type":"Offer","price":unit(p),"priceCurrency":"USD","availability":"https://schema.org/InStock"}},bc([['Home','/'],['Shop','/shop'],[p.n,'/shop/'+p.id]])]}}
- if(route==='music'||route.startsWith('music/')){const x=relById(route.slice(6));return{"@context":"https://schema.org","@graph":[{"@type":"MusicGroup","name":"Flawless Breezyy","sameAs":[SPO+ARTISTS[0].sp],"track":REL.map(r=>({"@type":"MusicRecording","name":r.t,"byArtist":r.a,"url":spUrl(r)}))},bc(x?[['Home','/'],['Music','/music'],[x.t,'/music/'+x.id]]:[['Home','/'],['Music','/music']])]}}
+ if(route==='music'||route.startsWith('music/')){const x=relById(route.slice(6));return{"@context":"https://schema.org","@graph":[{"@type":"MusicGroup","name":"Flawless Breezyy","sameAs":[SPO+ARTISTS[0].sp],"track":REL.filter(r=>!r.ext).map(r=>({"@type":"MusicRecording","name":r.t,"byArtist":r.a,"url":spUrl(r)}))},bc(x?[['Home','/'],['Music','/music'],[x.t,'/music/'+x.id]]:[['Home','/'],['Music','/music']])]}}
  if(route==='events'){const all=[...evUp().filter(e=>!e.sample),...evPast()];return{"@context":"https://schema.org","@graph":[{"@type":"ItemList","itemListElement":all.map((e,i)=>({"@type":"ListItem","position":i+1,"item":{"@type":"MusicEvent","name":'GVO Sound Presents: '+e.t,"startDate":e.d,"eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":e.v||e.a,"address":e.a+', '+e.c},"organizer":{"@id":SITE+'/#business'},"url":evLink(e)}}))},bc([['Home','/'],['Events','/events']])]}}
  if(route==='travel')return{"@context":"https://schema.org","@graph":[bc([['Home','/'],['Travel','/travel']]),...(cruiseOn()?[{"@type":"Trip","name":"Love Sets Sail: Valentine's Cruise","description":"Adults-only cruise from Miami to Grand Turk and The Beach Club at Bimini.","departureTime":CRUISE.start,"arrivalTime":CRUISE.end,"provider":{"@id":SITE+'/#business'},"offers":{"@type":"Offer","price":CRUISE.room,"priceCurrency":"USD","description":"Per room"}}]:[])]};
  if(route==='book')return{"@context":"https://schema.org","@graph":[bc([['Home','/'],['Book a session','/book']]),{"@type":"ReserveAction","target":SITE+'/book',"object":{"@id":SITE+'/#business'}}]};
