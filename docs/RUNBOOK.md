@@ -18,6 +18,8 @@ Fixes for what has gone wrong before or is likely to. Newest lessons first in ea
 | A Square item isn't on the site | Add its item ID to `PINNED` in `functions/_lib/site-products.js`. `/api/shop?debug=1` shows every Square item and why it is on or off |
 | Wrong photos on a product | `PHOTOS` in `index.html`, keyed by site product ID, each photo tagged with its Square color name |
 | Checkout says the total changed | Square repriced (sale ended, stock moved). Expected; the shopper pays the new total |
+| Shipping charged doesn't match the Post Office counter | Weigh the item packed and change its number in `WEIGHT_OZ` in `functions/_lib/shipping.js` (ounces, garment only; the mailer is added). A new product with no entry uses its category's weight |
+| Shipping shows the flat $9.99 / $15.99 | Either the USPS secrets aren't set or USPS didn't answer. Cloudflare function logs show "shipping: USPS price failed" with USPS's reason |
 | Card works, Apple Pay missing | Register gvosound.com for Apple Pay in the Square Developer Dashboard |
 
 ## Bookings

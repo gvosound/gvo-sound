@@ -1935,9 +1935,17 @@ function formDone(fm,res,o){fm.reset();const prev=fm.previousElementSibling;if(p
  d.innerHTML=`<span class="eyebrow">${esc(o.eyebrow)}</span><h3>${esc(o.title)}</h3><p class="lede">${o.body}</p>${mail}${o.again?`<button type="button" class="btn btn-ghost">${esc(o.again)}</button>`:''}`;
  fm.hidden=true;fm.before(d);const a=d.querySelector('button');if(a)a.onclick=()=>{d.remove();fm.hidden=false;armForm(fm);const f=fm.querySelector('input:not(.hp),textarea');f&&f.focus({preventScroll:true});fm.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})};
  d.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});d.focus({preventScroll:true})}
+// Live USPS shipping (functions/_lib/shipping.js) is on once GVO's USPS keys are set; /api/shop says which.
+let SHIP_LIVE=false;
+const shipCopy=k=>SHIP_LIVE?{pdp:'Ships by USPS in 3 to 5 business days. Shipping is the USPS price for your address, in the US or abroad, shown at checkout. Pickup at the studio is free.',
+ ful:'USPS price for your address, US and international',cart:'Shipping is the USPS price for your address, shown at checkout. Pickup at the studio is free. Square adds 6% MD sales tax at checkout.',
+ pickup:'Choose pickup at checkout and your order waits on the racks at 109 Gibralter Ave. No shipping charge.'}[k]
+ :{pdp:'Ships in 3 to 5 business days for $9.99 in the US, or $15.99 international. Pickup at the studio is free. You choose at checkout.',
+ ful:'$9.99 US, 3 to 5 business days · $15.99 international',cart:'Shipping is $9.99 in the US (3 to 5 business days) or $15.99 international. Pickup at the studio is free. Square adds 6% MD sales tax at checkout.',
+ pickup:'Choose pickup at checkout and your order waits on the racks at 109 Gibralter Ave. Shipping in the US is $9.99.'}[k];
 async function loadShop(){
  try{
-  const j=await api('shop');
+  const j=await api('shop');SHIP_LIVE=!!j.shipLive;
   const at=id=>{const i=SNAP.findIndex(x=>x.id===id);return i<0?999:i};
   const list=j.products.map(lp=>{const s=SNAP.find(x=>x.id===lp.siteId);
    return{id:lp.id,n:s?s.n:lp.n,cat:s?s.cat:lp.cat,flag:s&&s.flag,img:s&&s.img.length?s.img:lp.img,o:lp.o,av:lp.av,vars:lp.vars,p:lp.p,s:lp.s,live:1}}).sort((a,b)=>at(a.id)-at(b.id));
@@ -2605,7 +2613,7 @@ function viewShop(){
   <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><label class="shop-q"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="shopQ" type="search" placeholder="Search the rack" autocomplete="off" aria-label="Search the rack"></label><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
   <div class="rack" id="rack"></div>
   ${CAMPAIGNS.filter(c=>c.shop).map(campShop).join('')}
-  <div class="pickup"><figure>${imgT('lounge','GVO apparel racks and shelves at the studio under a painted mural')}</figure><div><span class="eyebrow">Pick it up at the studio</span><h3>Pickup at the studio is free</h3><p>Choose pickup at checkout and your order waits on the racks at 109 Gibralter Ave. Shipping in the US is $9.99.</p></div></div>
+  <div class="pickup"><figure>${imgT('lounge','GVO apparel racks and shelves at the studio under a painted mural')}</figure><div><span class="eyebrow">Pick it up at the studio</span><h3>Pickup at the studio is free</h3><p>${shipCopy('pickup')}</p></div></div>
   <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Good vibes, bold threads. Wear the energy.','clothing')}</div>
  </div></section>${viewFit()}</div>`;
 }
@@ -2653,7 +2661,7 @@ function viewProduct(id){
     ${pdpAbout(p)}
     <div id="pdpOpts" class="opt-row"></div>
     <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><span class="stock" id="pdpStock"></span></div>
-    <p class="pdp-ship"><b>Get it</b> Ships in 3 to 5 business days for $9.99 in the US, or $15.99 international. Pickup at the studio is free. You choose at checkout.</p>
+    <p class="pdp-ship"><b>Get it</b> ${shipCopy('pdp')}</p>
     <button type="button" class="btn btn-lav" id="pdpAdd">Add to bag · ${m2(unit(p))}</button>
     ${seoNote(META['product-'+id])}
    </div>
@@ -3330,7 +3338,7 @@ function openPay(c){
     ${isB?`<div class="sp-sess"><b>${esc(c.title)}</b><span>${esc(c.sub)}</span></div>`:''}
     <div class="sp-lines" id="payLines">${quoteRows(q,null,isB?c.title:null)}</div>
     ${isB?'':`<div class="sp-fields"><input id="o-name" placeholder="Name" autocomplete="name"><input id="o-email" type="email" placeholder="Email for receipt" autocomplete="email"><input class="full" id="o-phone" type="tel" placeholder="Mobile (optional)" autocomplete="tel" inputmode="tel"></div>
-    <div class="ful sp-ful" id="payFul" role="group" aria-label="Get it"><button type="button" aria-pressed="true" data-ful="ship"><b>Ship it</b><small>$9.99 US, 3 to 5 business days · $15.99 international</small></button><button type="button" aria-pressed="false" data-ful="pickup"><b>Pick up at GVO</b><small>Free, 109 Gibralter Ave, Annapolis</small></button></div>
+    <div class="ful sp-ful" id="payFul" role="group" aria-label="Get it"><button type="button" aria-pressed="true" data-ful="ship"><b>Ship it</b><small>${shipCopy('ful')}</small></button><button type="button" aria-pressed="false" data-ful="pickup"><b>Pick up at GVO</b><small>Free, 109 Gibralter Ave, Annapolis</small></button></div>
     <div class="sp-fields" id="payAddr"><select class="full" id="a-country" autocomplete="country" aria-label="Country">${COUNTRIES.map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select><input class="full" id="a-line1" placeholder="Street address" autocomplete="address-line1"><input class="full" id="a-line2" placeholder="Apt, suite (optional)" autocomplete="address-line2"><input id="a-city" placeholder="City" autocomplete="address-level2"><input id="a-state" placeholder="State" autocomplete="address-level1"><input class="full" id="a-zip" placeholder="ZIP or postal code" autocomplete="postal-code"></div>`}
     ${isB&&!c.book.contact.email?`<div class="sp-fields"><input class="full" id="o-email" type="email" placeholder="Email for your receipt (optional)" autocomplete="email"></div>`:''}
     <div class="sp-wallets"><div id="gpay"></div><div id="apay" hidden></div></div>
@@ -3346,19 +3354,23 @@ function openPay(c){
  const close=()=>{if(busy)return;alive=false;try{card&&card.destroy();gpay&&gpay.destroy()}catch(e){}el.hidden=true;el.innerHTML='';document.body.style.overflow=''};
  $('#payClose').onclick=close;
  el.onkeydown=e=>{if(e.key==='Escape')close()};
- const shipLabel=()=>ful==='pickup'?'Pickup at GVO':country==='US'?'Shipping, 3 to 5 business days':'International shipping';
+ const shipLabel=()=>ful==='pickup'?'Pickup at GVO':q&&q.ship&&q.ship.live?esc(q.ship.label)+(q.ship.estimate?' <small>(estimate, exact with your ZIP)</small>':''):country==='US'?'Shipping, 3 to 5 business days':'International shipping';
  const setBtn=()=>{btn.disabled=busy||!q||!card;btn.textContent=busy?'Paying…':!q?'Getting your total…':!card?"Loading Square's card form…":'Pay '+m2(q.total/100)};
  const paint=()=>{$('#payLines').innerHTML=quoteRows(q,isB?null:shipLabel(),isB?c.title:null);setBtn();if(req&&q)try{req.update({total:{amount:(q.total/100).toFixed(2),label:'GVO Sound'}})}catch(e){}};
  const shopLinesNow=()=>cart.map(l=>{const p=prodById(l.id),v=p&&p.vars&&p.vars[l.v];return v?{v:v.id,q:l.q}:null}).filter(Boolean);
- let qn=0;
+ let qn=0,quotedFor='';
+ // With live USPS prices the address decides shipping: the ZIP or postal code re-prices the order.
+ const shipKey=()=>ful+'|'+country+'|'+(SHIP_LIVE&&ful==='ship'?($('#a-zip').value||'').trim():'');
  const requote=async()=>{
   if(isB)return;const n=++qn;q=null;paint();
-  try{const j=await api('quote',{lines:shopLinesNow(),fulfillment:{type:ful,country}});if(n===qn&&alive){q=j.quote;paint()}}
+  const zip=SHIP_LIVE&&ful==='ship'?($('#a-zip').value||'').trim():'';quotedFor=ful+'|'+country+'|'+zip;
+  try{const j=await api('quote',{lines:shopLinesNow(),fulfillment:{type:ful,country,zip}});if(n===qn&&alive){q=j.quote;paint()}}
   catch(e){if(n===qn&&alive){err(e.message);setBtn()}}
  };
  if(!isB){
   $('#payFul').onclick=e=>{const b=e.target.closest('[data-ful]');if(!b||busy)return;ful=b.dataset.ful;$$('#payFul button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('#payAddr').hidden=ful!=='ship';requote()};
-  $('#a-country').onchange=e=>{const was=country==='US';country=e.target.value;$('#a-state').placeholder=country==='US'?'State':'State or region (optional)';if(was!==(country==='US'))requote()};
+  $('#a-country').onchange=e=>{const was=country==='US';country=e.target.value;$('#a-state').placeholder=country==='US'?'State':'State or region (optional)';if(SHIP_LIVE||was!==(country==='US'))requote()};
+  let zt;$('#a-zip').oninput=()=>{if(!SHIP_LIVE)return;clearTimeout(zt);const z=$('#a-zip').value.trim();if(country==='US'&&!/^\d{5}$/.test(z.slice(0,5)))return;zt=setTimeout(()=>{if(shipKey()!==quotedFor)requote()},450)};
   $('#o-phone').oninput=e=>{const t=e.target,d=t.value.replace(/\D/g,'').replace(/^1/,'').slice(0,10);t.value=d.length>6?`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`:d.length>3?`(${d.slice(0,3)}) ${d.slice(3)}`:d};
   requote();
  }else if(!q){err('This session is not priced yet. Close and try again.')}
@@ -3378,6 +3390,7 @@ function openPay(c){
  const pay=async method=>{
   if(busy||!q)return;err('');
   const f=read();if(!f.ok){err(f.m);const i=$('#'+f.bad);if(i)i.focus();return}
+  if(!isB&&SHIP_LIVE&&shipKey()!==quotedFor){await requote();if(q)err('Shipping is now priced for your address. Check the total, then pay.');return}
   busy=true;setBtn();
   try{
    let tok;
@@ -3525,7 +3538,7 @@ function renderCart(bump){
  if(!cart.length){$('#lines').innerHTML='<div class="empty"><span class="mark"></span>Your bag is empty.<a class="btn btn-ghost" href="#shop">Browse the rack</a></div>';$('#cartFoot').innerHTML='';return}
  let sub=0;
  $('#lines').innerHTML=cart.map((l,i)=>{const p=prodById(l.id),u=unit(p,l.v);sub+=u*l.q;return `<div class="line">${p.img[0]?imgT(sm(p.img[0]),''):'<div class="nophoto" style="position:static;width:60px;height:74px;border-radius:3px"><span class="mark"></span></div>'}<div><a href="#product-${p.id}" style="font-weight:600;font-size:.9rem;line-height:1.3;text-decoration:none">${p.n}</a><br><small>${vLabel(p,l.v)} · ${m2(u)}</small></div><div class="qty"><button type="button" data-dec="${i}" aria-label="Remove one">−</button>${l.q}<button type="button" data-inc="${i}" aria-label="Add one">+</button></div></div>`}).join('');
- $('#cartFoot').innerHTML=`<div class="big"><span>Subtotal</span><span>${m2(sub)}</span></div><p class="fine">Shipping is $9.99 in the US (3 to 5 business days) or $15.99 international. Pickup at the studio is free. Square adds 6% MD sales tax at checkout.</p><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px" ${SQ.live?'':'disabled'}>${SQ.live?'Check out':SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753':'Checking stock…'}</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button>`;
+ $('#cartFoot').innerHTML=`<div class="big"><span>Subtotal</span><span>${m2(sub)}</span></div><p class="fine">${shipCopy('cart')}</p><button type="button" class="btn btn-lav" id="checkout" style="margin-top:6px" ${SQ.live?'':'disabled'}>${SQ.live?'Check out':SQ.state==='down'?'Checkout is offline. Call or text (443) 292-6753':'Checking stock…'}</button><button type="button" class="btn btn-ghost" id="pickup">Add to a studio session</button>`;
  $('#checkout').onclick=()=>{if(!SQ.live)return;closeCart();openPay({kind:'shop',onDone:()=>{cart=[];save();renderCart()}})};
  $('#pickup').onclick=()=>{cart.forEach(l=>{const c=B.add.get(l.id+'|'+l.v);B.add.set(l.id+'|'+l.v,{id:l.id,v:l.v,q:(c?c.q:0)+l.q})});cart=[];save();renderCart();closeCart();if(route==='book')renderBook();location.hash='book';toast('Your bag moved to your session ticket. Pick a time.')};
 }

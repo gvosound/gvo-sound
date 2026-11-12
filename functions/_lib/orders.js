@@ -2,11 +2,8 @@
 // lines point at catalog ids, and pricing_options turns on the automatic discounts and the item taxes.
 import { sq, cfg, money, cents, clean, e164 } from './square.js';
 
-export const SHIPPING = {
-  US: { cents: 999, label: 'Standard shipping, 3 to 5 business days' },
-  INTL: { cents: 1599, label: 'International standard shipping' },
-  PICKUP: { cents: 0, label: 'Free pickup at 109 Gibralter Ave, Annapolis' },
-};
+import { FLAT } from './shipping.js';
+export const SHIPPING = FLAT; // flat rates; live USPS prices come from shipping.js
 
 export function badRequest(msg) { const e = new Error(msg); e.status = 400; e.userMessage = msg; return e; }
 
@@ -86,10 +83,9 @@ export function addressOf(a) {
   return out;
 }
 
-// The order the shop checkout pays for.
-export function shopOrder(env, lineItems, fulfillment, contact, ref) {
+// The order the shop checkout pays for. ship: { cents, label } from shipQuote in shipping.js (flat rate if left out).
+export function shopOrder(env, lineItems, fulfillment, contact, ref, ship = shippingOf(fulfillment)) {
   const { locationId } = cfg(env);
-  const ship = shippingOf(fulfillment);
   const order = {
     location_id: locationId,
     reference_id: ref ? clean(ref, 40) : undefined,

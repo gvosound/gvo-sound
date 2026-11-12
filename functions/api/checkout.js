@@ -4,6 +4,7 @@
 import { sq, cfg, json, fail, readBody, idem, money, cents } from '../_lib/square.js';
 import { loadCatalog } from '../_lib/catalog.js';
 import { shopLines, shopOrder, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
+import { shipQuote } from '../_lib/shipping.js';
 import { emailCfg, sendEmail, orderConfirmation, orderAlert } from '../_lib/email.js';
 
 export async function onRequestPost({ request, env, waitUntil }) {
@@ -19,7 +20,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const cat = await loadCatalog(env);
     const lines = await shopLines(env, cat, b.lines);
     if (!lines.length) throw badRequest('Your bag is empty.');
-    const order = shopOrder(env, lines, fulfillment, contact, 'WEB-' + attempt.slice(0, 8).toUpperCase());
+    const ship = await shipQuote(env, fulfillment, lines, shopIndex(cat));
+    const order = shopOrder(env, lines, fulfillment, contact, 'WEB-' + attempt.slice(0, 8).toUpperCase(), ship);
 
     const created = (await sq(env, 'POST', '/v2/orders', { idempotency_key: idem('ord', attempt, JSON.stringify(lines), fulfillment.type), order })).order;
     const total = cents(created.total_money);

@@ -58,13 +58,14 @@ Settings, in Pages > Settings > Variables and Secrets, for Production and Previe
 | `FORMS_URL` | Secret | Web app URL of the Apps Script on the form sheet |
 | `FORMS_SECRET` | Secret | Shared secret; the same value is the sheet script's FORM_SECRET property |
 | `YOUTUBE_API_KEY` | Secret | Optional. With it, /api/videos reads every video in each playlist through the YouTube Data API. Without it, the public feed, which only carries the first 15 in playlist order |
+| `USPS_CLIENT_ID`, `USPS_CLIENT_SECRET` | Secret | Consumer key and secret of GVO's app on developers.usps.com (Domestic Prices and International Prices). With both set, shop shipping is the USPS retail (Post Office counter) price for the buyer's address. Without them, or if USPS doesn't answer, the flat rates in `functions/_lib/shipping.js` apply. Redeploy after setting |
 | `GOOGLE_PLACES_KEY` | Secret | Google Maps Platform API key that reads GVO's rating and review count for /api/reviews. Made in Google Cloud Console > APIs & Services > Credentials, in the project with Places API (New) turned on, and restricted to Places API (New). To replace it: create a new key there with the same restriction, paste it over this secret in Cloudflare, redeploy, then delete the old key in Google Cloud. Without it, the site shows the fallback rating in `GOOG` |
 | `IG_TOKEN_SOUND`, `IG_TOKEN_EVENTS`, `IG_TOKEN_CLOTHING`, `IG_TOKEN_TRAVEL` | Secret | System-user tokens from the GVO Website Meta app, one per account. They don't expire |
 | `IG_KV` | KV binding | Namespace that holds each feed's last good list and the approved posts. Without it, /api/ig caches for an hour and has no stale fallback |
 
 Which items sell: the 27 Wix item IDs are pinned in `PINNED` in `functions/_lib/site-products.js` (checked Oct 25, 2026), so a new Square item never lands on the site by accident. Add an ID there to sell a new item. Site photos attach by name; the aliases in that file cover the Wix names.
 
-Shipping is rebuilt from the Wix rates: $9.99 US (3 to 5 business days), $15.99 international, free pickup at 109 Gibralter Ave. Booking policy from Cory: full price up front, no refunds, switches no later than 2 hours before. Lead time 2 hours, open 24/7, 5 people max.
+Shipping: USPS retail prices for the buyer's address (Ground Advantage in the US; First-Class Package International up to 4 lb, Priority Mail International above) once the USPS secrets are set, from estimated packed weights in `functions/_lib/shipping.js`. Flat Wix rates ($9.99 US, $15.99 international) until then and as the fallback. Free pickup at 109 Gibralter Ave. Booking policy from Cory: full price up front, no refunds, switches no later than 2 hours before. Lead time 2 hours, open 24/7, 5 people max.
 
 Emails: Square sends no receipt for API orders, so `functions/_lib/email.js` sends one through Resend: an order confirmation to the customer and a copy to Cory, plus a front-desk note when a booking includes merch. Square Appointments confirms bookings by text and email on its own.
 

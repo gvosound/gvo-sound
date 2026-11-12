@@ -3,6 +3,7 @@
 import { json, fail } from '../_lib/square.js';
 import { loadCatalog } from '../_lib/catalog.js';
 import { stockFor } from '../_lib/orders.js';
+import { shipLive } from '../_lib/shipping.js';
 
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
@@ -22,7 +23,7 @@ export async function onRequestGet({ request, env }) {
         av: vs.filter(v => qty(v) === null || qty(v) > 0).map(v => v.key),
       };
     });
-    const body = { ok: true, at: cat.at, count: products.length, products };
+    const body = { ok: true, at: cat.at, count: products.length, products, shipLive: shipLive(env) };
     if (debug) {
       body.debug = {
         rule: cat.shop.rule,
