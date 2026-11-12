@@ -260,7 +260,7 @@ function buildShop(env, merch, byId, atLoc, rules) {
 }
 
 /* ---------- services ---------- */
-function classify(name) {
+export function classify(name) {
   const n = norm(name);
   if (/holiday|christmas|xmas|santa/.test(n)) return 'holiday';
   if (/podcast|video|content|commercial/.test(n)) return 'pod';

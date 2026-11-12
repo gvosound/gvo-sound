@@ -3364,7 +3364,7 @@ function openPay(c){
   }catch(e){
    busy=false;
    if(e.code==='TOTAL_CHANGED'&&e.data&&e.data.quote){q=e.data.quote;paint();err(e.message);return}
-   if(e.code==='SLOT_TAKEN'||e.code==='BOOKING_FAILED'){err(e.message);btn.textContent='Pick another time';btn.disabled=false;btn.onclick=()=>{close();c.onSlotGone&&c.onSlotGone()};return}
+   if(e.code==='SLOT_TAKEN'||e.code==='ROOM_TAKEN'||e.code==='BOOKING_FAILED'){err(e.message);btn.textContent='Pick another time';btn.disabled=false;btn.onclick=()=>{close();c.onSlotGone&&c.onSlotGone()};return}
    err(e.message||'The payment did not go through. Try again.');setBtn();
   }
  };

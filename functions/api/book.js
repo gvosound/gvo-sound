@@ -1,5 +1,5 @@
 // POST /api/book: pays for a studio session in full, then puts it on the Square Appointments calendar.
-// Order: check the time is still open, create the order (tax applied by Square), take the payment,
+// Order: check the time is still open (team member in Square, then the room, read fresh), create the order (tax applied by Square), take the payment,
 // create the booking. If the booking fails after payment, the payment is refunded in full automatically.
 // Square Appointments confirms with the customer, but sends the studio nothing for API bookings, so every
 // booking sends its own studio alert (bookingAlert, to BOOKING_ALERT_TO). That email never blocks the booking.
@@ -8,7 +8,7 @@ import { sq, cfg, json, fail, readBody, idem, money, cents, clean, findOrCreateC
 import { loadCatalog } from '../_lib/catalog.js';
 import { shopLines, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
 import { emailCfg, sendEmail, bookingAlert } from '../_lib/email.js';
-import { serviceOf, bookingOrder, searchSlots, teamNames, allowedTeam, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
+import { serviceOf, bookingOrder, searchSlots, teamNames, allowedTeam, roomBookings, roomFull, roomOf, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
 
 const ET = { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
 
@@ -35,10 +35,14 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const want = b.team && b.team !== 'any' ? String(b.team) : 'any';
     const names = await teamNames(env).catch(() => null);
     const allowed = names ? allowedTeam(s, names) : null;
-    const open = (await searchSlots(env, s, { from: new Date(start.getTime() - 60e3).toISOString(), days: 1, team: want, allowed }))
+    const open = (await searchSlots(env, s, { from: new Date(start.getTime() - 60e3).toISOString(), days: 1, team: want, allowed, cat, room: false }))
       .filter(x => new Date(x.start).getTime() === start.getTime());
     if (!open.length) return json({ ok: false, code: 'SLOT_TAKEN', error: 'That time was just booked. Pick another start time.' }, 409);
     const slot = open[0];
+    // One room per studio: any session already in this room at this time, with any team member, blocks it.
+    const room = roomOf(s.kind), slotMins = slot.mins || s.mins;
+    const roomTaken = async () => room && roomFull(await roomBookings(env, start, new Date(start.getTime() + slotMins * 60e3), { cat, fresh: true }), room, start, slotMins);
+    if (await roomTaken()) return json({ ok: false, code: 'ROOM_TAKEN', error: 'That time was just booked. Pick another time.' }, 409);
 
     const customer = await findOrCreateCustomer(env, { name: contact.name, email: contact.email, phone: contact.phone });
     const ref = 'BK-' + attempt.slice(0, 8).toUpperCase();
@@ -67,6 +71,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     let booking;
     try {
+      // The room could have filled while the card was charged. Square doesn't know about rooms, so check
+      // again; if it's taken, the catch below refunds the payment in full.
+      if (await roomTaken()) throw Object.assign(new Error('room taken after payment'), { code: 'ROOM_TAKEN' });
       const sellerNote = [
         // First line staff see. Appointments can't link a booking to its payment, so it shows the session as due.
         `PAID ONLINE: $${(total / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} on gvosound.com. Do not check out. Ref ${ref}.`,

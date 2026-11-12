@@ -29,6 +29,7 @@ Fixes for what has gone wrong before or is likely to. Newest lessons first in ea
 | No booking alert email | Check `RESEND_API_KEY` is set and Cloudflare's function logs for "booking alert skipped". Recipients are `BOOKING_ALERT_TO` |
 | Every 2-hour booking lands on the "Boobie" variation | It's the only 2-hour recording variation open for online booking in Square. Rename it there |
 | A team member shouldn't take online bookings | Add their display name pattern to `OFF_TEAM` in `functions/_lib/booking.js` |
+| Two sessions in one room at the same time | Before Nov 12, 2026 the booking desk asked Square for each team member's free time and never checked the room, so two photographers could each take the photo studio at noon. Now `searchSlots` drops any time where the room is full (`ROOMS_CAP` in `functions/_lib/booking.js`), and `/api/book` checks the room again, fresh, before charging and after. `/api/availability?debug=room&date=YYYY-MM-DD` lists the day's sessions by room. A clash can still come from bookings made by hand in Square, which doesn't know about rooms |
 | Booking fails after payment | `/api/book` refunds automatically and logs "booking failed after payment" with the payment ID. If the refund also failed, refund under Square Transactions |
 
 ## Forms and the sheet
