@@ -73,6 +73,8 @@ h3{font-size:1.2rem;letter-spacing:0}
 .eyebrow{font:600 .75rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--lav);display:flex;align-items:center;gap:10px}
 .eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
 .lede{color:var(--mute);max-width:58ch;margin:0;font-size:1.05rem}
+/* No one-word last lines in body copy. Browsers without text-wrap:pretty get noWidows() below instead. */
+p,li,blockquote,figcaption,dd{text-wrap:pretty}
 .prose{max-width:62ch;color:#d4cfd9;font-size:1.05rem}
 .prose p{margin:0 0 14px}
 section{padding-block:clamp(60px,9vw,116px);position:relative}
@@ -2789,7 +2791,14 @@ document.addEventListener('click',e=>{
 let pendingPreset=null;
 
 /* ================= wiring per view ================= */
-function wire(r){
+// Fallback for browsers without text-wrap:pretty (Safari before 26): the last two words of each paragraph
+// share a line, joined by a no-break space. Only touches a paragraph's final text node, never markup.
+const PRETTY=window.CSS&&CSS.supports&&CSS.supports('text-wrap','pretty');
+function noWidows(root){if(PRETTY||!root)return;root.querySelectorAll('p,li,blockquote,figcaption,dd').forEach(el=>{
+ const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n,last=null;while(n=w.nextNode())if(n.nodeValue.trim())last=n;
+ if(!last||last.parentElement.closest('button,a.btn,.chip'))return;const v=last.nodeValue,m=v.match(/^([\s\S]*\S) +(\S+\s*)$/);
+ if(m&&(el.textContent.trim().split(/\s+/).length>3))last.nodeValue=m[1]+'\u00a0'+m[2]})}
+function wire(r){noWidows(main);
  if(typeof pSync==='function')pSync();
  updateBar();
  $$('[data-copy]',main).forEach(b=>b.addEventListener('click',()=>copy(b)));
