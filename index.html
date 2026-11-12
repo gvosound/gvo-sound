@@ -1741,10 +1741,20 @@ function tripPins(){const g=BEEN.map(b=>({...b,trips:TRIPS.filter(t=>t.c===b.p)}
 const mapCard=pin=>pin.next
  ?`<span class="eyebrow">Next · ${esc(pin.when)}</span><b>${esc(pin.p)}</b><small>${esc(pin.k)}</small><a class="btn btn-lav" href="${pin.to}">${esc(pin.cta)}</a>`
  :`<span class="eyebrow">${pin.n>1?pin.n+' trips':pin.trips.length?esc(pin.trips[0].when):'Been there'}</span><b>${esc(pin.p)}</b>${pin.trips.map(t=>`<a class="tmap-t" href="https://www.instagram.com/${t.r?'reel':'p'}/${t.id}/" target="_blank" rel="noopener" data-ig="${t.id}" data-igr="${t.r}"><span>${esc(t.when)} · ${t.p!==pin.p?esc(t.p.replace(/, [^,]*$/,''))+' · ':''}${esc(t.k)}</span><i>${t.r?'Watch':'View'} →</i></a>`).join('')}`;
-function tripMap(){const pins=tripPins(),[hx,hy]=mapXY(HOME_PIN.ll);
+/* Pins that sit close together (UK, Netherlands, Belgium; Singapore, Malaysia; Toronto and home) are nudged apart
+   until each has its own tap target: at least 26px apart on the 880px phone map, the smallest the map draws.
+   Home stays put. Moves are a few pixels, so every pin still sits on its own country. */
+function spreadPins(pts,fixed){const W=880,H=W*.47,D=26,p=pts.map(([x,y])=>[x*W/100,y*H/100]),f=fixed.map(([x,y])=>[x*W/100,y*H/100]);
+ for(let it=0;it<80;it++){let moved=0;
+  for(let i=0;i<p.length;i++){for(let j=i+1;j<p.length;j++){const dx=p[j][0]-p[i][0],dy=p[j][1]-p[i][1],d=Math.hypot(dx,dy)||.01;
+    if(d<D){const m=(D-d)/2,ux=d>.01?dx/d:1,uy=d>.01?dy/d:0;p[i][0]-=ux*m;p[i][1]-=uy*m;p[j][0]+=ux*m;p[j][1]+=uy*m;moved=1}}
+   for(const q of f){const dx=p[i][0]-q[0],dy=p[i][1]-q[1],d=Math.hypot(dx,dy)||.01;if(d<D){p[i][0]+=dx/d*(D-d);p[i][1]+=dy/d*(D-d);moved=1}}}
+  if(!moved)break}
+ return p.map(([x,y])=>[x*100/W,y*100/H])}
+function tripMap(){const pins=tripPins(),[hx,hy]=mapXY(HOME_PIN.ll),pos=spreadPins(pins.map(pin=>mapXY(pin.ll)),[[hx,hy]]);
  return `<div class="tmap rv"><div class="tmap-scroll"><div class="tmap-m"><img src="img/world.svg" alt="" width="1000" height="470">
   <span class="tmap-home" style="left:${hx}%;top:${hy}%" title="Home base: GVO Sound, Annapolis"><i></i><em>Home</em></span>
-  ${pins.map((pin,i)=>{const [x,y]=mapXY(pin.ll);return `<button type="button" class="tmap-pin${pin.next?' next':''}" style="left:${x}%;top:${y}%" data-pin="${i}" aria-label="${esc(pin.p)}${pin.next?', next trip':''}" aria-pressed="false"><i></i></button>`}).join('')}
+  ${pins.map((pin,i)=>{const [x,y]=pos[i];return `<button type="button" class="tmap-pin${pin.next?' next':''}" style="left:${x}%;top:${y}%" data-pin="${i}" aria-label="${esc(pin.p)}${pin.next?', next trip':''}" aria-pressed="false"><i></i></button>`}).join('')}
  </div></div><div class="tmap-card" id="tmapCard" aria-live="polite" hidden></div>
  <div class="tmap-list" role="list">${pins.map((pin,i)=>`<button type="button" class="chip${pin.next?' next':''}" data-pin="${i}" aria-pressed="false">${esc(pin.p)}${pin.next?' · next':pin.n>1?' <small>×'+pin.n+'</small>':''}</button>`).join('')}</div>
  <p class="tmap-key"><span><i class="k1"></i>Been</span><span><i class="k2"></i>Next</span><span><i class="k3"></i>Home base</span></p></div>`}
