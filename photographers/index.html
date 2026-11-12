@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>GVO Sound · Photographer info</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Team-only page: photographers send their rates, contact preferences and holiday special answer.
+   Posts to /api/form as form "team". The row lands on the Photographers tab of the GVO form sheet. */
+:root{--ink:#07060a;--panel:#17141e;--field:#0f0d14;--line:#2b2635;--bone:#f3f0ea;--mute:#9e98aa;--lav:#b9b2ff;--tag:#e4342c;--ok:#86dba3;
+--display:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--bone);font:16px/1.55 var(--display)}
+.wrap{max-width:720px;margin:0 auto;padding:40px 20px 80px}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lav)}
+h1{font-weight:800;font-size:clamp(34px,7vw,52px);line-height:1.02;letter-spacing:-.02em;margin:10px 0 14px}
+.lede{color:var(--mute);margin:0 0 10px;max-width:60ch}
+.private{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:14px 16px;margin:22px 0 8px;font-size:15px}
+.private b{color:var(--bone)}
+fieldset{border:0;padding:0;margin:40px 0 0;display:grid;gap:18px}
+legend{padding:0;margin-bottom:6px;display:flex;gap:10px;align-items:baseline}
+legend .n{font:500 12px var(--mono);color:var(--lav)}
+legend h2{font-weight:800;font-size:24px;letter-spacing:-.01em;margin:0}
+.q{display:grid;gap:7px}
+.q>span,.q>.lbl{font-weight:500;font-size:15px}
+.q small{color:var(--mute);font-size:13px;font-weight:400}
+.req::after{content:" *";color:var(--lav)}
+input[type=text],input[type=email],input[type=tel],input[type=url],textarea{width:100%;font:inherit;font-size:16px;color:var(--bone);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+textarea{min-height:88px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--lav)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.two{grid-template-columns:1fr}}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills label{cursor:pointer}
+.pills input{position:absolute;opacity:0;pointer-events:none}
+.pills span{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;background:var(--field)}
+.pills input:checked+span{background:var(--lav);border-color:var(--lav);color:var(--ink);font-weight:600}
+.pills input:focus-visible+span{outline:2px solid var(--lav);outline-offset:2px}
+.special{border:1px solid var(--lav);border-radius:14px;padding:18px;background:rgba(185,178,255,.06);display:grid;gap:14px}
+.deal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.deal div{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.deal b{display:block;font-weight:800;font-size:20px;color:var(--lav)}
+.deal small{color:var(--mute);font-size:12px}
+@media(max-width:560px){.deal{grid-template-columns:repeat(2,1fr)}}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.submit{margin-top:40px;display:grid;gap:12px}
+button[type=submit]{justify-self:start;font:700 16px var(--display);background:var(--lav);color:var(--ink);border:0;border-radius:999px;padding:13px 26px;cursor:pointer}
+button[type=submit]:disabled{opacity:.6;cursor:default}
+.err{color:#ff9c92;margin:0;font-size:15px}
+.fine{color:var(--mute);font-size:13px;margin:0}
+.done{border:1px solid var(--ok);border-radius:14px;padding:22px;background:rgba(134,219,163,.06)}
+.done h2{font-weight:800;font-size:26px;margin:6px 0 8px}
+.done p{margin:0;color:var(--mute)}
+.ts-box:empty{display:none}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="wrap">
+<div class="eyebrow">GVO Sound · For the photo team</div>
+<h1>Your rates and how clients reach you</h1>
+<p class="lede">GVO is building photo packages and ads for the studio. Your answers set the prices clients see and decide how bookings get to you. It takes about 5 minutes.</p>
+<div class="private"><b>Who sees this:</b> Cory and the GVO team only. Nothing here goes on gvosound.com unless you say yes to it below.</div>
+
+<form id="f" novalidate>
+<fieldset>
+<legend><span class="n">1</span><h2>About you</h2></legend>
+<div class="two">
+<label class="q"><span class="req">Your name</span><input type="text" name="name" autocomplete="name" required></label>
+<label class="q"><span>Name you shoot under</span><input type="text" name="shootname" placeholder="If different"></label>
+</div>
+<div class="two">
+<label class="q"><span class="req">Instagram</span><input type="text" name="ig" placeholder="@yourhandle" autocapitalize="off" required></label>
+<label class="q"><span>Portfolio link</span><input type="url" name="portfolio" placeholder="yoursite.com" autocapitalize="off"></label>
+</div>
+<div class="two">
+<label class="q"><span class="req">Phone</span><input type="tel" name="phone" autocomplete="tel" required></label>
+<label class="q"><span class="req">Email</span><input type="email" name="email" autocomplete="email" required></label>
+</div>
+<p class="fine">Phone and email are for GVO to reach you. They stay private unless you choose otherwise in section 5.</p>
+</fieldset>
+
+<fieldset>
+<legend><span class="n">2</span><h2>What you shoot</h2></legend>
+<div class="q"><span class="lbl req">Check everything you shoot</span>
+<div class="pills" data-multi="shoots">
+<label><input type="checkbox" value="Artist and music promo"><span>Artist and music promo</span></label>
+<label><input type="checkbox" value="Portraits and headshots"><span>Portraits and headshots</span></label>
+<label><input type="checkbox" value="Brand and product"><span>Brand and product</span></label>
+<label><input type="checkbox" value="Grads"><span>Grads</span></label>
+<label><input type="checkbox" value="Maternity"><span>Maternity</span></label>
+<label><input type="checkbox" value="Couples"><span>Couples</span></label>
+<label><input type="checkbox" value="Events"><span>Events</span></label>
+<label><input type="checkbox" value="Behind-the-scenes content"><span>Behind-the-scenes content</span></label>
+</div></div>
+<div class="q"><span class="lbl">Do you shoot video too?</span>
+<div class="pills"><label><input type="radio" name="video" value="Yes"><span>Yes</span></label><label><input type="radio" name="video" value="No"><span>No</span></label></div></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="n">3</span><h2>Pricing</h2></legend>
+<div class="two">
+<label class="q"><span class="req">Hourly rate in the GVO studio</span><input type="text" name="rate" placeholder="$ per hour" required></label>
+<label class="q"><span>Minimum booking</span><input type="text" name="minimum" placeholder="1 hour, 2 hours"></label>
+</div>
+<label class="q"><span>Packages you offer <small>Hours, number of edited photos, price for each</small></span><textarea name="packages" placeholder="1 hr, 15 edits, $___"></textarea></label>
+<div class="two">
+<label class="q"><span>Edited photos per hour</span><input type="text" name="perhour"></label>
+<label class="q"><span>Delivery time</span><input type="text" name="delivery" placeholder="3–5 days"></label>
+</div>
+<label class="q"><span>Extra costs <small>Rush delivery, extra edits, raw files</small></span><textarea name="extras"></textarea></label>
+<div class="two">
+<label class="q"><span>Deposit</span><input type="text" name="deposit" placeholder="Amount, or none"></label>
+<label class="q"><span>On-location and event rates</span><input type="text" name="location"></label>
+</div>
+<div class="q"><span class="lbl">How clients pay you</span>
+<div class="pills" data-multi="payment">
+<label><input type="checkbox" value="Cash App"><span>Cash App</span></label>
+<label><input type="checkbox" value="Zelle"><span>Zelle</span></label>
+<label><input type="checkbox" value="Venmo"><span>Venmo</span></label>
+<label><input type="checkbox" value="Apple Pay"><span>Apple Pay</span></label>
+<label><input type="checkbox" value="Card"><span>Card</span></label>
+<label><input type="checkbox" value="Cash"><span>Cash</span></label>
+</div></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="n">4</span><h2>Holiday photo special</h2></legend>
+<div class="special">
+<p style="margin:0">A quick seasonal shoot in the GVO photo studio. The client pays GVO, and GVO pays you.</p>
+<div class="deal">
+<div><b>30 min</b><small>Shoot</small></div>
+<div><b>5–10</b><small>Edited photos</small></div>
+<div><b>$150</b><small>Client pays</small></div>
+<div><b>$100</b><small>You get</small></div>
+</div>
+<div class="q"><span class="lbl req">Want to shoot holiday specials?</span>
+<div class="pills"><label><input type="radio" name="holiday" value="Yes" required><span>Yes</span></label><label><input type="radio" name="holiday" value="Maybe"><span>Maybe</span></label><label><input type="radio" name="holiday" value="No"><span>No</span></label></div></div>
+<label class="q" id="hnotes" hidden><span>Days and times you can take them</span><textarea name="holidaynotes" placeholder="Weekends in December, weeknights after 5"></textarea></label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span class="n">5</span><h2>Availability</h2></legend>
+<label class="q"><span>Days and times you're usually free</span><textarea name="days"></textarea></label>
+<div class="two">
+<label class="q"><span>Notice you need</span><input type="text" name="notice" placeholder="24 hours, 3 days"></label>
+<label class="q"><span>GVO shoots you want a month</span><input type="text" name="monthly" placeholder="4, 10, as many as possible"></label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span class="n">6</span><h2>Clients and the website</h2></legend>
+<div class="q"><span class="lbl req">Should GVO list you on gvosound.com?</span>
+<div class="pills">
+<label><input type="radio" name="listing" value="Yes, clients contact me" required><span>Yes, clients contact me</span></label>
+<label><input type="radio" name="listing" value="Yes, bookings go through GVO"><span>Yes, bookings go through GVO</span></label>
+<label><input type="radio" name="listing" value="Not right now"><span>Not right now</span></label>
+</div></div>
+<div class="q"><span class="lbl">How clients should reach you</span>
+<div class="pills" data-multi="contactby">
+<label><input type="checkbox" value="Instagram DM"><span>Instagram DM</span></label>
+<label><input type="checkbox" value="Text"><span>Text</span></label>
+<label><input type="checkbox" value="Call"><span>Call</span></label>
+<label><input type="checkbox" value="Email"><span>Email</span></label>
+<label><input type="checkbox" value="Booking link"><span>Booking link</span></label>
+</div></div>
+<label class="q"><span>Booking link</span><input type="url" name="booking" placeholder="If you have one" autocapitalize="off"></label>
+<div class="q"><span class="lbl">OK to show your phone or email publicly?</span>
+<div class="pills"><label><input type="radio" name="public" value="Yes"><span>Yes</span></label><label><input type="radio" name="public" value="No"><span>No</span></label></div></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="n">7</span><h2>Using your work</h2></legend>
+<div class="q"><span class="lbl req">Can GVO use photos from studio shoots on its site and in ads, with credit to you?</span>
+<div class="pills"><label><input type="radio" name="usage" value="Yes" required><span>Yes</span></label><label><input type="radio" name="usage" value="Ask me first"><span>Ask me first</span></label><label><input type="radio" name="usage" value="No"><span>No</span></label></div></div>
+<label class="q"><span>How the credit should read</span><input type="text" name="credit" placeholder="Photo by @yourhandle"></label>
+<label class="q"><span>Anything else GVO should know</span><textarea name="notes"></textarea></label>
+</fieldset>
+
+<input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<div class="submit">
+<div class="ts-box"></div>
+<p class="err" id="err" role="alert" hidden></p>
+<button type="submit">Send to GVO</button>
+<p class="fine">Questions? Call or text the studio at (443) 292-6753.</p>
+</div>
+</form>
+
+<div class="done" id="done" hidden tabindex="-1" role="status">
+<div class="eyebrow">Sent</div>
+<h2>Thanks. GVO has your info.</h2>
+<p>Cory or the team will reach out if anything needs a follow-up. Need to change an answer? Text (443) 292-6753.</p>
+</div>
+</main>
+
+<script>
+(()=>{
+const fm=document.getElementById('f'),err=document.getElementById('err'),btn=fm.querySelector('[type=submit]');
+const t0=Date.now();let wid=null;
+const hn=document.getElementById('hnotes');
+fm.addEventListener('change',e=>{if(e.target.name==='holiday')hn.hidden=!(e.target.value==='Yes'||e.target.value==='Maybe')});
+// Cloudflare Turnstile, same as the main site: only when a site key is set
+fetch('/api/config').then(r=>r.json()).then(c=>{if(!c.turnstileSiteKey)return;
+ const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;
+ s.onload=()=>{wid=window.turnstile.render(fm.querySelector('.ts-box'),{sitekey:c.turnstileSiteKey,theme:'dark',appearance:'interaction-only',size:'flexible',action:'form'})};
+ document.head.appendChild(s)}).catch(()=>{});
+const show=m=>{err.textContent=m;err.hidden=false;err.scrollIntoView({behavior:'smooth',block:'center'})};
+fm.addEventListener('submit',async e=>{
+ e.preventDefault();err.hidden=true;
+ const fields={};
+ fm.querySelectorAll('input[type=text],input[type=email],input[type=tel],input[type=url],textarea').forEach(i=>{if(i.name&&i.name!=='website')fields[i.name]=i.value.trim()});
+ fm.querySelectorAll('input[type=radio]:checked').forEach(i=>fields[i.name]=i.value);
+ fm.querySelectorAll('[data-multi]').forEach(g=>fields[g.dataset.multi]=[...g.querySelectorAll('input:checked')].map(i=>i.value).join(', '));
+ const need=[['name','your name'],['ig','your Instagram'],['phone','your phone'],['email','your email'],['shoots','what you shoot'],['rate','your hourly rate'],['holiday','the holiday special'],['listing','the website listing'],['usage','using your work']];
+ const miss=need.find(([k])=>!fields[k]);if(miss)return show('Answer '+miss[1]+' before sending.');
+ let ts='';if(wid!=null&&window.turnstile){ts=window.turnstile.getResponse(wid)||'';if(!ts)return show('One second, checking you are not a bot. Try again in a moment.')}
+ btn.disabled=true;btn.textContent='Sending…';
+ try{
+  const r=await fetch('/api/form',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:'team',fields,ts,hp:fm.website.value,t:Date.now()-t0})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.ok)throw new Error(j.error||'That did not send. Try again, or text (443) 292-6753.');
+  fm.hidden=true;const d=document.getElementById('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
+ }catch(x){show(x.message)}
+ finally{btn.disabled=false;btn.textContent='Send to GVO';if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
+});
+})();
+</script>
+</body>
+</html>

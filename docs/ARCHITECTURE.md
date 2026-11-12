@@ -40,9 +40,10 @@ Texts:  booking alerts ──► Twilio (pending toll-free verification as of No
 | `apps-script/FormSubmissions.gs` | The Apps Script bound to the "GVO Website Form Submissions" sheet. Not deployed by git: paste it into the sheet's script editor, then Deploy, Manage deployments, New version |
 | `legal-src/build.py` | Builds `privacy.html`, `terms.html` and `sms-alerts.html`. Run `python3 legal-src/build.py` after editing |
 | `review/` | The team-only shop photo review page at `/review/` (noindex in `_headers`) |
+| `photographers/` | The team-only photographer info page at `/photographers/`: rates, contact preferences, holiday special. Posts form `team` to `/api/form`, which lands on the Photographers tab (noindex in `_headers`) |
 | `img/`, `vid/`, `aud/` | WebP images, MP4 clips with WebP posters, audio previews. Cached 7 days |
 | `_redirects` | Old Wix URLs to the new hash routes |
-| `_headers` | Security headers, cache rules, and the `/review/*` noindex |
+| `_headers` | Security headers, cache rules, and the `/review/*` and `/photographers/*` noindex |
 
 ## Data written into `index.html`
 

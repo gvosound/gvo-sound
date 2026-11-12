@@ -1,5 +1,6 @@
 // POST /api/form: the site's forms (podcast quote, event inquiry, travel request, music submission, notify lists,
 // and Cory's answers on the shop review page).
+// Also the team-only photographer info page at /photographers/ (form "team").
 // 1. Screens out bots: Cloudflare Turnstile when TURNSTILE_SECRET is set, plus a hidden field and a minimum fill time.
 // 2. Checks the fields.
 // 3. Hands the row to the Apps Script on the GVO Website Form Submissions sheet (FORMS_URL, FORMS_SECRET),
@@ -25,7 +26,21 @@ const SPEC = {
   music:  { artist: [100, 1], email: [120, 1], title: [150, 1], type: [30, 0], links: [1600, 1], ig: [80, 0], tiktok: [80, 0], yt: [300, 0], gvo: [10, 0], engineer: [100, 0], notes: [1000, 0] },
   notify: { list: [40, 1], contact: [120, 1] },
   review: { who: [60, 0], item: [200, 1], answer: [40, 0], notes: [2000, 0] }, // the shop review page at /review/
+  // The team-only photographer info page at /photographers/
+  team:   { name: [100, 1], shootname: [100, 0], ig: [80, 1], portfolio: [300, 0], phone: [30, 1], email: [120, 1],
+            shoots: [400, 1], video: [10, 0], rate: [120, 1], minimum: [80, 0], packages: [1500, 0], perhour: [80, 0],
+            delivery: [80, 0], extras: [800, 0], deposit: [200, 0], location: [400, 0], payment: [200, 0],
+            holiday: [10, 1], holidaynotes: [400, 0], days: [400, 0], notice: [80, 0], monthly: [40, 0],
+            listing: [60, 1], contactby: [200, 0], booking: [300, 0], public: [10, 0],
+            usage: [20, 1], credit: [120, 0], notes: [2000, 0] },
 };
+const TEAM_CHOICES = {
+  video: ['Yes', 'No'], public: ['Yes', 'No'],
+  holiday: ['Yes', 'Maybe', 'No'],
+  listing: ['Yes, clients contact me', 'Yes, bookings go through GVO', 'Not right now'],
+  usage: ['Yes', 'Ask me first', 'No'],
+};
+const withHttps = s => !s ? '' : /^https?:\/\//i.test(s) ? s.replace(/^http:/i, 'https:') : 'https://' + s;
 const LISTS = ['Next event', 'Africa trip'];
 const MUSIC_TYPES = ['Single', 'EP', 'Album or mixtape', 'Music video'];
 const GVO_ANSWERS = ['Yes', 'Partly', 'No'];
@@ -80,6 +95,15 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const d = phone(f.contact);
     if (!EMAIL.test(f.contact) && d.length !== 10) return bad('Add an email or a 10-digit phone number.');
     if (!EMAIL.test(f.contact)) f.contact = fmtPhone(f.contact);
+  }
+  if (b.form === 'team') {
+    for (const [k, list] of Object.entries(TEAM_CHOICES)) if (f[k] && !list.includes(f[k])) return bad('Pick an answer from the list.');
+    f.ig = handle(f.ig.replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i, ''));
+    for (const k of ['portfolio', 'booking']) {
+      f[k] = withHttps(f[k]);
+      if (f[k] && !URL_RE.test(f[k])) return bad('Check the ' + (k === 'portfolio' ? 'portfolio' : 'booking') + ' link.');
+    }
+    if (f.holiday !== 'Yes' && f.holiday !== 'Maybe') f.holidaynotes = '';
   }
   if (f.pax && !/^\d{1,3}$/.test(f.pax)) return bad('Travelers should be a number.');
   if (b.form === 'review' && !f.answer && !f.notes) return bad('Pick an answer or add a note.');

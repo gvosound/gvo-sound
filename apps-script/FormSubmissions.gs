@@ -1,4 +1,5 @@
-// SETUP FOR THIS VERSION: after pasting it, run setupReviews once, then Deploy > Manage deployments > edit > Version: New version.
+// SETUP FOR THIS VERSION: after pasting it, Deploy > Manage deployments > edit > Version: New version.
+// (Adds the Photographers tab for /photographers/. The tab makes itself on the first answer. setupReviews only if never run.)
 /**
  * GVO Website Form Submissions: receives each form from gvosound.com, adds a row to the right tab,
  * and emails the GVO Gmail.
@@ -43,6 +44,9 @@ const FORMS = {
   music:  { tab: 'Music submissions', label: 'Music submission',       cols: ['artist', 'email', 'title', 'type', 'links', 'ig', 'tiktok', 'yt', 'gvo', 'engineer', 'notes'] },
   notify: { tab: 'Notify list',       label: 'Notify list sign-up',    cols: ['list', 'contact'] },
   review: { tab: 'Review answers',    label: 'Shop review answer',     cols: ['who', 'item', 'answer', 'notes'] },
+  team:   { tab: 'Photographers',     label: 'Photographer info',      cols: ['name', 'shootname', 'ig', 'portfolio', 'phone', 'email',
+    'shoots', 'video', 'rate', 'minimum', 'packages', 'perhour', 'delivery', 'extras', 'deposit', 'location', 'payment',
+    'holiday', 'holidaynotes', 'days', 'notice', 'monthly', 'listing', 'contactby', 'booking', 'public', 'usage', 'credit', 'notes'] },
 };
 // Review answers also go to Siani, who updates the site from them.
 const REVIEW_TO = 'sianibutler@gmail.com';
@@ -52,7 +56,13 @@ const STATUS_COL = { quote: 7, event: 10, travel: 10 };
 const LABELS = { name: 'Name', phone: 'Phone', email: 'Email', type: 'Type', details: 'Details', org: 'Company or venue',
   when: 'When', city: 'City', trip: 'Trip', where: 'Where to', pax: 'Travelers', artist: 'Artist', title: 'Song or project',
   links: 'Links', ig: 'Instagram', tiktok: 'TikTok', yt: 'YouTube', gvo: 'Recorded at GVO', engineer: 'GVO engineer or producer',
-  notes: 'Anything else', list: 'List', contact: 'Email or phone', who: 'From', item: 'About', answer: 'Answer' };
+  notes: 'Anything else', list: 'List', contact: 'Email or phone', who: 'From', item: 'About', answer: 'Answer',
+  shootname: 'Shoots as', portfolio: 'Portfolio', shoots: 'Shoots', video: 'Shoots video', rate: 'Studio rate',
+  minimum: 'Minimum booking', packages: 'Packages', perhour: 'Edited photos per hour', delivery: 'Delivery time',
+  extras: 'Extra costs', deposit: 'Deposit', location: 'Location and event rates', payment: 'Gets paid by',
+  holiday: 'Holiday special', holidaynotes: 'Holiday availability', days: 'Usually free', notice: 'Notice needed',
+  monthly: 'GVO shoots a month', listing: 'On gvosound.com', contactby: 'Clients reach them by', booking: 'Booking link',
+  public: 'Contact info public', usage: 'GVO can use photos', credit: 'Credit as' };
 
 function doPost(e) {
   let body;
