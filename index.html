@@ -462,6 +462,8 @@ input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 .pday-ig{display:contents}
 .pday-t{scroll-snap-align:start}
 .pday-t .worn-m{aspect-ratio:9/16}
+.camp{margin-top:clamp(56px,8vw,96px)}
+.camp-t .worn-m img{width:100%;height:100%;object-fit:cover;display:block}
 .pday-igt .worn-m>a{display:block;width:100%;height:100%}.pday-igt .worn-m img{width:100%;height:100%;object-fit:cover}
 @media (max-width:1100px){.pday-row{grid-auto-columns:calc((100% - 28px)/3)}}
 @media (max-width:760px){.pday-row{grid-auto-columns:72%}}
@@ -2124,6 +2126,19 @@ const PARTNERS=[
 ];
 const partnerSec=p=>`<section class="pday partner"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Content partner</span><h2>${esc(p.n)}</h2><p class="lede">${esc(p.lede)}</p></div><div class="row-end">${ext(p.url,p.cta,'btn btn-ghost')}${NAV}</div></div>
  <div class="pday-row">${p.clips.map(([k,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="vid/${k}.webp" data-src="vid/${k}.mp4" aria-label="${esc(t)}, made by GVO Sound for ${esc(p.n)}"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}</div></div></section>`;
+// GVO's own campaigns: shot by the GVO team. Each entry shows as a band on the shop (shop:1) and,
+// with studio:1, on the photo studio page as proof of the team's work. Add a campaign = one entry + photos in img/.
+const CAMPAIGNS=[
+ {id:'pain-is-temporary',n:'Pain Is Temporary',prod:'pain-is-temporary-dirtbike-jersey',where:'On location',
+  by:[['Bob Almighty','bobalmighty'],['RvreForm','rvre.form']],
+  lede:'The Dirtbike Jersey, out on the bikes it was made for.',
+  shop:['j_5291','j_5334','j_5424','j_5431','j_5441','j_5531','j_5533','j_5545','j_5556','j_5586'],
+  studio:['j_5322','j_5367','j_5385','j_5530','j_5537','j_5571','j_5578','j_5584']}
+];
+const campBy=c=>c.by.map(([n,h])=>`<a href="https://www.instagram.com/${h}/" target="_blank" rel="noopener">${esc(n)}</a>`).join(' and ');
+const campRow=(c,list)=>`<div class="pday-row camp-row">${list.map((f,i)=>`<figure class="worn-t camp-t"><div class="worn-m">${imgT(f,`${c.n} campaign by GVO Sound, photo ${i+1}`)}</div></figure>`).join('')}</div>`;
+const campShop=c=>`<section class="camp"><div class="sec-head"><div class="hd"><span class="eyebrow">The campaign</span><h2>${esc(c.n)}</h2><p class="lede">${esc(c.lede)} Photos by ${campBy(c)} of the GVO team.</p></div><div class="row-end"><a class="btn btn-lav" href="#product-${c.prod}">Shop the jersey</a>${NAV}</div></div>${campRow(c,c.shop)}</section>`;
+const campStudio=c=>`<section class="pday camp-studio"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot by the GVO team</span><h2>${esc(c.n)}</h2><p class="lede">${esc(c.where)} for GVO's ${esc(c.n)} campaign. Photos by ${campBy(c)}. Book a GVO photographer for your own shoot, in this room or out in the world.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Book a photographer</a>${NAV}</div></div>${campRow(c,c.studio)}</div></section>`;
 const podIgTile=p=>`<figure class="worn-t pday-t pday-igt"><div class="worn-m">${igTile(p)}</div><figcaption><b>${esc(String(p.alt||'Podcast clip').slice(0,60))}</b><span class="worn-s"><a href="${esc(p.link)}" target="_blank" rel="noopener">Reel on @gvo.sound</a><span aria-hidden="true">→</span></span></figcaption></figure>`;
 function viewRoom(slug){
  const r=ROOMS[slug],others=Object.entries(ROOMS).filter(([s])=>s!==slug);
@@ -2139,7 +2154,7 @@ function viewRoom(slug){
    ${r.k==='photo'?note('Seasonal package','The holiday photoshoot special shows from Nov 1 to Dec 31 and hides itself the rest of the year, here and in the booking desk. <button type="button" class="chip" data-season style="margin-top:10px">'+(forceSeason?'Back to today':'Preview holiday season')+'</button>'):''}
   </div>
  </section>
- ${r.k==='pod'?podDay()+bagBoy()+PARTNERS.map(partnerSec).join(''):''}
+ ${r.k==='pod'?podDay()+bagBoy()+PARTNERS.map(partnerSec).join(''):''}${r.k==='photo'?CAMPAIGNS.filter(c=>c.studio).map(campStudio).join(''):''}
  <section><div class="wrap split">
   <div style="display:grid;gap:26px"><span class="eyebrow">The space</span><div class="prose">${r.about.map(p=>`<p>${p}</p>`).join('')}</div>
    <div><h3 style="margin-bottom:12px">What's included</h3><ul class="incl">${r.incl.map(i=>`<li>${i}</li>`).join('')}</ul></div>
@@ -2569,6 +2584,7 @@ function viewShop(){
   ${seoNote(META.shop)}
   <div class="sec-head" style="margin-bottom:24px"><div class="filters" id="shopFilters"></div><label class="shop-q"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="shopQ" type="search" placeholder="Search the rack" autocomplete="off" aria-label="Search the rack"></label><span class="dark-fine" style="font-size:.8rem" id="shopCount"></span></div>
   <div class="rack" id="rack"></div>
+  ${CAMPAIGNS.filter(c=>c.shop).map(campShop).join('')}
   <div class="pickup"><figure>${imgT('lounge','GVO apparel racks and shelves at the studio under a painted mural')}</figure><div><span class="eyebrow">Pick it up at the studio</span><h3>Pickup at the studio is free</h3><p>Choose pickup at checkout and your order waits on the racks at 109 Gibralter Ave. Shipping in the US is $9.99.</p></div></div>
   <div style="margin-top:clamp(56px,8vw,96px)">${igBand(IG.clothing,'GVO Sound Clothing','Good vibes, bold threads. Wear the energy.','clothing')}</div>
  </div></section>${viewFit()}</div>`;
