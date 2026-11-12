@@ -1709,15 +1709,23 @@ const CRUISE={t:'Love Sets Sail',sub:'Valentine\'s cruise',start:'2027-02-06',en
  inc:['Travel insurance','Sea-view stateroom, upgrades on request','Food at 20+ specialty eateries','Basic Wi-Fi','Non-alcoholic drinks','Onboard entertainment','Adults-only atmosphere','Tattoo parlor onboard'],
  bar:[[200,25],[300,50],[500,100]]};
 const TRIPS=[
- {id:'Ddrm_vAT4fm',r:1,ll:[18.22,-66.59],p:'Puerto Rico',when:'Sep 2026',k:'Birthday trip',l:'A birthday run for two travelers and their crew.'},
- {id:'Dc7JX4cNj6x',r:1,ll:[35.68,139.69],p:'Tokyo, Japan',when:'Sep 2026',k:'Group trip · Part 2',l:'Tokyo after dark, round two.'},
- {id:'Dcbav8yJ_Zq',r:1,ll:[35.68,139.69],p:'Tokyo, Japan',when:'Aug 2026',k:'Group trip · Part 1',l:'Shinjuku signs, street cars and the first week in Japan.'},
- {id:'DbbEbMWt6Hl',r:1,ll:[22.32,114.17],p:'Hong Kong',when:'Jul 2026',k:'Quick 2-day stop',l:'Two days and a lot of double-decker buses.'},
- {id:'DY5Ngq8N_9T',r:1,ll:[8.09,98.91],p:'Krabi, Thailand',when:'May 2026',k:'Asia group trip · Part 4',l:'Palm roads and island days, with hosts and guides who live there.'},
- {id:'DYZmwk0FoBG',r:0,ll:[37.57,126.98],p:'South Korea',when:'May 2026',k:'Asia group trip',l:'The Korea photo dump, one full table at a time.'},
- {id:'DX9VnqktCtV',r:1,ll:[13.76,100.5],p:'Bangkok, Thailand',when:'May 2026',k:'Asia group trip · Part 3',l:'Temples, river views and Bangkok at full speed.'},
- {id:'DWJwUqoN7m1',r:1,ll:[11.97,121.92],p:'Boracay, Philippines',when:'Mar 2026',k:'Asia group trip · Part 1',l:'Where the Asia trip started: white sand and clear water.'},
- {id:'DEfrQLySHaQ',r:1,ll:[7.0,3.7],p:'Ibadan and Lagos, Nigeria',when:'Jan 2025',k:'Flawless abroad',l:'The grand opening of New Empire Hotel in Ibadan, and the trip that started the Africa plans.'}];
+ {id:'Ddrm_vAT4fm',r:1,ll:[18.22,-66.59],c:'Puerto Rico',p:'Puerto Rico',when:'Sep 2026',k:'Birthday trip',l:'A birthday run for two travelers and their crew.'},
+ {id:'Dc7JX4cNj6x',r:1,ll:[35.68,139.69],c:'Japan',p:'Tokyo, Japan',when:'Sep 2026',k:'Group trip · Part 2',l:'Tokyo after dark, round two.'},
+ {id:'Dcbav8yJ_Zq',r:1,ll:[35.68,139.69],c:'Japan',p:'Tokyo, Japan',when:'Aug 2026',k:'Group trip · Part 1',l:'Shinjuku signs, street cars and the first week in Japan.'},
+ {id:'DbbEbMWt6Hl',r:1,ll:[22.32,114.17],c:'Hong Kong',p:'Hong Kong',when:'Jul 2026',k:'Quick 2-day stop',l:'Two days and a lot of double-decker buses.'},
+ {id:'DY5Ngq8N_9T',r:1,ll:[8.09,98.91],c:'Thailand',p:'Krabi, Thailand',when:'May 2026',k:'Asia group trip · Part 4',l:'Palm roads and island days, with hosts and guides who live there.'},
+ {id:'DYZmwk0FoBG',r:0,ll:[37.57,126.98],c:'South Korea',p:'South Korea',when:'May 2026',k:'Asia group trip',l:'The Korea photo dump, one full table at a time.'},
+ {id:'DX9VnqktCtV',r:1,ll:[13.76,100.5],c:'Thailand',p:'Bangkok, Thailand',when:'May 2026',k:'Asia group trip · Part 3',l:'Temples, river views and Bangkok at full speed.'},
+ {id:'DWJwUqoN7m1',r:1,ll:[11.97,121.92],c:'Philippines',p:'Boracay, Philippines',when:'Mar 2026',k:'Asia group trip · Part 1',l:'Where the Asia trip started: white sand and clear water.'},
+ {id:'DEfrQLySHaQ',r:1,ll:[7.0,3.7],c:'Nigeria',p:'Ibadan and Lagos, Nigeria',when:'Jan 2025',k:'Flawless abroad',l:'The grand opening of New Empire Hotel in Ibadan, and the trip that started the Africa plans.'}];
+/* Every country and territory GVO has traveled to (list from GVO, Nov 12, 2026), with trip counts. One pin each,
+   at the capital or the main city. A trip in TRIPS joins its country's pin through c. */
+const BEEN=[['Puerto Rico',7,[18.47,-66.11]],['Canada',1,[43.65,-79.38]],['Jamaica',1,[17.97,-76.79]],['Mexico',1,[19.43,-99.13]],['Egypt',1,[30.04,31.24]],
+ ['United Kingdom',1,[51.51,-0.13]],['Philippines',5,[11.97,121.92]],['Indonesia',1,[-6.2,106.85]],['Japan',2,[35.68,139.69]],['Guatemala',1,[14.63,-90.51]],
+ ['Brazil',1,[-22.91,-43.17]],['Singapore',1,[1.35,103.82]],['Thailand',1,[13.76,100.5]],['El Salvador',1,[13.69,-89.22]],['Nigeria',1,[7.38,3.94]],
+ ['Turkey',1,[41.01,28.98]],['Malaysia',1,[3.14,101.69]],['Vietnam',1,[21.03,105.85]],['Dominican Republic',1,[18.49,-69.93]],['Spain',1,[40.42,-3.7]],
+ ['Italy',1,[41.9,12.5]],['Germany',1,[52.52,13.4]],['Netherlands',1,[52.37,4.9]],['Belgium',1,[50.85,4.35]],['South Korea',1,[37.57,126.98]],
+ ['Hong Kong',1,[22.32,114.17]],['Panama',1,[8.98,-79.52]]].map(([p,n,ll])=>({p,n,ll}));
 const cruiseOn=()=>nowET()<evDate({d:CRUISE.start});
 /* Travel map: Equal Earth projection, same numbers img/world.svg was drawn with (d3-geo, world-atlas 110m land,
    rotated 10°, fit to 1000 x 470). A trip with ll:[lat,lng] becomes a pin; trips at the same place share one.
@@ -1728,17 +1736,17 @@ const HOME_PIN={p:'Annapolis, MD',ll:[38.97,-76.49]};
 const mapXY=([lat,lng])=>{const k=196.3792574617935,tx=495.2593858631084,ty=262.3590724339723,A1=1.340264,A2=-0.081106,A3=0.000893,A4=0.003796,M=Math.sqrt(3)/2;
  const l=(lng-10)*Math.PI/180,th=Math.asin(M*Math.sin(lat*Math.PI/180)),t2=th*th,t6=t2*t2*t2;
  return [(tx+k*l*Math.cos(th)/(M*(A1+3*A2*t2+t6*(7*A3+9*A4*t2))))/10,(ty-k*th*(A1+A2*t2+t6*(A3+A4*t2)))/4.7]};
-function tripPins(){const g=new Map();TRIPS.filter(t=>t.ll).forEach(t=>{const key=t.p;if(!g.has(key))g.set(key,{p:t.p,ll:t.ll,trips:[]});g.get(key).trips.push(t)});
- return [...g.values(),...NEXT.filter(n=>!n.on||n.on()).map(n=>({...n,next:1}))]}
+function tripPins(){const g=BEEN.map(b=>({...b,trips:TRIPS.filter(t=>t.c===b.p)}));
+ return [...g,...NEXT.filter(n=>!n.on||n.on()).map(n=>({...n,next:1}))]}
 const mapCard=pin=>pin.next
  ?`<span class="eyebrow">Next · ${esc(pin.when)}</span><b>${esc(pin.p)}</b><small>${esc(pin.k)}</small><a class="btn btn-lav" href="${pin.to}">${esc(pin.cta)}</a>`
- :`<span class="eyebrow">${pin.trips.length>1?pin.trips.length+' trips':esc(pin.trips[0].when)}</span><b>${esc(pin.p)}</b>${pin.trips.map(t=>`<a class="tmap-t" href="https://www.instagram.com/${t.r?'reel':'p'}/${t.id}/" target="_blank" rel="noopener" data-ig="${t.id}" data-igr="${t.r}"><span>${esc(t.when)} · ${esc(t.k)}</span><i>${t.r?'Watch':'View'} →</i></a>`).join('')}`;
+ :`<span class="eyebrow">${pin.n>1?pin.n+' trips':pin.trips.length?esc(pin.trips[0].when):'Been there'}</span><b>${esc(pin.p)}</b>${pin.trips.map(t=>`<a class="tmap-t" href="https://www.instagram.com/${t.r?'reel':'p'}/${t.id}/" target="_blank" rel="noopener" data-ig="${t.id}" data-igr="${t.r}"><span>${esc(t.when)} · ${t.p!==pin.p?esc(t.p.replace(/, [^,]*$/,''))+' · ':''}${esc(t.k)}</span><i>${t.r?'Watch':'View'} →</i></a>`).join('')}`;
 function tripMap(){const pins=tripPins(),[hx,hy]=mapXY(HOME_PIN.ll);
  return `<div class="tmap rv"><div class="tmap-scroll"><div class="tmap-m"><img src="img/world.svg" alt="" width="1000" height="470">
   <span class="tmap-home" style="left:${hx}%;top:${hy}%" title="Home base: GVO Sound, Annapolis"><i></i><em>Home</em></span>
   ${pins.map((pin,i)=>{const [x,y]=mapXY(pin.ll);return `<button type="button" class="tmap-pin${pin.next?' next':''}" style="left:${x}%;top:${y}%" data-pin="${i}" aria-label="${esc(pin.p)}${pin.next?', next trip':''}" aria-pressed="false"><i></i></button>`}).join('')}
  </div></div><div class="tmap-card" id="tmapCard" aria-live="polite" hidden></div>
- <div class="tmap-list" role="list">${pins.map((pin,i)=>`<button type="button" class="chip${pin.next?' next':''}" data-pin="${i}" aria-pressed="false">${esc(pin.p.replace(/, .*$/,''))}${pin.next?' · next':''}</button>`).join('')}</div>
+ <div class="tmap-list" role="list">${pins.map((pin,i)=>`<button type="button" class="chip${pin.next?' next':''}" data-pin="${i}" aria-pressed="false">${esc(pin.p)}${pin.next?' · next':pin.n>1?' <small>×'+pin.n+'</small>':''}</button>`).join('')}</div>
  <p class="tmap-key"><span><i class="k1"></i>Been</span><span><i class="k2"></i>Next</span><span><i class="k3"></i>Home base</span></p></div>`}
 function wireMap(root){const m=$('.tmap',root);if(!m)return;const pins=tripPins(),card=$('#tmapCard',m);
  const pick=i=>{const on=i!=null&&card.dataset.i!==String(i);$$('[data-pin]',m).forEach(b=>b.setAttribute('aria-pressed',String(on&&b.dataset.pin===String(i))));
@@ -2335,7 +2343,7 @@ function viewEvents(){
   ${note('Where inquiries go','Adds a row to the Event inquiries tab of GVO\'s form sheet, tagged by type, and emails the GVO Gmail. The notify list goes to its own tab.')}
  </div></section>
  <section style="padding-top:0;padding-bottom:0"><div class="wrap">
-  <a class="travel rv" href="#travel"><span class="travel-th">${['Dc7JX4cNj6x','Ddrm_vAT4fm','DWJwUqoN7m1','DdO6XF3PYcB'].map(id=>imgT(igImg('tr',id),'')).join('')}</span><span><small>Off the clock · GVO Travel</small><b>Group and solo trips, 26 countries</b><span class="travel-s">3–5 day escapes and 10+ day journeys. First-time travelers welcome.</span></span><span class="travel-h">See GVO Travel →</span></a>
+  <a class="travel rv" href="#travel"><span class="travel-th">${['Dc7JX4cNj6x','Ddrm_vAT4fm','DWJwUqoN7m1','DdO6XF3PYcB'].map(id=>imgT(igImg('tr',id),'')).join('')}</span><span><small>Off the clock · GVO Travel</small><b>Group and solo trips, ${BEEN.length} countries and territories</b><span class="travel-s">3–5 day escapes and 10+ day journeys. First-time travelers welcome.</span></span><span class="travel-h">See GVO Travel →</span></a>
   <div class="finale"><span class="mark"></span><p class="slogan"><span>Bring Your</span><span>Vision</span><span>To Life.</span></p><a class="btn btn-lav" href="#inquire">Work with GVO Events</a></div>
  </div></section>
  </div>`;
@@ -2350,7 +2358,7 @@ function viewTravel(){
    <div class="evhero-t"><span class="eyebrow">GVO Sound Travel</span><h1><span>Group Trips.</span><span>Private Trips.</span><span>Custom Plans.</span></h1>
     <p class="lede">Curated international trips, from 3–5 day escapes to 10+ day journeys. Flawless and the GVO team plan it with you, so you never have to figure it out alone. First-time travelers welcome.</p>
     <div class="ctas" style="margin:0"><a class="btn btn-lav" href="#plan">Plan a trip</a><a class="btn btn-ghost" href="${igUrl(IG.travel)}" target="_blank" rel="noopener">${IGIC}@${IG.travel}</a></div></div>
-   <div class="facts ev-facts"><div><b>26</b><small>Countries</small></div><div><b>3–5</b><small>Day escapes</small></div><div><b>10+</b><small>Day journeys</small></div></div>
+   <div class="facts ev-facts"><div><b>${BEEN.length}</b><small>Countries and territories</small></div><div><b>3–5</b><small>Day escapes</small></div><div><b>10+</b><small>Day journeys</small></div></div>
   </div>
   ${seoNote(META.travel)}
  </div></section>
@@ -2649,7 +2657,7 @@ const META={
  shop:{path:'/shop',title:'GVO Apparel | Tees, Hoodies and Sets | GVO Sound Shop',desc:'Shop GVO Sound apparel: World Tour tees, the Cheetah hoodie, the Worker Jacket and more. Ship it or pick it up at the studio in Annapolis.',h1:'The rack',schema:'BreadcrumbList, ItemList of Product'}
 };
 META.events={path:'/events',title:'GVO Sound Events | R&B & Vibes and Parties in Annapolis and Baltimore',desc:'GVO Sound throws R&B & Vibes, rooftop and battle nights in Glen Burnie, Annapolis and Baltimore. See upcoming dates, past events, and book GVO for your venue or DJ night.',h1:'R&B Nights. Rooftops. County vs. City.',schema:'ItemList of Event (MusicEvent) with Place, BreadcrumbList'};
-META.travel={path:'/travel',title:'GVO Sound Travel | Group Trips, Cruises and Custom Itineraries',desc:'Curated group and private trips from GVO Sound in Annapolis, MD. 26 countries, first-time travelers welcome. Now booking the Love Sets Sail Valentine\'s cruise, Feb 6–11, 2027.',h1:'Group Trips. Private Trips. Custom Plans.',schema:'Trip (cruise) with Offer, BreadcrumbList'};
+META.travel={path:'/travel',title:'GVO Sound Travel | Group Trips, Cruises and Custom Itineraries',desc:'Curated group and private trips from GVO Sound in Annapolis, MD. 27 countries and territories, first-time travelers welcome. Now booking the Love Sets Sail Valentine\'s cruise, Feb 6–11, 2027.',h1:'Group Trips. Private Trips. Custom Plans.',schema:'Trip (cruise) with Offer, BreadcrumbList'};
 META.music={path:'/music',title:'Stream GVO Sound | Flawless Breezyy and Studio Artists',desc:'Stream music recorded at GVO Sound in Annapolis, MD. Flawless Breezyy, BoobBlack, A. Brooks and more on Spotify, Apple Music, Amazon and TIDAL.',h1:'Featured release title (changes per ad link)',schema:'MusicGroup with MusicRecording list, BreadcrumbList'};
 REL.forEach(x=>META['music/'+x.id]={path:'/music/'+x.id,title:`${x.t} by ${x.a} | Stream it | GVO Sound`,desc:`Stream ${x.t} by ${x.a}, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.`,h1:x.t,schema:'MusicRecording, BreadcrumbList'});
 Object.entries(ROOMS).forEach(([s,r])=>META[s]={path:'/'+s,title:r.title,desc:r.desc,h1:r.h1,schema:'Service + Offer catalog, FAQPage, BreadcrumbList'});
