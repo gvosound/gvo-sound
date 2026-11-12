@@ -141,7 +141,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
   }
 }
 
-// GET /api/book?debug=recent&key=DEBUG_KEY: team-only view of the last 20 bookings (status, start, team member, BK ref),
+// GET /api/book?debug=recent&key=DEBUG_KEY[&date=YYYY-MM-DD]: team-only view of the last 20 bookings (status, start, team member, BK ref),
+// or every booking starting on that New York date with the payment named in its seller note (amount, status, refunds),
 // plus the Square settings that decide whether a web booking is accepted. No customer phone numbers or emails.
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
@@ -169,7 +170,17 @@ export async function onRequestGet({ request, env }) {
       cursor = r.cursor;
     } while (cursor && list.length < 500);
     list.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
-    const recent = list.slice(0, 20);
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get('date') || '') ? url.searchParams.get('date') : '';
+    const onDate = b => new Date(b.start_at).toLocaleDateString('en-CA', { timeZone: 'America/New_York' }) === date;
+    const recent = date ? list.filter(onDate) : list.slice(0, 20);
+    // With a date: the payment each seller note names ("payment <id>."), read from Square.
+    const pays = new Map();
+    if (date) await Promise.all(recent.map(async b => {
+      const id = ((b.seller_note || '').match(/payment ([A-Za-z0-9]+)\./) || [])[1];
+      if (!id) return;
+      const p = (await sq(env, 'GET', '/v2/payments/' + id).catch(() => ({}))).payment;
+      if (p) pays.set(b.id, { id, amount: cents(p.total_money) / 100, status: p.status, refunded: cents(p.refunded_money) / 100, created: p.created_at });
+    }));
     // First names only, to tell bookings apart.
     const ids = [...new Set(recent.map(b => b.customer_id).filter(Boolean))];
     const first = new Map();
@@ -196,6 +207,9 @@ export async function onRequestGet({ request, env }) {
           teamMember: tm ? tm.name : seg.team_member_id || '', teamMemberBookable: tm ? tm.bookable : null,
           ref: ((b.seller_note || '').match(/BK-[A-Z0-9]{8}/) || [])[0] || '',
           web: /^PAID ONLINE|Paid in full online/.test(b.seller_note || ''),
+          noteStartsPaidOnline: /^PAID ONLINE/.test(b.seller_note || ''),
+          notePaid: ((b.seller_note || '').match(/^PAID ONLINE: \$([\d,.]+)/) || [])[1] || '',
+          payment: pays.get(b.id),
         };
       }),
     }, 200, { 'Cache-Control': 'no-store' });
