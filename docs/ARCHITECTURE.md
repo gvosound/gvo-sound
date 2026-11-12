@@ -59,7 +59,7 @@ These change only by editing the file. The team asks for these by name.
 | `REL`, `ARTISTS`, `LISTEN`, `FEATURED` | Music page releases, studio artists, listen links |
 | `EVENTS`, `TRIPS`, `NEXT`, `CRUISE` | Events and travel |
 | `REVIEWS`, `GOOG` | Fallback reviews and rating, used until `/api/reviews` answers |
-| `SEASON` | Holiday photoshoot special window (Nov 1 to Dec 31) |
+| `SEASON` | Holiday photoshoot special window (Nov 23 to Dec 23). The server holds the same dates in `HOLIDAY_WINDOW` |
 | `META` | Page titles and descriptions per view |
 
 ## Secrets and settings

@@ -79,7 +79,7 @@ Apple Pay shows only after gvosound.com is registered for Apple Pay in the Squar
 ## Status
 
 - The static `PRODUCTS` list paints the rack instantly. `/api/shop` replaces it with Square's live catalog a moment later. If Square is down, the rack stays visible and checkout says to call or text.
-- The holiday photoshoot special shows Nov 1 to Dec 31 only.
+- The holiday photoshoot special shows, and books shoot dates, Nov 23 to Dec 23 only (`SEASON` in index.html, `HOLIDAY_WINDOW` in functions/_lib/booking.js).
 - Music: each release has its own ad landing link (`/music/<release>`) that puts that song in the top slot. Spotify ids checked Oct 20, 2026; "All platforms" opens song.link / album.link. Artist submissions go to the Music submissions tab of GVO's form sheet for Cory to approve.
 
 ## System plan

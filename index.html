@@ -1936,8 +1936,8 @@ async function loadShop(){
  else if(D&&D.host.isConnected)renderBook();
 }
 
-/* seasonal: holiday photo special runs Nov 1 to Dec 31 */
-const SEASON={from:[11,1],to:[12,31]};let forceSeason=false;
+/* seasonal: holiday photo special runs Nov 23 to Dec 23. Keep in step with HOLIDAY_WINDOW in functions/_lib/booking.js */
+const SEASON={from:[11,23],to:[12,23]};let forceSeason=false;
 function inSeason(){if(forceSeason)return true;const d=nowET(),md=(d.getMonth()+1)*100+d.getDate();return md>=SEASON.from[0]*100+SEASON.from[1]&&md<=SEASON.to[0]*100+SEASON.to[1]}
 const live=list=>list.filter(x=>!(x[2]==='season'&&!inSeason()));
 
@@ -2151,7 +2151,7 @@ function viewRoom(slug){
    <div class="ctas" style="margin:0">${r.k==='pod'?'<a class="btn btn-lav" href="#desk">Request a quote</a>':'<a class="btn btn-lav" href="#desk">Book this studio</a>'}<a class="btn btn-ghost" href="#faq">Questions</a></div>
    <div class="facts">${factsOf(r).map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}</div>
    ${seoNote(META[slug])}
-   ${r.k==='photo'?note('Seasonal package','The holiday photoshoot special shows from Nov 1 to Dec 31 and hides itself the rest of the year, here and in the booking desk. <button type="button" class="chip" data-season style="margin-top:10px">'+(forceSeason?'Back to today':'Preview holiday season')+'</button>'):''}
+   ${r.k==='photo'?note('Seasonal package','The holiday photoshoot special shows from Nov 23 to Dec 23 and hides itself the rest of the year, here and in the booking desk. <button type="button" class="chip" data-season style="margin-top:10px">'+(forceSeason?'Back to today':'Preview holiday season')+'</button>'):''}
   </div>
  </section>
  ${r.k==='pod'?podDay()+bagBoy()+PARTNERS.map(partnerSec).join(''):''}${r.k==='photo'?CAMPAIGNS.filter(c=>c.studio).map(campStudio).join(''):''}
@@ -2760,7 +2760,7 @@ addEventListener('hashchange',()=>{
 /* in-page anchors like #desk #faq shouldn't change route */
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-evsample]')){evSample=!evSample;render(route,{keep:true});toast(evSample?'Showing how a new Eventbrite listing appears':'Back to today');return}
- if(e.target.closest('[data-season]')){forceSeason=!forceSeason;if(!inSeason()&&B.room==='holiday')B.room='photo';render(route,{keep:true});toast(forceSeason?'Showing the site as it looks Nov 1 to Dec 31':'Back to today');return}
+ if(e.target.closest('[data-season]')){forceSeason=!forceSeason;if(!inSeason()&&B.room==='holiday')B.room='photo';render(route,{keep:true});toast(forceSeason?'Showing the site as it looks Nov 23 to Dec 23':'Back to today');return}
  const a=e.target.closest('a[href^="#"]');if(!a)return;
  const h=a.getAttribute('href').slice(1);
  if(a.dataset.preset){pendingPreset=a.dataset.preset}

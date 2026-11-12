@@ -3,7 +3,7 @@
 // GET /api/availability?debug=room&date=YYYY-MM-DD -> that day's sessions holding a room (no customer details)
 import { json, fail, sq, cfg, TZ } from '../_lib/square.js';
 import { loadCatalog } from '../_lib/catalog.js';
-import { serviceOf, searchSlots, teamNames, allowedTeam, bookableOnline, roomBookings, ROOMS_CAP, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
+import { serviceOf, searchSlots, teamNames, allowedTeam, bookableOnline, roomBookings, ROOMS_CAP, LEAD_MS, MAX_PEOPLE, inHolidayWindow } from '../_lib/booking.js';
 
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
@@ -24,7 +24,9 @@ export async function onRequestGet({ request, env }) {
     }
     const s = serviceOf(cat, id);
     const allowed = allowedTeam(s, await teamNames(env));
-    const slots = await searchSlots(env, s, { from: url.searchParams.get('from'), days: Number(url.searchParams.get('days') || 14), team: url.searchParams.get('team') || 'any', allowed, cat });
+    let slots = await searchSlots(env, s, { from: url.searchParams.get('from'), days: Number(url.searchParams.get('days') || 14), team: url.searchParams.get('team') || 'any', allowed, cat });
+    // The holiday special only books for shoot dates inside its window (Nov 23 to Dec 23).
+    if (s.kind === 'holiday') slots = slots.filter(x => inHolidayWindow(x.start));
     // One entry per start time; keep every team member who is free then.
     const by = new Map();
     for (const x of slots) { const e = by.get(x.start) || { start: x.start, team: [] }; if (x.team && !e.team.includes(x.team)) e.team.push(x.team); by.set(x.start, e); }

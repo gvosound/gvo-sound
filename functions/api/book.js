@@ -8,7 +8,7 @@ import { sq, cfg, json, fail, readBody, idem, money, cents, clean, findOrCreateC
 import { loadCatalog } from '../_lib/catalog.js';
 import { shopLines, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
 import { emailCfg, sendEmail, bookingAlert } from '../_lib/email.js';
-import { serviceOf, bookingOrder, searchSlots, teamNames, allowedTeam, roomBookings, roomFull, roomOf, LEAD_MS, MAX_PEOPLE } from '../_lib/booking.js';
+import { serviceOf, bookingOrder, searchSlots, teamNames, allowedTeam, roomBookings, roomFull, roomOf, LEAD_MS, MAX_PEOPLE, inHolidayWindow } from '../_lib/booking.js';
 
 const ET = { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
 
@@ -29,6 +29,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
     const cat = await loadCatalog(env);
     const s = serviceOf(cat, b.service);
+    if (s.kind === 'holiday' && !inHolidayWindow(start)) throw badRequest('The holiday special runs Nov 23 to Dec 23. Pick a date in that window, or book the photo studio.');
     const merch = await shopLines(env, cat, b.lines || []);
 
     // Still open? Ask Square for that exact start.

@@ -20,6 +20,15 @@ export const ROOMS_CAP = { rec: 1, photo: 1, pod: 1 };
 const ROOM_ALIAS = { holiday: 'photo' };
 export const roomOf = kind => (kind && ROOMS_CAP[kind] ? kind : ROOM_ALIAS[kind]) || null;
 
+// Holiday photo special: shoots run Nov 23 to Dec 23 (Eastern), every year. Keep in step with SEASON in index.html.
+export const HOLIDAY_WINDOW = { from: [11, 23], to: [12, 23] };
+export function inHolidayWindow(date) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'numeric', day: 'numeric' })
+    .formatToParts(new Date(date)).map(x => [x.type, x.value]));
+  const md = Number(p.month) * 100 + Number(p.day), w = HOLIDAY_WINDOW;
+  return md >= w.from[0] * 100 + w.from[1] && md <= w.to[0] * 100 + w.to[1];
+}
+
 export function serviceOf(cat, id) {
   const s = cat.services.find(x => x.id === id);
   if (!s || !BOOKABLE.includes(s.kind)) throw badRequest('That session type is not bookable online. Call or text the studio at (443) 292-6753.');
