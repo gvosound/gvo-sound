@@ -1,4 +1,4 @@
-// The team info form at /photographers/: the one place its questions live.
+// The team info form at /team/ (gvosound.com/photographers/ redirects there): the one place its questions live.
 // The page draws itself from this list (GET /api/form?schema=team), the server checks answers against it,
 // and the sheet adds a column for any new question on its own. To add, change or drop a question, edit QUESTIONS.
 // Never reuse a key for a different question: the key names the sheet column.

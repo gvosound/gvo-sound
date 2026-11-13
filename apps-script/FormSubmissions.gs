@@ -1,5 +1,5 @@
 // SETUP FOR THIS VERSION: after pasting it, Deploy > Manage deployments > edit > Version: New version.
-// (Adds the Team info tab for /photographers/. The tab makes itself on the first answer, and new questions on that
+// (Adds the Team info tab for /team/. The tab makes itself on the first answer, and new questions on that
 // form add their own columns, so this script doesn't need a new version when the form changes. setupReviews only if never run.)
 /**
  * GVO Website Form Submissions: receives each form from gvosound.com, adds a row to the right tab,
@@ -45,7 +45,7 @@ const FORMS = {
   music:  { tab: 'Music submissions', label: 'Music submission',       cols: ['artist', 'email', 'title', 'type', 'links', 'ig', 'tiktok', 'yt', 'gvo', 'engineer', 'notes'] },
   notify: { tab: 'Notify list',       label: 'Notify list sign-up',    cols: ['list', 'contact'] },
   review: { tab: 'Review answers',    label: 'Shop review answer',     cols: ['who', 'item', 'answer', 'notes'] },
-  // Team info (/photographers/): columns come with each answer from functions/_lib/team-form.js, so new questions
+  // Team info (/team/): columns come with each answer from functions/_lib/team-form.js, so new questions
   // add their own column. Nothing to change here when the form changes.
   team:   { tab: 'Team info',         label: 'Team info',              cols: [], dynamic: true },
 };

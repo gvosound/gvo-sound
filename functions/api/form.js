@@ -1,6 +1,6 @@
 // POST /api/form: the site's forms (podcast quote, event inquiry, travel request, music submission, notify lists,
 // and Cory's answers on the shop review page).
-// Also the team info form at /photographers/ (form "team"): its questions live in functions/_lib/team-form.js,
+// Also the team info form at /team/ (form "team"): its questions live in functions/_lib/team-form.js,
 // GET /api/form?schema=team serves them to the page, and the sheet adds columns for new questions on its own.
 // 1. Screens out bots: Cloudflare Turnstile when TURNSTILE_SECRET is set, plus a hidden field and a minimum fill time.
 // 2. Checks the fields.

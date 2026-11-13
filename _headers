@@ -21,8 +21,8 @@
 /review/*
   X-Robots-Tag: noindex, nofollow
 
-# Photographer info page for the photo team: never in search
-/photographers/*
+# Team info form: never in search
+/team/*
   X-Robots-Tag: noindex, nofollow
 
 # Developer notes: readable, never in search

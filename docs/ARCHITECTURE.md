@@ -44,10 +44,10 @@ Texts:  booking alerts ──► Twilio (pending toll-free verification as of No
 | `apps-script/FormSubmissions.gs` | The Apps Script bound to the "GVO Website Form Submissions" sheet. Not deployed by git: paste it into the sheet's script editor, then Deploy, Manage deployments, New version |
 | `legal-src/build.py` | Builds `privacy.html`, `terms.html` and `sms-alerts.html`. Run `python3 legal-src/build.py` after editing |
 | `review/` | The team-only shop photo review page at `/review/` (noindex in `_headers`) |
-| `photographers/` | The team info form at `/photographers/` (noindex). Draws itself from `functions/_lib/team-form.js` via `GET /api/form?schema=team`; posts form `team`; rows land on the Team info tab, which adds a column for any new question. To change the form, edit `team-form.js` only |
+| `team/` | The team info form at `/team/` for photographers and videographers (noindex; `/photographers/` redirects here). Draws itself from `functions/_lib/team-form.js` via `GET /api/form?schema=team`; posts form `team`; rows land on the Team info tab, which adds a column for any new question. To change the form, edit `team-form.js` only |
 | `img/`, `vid/`, `aud/` | WebP images, MP4 clips with WebP posters, audio previews. Cached 7 days |
 | `_redirects` | Old Wix URLs to the new hash routes |
-| `_headers` | Security headers, cache rules, and the `/review/*` and `/photographers/*` noindex |
+| `_headers` | Security headers, cache rules, and the `/review/*` and `/team/*` noindex |
 
 ## Data written into `index.html`
 
