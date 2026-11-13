@@ -4,7 +4,7 @@
 // GVO's name). Until then, or whenever USPS can't answer, every order gets the flat rates in FLAT below,
 // the same rates the shop charged before.
 //
-// Weights are estimates, in ounces, of each garment alone; PACK adds the mailer or box. They round up on
+// Weights are estimates, in ounces, of each garment alone; pack() adds the poly mailer. They round up on
 // purpose, so the buyer's price covers the counter price. Change a number here after weighing the real thing.
 // A product not listed uses its category's weight.
 
@@ -29,11 +29,12 @@ export const WEIGHT_OZ = {
 };
 const CAT_OZ = { Shirts: 6.5, 'Cold weather': 24.5, Bottoms: 16.5, Headwear: 2.5 };
 
-// Packaging by contents: a poly mailer, a big mailer, or a box. Inches and ounces.
+// GVO ships in poly mailers. The mailer size goes by what's inside: 10 x 13 for one or two light pieces,
+// 14.5 x 19 for a hoodie or a set, 19 x 24 for big orders. Inches, filled depth, and the mailer's own ounces.
 function pack(oz) {
-  if (oz <= 30) return { oz: oz + 1.5, l: 12, w: 10, h: 2 };
-  if (oz <= 62) return { oz: oz + 2, l: 19, w: 14, h: 3 };
-  return { oz: oz + 10, l: 14, w: 12, h: 6 };
+  if (oz <= 24) return { oz: oz + 1, l: 13, w: 10, h: 2 };
+  if (oz <= 64) return { oz: oz + 1.5, l: 19, w: 14.5, h: 4 };
+  return { oz: oz + 2, l: 24, w: 19, h: 6 };
 }
 
 // Packed weight of Square line items [{catalog_object_id, quantity}], using the shop index from orders.js.
