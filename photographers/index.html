@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#07060a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
 <title>GVO Sound · Photographer info</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +15,11 @@
 /* Team-only page: photographers send their rates, contact preferences and holiday special answer.
    Posts to /api/form as form "team". The row lands on the Photographers tab of the GVO form sheet. */
 :root{--ink:#07060a;--panel:#17141e;--field:#0f0d14;--line:#2b2635;--bone:#f3f0ea;--mute:#9e98aa;--lav:#b9b2ff;--tag:#e4342c;--ok:#86dba3;
+--err:#ff9c92;--lavsoft:rgba(185,178,255,.06);--oksoft:rgba(134,219,163,.06);
 --display:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:dark}
+/* Light or dark follows the visitor's device setting */
+@media (prefers-color-scheme:light){:root{--ink:#f7f5f0;--panel:#ffffff;--field:#ffffff;--line:#dcd7e3;--bone:#16131c;--mute:#625c6e;--lav:#5446d1;--ok:#1d7a45;
+--err:#b3261e;--lavsoft:rgba(84,70,209,.06);--oksoft:rgba(29,122,69,.07);color-scheme:light}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--ink);color:var(--bone);font:16px/1.55 var(--display)}
@@ -41,7 +48,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--lav)}
 .pills span{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;background:var(--field)}
 .pills input:checked+span{background:var(--lav);border-color:var(--lav);color:var(--ink);font-weight:600}
 .pills input:focus-visible+span{outline:2px solid var(--lav);outline-offset:2px}
-.special{border:1px solid var(--lav);border-radius:14px;padding:18px;background:rgba(185,178,255,.06);display:grid;gap:14px}
+.special{border:1px solid var(--lav);border-radius:14px;padding:18px;background:var(--lavsoft);display:grid;gap:14px}
 .deal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .deal div{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
 .deal b{display:block;font-weight:800;font-size:20px;color:var(--lav)}
@@ -51,9 +58,9 @@ input:focus,textarea:focus{outline:none;border-color:var(--lav)}
 .submit{margin-top:40px;display:grid;gap:12px}
 button[type=submit]{justify-self:start;font:700 16px var(--display);background:var(--lav);color:var(--ink);border:0;border-radius:999px;padding:13px 26px;cursor:pointer}
 button[type=submit]:disabled{opacity:.6;cursor:default}
-.err{color:#ff9c92;margin:0;font-size:15px}
+.err{color:var(--err);margin:0;font-size:15px}
 .fine{color:var(--mute);font-size:13px;margin:0}
-.done{border:1px solid var(--ok);border-radius:14px;padding:22px;background:rgba(134,219,163,.06)}
+.done{border:1px solid var(--ok);border-radius:14px;padding:22px;background:var(--oksoft)}
 .done h2{font-weight:800;font-size:26px;margin:6px 0 8px}
 .done p{margin:0;color:var(--mute)}
 .ts-box:empty{display:none}
@@ -208,7 +215,7 @@ fm.addEventListener('change',e=>{if(e.target.name==='holiday')hn.hidden=!(e.targ
 // Cloudflare Turnstile, same as the main site: only when a site key is set
 fetch('/api/config').then(r=>r.json()).then(c=>{if(!c.turnstileSiteKey)return;
  const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;
- s.onload=()=>{wid=window.turnstile.render(fm.querySelector('.ts-box'),{sitekey:c.turnstileSiteKey,theme:'dark',appearance:'interaction-only',size:'flexible',action:'form'})};
+ s.onload=()=>{wid=window.turnstile.render(fm.querySelector('.ts-box'),{sitekey:c.turnstileSiteKey,theme:'auto',appearance:'interaction-only',size:'flexible',action:'form'})};
  document.head.appendChild(s)}).catch(()=>{});
 const show=m=>{err.textContent=m;err.hidden=false;err.scrollIntoView({behavior:'smooth',block:'center'})};
 fm.addEventListener('submit',async e=>{
