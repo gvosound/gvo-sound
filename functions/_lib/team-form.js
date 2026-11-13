@@ -11,10 +11,11 @@
 //   options    for one and many: plain text, or { v, note } to explain a choice under it
 //   show       only asked when another answer matches: { key, is: [...] } or { key, has: 'option' } or { key, not: [...] }
 //   requiredWhen  optional until another answer matches (same shape as show)
+//   section note  a short line under a section title
 //   hint, placeholder, half (sits beside the next half field on wide screens), checked (check starts ticked)
 
 export const TEAM_FORM = {
-  version: 3,
+  version: 4,
   role: 'photographer',
   title: 'Your rates and how clients reach you',
   intro: 'Your answers set the photo prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes.',
@@ -30,20 +31,21 @@ export const TEAM_FORM = {
       { key: 'portfolio', label: 'Website', type: 'url', placeholder: 'yoursite.com', sheet: 'Website', requiredWhen: { key: 'contactby', has: 'Website' } },
     ] },
     { title: 'What you shoot', questions: [
-      { key: 'shoots', label: 'Shoot types', type: 'many', required: true, options: ['Artist and music promo', 'Portraits and headshots', 'Brand and product', 'Grads', 'Maternity', 'Couples', 'Events', 'Behind-the-scenes content'] },
+      { key: 'shoots', label: 'Shoot types', type: 'many', required: true, options: ['Artist and music promo', 'Portraits and headshots', 'Brand and product', 'Grads', 'Maternity', 'Couples', 'Events', 'Behind-the-scenes content', 'Other'] },
+      { key: 'shootsother', label: 'Other shoot types', type: 'text', required: true, show: { key: 'shoots', has: 'Other' }, placeholder: 'Pets, real estate, food', sheet: 'Other shoot types' },
       { key: 'video', label: 'Do you shoot video too?', type: 'one', required: true, options: ['Yes', 'No'], sheet: 'Shoots video' },
     ] },
-    { title: 'Pricing', questions: [
-      { key: 'rate', label: 'Hourly rate in the GVO studio', type: 'money', required: true, half: true, sheet: 'Studio rate' },
+    { title: 'Pricing', note: 'Clients pay GVO for the studio room only. Your rate is between you and the client, and they pay you directly.', questions: [
+      { key: 'rate', label: 'Your hourly rate, paid to you', type: 'money', required: true, half: true, sheet: 'Studio rate' },
       { key: 'perhour', label: 'Edited photos per hour', type: 'number', required: true, half: true, placeholder: '15', sheet: 'Edited photos per hour' },
       { key: 'minimum', label: 'Minimum booking', type: 'one', required: true, options: ['1 hour', '2 hours', 'No minimum'] },
       { key: 'delivery', label: 'How fast clients get their photos', type: 'one', required: true, options: ['1–3 days', '4–7 days', '1–2 weeks'], sheet: 'Delivery time' },
       { key: 'deposit', label: 'Deposit', type: 'one', required: true, options: ['No deposit', '25%', '50%', 'Full upfront'] },
-      { key: 'payment', label: 'How clients pay you', type: 'many', required: true, options: ['Cash App', 'Zelle', 'Venmo', 'Apple Pay', 'Card', 'Cash'], sheet: 'Gets paid by' },
+      { key: 'payment', label: 'How clients pay you', hint: 'GVO does not collect your fee.', type: 'many', required: true, options: ['Cash App', 'Zelle', 'Venmo', 'Apple Pay', 'Card', 'Cash'], sheet: 'Gets paid by' },
       { key: 'packages', label: 'Packages or extra costs', type: 'long', placeholder: '2 hrs, 30 edits, $___ · rush delivery +$___ · on location $___/hr', sheet: 'Packages and extras' },
     ] },
     { title: 'Holiday photo special', special: {
-        text: 'A quick seasonal shoot in the GVO photo studio, Nov 23 to Dec 23. The client pays GVO, and GVO pays you.',
+        text: 'A quick seasonal shoot in the GVO photo studio, Nov 23 to Dec 23. This one works differently from your regular shoots: the client pays GVO one price for the room and the photos, and GVO pays you $100 per shoot.',
         deal: [['30 min', 'Shoot'], ['5–10', 'Edited photos'], ['$150', 'Client pays'], ['$100', 'You get']] },
       questions: [
       { key: 'holiday', label: 'Want to shoot holiday specials?', type: 'one', required: true, options: ['Yes', 'Maybe', 'No'], sheet: 'Holiday special' },
@@ -57,7 +59,7 @@ export const TEAM_FORM = {
     { title: 'Clients and the website', questions: [
       { key: 'profile', label: 'Want a profile on gvosound.com?', hint: "Your name, Instagram and the shoots you do, on GVO's photo studio page.", type: 'one', required: true, options: ['Yes', 'Not right now'], sheet: 'Profile on site' },
       { key: 'bookvia', label: 'How should clients book you?', type: 'one', required: true, show: { key: 'profile', is: ['Yes'] }, sheet: 'Clients book', options: [
-        { v: 'Through GVO', note: 'Clients pick you when they book the photo studio on gvosound.com. GVO sends you the booking.' },
+        { v: 'Through GVO', note: 'Clients pick you when they book the photo studio on gvosound.com. They pay GVO for the room and pay you directly for the shoot. GVO sends you the booking.' },
         { v: 'Directly with me', note: 'Your profile shows how to reach you, and you set up the shoot yourself.' },
         { v: 'Either way', note: 'Clients can book you with the studio or reach out to you.' },
       ] },

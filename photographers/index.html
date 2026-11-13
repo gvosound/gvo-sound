@@ -96,6 +96,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--lav);box-shadow:0 0 0
 .check span{font-size:15px;line-height:1.4}
 .special{border:1px solid var(--lav);border-radius:14px;padding:16px;background:var(--lavsoft);display:grid;gap:12px;margin-bottom:18px}
 .special p{margin:0}
+.secnote{margin:0 0 18px;color:var(--bone);border-left:3px solid var(--lav)}
 .deal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .deal div{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 6px;text-align:center}
 .deal b{display:block;font-weight:800;font-size:20px;color:var(--lav)}
@@ -190,7 +191,7 @@ function field(q){
 }
 function build(){
  $('title').textContent=F.title;$('intro').textContent=F.intro;$('privacy').textContent=F.privacy;document.title='GVO Sound · '+F.title;
- $('sections').innerHTML=F.sections.map((s,i)=>`<section class="sec" id="s${i+1}"><div class="sechead"><span class="n">${i+1}</span><h2>${esc(s.title)}</h2></div>${s.special?`<div class="special"><p>${esc(s.special.text)}</p><div class="deal">${s.special.deal.map(d=>`<div><b>${esc(d[0])}</b><small>${esc(d[1])}</small></div>`).join('')}</div></div>`:''}<div class="grid">${s.questions.map(field).join('')}</div></section>`).join('');
+ $('sections').innerHTML=F.sections.map((s,i)=>`<section class="sec" id="s${i+1}"><div class="sechead"><span class="n">${i+1}</span><h2>${esc(s.title)}</h2></div>${s.note?`<p class="card secnote">${esc(s.note)}</p>`:''}${s.special?`<div class="special"><p>${esc(s.special.text)}</p><div class="deal">${s.special.deal.map(d=>`<div><b>${esc(d[0])}</b><small>${esc(d[1])}</small></div>`).join('')}</div></div>`:''}<div class="grid">${s.questions.map(field).join('')}</div></section>`).join('');
  $('nav').innerHTML=F.sections.map((s,i)=>`<li><a href="#s${i+1}" data-nav="${i}"><span class="dot">${i+1}</span>${esc(s.title)}</a></li>`).join('');
  QS=F.sections.flatMap((s,i)=>s.questions.map(q=>({...q,sec:i})));
 }
