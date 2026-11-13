@@ -202,7 +202,7 @@ function build(){
  $('title').textContent=F.title;$('intro').textContent=F.intro;const pv=typeof F.privacy==='string'?{title:'Privacy notice',lines:[F.privacy]}:F.privacy;$('ntitle').textContent=pv.title;$('privacy').innerHTML=pv.lines.map(l=>`<p>${esc(l)}</p>`).join('');document.title='GVO Sound · '+F.title;
  $('sections').innerHTML=F.sections.map((s,i)=>`<section class="sec" id="s${i+1}"><div class="sechead"><span class="n">${i+1}</span><h2>${esc(s.title)}</h2></div>${s.note?`<p class="card secnote">${esc(s.note)}</p>`:''}${s.special?`<div class="special"><p>${esc(s.special.text)}</p><div class="deal">${s.special.deal.map(d=>`<div><b>${esc(d[0])}</b><small>${esc(d[1])}</small></div>`).join('')}</div></div>`:''}<div class="grid">${s.questions.map(field).join('')}</div></section>`).join('');
  $('nav').innerHTML=F.sections.map((s,i)=>`<li><a href="#s${i+1}" data-nav="${i}"><span class="dot">${i+1}</span>${esc(s.title)}</a></li>`).join('');
- QS=F.sections.flatMap((s,i)=>s.questions.map(q=>({...q,sec:i})));
+ QS=F.sections.flatMap((s,i)=>s.questions.map(q=>({...q,show:q.show||s.show,sec:i})));
 }
 const Q=k=>fm.querySelector(`[data-q="${k}"]`);
 function val(k){const q=QS.find(x=>x.key===k);if(!q)return'';
@@ -232,8 +232,9 @@ function paint(){
   if(m)missing.push(q);
   const bad=tried&&!!m;el.classList.toggle('miss',bad);el.querySelectorAll('input,textarea').forEach(i=>i.toggleAttribute('aria-invalid',bad));
   let w=el.querySelector('.why');if(bad){if(!w){w=document.createElement('p');w.className='why';el.appendChild(w)}w.textContent=m}else if(w)w.remove()});
+ const num=[];let c=0;F.sections.forEach((s,i)=>{const on=!s.show||shown(s,a);num[i]=on?++c:0;const el=$('s'+(i+1));el.hidden=!on;el.querySelector('.n').textContent=num[i];const n=document.querySelector(`[data-nav="${i}"]`);if(n)n.parentElement.hidden=!on});
  $('pc').textContent=`${done} of ${total} required answered`;$('pb').style.width=(total?done/total*100:0)+'%';
- document.querySelectorAll('[data-nav]').forEach(n=>{const i=+n.dataset.nav,ok=secTotal[i]>0&&secDone[i]===secTotal[i];n.classList.toggle('done',ok);n.querySelector('.dot').textContent=ok?'✓':i+1});
+ document.querySelectorAll('[data-nav]').forEach(n=>{const i=+n.dataset.nav,ok=secTotal[i]>0&&secDone[i]===secTotal[i];n.classList.toggle('done',ok);n.querySelector('.dot').textContent=ok?'✓':num[i]});
  const sig=fm.querySelector('[data-sig]');if(sig)sig.textContent=a.signature||'';
  return missing}
 
@@ -248,13 +249,18 @@ function restore(d){QS.forEach(q=>{const v=d[q.key];if(v==null)return;
  else fm.elements[q.key].value=v})}
 let saveT;const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>store.set(snapshot()),300)};
 
+let lastAuto='';
+function autoCredit(){const ig=fm.elements.ig,cr=fm.elements.credit;if(!ig||!cr)return;const h=ig.value.trim();if(h.length<2)return;
+ const v=val('services'),w=v==='Photo only'?'Photo by':v==='Video only'?'Video by':'Shot by';
+ if(!cr.value||cr.value===lastAuto){cr.value=w+' '+h;lastAuto=cr.value}}
 function wire(){
  const d=store.get();if(d){restore(d);$('restored').hidden=false}
  $('clear').addEventListener('click',()=>{store.clear();location.reload()});
  fm.addEventListener('input',()=>{paint();save()});fm.addEventListener('change',()=>{paint();save()});
  const ig=fm.elements.ig,cr=fm.elements.credit,ph=fm.elements.phone;
  if(ig)ig.addEventListener('blur',()=>{const h=ig.value.trim().replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[/?#].*$/,'').replace(/^@?/,'@');
-  if(h.length>1){ig.value=h;if(cr&&!cr.value)cr.value='Photo by '+h;paint();save()}});
+  if(h.length>1){ig.value=h;autoCredit();paint();save()}});
+ fm.addEventListener('change',e=>{if(e.target.name==='services')autoCredit()});
  if(ph)ph.addEventListener('blur',()=>{const d=digits(ph.value);if(d.length===10)ph.value=`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`});
  // Enter in a one-line field moves on instead of sending early
  fm.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.target.tagName!=='INPUT'||['radio','checkbox'].includes(e.target.type))return;e.preventDefault();

@@ -11,18 +11,18 @@
 //   options    for one and many: plain text, or { v, note } to explain a choice under it
 //   show       only asked when another answer matches: { key, is: [...] } or { key, has: 'option' } or { key, not: [...] }
 //   requiredWhen  optional until another answer matches (same shape as show)
-//   section note  a short line under a section title
+//   section note  a short line under a section title; section show hides the whole section
 //   hint, placeholder, half (sits beside the next half field on wide screens), checked (check starts ticked)
 
 export const TEAM_FORM = {
-  version: 4,
-  role: 'photographer',
+  version: 5,
+  role: 'photo-video',
   title: 'Your rates and how clients reach you',
-  intro: 'Your answers set the photo prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes.',
+  intro: 'Your answers set the photo and video prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes.',
   privacy: {
     title: 'Privacy notice',
     lines: [
-      'Your answers are confidential. Only GVO Sound management and staff review them, and they are used to set photo pricing, schedule shoots and route client bookings.',
+      'Your answers are confidential. Only GVO Sound management and staff review them, and they are used to set photo and video pricing, schedule shoots and route client bookings.',
       'Nothing you share is published on gvosound.com without your consent, given in the Clients and the website section.',
       'To update or remove your information, contact the studio at (443) 292-6753.',
     ],
@@ -38,20 +38,21 @@ export const TEAM_FORM = {
       { key: 'portfolio', label: 'Website', type: 'url', placeholder: 'yoursite.com', sheet: 'Website', requiredWhen: { key: 'contactby', has: 'Website' } },
     ] },
     { title: 'What you shoot', questions: [
-      { key: 'shoots', label: 'Shoot types', type: 'many', required: true, options: ['Artist and music promo', 'Portraits and headshots', 'Brand and product', 'Grads', 'Maternity', 'Couples', 'Events', 'Behind-the-scenes content', 'Other'] },
+      { key: 'services', label: 'What do you offer?', type: 'one', required: true, options: ['Photo only', 'Video only', 'Photo and video'], sheet: 'Offers' },
+      { key: 'shoots', label: 'Shoot types', type: 'many', required: true, options: ['Artist and music promo', 'Portraits and headshots', 'Brand and product', 'Grads', 'Maternity', 'Couples', 'Events', 'Music videos', 'Behind-the-scenes content', 'Other'] },
       { key: 'shootsother', label: 'Other shoot types', type: 'text', required: true, show: { key: 'shoots', has: 'Other' }, placeholder: 'Pets, real estate, food', sheet: 'Other shoot types' },
-      { key: 'video', label: 'Do you shoot video too?', type: 'one', required: true, options: ['Yes', 'No'], sheet: 'Shoots video' },
     ] },
     { title: 'Pricing', note: 'Clients pay GVO for the studio room only. Your rate is between you and the client, and they pay you directly.', questions: [
       { key: 'rate', label: 'Your hourly rate, paid to you', type: 'money', required: true, half: true, sheet: 'Studio rate' },
-      { key: 'perhour', label: 'Edited photos per hour', type: 'number', required: true, half: true, placeholder: '15', sheet: 'Edited photos per hour' },
+      { key: 'perhour', label: 'Edited photos per hour', type: 'number', required: true, half: true, placeholder: '15', show: { key: 'services', not: ['', 'Video only'] }, sheet: 'Edited photos per hour' },
+      { key: 'videoout', label: 'What clients get from a video shoot', type: 'text', required: true, show: { key: 'services', is: ['Video only', 'Photo and video'] }, placeholder: '1 edited 60-second reel per hour', sheet: 'Video deliverables' },
       { key: 'minimum', label: 'Minimum booking', type: 'one', required: true, options: ['1 hour', '2 hours', 'No minimum'] },
-      { key: 'delivery', label: 'How fast clients get their photos', type: 'one', required: true, options: ['1–3 days', '4–7 days', '1–2 weeks'], sheet: 'Delivery time' },
+      { key: 'delivery', label: 'How fast clients get their finished work', type: 'one', required: true, options: ['1–3 days', '4–7 days', '1–2 weeks'], sheet: 'Delivery time' },
       { key: 'deposit', label: 'Deposit', type: 'one', required: true, options: ['No deposit', '25%', '50%', 'Full upfront'] },
       { key: 'payment', label: 'How clients pay you', hint: 'GVO does not collect your fee.', type: 'many', required: true, options: ['Cash App', 'Zelle', 'Venmo', 'Apple Pay', 'Card', 'Cash'], sheet: 'Gets paid by' },
       { key: 'packages', label: 'Packages or extra costs', type: 'long', placeholder: '2 hrs, 30 edits, $___ · rush delivery +$___ · on location $___/hr', sheet: 'Packages and extras' },
     ] },
-    { title: 'Holiday photo special', special: {
+    { title: 'Holiday photo special', show: { key: 'services', not: ['', 'Video only'] }, special: {
         text: 'A quick seasonal shoot in the GVO photo studio, Nov 23 to Dec 23. This one works differently from your regular shoots: the client pays GVO one price for the room and the photos, and GVO pays you $100 per shoot.',
         deal: [['30 min', 'Shoot'], ['5–10', 'Edited photos'], ['$150', 'Client pays'], ['$100', 'You get']] },
       questions: [
@@ -64,7 +65,7 @@ export const TEAM_FORM = {
       { key: 'monthly', label: 'GVO shoots you want a month', type: 'one', required: true, options: ['1–3', '4–8', '9 or more', 'As many as possible'], sheet: 'GVO shoots a month' },
     ] },
     { title: 'Clients and the website', questions: [
-      { key: 'profile', label: 'Want a profile on gvosound.com?', hint: "Your name, Instagram and the shoots you do, on GVO's photo studio page.", type: 'one', required: true, options: ['Yes', 'Not right now'], sheet: 'Profile on site' },
+      { key: 'profile', label: 'Want a profile on gvosound.com?', hint: "Your name, Instagram and the shoots you do, on gvosound.com.", type: 'one', required: true, options: ['Yes', 'Not right now'], sheet: 'Profile on site' },
       { key: 'bookvia', label: 'How should clients book you?', type: 'one', required: true, show: { key: 'profile', is: ['Yes'] }, sheet: 'Clients book', options: [
         { v: 'Through GVO', note: 'Clients pick you when they book the photo studio on gvosound.com. They pay GVO for the room and pay you directly for the shoot. GVO sends you the booking.' },
         { v: 'Directly with me', note: 'Your profile shows how to reach you, and you set up the shoot yourself.' },
@@ -75,8 +76,8 @@ export const TEAM_FORM = {
       { key: 'booking', label: 'Your booking link', type: 'url', required: true, show: { key: 'contactby', has: 'Booking link' }, placeholder: 'yourbookingsite.com', sheet: 'Booking link' },
     ] },
     { title: 'Using your work', questions: [
-      { key: 'usage', label: 'Can GVO use photos from studio shoots on its site and in ads, with credit to you?', type: 'one', required: true, options: ['Yes', 'Ask me first', 'No'], sheet: 'GVO can use photos' },
-      { key: 'credit', label: 'How the credit should read', type: 'text', required: true, show: { key: 'usage', not: ['', 'No'] }, placeholder: 'Photo by @yourhandle', sheet: 'Credit as' },
+      { key: 'usage', label: 'Can GVO use your photos and video from studio shoots on its site and in ads, with credit to you?', type: 'one', required: true, options: ['Yes', 'Ask me first', 'No'], sheet: 'GVO can use their work' },
+      { key: 'credit', label: 'How the credit should read', type: 'text', required: true, show: { key: 'usage', not: ['', 'No'] }, placeholder: 'Shot by @yourhandle', sheet: 'Credit as' },
       { key: 'notes', label: 'Anything else GVO should know', type: 'long', sheet: 'Anything else' },
     ] },
     { title: 'Sign and send', questions: [
@@ -86,7 +87,7 @@ export const TEAM_FORM = {
   ],
 };
 
-const ALL = TEAM_FORM.sections.flatMap(s => s.questions);
+const ALL = TEAM_FORM.sections.flatMap(s => s.questions.map(q => (s.show && !q.show ? { ...q, show: s.show } : q)));
 const opts = q => (q.options || []).map(o => (typeof o === 'string' ? o : o.v));
 const MAX = { long: 1500, text: 120, url: 300, email: 120, tel: 30, money: 12, number: 4, one: 60, many: 300, check: 4, sign: 120 };
 const URL_RE = /^https:\/\/[^\s/$.?#][^\s]*\.[^\s]+$/i;
