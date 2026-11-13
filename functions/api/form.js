@@ -1,6 +1,7 @@
 // POST /api/form: the site's forms (podcast quote, event inquiry, travel request, music submission, notify lists,
 // and Cory's answers on the shop review page).
-// Also the team-only photographer info page at /photographers/ (form "team").
+// Also the team info form at /photographers/ (form "team"): its questions live in functions/_lib/team-form.js,
+// GET /api/form?schema=team serves them to the page, and the sheet adds columns for new questions on its own.
 // 1. Screens out bots: Cloudflare Turnstile when TURNSTILE_SECRET is set, plus a hidden field and a minimum fill time.
 // 2. Checks the fields.
 // 3. Hands the row to the Apps Script on the GVO Website Form Submissions sheet (FORMS_URL, FORMS_SECRET),
@@ -10,6 +11,7 @@
 // Body: { form, fields:{...}, hp, t, ts }  hp = hidden field bots fill, t = ms the form was open, ts = Turnstile token
 import { json, clean } from '../_lib/square.js';
 import { emailCfg, sendEmail, formConfirmation } from '../_lib/email.js';
+import { checkTeam, teamSchema } from '../_lib/team-form.js';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const URL_RE = /^https:\/\/[^\s/$.?#][^\s]*\.[^\s]+$/i;
@@ -26,34 +28,7 @@ const SPEC = {
   music:  { artist: [100, 1], email: [120, 1], title: [150, 1], type: [30, 0], links: [1600, 1], ig: [80, 0], tiktok: [80, 0], yt: [300, 0], gvo: [10, 0], engineer: [100, 0], notes: [1000, 0] },
   notify: { list: [40, 1], contact: [120, 1] },
   review: { who: [60, 0], item: [200, 1], answer: [40, 0], notes: [2000, 0] }, // the shop review page at /review/
-  // The team-only photographer info page at /photographers/. Unused keys (shootname, portfolio, extras, location)
-  // stay so the sheet's columns keep lining up with older rows.
-  team:   { name: [100, 1], shootname: [100, 0], ig: [80, 1], portfolio: [300, 0], phone: [30, 1], email: [120, 1],
-            shoots: [400, 1], video: [10, 1], rate: [20, 1], minimum: [40, 1], packages: [1500, 0], perhour: [10, 1],
-            delivery: [40, 1], extras: [800, 0], deposit: [40, 1], location: [400, 0], payment: [200, 1],
-            holiday: [10, 1], holidaynotes: [400, 0], days: [200, 1], notice: [40, 1], monthly: [40, 1],
-            listing: [60, 1], contactby: [200, 0], booking: [300, 0], public: [10, 0],
-            usage: [20, 1], credit: [120, 0], notes: [2000, 0] },
 };
-// Answers the photographer page offers. Anything else is refused. Keep in step with photographers/index.html.
-const TEAM_ONE = {
-  video: ['Yes', 'No'], public: ['Yes', 'No'],
-  minimum: ['1 hour', '2 hours', 'No minimum'],
-  delivery: ['1–3 days', '4–7 days', '1–2 weeks'],
-  deposit: ['No deposit', '25%', '50%', 'Full upfront'],
-  holiday: ['Yes', 'Maybe', 'No'],
-  notice: ['Same day', '24 hours', '2–3 days', '1 week'],
-  monthly: ['1–3', '4–8', '9 or more', 'As many as possible'],
-  listing: ['Yes, clients contact me', 'Yes, bookings go through GVO', 'Not right now'],
-  usage: ['Yes', 'Ask me first', 'No'],
-};
-const TEAM_MANY = {
-  shoots: ['Artist and music promo', 'Portraits and headshots', 'Brand and product', 'Grads', 'Maternity', 'Couples', 'Events', 'Behind-the-scenes content'],
-  payment: ['Cash App', 'Zelle', 'Venmo', 'Apple Pay', 'Card', 'Cash'],
-  days: ['Weekdays', 'Weeknights', 'Saturdays', 'Sundays'],
-  contactby: ['Instagram DM', 'Text', 'Call', 'Email', 'Booking link'],
-};
-const withHttps = s => !s ? '' : /^https?:\/\//i.test(s) ? s.replace(/^http:/i, 'https:') : 'https://' + s;
 const LISTS = ['Next event', 'Africa trip'];
 const MUSIC_TYPES = ['Single', 'EP', 'Album or mixtape', 'Music video'];
 const GVO_ANSWERS = ['Yes', 'Partly', 'No'];
@@ -73,17 +48,29 @@ async function turnstileOk(env, token, ip) {
   } catch (e) { console.log('turnstile check failed', e && e.message); return false; }
 }
 
+// GET /api/form?schema=team -> the team info form's questions, so the page always matches what the server checks.
+export async function onRequestGet({ request }) {
+  if (new URL(request.url).searchParams.get('schema') !== 'team') return bad('Unknown form.');
+  return json({ ok: true, form: teamSchema() }, 200, { 'Cache-Control': 'public, max-age=60' });
+}
+
 export async function onRequestPost({ request, env, waitUntil }) {
   let b;
   try { b = await request.json(); } catch (e) { return bad('Something went wrong. Try again.'); }
   const spec = SPEC[b && b.form];
-  if (!spec) return bad('Unknown form.');
+  if (!spec && !(b && b.form === 'team')) return bad('Unknown form.');
   // Bots fill every field, or submit faster than a person can type. Pretend it worked.
   if ((b.hp && String(b.hp).trim()) || (typeof b.t === 'number' && b.t < 2500)) return json({ ok: true });
   if (!(await turnstileOk(env, b.ts, request.headers.get('CF-Connecting-IP')))) return json({ ok: false, code: 'TURNSTILE', error: "We couldn't confirm you're a person. Wait a second and try again." }, 400);
 
-  const f = {};
-  for (const [k, [max, req]] of Object.entries(spec)) {
+  let f = {}, columns;
+  if (b.form === 'team') {
+    // Team info form: questions, checks and sheet columns all come from functions/_lib/team-form.js
+    const r = checkTeam(b.fields || {}, clean);
+    if (r.error) return bad(r.error);
+    f = r.fields; columns = r.columns;
+  }
+  for (const [k, [max, req]] of Object.entries(spec || {})) {
     const v = clean((b.fields || {})[k] == null ? '' : String(b.fields[k]).replace(/\r?\n/g, k === 'links' ? '\n' : ' '), max);
     if (req && !v) return bad('Fill in every required field.');
     f[k] = v;
@@ -109,26 +96,6 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (!EMAIL.test(f.contact) && d.length !== 10) return bad('Add an email or a 10-digit phone number.');
     if (!EMAIL.test(f.contact)) f.contact = fmtPhone(f.contact);
   }
-  if (b.form === 'team') {
-    const pick = 'Pick an answer from the list.';
-    for (const [k, list] of Object.entries(TEAM_ONE)) if (f[k] && !list.includes(f[k])) return bad(pick);
-    for (const [k, list] of Object.entries(TEAM_MANY)) if (f[k] && f[k].split(', ').some(x => !list.includes(x))) return bad(pick);
-    f.ig = handle(f.ig.replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i, ''));
-    const rate = f.rate.match(/^\$?\s*(\d{1,4})(?:\.\d{1,2})?\s*$/);
-    if (!rate || +rate[1] < 1) return bad('Add your hourly rate as a number.');
-    f.rate = '$' + rate[1] + '/hr';
-    if (!/^\d{1,3}$/.test(f.perhour) || +f.perhour < 1) return bad('Add how many edited photos per hour as a number.');
-    if (f.holiday === 'Yes' || f.holiday === 'Maybe') { if (!f.holidaynotes) return bad('Add the days and times you can take holiday shoots.'); }
-    else f.holidaynotes = '';
-    if (f.listing === 'Yes, clients contact me') {
-      if (!f.contactby || !f.public) return bad('Say how clients should reach you.');
-      f.booking = withHttps(f.booking);
-      if (f.booking && !URL_RE.test(f.booking)) return bad('Check the booking link.');
-    } else { f.contactby = ''; f.public = ''; f.booking = ''; }
-    if (f.usage === 'No') f.credit = '';
-    else if (!f.credit) return bad('Add how your photo credit should read.');
-    f.shootname = ''; f.portfolio = ''; f.extras = ''; f.location = '';
-  }
   if (f.pax && !/^\d{1,3}$/.test(f.pax)) return bad('Travelers should be a number.');
   if (b.form === 'review' && !f.answer && !f.notes) return bad('Pick an answer or add a note.');
 
@@ -141,7 +108,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const r = await fetch(env.FORMS_URL, {
       method: 'POST', redirect: 'follow',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ secret: env.FORMS_SECRET, form: b.form, fields: f }),
+      body: JSON.stringify({ secret: env.FORMS_SECRET, form: b.form, fields: f, columns }),
     });
     const t = await r.text();
     try { saved = JSON.parse(t); } catch (e) { saved = {}; }

@@ -1,5 +1,6 @@
 // SETUP FOR THIS VERSION: after pasting it, Deploy > Manage deployments > edit > Version: New version.
-// (Adds the Photographers tab for /photographers/. The tab makes itself on the first answer. setupReviews only if never run.)
+// (Adds the Team info tab for /photographers/. The tab makes itself on the first answer, and new questions on that
+// form add their own columns, so this script doesn't need a new version when the form changes. setupReviews only if never run.)
 /**
  * GVO Website Form Submissions: receives each form from gvosound.com, adds a row to the right tab,
  * and emails the GVO Gmail.
@@ -44,9 +45,9 @@ const FORMS = {
   music:  { tab: 'Music submissions', label: 'Music submission',       cols: ['artist', 'email', 'title', 'type', 'links', 'ig', 'tiktok', 'yt', 'gvo', 'engineer', 'notes'] },
   notify: { tab: 'Notify list',       label: 'Notify list sign-up',    cols: ['list', 'contact'] },
   review: { tab: 'Review answers',    label: 'Shop review answer',     cols: ['who', 'item', 'answer', 'notes'] },
-  team:   { tab: 'Photographers',     label: 'Photographer info',      cols: ['name', 'shootname', 'ig', 'portfolio', 'phone', 'email',
-    'shoots', 'video', 'rate', 'minimum', 'packages', 'perhour', 'delivery', 'extras', 'deposit', 'location', 'payment',
-    'holiday', 'holidaynotes', 'days', 'notice', 'monthly', 'listing', 'contactby', 'booking', 'public', 'usage', 'credit', 'notes'] },
+  // Team info (/photographers/): columns come with each answer from functions/_lib/team-form.js, so new questions
+  // add their own column. Nothing to change here when the form changes.
+  team:   { tab: 'Team info',         label: 'Team info',              cols: [], dynamic: true },
 };
 // Review answers also go to Siani, who updates the site from them.
 const REVIEW_TO = 'sianibutler@gmail.com';
@@ -79,9 +80,11 @@ function doPost(e) {
   lock.waitLock(20000);
   let row;
   try {
-    const sheet = SpreadsheetApp.getActive().getSheetByName(form.tab) || makeTab(form);
+    const sheet = SpreadsheetApp.getActive().getSheetByName(form.tab) || makeTab(form, body.columns);
     // Leading ' keeps the sheet from turning text like 2/14 or +1410 into dates or formulas.
-    const values = [new Date()].concat(form.cols.map(k => f[k] == null || f[k] === '' ? '' : "'" + String(f[k]).slice(0, 2000)));
+    const cell = v => v == null || v === '' ? '' : "'" + String(v).slice(0, 2000);
+    const values = form.dynamic && Array.isArray(body.columns) ? dynamicRow(sheet, body.columns, f, cell)
+      : [new Date()].concat(form.cols.map(k => cell(f[k])));
     sheet.appendRow(values);
     row = sheet.getLastRow();
     if (STATUS_COL[body.form]) sheet.getRange(row, STATUS_COL[body.form]).setValue('New');
@@ -91,7 +94,8 @@ function doPost(e) {
 
   try {
     const who = body.form === 'review' ? (f.who || 'Cory') + ' on ' + f.item : (f.name || f.artist || f.contact || 'Someone');
-    const lines = form.cols.filter(k => f[k]).map(k => LABELS[k] + ': ' + f[k]);
+    const lines = form.dynamic && Array.isArray(body.columns) ? body.columns.filter(c => f[c[0]]).map(c => c[1] + ': ' + f[c[0]])
+      : form.cols.filter(k => f[k]).map(k => LABELS[k] + ': ' + f[k]);
     const url = SpreadsheetApp.getActive().getUrl() + '#gid=' + SpreadsheetApp.getActive().getSheetByName(form.tab).getSheetId();
     const opts = { name: 'GVO Sound website' };
     if (f.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) opts.replyTo = f.email;
@@ -108,12 +112,38 @@ function doPost(e) {
 }
 
 // Adds a tab the first time a form needs it: a title row, then the column headers on row 2, like the others.
-function makeTab(form) {
+function makeTab(form, columns) {
   const sh = SpreadsheetApp.getActive().insertSheet(form.tab);
-  sh.getRange(1, 1).setValue(form.label + 's from the website');
-  sh.getRange(2, 1, 1, form.cols.length + 1).setValues([['Received'].concat(form.cols.map(k => LABELS[k] || k))]).setFontWeight('bold');
+  sh.getRange(1, 1).setValue(form.label + (form.dynamic ? ' from the website' : 's from the website'));
+  if (form.dynamic) {
+    const cols = Array.isArray(columns) ? columns : [];
+    const head = sh.getRange(2, 1, 1, cols.length + 1);
+    head.setValues([['Received'].concat(cols.map(c => c[1]))]).setFontWeight('bold');
+    head.setNotes([[''].concat(cols.map(c => c[0]))]);
+  } else {
+    sh.getRange(2, 1, 1, form.cols.length + 1).setValues([['Received'].concat(form.cols.map(k => LABELS[k] || k))]).setFontWeight('bold');
+  }
   sh.setFrozenRows(2);
   return sh;
+}
+
+// Forms whose questions can change: each header cell on row 2 carries its question key as a note.
+// A new key gets a new column at the end. Renaming a question keeps its column. Old columns stay put.
+function dynamicRow(sheet, columns, f, cell) {
+  const width = Math.max(1, sheet.getLastColumn());
+  const notes = sheet.getRange(2, 1, 1, width).getNotes()[0];
+  const at = {};
+  notes.forEach((k, i) => { if (k) at[k] = i; });
+  columns.forEach(c => {
+    if (at[c[0]] != null) return;
+    const col = Math.max(sheet.getLastColumn(), 1) + 1;
+    sheet.getRange(2, col).setValue(c[1]).setNote(c[0]).setFontWeight('bold');
+    at[c[0]] = col - 1;
+  });
+  const row = new Array(Math.max(sheet.getLastColumn(), 1)).fill('');
+  row[0] = new Date();
+  columns.forEach(c => { row[at[c[0]]] = cell(f[c[0]]); });
+  return row;
 }
 
 function recentFor(addr) {

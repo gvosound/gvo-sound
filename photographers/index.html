@@ -7,301 +7,260 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#07060a" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
-<title>GVO Sound · Photographer info</title>
+<title>GVO Sound · Team info</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <style>
-/* Team-only page: photographers send their rates, contact preferences and holiday special answer.
-   Posts to /api/form as form "team". The row lands on the Photographers tab of the GVO form sheet. */
-:root{--ink:#07060a;--panel:#17141e;--field:#0f0d14;--line:#2b2635;--bone:#f3f0ea;--mute:#9e98aa;--lav:#b9b2ff;--tag:#e4342c;--ok:#86dba3;
---err:#ff9c92;--lavsoft:rgba(185,178,255,.06);--oksoft:rgba(134,219,163,.06);
---display:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:dark}
-/* Light or dark follows the visitor's device setting */
+/* Team info form. The questions are not in this file: they load from GET /api/form?schema=team
+   (functions/_lib/team-form.js), the same list the server checks answers against. Answers post as form "team"
+   and land on the Team info tab of the GVO form sheet. Light or dark follows the visitor's device setting. */
+:root{--ink:#07060a;--panel:#17141e;--field:#0f0d14;--line:#2b2635;--bone:#f3f0ea;--mute:#9e98aa;--lav:#b9b2ff;--ok:#86dba3;
+--err:#ff9c92;--lavsoft:rgba(185,178,255,.08);--oksoft:rgba(134,219,163,.06);--onlav:#07060a;
+--display:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;--sign:"Caveat",cursive;color-scheme:dark}
 @media (prefers-color-scheme:light){:root{--ink:#f7f5f0;--panel:#ffffff;--field:#ffffff;--line:#dcd7e3;--bone:#16131c;--mute:#625c6e;--lav:#5446d1;--ok:#1d7a45;
---err:#b3261e;--lavsoft:rgba(84,70,209,.06);--oksoft:rgba(29,122,69,.07);color-scheme:light}}
+--err:#b3261e;--lavsoft:rgba(84,70,209,.07);--oksoft:rgba(29,122,69,.07);--onlav:#ffffff;color-scheme:light}}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
 body{margin:0;background:var(--ink);color:var(--bone);font:16px/1.55 var(--display)}
-.wrap{max-width:720px;margin:0 auto;padding:40px 20px 80px}
+[hidden]{display:none!important}
+.page{max-width:1240px;margin:0 auto;padding:max(28px,env(safe-area-inset-top)) clamp(18px,4vw,48px) 72px}
+.layout{display:grid;gap:8px}
+@media(min-width:1000px){.layout{grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:clamp(40px,5vw,80px);align-items:start}
+ .side{position:sticky;top:32px}.page{padding-top:48px}html{scroll-padding-top:32px}}
 .eyebrow{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lav)}
-h1{font-weight:800;font-size:clamp(34px,7vw,52px);line-height:1.02;letter-spacing:-.02em;margin:10px 0 14px}
-.lede{color:var(--mute);margin:0 0 10px;max-width:60ch}
-.private{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:14px 16px;margin:22px 0 8px;font-size:15px}
-.private b{color:var(--bone)}
-fieldset{border:0;padding:0;margin:40px 0 0;display:grid;gap:18px}
-legend{padding:0;margin-bottom:6px;display:flex;gap:10px;align-items:baseline}
-legend .n{font:500 12px var(--mono);color:var(--lav)}
-legend h2{font-weight:800;font-size:24px;letter-spacing:-.01em;margin:0}
-.q{display:grid;gap:7px}
-.q>span,.q>.lbl{font-weight:500;font-size:15px}
-.q small{color:var(--mute);font-size:13px;font-weight:400}
-.req::after{content:" *";color:var(--lav)}
-input[type=text],input[type=email],input[type=tel],input[type=url],textarea{width:100%;font:inherit;font-size:16px;color:var(--bone);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
-textarea{min-height:88px;resize:vertical}
-input:focus,textarea:focus{outline:none;border-color:var(--lav)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:560px){.two{grid-template-columns:1fr}}
+h1{font-weight:800;font-size:clamp(32px,4.4vw,48px);line-height:1.04;letter-spacing:-.02em;margin:10px 0 14px}
+.lede{color:var(--mute);margin:0 0 16px}
+.card{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:14px 16px;font-size:15px;margin:0 0 12px}
+.key{font-size:14px;color:var(--mute);margin:0 0 4px}.key b{color:var(--lav)}
+.progress{position:sticky;top:0;z-index:4;background:var(--ink);padding:12px 0 12px;border-bottom:1px solid var(--line);margin-top:6px}
+@media(min-width:1000px){.progress{position:static;border:0;padding:8px 0 0}}
+.progress .row{display:flex;justify-content:space-between;font:500 12px var(--mono);color:var(--mute);margin-bottom:6px}
+.track{height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--lav);transition:width .25s}
+.nav{display:none;list-style:none;padding:0;margin:18px 0 0}
+@media(min-width:1000px){.nav{display:grid;gap:2px}}
+.nav a{display:flex;gap:10px;align-items:center;padding:7px 10px;border-radius:8px;color:var(--mute);text-decoration:none;font-size:15px}
+.nav a:hover{background:var(--lavsoft);color:var(--bone)}
+.nav .dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:600 11px var(--mono);flex:none}
+.nav .done .dot{background:var(--lav);border-color:var(--lav);color:var(--onlav)}
+.nav .done{color:var(--bone)}
+.restored{font-size:13px;color:var(--mute);margin:10px 0 0}
+.linkbtn{background:none;border:0;color:var(--lav);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
+section.sec{padding-top:34px}
+section.sec:first-child{padding-top:8px}
+.sechead{display:flex;gap:10px;align-items:baseline;margin:0 0 16px}
+.sechead .n{font:500 12px var(--mono);color:var(--lav)}
+.sechead h2{font-weight:800;font-size:clamp(22px,2.4vw,26px);letter-spacing:-.01em;margin:0}
+.grid{display:grid;gap:18px}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}.grid>.q{grid-column:1/-1}.grid>.q.half{grid-column:auto}}
+.q{display:grid;gap:8px;align-content:start}
+.lbl{font-weight:600;font-size:15px;line-height:1.35}
+.req{color:var(--lav);margin-left:2px}
+.tag{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+.hint{color:var(--mute);font-size:13px;font-weight:400}
+input[type=text],input[type=email],input[type=tel],input[type=url],textarea{width:100%;font:inherit;font-size:16px;color:var(--bone);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:12px 13px;min-height:48px}
+textarea{min-height:92px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--lav);box-shadow:0 0 0 3px var(--lavsoft)}
+.money{position:relative}.money b{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--mute);font-weight:500}
+.money input{padding-left:27px;padding-right:44px}.money i{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--mute);font-style:normal;font-size:14px}
 .pills{display:flex;flex-wrap:wrap;gap:8px}
 .pills label{cursor:pointer}
 .pills input{position:absolute;opacity:0;pointer-events:none}
-.pills span{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:15px;background:var(--field);text-align:center;line-height:1.25;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.pills span{display:flex;align-items:center;justify-content:center;gap:6px;min-height:46px;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:15px;background:var(--field);text-align:center;line-height:1.25;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent;user-select:none}
 @media(hover:hover){.pills label:hover span{border-color:var(--lav)}}
+.pills input:checked+span{background:var(--lav);border-color:var(--lav);color:var(--onlav);font-weight:600}
 .pills input[type=checkbox]:checked+span::before{content:"✓";font-weight:700}
-.seg{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:8px;max-width:560px}
-.seg span{border-radius:12px;padding:9px 10px}
-.seg.wrap4{--n:4}
-@media(max-width:560px){.seg.wrap4{--n:2}}
-.pills input:checked+span{background:var(--lav);border-color:var(--lav);color:var(--ink);font-weight:600}
 .pills input:focus-visible+span{outline:2px solid var(--lav);outline-offset:2px}
-.special{border:1px solid var(--lav);border-radius:14px;padding:18px;background:var(--lavsoft);display:grid;gap:14px}
+.seg{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));max-width:600px}
+.seg span{border-radius:12px;padding:9px 10px}
+@media(max-width:560px){.seg.w4{--n:2!important}}
+.check{display:flex;gap:12px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);background:var(--field);border-radius:12px;padding:13px 14px;-webkit-tap-highlight-color:transparent}
+.check input{appearance:none;-webkit-appearance:none;flex:none;width:22px;height:22px;margin:1px 0 0;border:1.5px solid var(--mute);border-radius:6px;display:grid;place-items:center;background:var(--field);cursor:pointer}
+.check input:checked{background:var(--lav);border-color:var(--lav)}
+.check input:checked::after{content:"✓";color:var(--onlav);font-weight:800;font-size:14px;line-height:1}
+.check input:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+.check span{font-size:15px;line-height:1.4}
+.special{border:1px solid var(--lav);border-radius:14px;padding:16px;background:var(--lavsoft);display:grid;gap:12px;margin-bottom:18px}
+.special p{margin:0}
 .deal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.deal div{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.deal div{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 6px;text-align:center}
 .deal b{display:block;font-weight:800;font-size:20px;color:var(--lav)}
 .deal small{color:var(--mute);font-size:12px}
 @media(max-width:560px){.deal{grid-template-columns:repeat(2,1fr)}}
+.sigbox{border:1px dashed var(--line);border-radius:12px;padding:14px 16px 10px;background:var(--field)}
+.sigline{font:600 clamp(30px,5vw,40px)/1.1 var(--sign);color:var(--bone);min-height:46px;border-bottom:1px solid var(--mute);padding-bottom:4px;overflow-wrap:anywhere}
+.sigline:empty::before{content:"Your signature";color:var(--line)}
+.sigmeta{display:flex;justify-content:space-between;gap:10px;font:500 12px var(--mono);color:var(--mute);margin-top:6px}
+.q.miss .lbl{color:var(--err)}
+.q.miss input[type=text],.q.miss input[type=email],.q.miss input[type=tel],.q.miss input[type=url],.q.miss textarea,.q.miss .check{border-color:var(--err)}
+.q.miss .pills span{border-color:var(--err)}
+.why{color:var(--err);font-size:13px;margin:0}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
-.submit{margin-top:40px;display:grid;gap:12px}
-.q{scroll-margin-top:90px}
-@media(max-width:560px){button[type=submit]{justify-self:stretch;padding:16px}.wrap{padding:28px 18px 64px}fieldset{margin-top:34px}}
-input:focus-visible,textarea:focus-visible{box-shadow:0 0 0 3px var(--lavsoft)}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-.progress{padding-top:max(12px,env(safe-area-inset-top))}
-.restored{font-size:13px;color:var(--mute);margin:10px 0 0}.restored button{background:none;border:0;color:var(--lav);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
-button[type=submit]{justify-self:start;font:700 16px var(--display);background:var(--lav);color:var(--ink);border:0;border-radius:999px;padding:13px 26px;cursor:pointer}
+.submit{margin-top:30px;display:grid;gap:12px}
+button[type=submit]{justify-self:start;font:700 16px var(--display);background:var(--lav);color:var(--onlav);border:0;border-radius:999px;padding:15px 30px;cursor:pointer;min-height:50px}
 button[type=submit]:disabled{opacity:.6;cursor:default}
+@media(max-width:560px){button[type=submit]{justify-self:stretch}}
 .err{color:var(--err);margin:0;font-size:15px}
 .fine{color:var(--mute);font-size:13px;margin:0}
-.done{border:1px solid var(--ok);border-radius:14px;padding:22px;background:var(--oksoft)}
-.done h2{font-weight:800;font-size:26px;margin:6px 0 8px}
+.done{border:1px solid var(--ok);border-radius:14px;padding:24px;background:var(--oksoft)}
+.done h2{font-weight:800;font-size:28px;margin:6px 0 8px}
 .done p{margin:0;color:var(--mute)}
+.loading{color:var(--mute);padding:40px 0}
 .ts-box:empty{display:none}
-[hidden]{display:none!important}
-.q.miss>span,.q.miss>.lbl{color:var(--err)}
-.q.miss input[type=text],.q.miss input[type=email],.q.miss input[type=tel],.q.miss textarea{border-color:var(--err)}
-.q.miss .pills span{border-color:var(--err)}
-.q .why{color:var(--err);font-size:13px;margin:0}
-.opt{color:var(--mute);font-weight:400;font-size:13px}
-.money{position:relative}.money b{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--mute);font-weight:500}
-.money input{padding-left:26px!important}.money i{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--mute);font-style:normal;font-size:14px}
-.progress{position:sticky;top:0;z-index:3;background:var(--ink);padding:12px 0 10px;margin-top:18px;border-bottom:1px solid var(--line)}
-.progress .row{display:flex;justify-content:space-between;font:500 12px var(--mono);color:var(--mute);margin-bottom:6px}
-.progress .track{height:6px;border-radius:999px;background:var(--line);overflow:hidden}
-.progress .track i{display:block;height:100%;width:0;background:var(--lav);transition:width .25s}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<main class="wrap">
-<div class="eyebrow">GVO Sound · For the photo team</div>
-<h1>Your rates and how clients reach you</h1>
-<p class="lede">Your answers set the photo prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes. Every question is required unless it says optional.</p>
-<div class="private"><b>Who sees this:</b> Cory and the GVO team only. Nothing goes on gvosound.com unless you say yes to it below.</div>
+<div class="page"><div class="layout">
+<aside class="side">
+ <div class="eyebrow">GVO Sound · Team info</div>
+ <h1 id="title">Your rates and how clients reach you</h1>
+ <p class="lede" id="intro"></p>
+ <div class="card"><b>Who sees this:</b> <span id="privacy"></span></div>
+ <p class="key"><b>*</b> Required. Questions marked <span class="tag" style="margin:0">Optional</span> can be skipped.</p>
+ <div class="progress" id="progress"><div class="row"><span id="pc" aria-live="polite">Loading…</span></div><div class="track"><i id="pb"></i></div>
+ <p class="restored" id="restored" hidden>Picked up where you left off. <button type="button" class="linkbtn" id="clear">Start over</button></p></div>
+ <ol class="nav" id="nav"></ol>
+</aside>
 
-<div class="progress"><div class="row"><span id="pc" aria-live="polite">0 of 0 answered</span></div><div class="track"><i id="pb"></i></div><p class="restored" id="restored" hidden>Picked up where you left off. <button type="button" id="clear">Start over</button></p></div>
-
-<form id="f" novalidate>
-<fieldset>
-<legend><span class="n">1</span><h2>About you</h2></legend>
-<div class="two">
-<label class="q" data-q="name"><span>Your name</span><input type="text" name="name" autocomplete="name" enterkeyhint="next"></label>
-<label class="q" data-q="ig"><span>Instagram</span><input type="text" name="ig" placeholder="@yourhandle" autocapitalize="off" autocorrect="off" enterkeyhint="next"></label>
-</div>
-<div class="two">
-<label class="q" data-q="phone"><span>Phone</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="(443) 555-0123" enterkeyhint="next"></label>
-<label class="q" data-q="email"><span>Email</span><input type="email" name="email" autocomplete="email" autocapitalize="off" enterkeyhint="next"></label>
-</div>
-</fieldset>
-
-<fieldset>
-<legend><span class="n">2</span><h2>What you shoot</h2></legend>
-<div class="q" data-q="shoots"><span class="lbl">Shoot types <span class="opt">pick all that apply</span></span>
-<div class="pills" data-multi="shoots">
-<label><input type="checkbox" value="Artist and music promo"><span>Artist and music promo</span></label>
-<label><input type="checkbox" value="Portraits and headshots"><span>Portraits and headshots</span></label>
-<label><input type="checkbox" value="Brand and product"><span>Brand and product</span></label>
-<label><input type="checkbox" value="Grads"><span>Grads</span></label>
-<label><input type="checkbox" value="Maternity"><span>Maternity</span></label>
-<label><input type="checkbox" value="Couples"><span>Couples</span></label>
-<label><input type="checkbox" value="Events"><span>Events</span></label>
-<label><input type="checkbox" value="Behind-the-scenes content"><span>Behind-the-scenes content</span></label>
-</div></div>
-<div class="q" data-q="video"><span class="lbl">Do you shoot video too?</span>
-<div class="pills seg" style="--n:2"><label><input type="radio" name="video" value="Yes"><span>Yes</span></label><label><input type="radio" name="video" value="No"><span>No</span></label></div></div>
-</fieldset>
-
-<fieldset>
-<legend><span class="n">3</span><h2>Pricing</h2></legend>
-<div class="two">
-<label class="q" data-q="rate"><span>Your hourly rate in the GVO studio</span><span class="money"><b>$</b><input type="text" name="rate" inputmode="decimal" placeholder="0" enterkeyhint="next"><i>/hr</i></span></label>
-<label class="q" data-q="perhour"><span>Edited photos per hour</span><input type="text" name="perhour" inputmode="numeric" placeholder="15" enterkeyhint="next"></label>
-</div>
-<div class="q" data-q="minimum"><span class="lbl">Minimum booking</span>
-<div class="pills seg" style="--n:3"><label><input type="radio" name="minimum" value="1 hour"><span>1 hour</span></label><label><input type="radio" name="minimum" value="2 hours"><span>2 hours</span></label><label><input type="radio" name="minimum" value="No minimum"><span>No minimum</span></label></div></div>
-<div class="q" data-q="delivery"><span class="lbl">How fast clients get their photos</span>
-<div class="pills seg" style="--n:3"><label><input type="radio" name="delivery" value="1–3 days"><span>1–3 days</span></label><label><input type="radio" name="delivery" value="4–7 days"><span>4–7 days</span></label><label><input type="radio" name="delivery" value="1–2 weeks"><span>1–2 weeks</span></label></div></div>
-<div class="q" data-q="deposit"><span class="lbl">Deposit</span>
-<div class="pills seg wrap4"><label><input type="radio" name="deposit" value="No deposit"><span>No deposit</span></label><label><input type="radio" name="deposit" value="25%"><span>25%</span></label><label><input type="radio" name="deposit" value="50%"><span>50%</span></label><label><input type="radio" name="deposit" value="Full upfront"><span>Full upfront</span></label></div></div>
-<div class="q" data-q="payment"><span class="lbl">How clients pay you <span class="opt">pick all that apply</span></span>
-<div class="pills" data-multi="payment">
-<label><input type="checkbox" value="Cash App"><span>Cash App</span></label>
-<label><input type="checkbox" value="Zelle"><span>Zelle</span></label>
-<label><input type="checkbox" value="Venmo"><span>Venmo</span></label>
-<label><input type="checkbox" value="Apple Pay"><span>Apple Pay</span></label>
-<label><input type="checkbox" value="Card"><span>Card</span></label>
-<label><input type="checkbox" value="Cash"><span>Cash</span></label>
-</div></div>
-<label class="q"><span>Packages or extra costs <span class="opt">optional</span></span><textarea name="packages" placeholder="2 hrs, 30 edits, $___ · rush delivery +$___ · on location $___/hr"></textarea></label>
-</fieldset>
-
-<fieldset>
-<legend><span class="n">4</span><h2>Holiday photo special</h2></legend>
-<div class="special">
-<p style="margin:0">A quick seasonal shoot in the GVO photo studio, Nov 23 to Dec 23. The client pays GVO, and GVO pays you.</p>
-<div class="deal">
-<div><b>30 min</b><small>Shoot</small></div>
-<div><b>5–10</b><small>Edited photos</small></div>
-<div><b>$150</b><small>Client pays</small></div>
-<div><b>$100</b><small>You get</small></div>
-</div>
-<div class="q" data-q="holiday"><span class="lbl">Want to shoot holiday specials?</span>
-<div class="pills seg" style="--n:3"><label><input type="radio" name="holiday" value="Yes"><span>Yes</span></label><label><input type="radio" name="holiday" value="Maybe"><span>Maybe</span></label><label><input type="radio" name="holiday" value="No"><span>No</span></label></div></div>
-<label class="q" data-q="holidaynotes" data-if="holiday"><span>Days and times you can take them</span><input type="text" name="holidaynotes" placeholder="Weekends, weeknights after 5"></label>
-</div>
-</fieldset>
-
-<fieldset>
-<legend><span class="n">5</span><h2>Availability</h2></legend>
-<div class="q" data-q="days"><span class="lbl">When you're usually free <span class="opt">pick all that apply</span></span>
-<div class="pills" data-multi="days">
-<label><input type="checkbox" value="Weekdays"><span>Weekdays</span></label>
-<label><input type="checkbox" value="Weeknights"><span>Weeknights</span></label>
-<label><input type="checkbox" value="Saturdays"><span>Saturdays</span></label>
-<label><input type="checkbox" value="Sundays"><span>Sundays</span></label>
-</div></div>
-<div class="q" data-q="notice"><span class="lbl">Notice you need</span>
-<div class="pills seg wrap4"><label><input type="radio" name="notice" value="Same day"><span>Same day</span></label><label><input type="radio" name="notice" value="24 hours"><span>24 hours</span></label><label><input type="radio" name="notice" value="2–3 days"><span>2–3 days</span></label><label><input type="radio" name="notice" value="1 week"><span>1 week</span></label></div></div>
-<div class="q" data-q="monthly"><span class="lbl">GVO shoots you want a month</span>
-<div class="pills seg wrap4"><label><input type="radio" name="monthly" value="1–3"><span>1–3</span></label><label><input type="radio" name="monthly" value="4–8"><span>4–8</span></label><label><input type="radio" name="monthly" value="9 or more"><span>9 or more</span></label><label><input type="radio" name="monthly" value="As many as possible"><span>As many as possible</span></label></div></div>
-</fieldset>
-
-<fieldset>
-<legend><span class="n">6</span><h2>Clients and the website</h2></legend>
-<div class="q" data-q="listing"><span class="lbl">Should GVO list you on gvosound.com?</span>
-<div class="pills seg" style="--n:3">
-<label><input type="radio" name="listing" value="Yes, clients contact me"><span>Yes, clients contact me</span></label>
-<label><input type="radio" name="listing" value="Yes, bookings go through GVO"><span>Yes, bookings go through GVO</span></label>
-<label><input type="radio" name="listing" value="Not right now"><span>Not right now</span></label>
-</div></div>
-<div class="q" data-q="contactby" data-if="listing"><span class="lbl">How clients should reach you <span class="opt">pick all that apply</span></span>
-<div class="pills" data-multi="contactby">
-<label><input type="checkbox" value="Instagram DM"><span>Instagram DM</span></label>
-<label><input type="checkbox" value="Text"><span>Text</span></label>
-<label><input type="checkbox" value="Call"><span>Call</span></label>
-<label><input type="checkbox" value="Email"><span>Email</span></label>
-<label><input type="checkbox" value="Booking link"><span>Booking link</span></label>
-</div></div>
-<div class="q" data-q="public" data-if="listing"><span class="lbl">OK to show your phone or email on the site?</span>
-<div class="pills seg" style="--n:2"><label><input type="radio" name="public" value="Yes"><span>Yes</span></label><label><input type="radio" name="public" value="No"><span>No</span></label></div></div>
-<label class="q" data-q="booking" data-if="booking"><span>Your booking link</span><input type="url" name="booking" placeholder="yourbookingsite.com" autocapitalize="off" autocorrect="off"></label>
-</fieldset>
-
-<fieldset>
-<legend><span class="n">7</span><h2>Using your work</h2></legend>
-<div class="q" data-q="usage"><span class="lbl">Can GVO use photos from studio shoots on its site and in ads, with credit to you?</span>
-<div class="pills seg" style="--n:3"><label><input type="radio" name="usage" value="Yes"><span>Yes</span></label><label><input type="radio" name="usage" value="Ask me first"><span>Ask me first</span></label><label><input type="radio" name="usage" value="No"><span>No</span></label></div></div>
-<label class="q" data-q="credit" data-if="usage"><span>How the credit should read</span><input type="text" name="credit" placeholder="Photo by @yourhandle"></label>
-<label class="q"><span>Anything else GVO should know <span class="opt">optional</span></span><textarea name="notes"></textarea></label>
-</fieldset>
-
-<input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-<div class="submit">
-<div class="ts-box"></div>
-<p class="err" id="err" role="alert" hidden></p>
-<button type="submit">Send to GVO</button>
-<p class="fine">Questions? Call or text the studio at (443) 292-6753.</p>
-</div>
-</form>
-
-<div class="done" id="done" hidden tabindex="-1" role="status">
-<div class="eyebrow">Sent</div>
-<h2>Thanks. GVO has your info.</h2>
-<p>Cory or the team will reach out if anything needs a follow-up. Need to change an answer? Text (443) 292-6753.</p>
-</div>
+<main>
+ <p class="loading" id="loading">Loading the form…</p>
+ <form id="f" novalidate hidden>
+  <div id="sections"></div>
+  <input name="website_hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <div class="submit">
+   <div class="ts-box"></div>
+   <p class="err" id="err" role="alert" hidden></p>
+   <button type="submit">Sign and send to GVO</button>
+   <p class="fine">Questions? Call or text the studio at (443) 292-6753.</p>
+  </div>
+ </form>
+ <div class="done" id="done" hidden tabindex="-1" role="status">
+  <div class="eyebrow">Sent</div>
+  <h2>Thanks. GVO has your info.</h2>
+  <p>Cory or the team will reach out if anything needs a follow-up. To change an answer later, send this form again or text (443) 292-6753.</p>
+ </div>
 </main>
+</div></div>
 
 <script>
 (()=>{
-const fm=document.getElementById('f'),err=document.getElementById('err'),btn=fm.querySelector('[type=submit]');
-const t0=Date.now();let wid=null,tried=false;
-const Q=k=>fm.querySelector(`[data-q="${k}"]`);
-const val=k=>{const g=fm.querySelector(`[data-multi="${k}"]`);if(g)return[...g.querySelectorAll('input:checked')].map(i=>i.value).join(', ');
- const r=fm.querySelector(`input[type=radio][name="${k}"]:checked`);if(r)return r.value;const i=fm.elements[k];return i&&i.value!=null&&i.type!=='radio'?String(i.value).trim():''};
-const digits=s=>s.replace(/\D/g,'').replace(/^1(?=\d{10}$)/,'');
-// Questions that only apply after certain answers
-const shows={holiday:()=>['Yes','Maybe'].includes(val('holiday')),listing:()=>val('listing')==='Yes, clients contact me',
- booking:()=>val('listing')==='Yes, clients contact me'&&val('contactby').includes('Booking link'),usage:()=>!!val('usage')&&val('usage')!=='No'};
-// Required questions, in page order, with a check for each
-const RULES=[['name'],['ig'],['phone',v=>digits(v).length===10||'Add a 10-digit phone number'],['email',v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)||'Check the email address'],
- ['shoots'],['video'],['rate',v=>/^\$?\s*\d{1,4}(\.\d{1,2})?$/.test(v)&&parseFloat(v.replace('$',''))>=1||'Add a number, like 75'],
- ['perhour',v=>/^\d{1,3}$/.test(v)&&+v>=1||'Add a number, like 15'],['minimum'],['delivery'],['deposit'],['payment'],
- ['holiday'],['holidaynotes',null,'holiday'],['days'],['notice'],['monthly'],['listing'],['contactby',null,'listing'],['public',null,'listing'],
- ['booking',v=>/^(https?:\/\/)?[^\s.]+\.[^\s]{2,}$/i.test(v)||'Check the link','booking'],['usage'],['credit',null,'usage']];
-const active=()=>RULES.filter(r=>!r[2]||shows[r[2]]());
-function check(k,rule){const v=val(k);if(!v)return'Answer this';if(rule){const ok=rule(v);if(ok!==true)return ok}return''}
-function paint(){
- fm.querySelectorAll('[data-if]').forEach(el=>{el.hidden=!shows[el.dataset.if]()});
- const list=active();let done=0;
- list.forEach(([k,rule])=>{const m=check(k,rule);if(!m)done++;const q=Q(k);q.classList.toggle('miss',tried&&!!m);q.querySelectorAll('input,textarea').forEach(i=>i.toggleAttribute('aria-invalid',tried&&!!m));let w=q.querySelector('.why');
-  if(tried&&m){if(!w){w=document.createElement('p');w.className='why';q.appendChild(w)}w.textContent=m}else if(w)w.remove()});
- document.getElementById('pc').textContent=`${done} of ${list.length} answered`;
- document.getElementById('pb').style.width=(list.length?done/list.length*100:0)+'%';
- return list.filter(([k,rule])=>check(k,rule));
+const $=id=>document.getElementById(id);
+const fm=$('f'),err=$('err'),btn=fm.querySelector('[type=submit]');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const digits=s=>String(s).replace(/\D/g,'').replace(/^1(?=\d{10}$)/,'');
+const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+let F,QS=[],tried=false,wid=null;const t0=Date.now();
+
+function field(q){
+ const ph=q.placeholder?` placeholder="${esc(q.placeholder)}"`:'';
+ const hint=q.hint?` <span class="hint">${esc(q.hint)}</span>`:'';
+ const mark=q.required?'<span class="req" aria-hidden="true">*</span>':q.requiredWhen?'<span class="req" data-req hidden aria-hidden="true">*</span><span class="tag" data-opt>Optional</span>':'<span class="tag">Optional</span>';
+ const lbl=`<span class="lbl">${esc(q.label)}${mark}${q.type==='many'?' <span class="hint">pick all that apply</span>':''}${hint}</span>`;
+ const at=`class="q${q.half?' half':''}" data-q="${q.key}"`;
+ const io=`name="${q.key}"${q.required?' aria-required="true"':''}`;
+ switch(q.type){
+  case 'one':{const n=q.options.length,seg=n<=4&&q.options.every(o=>o.length<=16);
+   return `<div ${at} role="radiogroup" aria-label="${esc(q.label)}">${lbl}<div class="pills${seg?' seg'+(n>=4?' w4':''):''}" style="--n:${n}">${q.options.map(o=>`<label><input type="radio" name="${q.key}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div></div>`}
+  case 'many':return `<div ${at} role="group" aria-label="${esc(q.label)}">${lbl}<div class="pills" data-multi="${q.key}">${q.options.map(o=>`<label><input type="checkbox" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div></div>`;
+  case 'check':return `<div ${at}><label class="check"><input type="checkbox" ${io}${q.checked?' checked':''}><span>${esc(q.label)}${q.required?'<span class="req" aria-hidden="true">*</span>':''}</span></label></div>`;
+  case 'long':return `<label ${at}>${lbl}<textarea ${io}${ph}></textarea></label>`;
+  case 'money':return `<label ${at}>${lbl}<span class="money"><b>$</b><input type="text" inputmode="decimal" ${io} placeholder="0" enterkeyhint="next"><i>/hr</i></span></label>`;
+  case 'sign':return `<label ${at}>${lbl}<input type="text" ${io} autocomplete="name" enterkeyhint="done" placeholder="Full name"><div class="sigbox" aria-hidden="true"><div class="sigline" data-sig></div><div class="sigmeta"><span>Signed electronically</span><span>${today}</span></div></div></label>`;
+  default:{const t={email:'email',tel:'tel',url:'url'}[q.type]||'text',im={tel:' inputmode="tel"',number:' inputmode="numeric"',email:' inputmode="email"',url:' inputmode="url"'}[q.type]||'';
+   const ac=q.autocomplete?` autocomplete="${q.autocomplete}"`:q.type==='tel'?' autocomplete="tel"':q.type==='email'?' autocomplete="email"':'';
+   const nocap=['email','url'].includes(q.type)||q.key==='ig'?' autocapitalize="off" autocorrect="off" spellcheck="false"':'';
+   return `<label ${at}>${lbl}<input type="${t}" ${io}${ph}${ac}${im}${nocap} enterkeyhint="next"></label>`}
+ }
 }
-// Prefill the photo credit from the Instagram handle
-fm.elements.ig.addEventListener('blur',()=>{const h=fm.elements.ig.value.trim().replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[/?#].*$/,'').replace(/^@?/,'@');
- if(h.length>1){fm.elements.ig.value=h;if(!fm.elements.credit.value)fm.elements.credit.value='Photo by '+h;paint()}});
-// Keep a draft on this device so a closed tab or a phone call doesn't lose answers
-const KEY='gvo-photographer-draft';
-const store={get(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}},set(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}},clear(){try{localStorage.removeItem(KEY)}catch(e){}}};
-function snapshot(){const d={};fm.querySelectorAll('input[name],textarea[name]').forEach(i=>{if(i.name==='website')return;if(i.type==='radio'){if(i.checked)d[i.name]=i.value}else d[i.name]=i.value});
- fm.querySelectorAll('[data-multi]').forEach(g=>d[g.dataset.multi]=[...g.querySelectorAll('input:checked')].map(i=>i.value));return d}
-function restore(d){fm.querySelectorAll('input[name],textarea[name]').forEach(i=>{if(!(i.name in d))return;if(i.type==='radio')i.checked=d[i.name]===i.value;else i.value=d[i.name]});
- fm.querySelectorAll('[data-multi]').forEach(g=>g.querySelectorAll('input').forEach(i=>i.checked=(d[g.dataset.multi]||[]).includes(i.value)))}
-const draft=store.get();if(draft&&Object.values(draft).some(v=>Array.isArray(v)?v.length:v)){restore(draft);document.getElementById('restored').hidden=false}
-document.getElementById('clear').addEventListener('click',()=>{store.clear();fm.reset();tried=false;err.hidden=true;document.getElementById('restored').hidden=true;paint();window.scrollTo({top:0})});
+function build(){
+ $('title').textContent=F.title;$('intro').textContent=F.intro;$('privacy').textContent=F.privacy;document.title='GVO Sound · '+F.title;
+ $('sections').innerHTML=F.sections.map((s,i)=>`<section class="sec" id="s${i+1}"><div class="sechead"><span class="n">${i+1}</span><h2>${esc(s.title)}</h2></div>${s.special?`<div class="special"><p>${esc(s.special.text)}</p><div class="deal">${s.special.deal.map(d=>`<div><b>${esc(d[0])}</b><small>${esc(d[1])}</small></div>`).join('')}</div></div>`:''}<div class="grid">${s.questions.map(field).join('')}</div></section>`).join('');
+ $('nav').innerHTML=F.sections.map((s,i)=>`<li><a href="#s${i+1}" data-nav="${i}"><span class="dot">${i+1}</span>${esc(s.title)}</a></li>`).join('');
+ QS=F.sections.flatMap((s,i)=>s.questions.map(q=>({...q,sec:i})));
+}
+const Q=k=>fm.querySelector(`[data-q="${k}"]`);
+function val(k){const q=QS.find(x=>x.key===k);if(!q)return'';
+ if(q.type==='many')return[...fm.querySelectorAll(`[data-multi="${k}"] input:checked`)].map(i=>i.value).join(', ');
+ if(q.type==='one'){const r=fm.querySelector(`input[name="${k}"]:checked`);return r?r.value:''}
+ if(q.type==='check')return fm.elements[k].checked?'Yes':'No';
+ return fm.elements[k].value.trim()}
+const matches=(c,a)=>{const v=a[c.key]||'';if(c.is)return c.is.includes(v);if(c.not)return!c.not.includes(v);if(c.has)return v.split(', ').includes(c.has);return true};
+const shown=(q,a)=>!q.show||matches(q.show,a);
+const needed=(q,a)=>!!q.required||(!!q.requiredWhen&&matches(q.requiredWhen,a));
+function problem(q,v,req){
+ if(!v||(q.type==='check'&&v!=='Yes'))return req?(q.type==='check'?'Tick this box to confirm':q.type==='sign'?'Type your full name to sign':'Answer this'):'';
+ if(q.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))return'Check the email address';
+ if(q.type==='tel'&&digits(v).length!==10)return'Add a 10-digit phone number';
+ if(q.type==='url'&&!/^(https?:\/\/)?[^\s.]+\.[^\s]{2,}$/i.test(v))return'Check the link';
+ if(q.type==='money'&&!(/^\$?\s*\d{1,4}(\.\d{1,2})?$/.test(v)&&parseFloat(v.replace('$',''))>=1))return'Add a number, like 75';
+ if(q.type==='number'&&!(/^\d{1,3}$/.test(v)&&+v>=1))return'Add a number, like 15';
+ if(q.type==='sign'&&v.replace(/[^a-z]/gi,'').length<2)return'Type your full name to sign';
+ return''}
+function paint(){
+ const a={};QS.forEach(q=>a[q.key]=val(q.key));
+ let total=0,done=0;const secTotal=F.sections.map(()=>0),secDone=F.sections.map(()=>0);const missing=[];
+ QS.forEach(q=>{const el=Q(q.key),on=shown(q,a);el.hidden=!on;if(!on){el.classList.remove('miss');return}
+  const req=needed(q,a),m=problem(q,a[q.key],req);
+  if(q.requiredWhen){const r=el.querySelector('[data-req]'),o=el.querySelector('[data-opt]');if(r)r.hidden=!req;if(o)o.hidden=req}
+  if(req){total++;secTotal[q.sec]++;if(!m){done++;secDone[q.sec]++}}
+  if(m)missing.push(q);
+  const bad=tried&&!!m;el.classList.toggle('miss',bad);el.querySelectorAll('input,textarea').forEach(i=>i.toggleAttribute('aria-invalid',bad));
+  let w=el.querySelector('.why');if(bad){if(!w){w=document.createElement('p');w.className='why';el.appendChild(w)}w.textContent=m}else if(w)w.remove()});
+ $('pc').textContent=`${done} of ${total} required answered`;$('pb').style.width=(total?done/total*100:0)+'%';
+ document.querySelectorAll('[data-nav]').forEach(n=>{const i=+n.dataset.nav,ok=secTotal[i]>0&&secDone[i]===secTotal[i];n.classList.toggle('done',ok);n.querySelector('.dot').textContent=ok?'✓':i+1});
+ const sig=fm.querySelector('[data-sig]');if(sig)sig.textContent=a.signature||'';
+ return missing}
+
+// Draft: answers stay on this device until sent, so a closed tab doesn't lose them
+const KEY=()=>'gvo-team-draft-'+F.role;
+const store={get(){try{return JSON.parse(localStorage.getItem(KEY())||'null')}catch(e){return null}},set(v){try{localStorage.setItem(KEY(),JSON.stringify(v))}catch(e){}},clear(){try{localStorage.removeItem(KEY())}catch(e){}}};
+const snapshot=()=>{const d={};QS.forEach(q=>{d[q.key]=q.type==='many'?val(q.key).split(', ').filter(Boolean):val(q.key)});return d};
+function restore(d){QS.forEach(q=>{const v=d[q.key];if(v==null)return;
+ if(q.type==='many')fm.querySelectorAll(`[data-multi="${q.key}"] input`).forEach(i=>i.checked=v.includes(i.value));
+ else if(q.type==='one')fm.querySelectorAll(`input[name="${q.key}"]`).forEach(i=>i.checked=i.value===v);
+ else if(q.type==='check')fm.elements[q.key].checked=v==='Yes';
+ else fm.elements[q.key].value=v})}
 let saveT;const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>store.set(snapshot()),300)};
-// Phone formats itself as (443) 555-0123
-fm.elements.phone.addEventListener('blur',()=>{const d=digits(fm.elements.phone.value);if(d.length===10)fm.elements.phone.value=`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`});
-// Enter in a one-line field moves to the next field instead of sending early
-fm.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.target.tagName!=='INPUT'||['radio','checkbox','submit'].includes(e.target.type))return;e.preventDefault();
- const all=[...fm.querySelectorAll('input[type=text],input[type=tel],input[type=email],input[type=url],textarea')].filter(i=>i.offsetParent&&i.name!=='website');
- const n=all[all.indexOf(e.target)+1];if(n)n.focus();else e.target.blur()});
-fm.addEventListener('input',()=>{paint();save()});fm.addEventListener('change',()=>{paint();save()});
-// Cloudflare Turnstile, same as the main site: only when a site key is set
-fetch('/api/config').then(r=>r.json()).then(c=>{if(!c.turnstileSiteKey)return;
- const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;
- s.onload=()=>{wid=window.turnstile.render(fm.querySelector('.ts-box'),{sitekey:c.turnstileSiteKey,theme:'auto',appearance:'interaction-only',size:'flexible',action:'form'})};
- document.head.appendChild(s)}).catch(()=>{});
+
+function wire(){
+ const d=store.get();if(d){restore(d);$('restored').hidden=false}
+ $('clear').addEventListener('click',()=>{store.clear();location.reload()});
+ fm.addEventListener('input',()=>{paint();save()});fm.addEventListener('change',()=>{paint();save()});
+ const ig=fm.elements.ig,cr=fm.elements.credit,ph=fm.elements.phone;
+ if(ig)ig.addEventListener('blur',()=>{const h=ig.value.trim().replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[/?#].*$/,'').replace(/^@?/,'@');
+  if(h.length>1){ig.value=h;if(cr&&!cr.value)cr.value='Photo by '+h;paint();save()}});
+ if(ph)ph.addEventListener('blur',()=>{const d=digits(ph.value);if(d.length===10)ph.value=`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`});
+ // Enter in a one-line field moves on instead of sending early
+ fm.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.target.tagName!=='INPUT'||['radio','checkbox'].includes(e.target.type))return;e.preventDefault();
+  const all=[...fm.querySelectorAll('input[type=text],input[type=tel],input[type=email],input[type=url],textarea')].filter(i=>i.offsetParent&&i.name!=='website_hp');
+  const n=all[all.indexOf(e.target)+1];if(n)n.focus();else e.target.blur()});
+ fetch('/api/config').then(r=>r.json()).then(c=>{if(!c.turnstileSiteKey)return;
+  const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;
+  s.onload=()=>{wid=window.turnstile.render(fm.querySelector('.ts-box'),{sitekey:c.turnstileSiteKey,theme:'auto',appearance:'interaction-only',size:'flexible',action:'form'})};
+  document.head.appendChild(s)}).catch(()=>{});
+ fm.addEventListener('submit',send);
+}
 const show=m=>{err.textContent=m;err.hidden=false};
-fm.addEventListener('submit',async e=>{
+async function send(e){
  e.preventDefault();err.hidden=true;tried=true;
  const missing=paint();
  if(missing.length){show(missing.length===1?'1 question still needs an answer.':`${missing.length} questions still need an answer.`);
-  const q=Q(missing[0][0]);q.scrollIntoView({behavior:'smooth',block:'center'});const i=q.querySelector('input,textarea');if(i&&i.type!=='radio'&&i.type!=='checkbox')setTimeout(()=>i.focus({preventScroll:true}),400);return}
- const fields={};['name','ig','phone','email','shoots','video','rate','perhour','minimum','delivery','deposit','payment','packages','holiday','holidaynotes',
-  'days','notice','monthly','listing','contactby','public','booking','usage','credit','notes'].forEach(k=>fields[k]=val(k));
- if(!shows.holiday())fields.holidaynotes='';if(!shows.listing()){fields.contactby='';fields.public=''}if(!shows.booking())fields.booking='';if(!shows.usage())fields.credit='';
+  const el=Q(missing[0].key);el.scrollIntoView({behavior:'smooth',block:'center'});const i=el.querySelector('input[type=text],input[type=email],input[type=tel],input[type=url],textarea');if(i)setTimeout(()=>i.focus({preventScroll:true}),400);return}
+ const a={};QS.forEach(q=>a[q.key]=val(q.key));const fields={};QS.forEach(q=>fields[q.key]=shown(q,a)?a[q.key]:'');
  let ts='';if(wid!=null&&window.turnstile){ts=window.turnstile.getResponse(wid)||'';if(!ts)return show('One second, checking you are not a bot. Try again in a moment.')}
  btn.disabled=true;btn.textContent='Sending…';
  try{
-  const r=await fetch('/api/form',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:'team',fields,ts,hp:fm.website.value,t:Date.now()-t0})});
+  const r=await fetch('/api/form',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:'team',fields,ts,hp:fm.website_hp.value,t:Date.now()-t0})});
   const j=await r.json().catch(()=>({}));
   if(!r.ok||!j.ok)throw new Error(j.error||'That did not send. Try again, or text (443) 292-6753.');
-  store.clear();fm.hidden=true;document.querySelector('.progress').hidden=true;const d=document.getElementById('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
+  store.clear();fm.hidden=true;$('progress').hidden=true;$('nav').hidden=true;const d=$('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
  }catch(x){show(x.message)}
- finally{btn.disabled=false;btn.textContent='Send to GVO';if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
-});
-paint();
+ finally{btn.disabled=false;btn.textContent='Sign and send to GVO';if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
+}
+fetch('/api/form?schema=team').then(r=>r.json()).then(j=>{if(!j.ok)throw 0;F=j.form;build();$('loading').remove();fm.hidden=false;wire();paint()})
+ .catch(()=>{$('loading').textContent='The form did not load. Refresh the page, or call or text the studio at (443) 292-6753.';$('pc').textContent=''});
 })();
 </script>
 </body>

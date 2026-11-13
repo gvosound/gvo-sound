@@ -32,6 +32,7 @@ Texts:  booking alerts ──► Twilio (pending toll-free verification as of No
 | `functions/_lib/square.js` | Square fetch wrapper, config defaults (application and location IDs), idempotency keys, customer lookup |
 | `functions/_lib/catalog.js` | Loads Square's catalog, matches Square items to site products, splits colors, builds bookable services |
 | `functions/_lib/site-products.js` | `PINNED`: the Square item IDs that sell on the site. A new Square item stays off until its ID is added here. Also aliases and site display names |
+| `functions/_lib/team-form.js` | The team info form's questions, the server's checks for them, and the sheet column for each. Keys are permanent: add new keys, never reuse old ones |
 | `functions/_lib/booking.js` | Booking rules: 2-hour lead, 5 people max, which services book online, which team members never take online bookings (`OFF_TEAM`), and how many sessions each room holds at once (`ROOMS_CAP`, 1 per studio; the holiday shoot uses the photo room). A session in a room blocks that time for every team member in it, including bookings made in Square |
 | `functions/_lib/orders.js` | Shop line building, contact cleanup, order summaries |
 | `functions/[[path]].js` | Clean share links (/events, /travel, /shop/<product>, /music/<song>, the studio pages, /book, /shop, /music): serves the site with that page's title, description and preview image from `/og/pages.json`, then moves the browser to the /#page. Paths are listed in `_routes.json` |
@@ -43,7 +44,7 @@ Texts:  booking alerts ──► Twilio (pending toll-free verification as of No
 | `apps-script/FormSubmissions.gs` | The Apps Script bound to the "GVO Website Form Submissions" sheet. Not deployed by git: paste it into the sheet's script editor, then Deploy, Manage deployments, New version |
 | `legal-src/build.py` | Builds `privacy.html`, `terms.html` and `sms-alerts.html`. Run `python3 legal-src/build.py` after editing |
 | `review/` | The team-only shop photo review page at `/review/` (noindex in `_headers`) |
-| `photographers/` | The team-only photographer info page at `/photographers/`: rates, contact preferences, holiday special. Posts form `team` to `/api/form`, which lands on the Photographers tab (noindex in `_headers`) |
+| `photographers/` | The team info form at `/photographers/` (noindex). Draws itself from `functions/_lib/team-form.js` via `GET /api/form?schema=team`; posts form `team`; rows land on the Team info tab, which adds a column for any new question. To change the form, edit `team-form.js` only |
 | `img/`, `vid/`, `aud/` | WebP images, MP4 clips with WebP posters, audio previews. Cached 7 days |
 | `_redirects` | Old Wix URLs to the new hash routes |
 | `_headers` | Security headers, cache rules, and the `/review/*` and `/photographers/*` noindex |
