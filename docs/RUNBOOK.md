@@ -34,6 +34,14 @@ Fixes for what has gone wrong before or is likely to. Newest lessons first in ea
 | Two sessions in one room at the same time | Before Nov 12, 2026 the booking desk asked Square for each team member's free time and never checked the room, so two photographers could each take the photo studio at noon. Now `searchSlots` drops any time where the room is full (`ROOMS_CAP` in `functions/_lib/booking.js`), and `/api/book` checks the room again, fresh, before charging and after. `/api/availability?debug=room&date=YYYY-MM-DD` lists the day's sessions by room. A clash can still come from bookings made by hand in Square, which doesn't know about rooms |
 | Booking fails after payment | `/api/book` refunds automatically and logs "booking failed after payment" with the payment ID. If the refund also failed, refund under Square Transactions |
 
+## Link previews
+
+| Symptom | Fix |
+| --- | --- |
+| A shared link shows the homepage preview | Share the clean link (gvosound.com/events), not the /#events one: apps ignore everything after #. New products and songs need `npm run build` in `og-src/` |
+| A preview still shows the old image | Apps cache previews for a while. Paste the link into a fresh conversation, or wait a day |
+| A new page needs its own preview | Add it to `PAGES` in `og-src/build.cjs` and its path to `_routes.json`, then rebuild |
+
 ## Forms and the sheet
 
 | Symptom | Fix |

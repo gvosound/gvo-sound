@@ -7,13 +7,13 @@
 <meta property="og:url" content="https://gvosound.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GVO Sound">
-<meta property="og:title" content="GVO Sound | Recording, Photo and Podcast Studio in Annapolis, MD">
+<meta property="og:title" content="GVO Sound | Recording, Photo, Podcast and Content Studio in Annapolis, MD">
 <meta property="og:description" content="Recording, photo and content studios at 109 Gibralter Ave, Annapolis. Podcasts and voiceovers too. Engineer and mixing included.">
-<meta property="og:image" content="https://gvosound.com/img/og-image.png">
+<meta property="og:image" content="https://gvosound.com/og/home.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="GVO Sound logo">
-<meta name="twitter:image" content="https://gvosound.com/img/og-image.png">
+<meta property="og:image:alt" content="GVO Sound vocal booth">
+<meta name="twitter:image" content="https://gvosound.com/og/home.jpg">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64.png">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
@@ -3621,6 +3621,8 @@ render(first===null?'home':first,{first:true});
 loadShop();
 loadReviews();
 onScroll();
+// For og-src/build.cjs, which builds the link previews from the page titles, products and songs above.
+window.GVO_DATA=()=>({META,PRODUCTS,PHOTOS,REL,BEEN});
 })();
 </script>
 

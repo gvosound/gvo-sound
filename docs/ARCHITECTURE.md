@@ -34,6 +34,8 @@ Texts:  booking alerts ──► Twilio (pending toll-free verification as of No
 | `functions/_lib/site-products.js` | `PINNED`: the Square item IDs that sell on the site. A new Square item stays off until its ID is added here. Also aliases and site display names |
 | `functions/_lib/booking.js` | Booking rules: 2-hour lead, 5 people max, which services book online, which team members never take online bookings (`OFF_TEAM`), and how many sessions each room holds at once (`ROOMS_CAP`, 1 per studio; the holiday shoot uses the photo room). A session in a room blocks that time for every team member in it, including bookings made in Square |
 | `functions/_lib/orders.js` | Shop line building, contact cleanup, order summaries |
+| `functions/[[path]].js` | Clean share links (/events, /travel, /shop/<product>, /music/<song>, the studio pages, /book, /shop, /music): serves the site with that page's title, description and preview image from `/og/pages.json`, then moves the browser to the /#page. Paths are listed in `_routes.json` |
+| `og-src/` | Builds the link-preview images in `/og` and `/og/pages.json`. See `og-src/README.md` |
 | `functions/_lib/shipping.js` | Shop shipping: estimated packed weight per product (`WEIGHT_OZ`, category fallback), USPS retail price for the address (live once `USPS_CLIENT_ID`/`USPS_CLIENT_SECRET` are set, kept 6 hours per destination and weight), flat rates (`FLAT`) otherwise. Before a ZIP is entered the bag is priced to Chicago (60601) and labeled an estimate |
 | `functions/_lib/email.js` | Every email template and the Resend sender. Booking alerts go to `BOOKING_ALERT_TO` |
 | `functions/_lib/video-lists.js` | Every YouTube playlist or channel row and where it shows. New row = one line |

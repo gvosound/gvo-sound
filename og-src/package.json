@@ -1,0 +1,11 @@
+{
+  "name": "gvo-og",
+  "private": true,
+  "description": "Builds the link-preview images in /og and /og/pages.json. See README.md in this folder.",
+  "scripts": { "build": "node build.cjs" },
+  "dependencies": {
+    "@fontsource-variable/archivo": "^5.0.0",
+    "@fontsource/hanken-grotesk": "^5.0.0",
+    "@fontsource/jetbrains-mono": "^5.0.0"
+  }
+}

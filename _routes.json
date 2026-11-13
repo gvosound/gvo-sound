@@ -1,5 +1,17 @@
 {
   "version": 1,
-  "include": ["/api/*"],
+  "include": [
+    "/api/*",
+    "/book",
+    "/shop",
+    "/shop/*",
+    "/music",
+    "/music/*",
+    "/events",
+    "/travel",
+    "/recording-studio",
+    "/photo-studio",
+    "/content-studio"
+  ],
   "exclude": []
 }

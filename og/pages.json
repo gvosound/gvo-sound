@@ -1,0 +1,303 @@
+{
+ "/": {
+  "route": "home",
+  "title": "GVO Sound | Recording, Photo, Podcast and Content Studio in Annapolis, MD",
+  "desc": "Recording, photo and content studios at 109 Gibralter Ave, Annapolis, MD. Podcasts and voiceovers too. Engineer and mixing included. Open 24/7 by appointment.",
+  "image": "/og/home.jpg",
+  "alt": "GVO Sound vocal booth"
+ },
+ "/recording-studio": {
+  "route": "recording-studio",
+  "title": "Recording Studio in Annapolis, MD | Engineer and Mix Included | GVO Sound",
+  "desc": "Book a recording session at GVO Sound, 109 Gibralter Ave, Annapolis. Engineer and mixing included. 2 to 12 hour sessions from $150. Open 24/7 by appointment.",
+  "image": "/og/recording-studio.jpg",
+  "alt": "The GVO Sound control room"
+ },
+ "/photo-studio": {
+  "route": "photo-studio",
+  "title": "Photo Studio Rental in Annapolis, MD | From $50/hr | GVO Sound",
+  "desc": "Rent a lit, soundproofed photo studio in Annapolis from $50 an hour. Strobes, RGB lights, backdrops and mirrors included. Book a GVO photographer or bring your own.",
+  "image": "/og/photo-studio.jpg",
+  "alt": "The GVO Sound photo studio"
+ },
+ "/content-studio": {
+  "route": "content-studio",
+  "title": "Podcast, Voiceover and Content Studio in Annapolis, MD | GVO Sound",
+  "desc": "Record a podcast, voiceover, social content or a commercial at GVO Sound in Annapolis. Multi-camera set and in-house video producers. Request a quote.",
+  "image": "/og/content-studio.jpg",
+  "alt": "A podcast taping at GVO Sound"
+ },
+ "/book": {
+  "route": "book",
+  "title": "Book a Studio Session | GVO Sound, Annapolis MD",
+  "desc": "Book recording or photo studio time at GVO Sound in Annapolis. Pick your studio, length, engineer and start time. Pay in full to hold your slot.",
+  "image": "/og/book.jpg",
+  "alt": "The vocal mic at GVO Sound"
+ },
+ "/music": {
+  "route": "music",
+  "title": "Stream GVO Sound | Flawless Breezyy and Studio Artists",
+  "desc": "Stream music recorded at GVO Sound in Annapolis, MD. Flawless Breezyy, BoobBlack, A. Brooks and more on Spotify, Apple Music, Amazon and TIDAL.",
+  "image": "/og/music.jpg",
+  "alt": "Covers of songs recorded at GVO Sound"
+ },
+ "/events": {
+  "route": "events",
+  "title": "GVO Sound Events | R&B & Vibes and Parties in Annapolis and Baltimore",
+  "desc": "GVO Sound throws R&B & Vibes, rooftop and battle nights in Glen Burnie, Annapolis and Baltimore. See upcoming dates, past events, and book GVO for your venue or DJ night.",
+  "image": "/og/events.jpg",
+  "alt": "The crowd at a GVO Sound party"
+ },
+ "/travel": {
+  "route": "travel",
+  "title": "GVO Sound Travel | Group Trips, Cruises and Custom Itineraries",
+  "desc": "Curated group and private trips from GVO Sound in Annapolis, MD. 27 countries and territories, first-time travelers welcome. Now booking the Love Sets Sail Valentine's cruise, Feb 6–11, 2027.",
+  "image": "/og/travel.jpg",
+  "alt": "GVO Sound group trips to Tokyo, Puerto Rico and Korea"
+ },
+ "/shop": {
+  "route": "shop",
+  "title": "GVO Apparel | Tees, Hoodies and Sets | GVO Sound Shop",
+  "desc": "Shop GVO Sound apparel: World Tour tees, the Cheetah hoodie, the Worker Jacket and more. Ship it or pick it up at the studio in Annapolis.",
+  "image": "/og/shop.jpg",
+  "alt": "The GVO Sound shop at the studio"
+ },
+ "/shop/gvo-x-ace-distressed-tee": {
+  "route": "product-gvo-x-ace-distressed-tee",
+  "title": "GVO x Ace Distressed Tee | GVO Sound Apparel",
+  "desc": "GVO x Ace Distressed Tee by GVO Sound, $40.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-x-ace-distressed-tee.jpg",
+  "alt": "GVO x Ace Distressed Tee by GVO Sound"
+ },
+ "/shop/prove-a-point-tee": {
+  "route": "product-prove-a-point-tee",
+  "title": "Prove A Point Tee | GVO Sound Apparel",
+  "desc": "Prove A Point Tee by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-prove-a-point-tee.jpg",
+  "alt": "Prove A Point Tee by GVO Sound"
+ },
+ "/shop/world-tour-tee-white": {
+  "route": "product-world-tour-tee-white",
+  "title": "World Tour Tee, White | GVO Sound Apparel",
+  "desc": "World Tour Tee, White by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-world-tour-tee-white.jpg",
+  "alt": "World Tour Tee, White by GVO Sound"
+ },
+ "/shop/world-tour-tee-black": {
+  "route": "product-world-tour-tee-black",
+  "title": "World Tour Tee, Black | GVO Sound Apparel",
+  "desc": "World Tour Tee, Black by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-world-tour-tee-black.jpg",
+  "alt": "World Tour Tee, Black by GVO Sound"
+ },
+ "/shop/gvo-muscle-tee": {
+  "route": "product-gvo-muscle-tee",
+  "title": "GVO Muscle Tee | GVO Sound Apparel",
+  "desc": "GVO Muscle Tee by GVO Sound, $35.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-muscle-tee.jpg",
+  "alt": "GVO Muscle Tee by GVO Sound"
+ },
+ "/shop/no-art-for-today-tee": {
+  "route": "product-no-art-for-today-tee",
+  "title": "No Art For Today Tee | GVO Sound Apparel",
+  "desc": "No Art For Today Tee by GVO Sound, $55.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-no-art-for-today-tee.jpg",
+  "alt": "No Art For Today Tee by GVO Sound"
+ },
+ "/shop/pain-is-temporary-dirtbike-jersey": {
+  "route": "product-pain-is-temporary-dirtbike-jersey",
+  "title": "Pain Is Temporary Dirtbike Jersey | GVO Sound Apparel",
+  "desc": "Pain Is Temporary Dirtbike Jersey by GVO Sound, $65.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-pain-is-temporary-dirtbike-jersey.jpg",
+  "alt": "Pain Is Temporary Dirtbike Jersey by GVO Sound"
+ },
+ "/shop/world-tour-cheetah-hoodie": {
+  "route": "product-world-tour-cheetah-hoodie",
+  "title": "World Tour Cheetah Hoodie | GVO Sound Apparel",
+  "desc": "World Tour Cheetah Hoodie by GVO Sound, $100.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-world-tour-cheetah-hoodie.jpg",
+  "alt": "World Tour Cheetah Hoodie by GVO Sound"
+ },
+ "/shop/gvo-skater-shorts": {
+  "route": "product-gvo-skater-shorts",
+  "title": "GVO Skater Shorts | GVO Sound Apparel",
+  "desc": "GVO Skater Shorts by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-skater-shorts.jpg",
+  "alt": "GVO Skater Shorts by GVO Sound"
+ },
+ "/shop/gvo-golf-set-shorts": {
+  "route": "product-gvo-golf-set-shorts",
+  "title": "GVO Golf Set, Shorts | GVO Sound Apparel",
+  "desc": "GVO Golf Set, Shorts by GVO Sound, $25.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-golf-set-shorts.jpg",
+  "alt": "GVO Golf Set, Shorts by GVO Sound"
+ },
+ "/shop/gvo-golf-set-shirt": {
+  "route": "product-gvo-golf-set-shirt",
+  "title": "GVO Golf Set, Shirt | GVO Sound Apparel",
+  "desc": "GVO Golf Set, Shirt by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-golf-set-shirt.jpg",
+  "alt": "GVO Golf Set, Shirt by GVO Sound"
+ },
+ "/shop/collective-set-shirt": {
+  "route": "product-collective-set-shirt",
+  "title": "The Collective Set, Shirt | GVO Sound Apparel",
+  "desc": "The Collective Set, Shirt by GVO Sound, $25.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-collective-set-shirt.jpg",
+  "alt": "The Collective Set, Shirt by GVO Sound"
+ },
+ "/shop/collective-set-pants": {
+  "route": "product-collective-set-pants",
+  "title": "The Collective Set, Pants | GVO Sound Apparel",
+  "desc": "The Collective Set, Pants by GVO Sound, $65.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-collective-set-pants.jpg",
+  "alt": "The Collective Set, Pants by GVO Sound"
+ },
+ "/shop/never-see-the-haters-here-tee": {
+  "route": "product-never-see-the-haters-here-tee",
+  "title": "Never See The Haters Here! Tee | GVO Sound Apparel",
+  "desc": "Never See The Haters Here! Tee by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-never-see-the-haters-here-tee.jpg",
+  "alt": "Never See The Haters Here! Tee by GVO Sound"
+ },
+ "/shop/music-is-a-drug-long-sleeve": {
+  "route": "product-music-is-a-drug-long-sleeve",
+  "title": "Music Is A Drug Long Sleeve | GVO Sound Apparel",
+  "desc": "Music Is A Drug Long Sleeve by GVO Sound, $35.99. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-music-is-a-drug-long-sleeve.jpg",
+  "alt": "Music Is A Drug Long Sleeve by GVO Sound"
+ },
+ "/shop/no-deadbeats-oversized-pink": {
+  "route": "product-no-deadbeats-oversized-pink",
+  "title": "No Deadbeats Oversized Tee, Pink | GVO Sound Apparel",
+  "desc": "No Deadbeats Oversized Tee, Pink by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-no-deadbeats-oversized-pink.jpg",
+  "alt": "No Deadbeats Oversized Tee, Pink by GVO Sound"
+ },
+ "/shop/no-deadbeats-oversized-grey": {
+  "route": "product-no-deadbeats-oversized-grey",
+  "title": "No Deadbeats Oversized Tee, Grey | GVO Sound Apparel",
+  "desc": "No Deadbeats Oversized Tee, Grey by GVO Sound, $30.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-no-deadbeats-oversized-grey.jpg",
+  "alt": "No Deadbeats Oversized Tee, Grey by GVO Sound"
+ },
+ "/shop/world-tour-cozy-hoodie": {
+  "route": "product-world-tour-cozy-hoodie",
+  "title": "World Tour Cozy Hoodie | GVO Sound Apparel",
+  "desc": "World Tour Cozy Hoodie by GVO Sound, $45.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-world-tour-cozy-hoodie.jpg",
+  "alt": "World Tour Cozy Hoodie by GVO Sound"
+ },
+ "/shop/world-tour-cozy-pants": {
+  "route": "product-world-tour-cozy-pants",
+  "title": "World Tour Cozy Pants | GVO Sound Apparel",
+  "desc": "World Tour Cozy Pants by GVO Sound, $40.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-world-tour-cozy-pants.jpg",
+  "alt": "World Tour Cozy Pants by GVO Sound"
+ },
+ "/shop/worker-jacket": {
+  "route": "product-worker-jacket",
+  "title": "Worker Jacket | GVO Sound Apparel",
+  "desc": "Worker Jacket by GVO Sound, $75.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-worker-jacket.jpg",
+  "alt": "Worker Jacket by GVO Sound"
+ },
+ "/shop/world-tour-tracksuit-jacket": {
+  "route": "product-world-tour-tracksuit-jacket",
+  "title": "World Tour Tracksuit Jacket | GVO Sound Apparel",
+  "desc": "World Tour Tracksuit Jacket by GVO Sound, $85.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-world-tour-tracksuit-jacket.jpg",
+  "alt": "World Tour Tracksuit Jacket by GVO Sound"
+ },
+ "/shop/world-tour-tracksuit-pants": {
+  "route": "product-world-tour-tracksuit-pants",
+  "title": "World Tour Tracksuit Pants | GVO Sound Apparel",
+  "desc": "World Tour Tracksuit Pants by GVO Sound, $65.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-world-tour-tracksuit-pants.jpg",
+  "alt": "World Tour Tracksuit Pants by GVO Sound"
+ },
+ "/shop/gvo-bodysuit": {
+  "route": "product-gvo-bodysuit",
+  "title": "GVO Bodysuit | GVO Sound Apparel",
+  "desc": "GVO Bodysuit by GVO Sound, $35.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-bodysuit.jpg",
+  "alt": "GVO Bodysuit by GVO Sound"
+ },
+ "/shop/gvo-body-set-top": {
+  "route": "product-gvo-body-set-top",
+  "title": "GVO Body Set, Top | GVO Sound Apparel",
+  "desc": "GVO Body Set, Top by GVO Sound, $15.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-body-set-top.jpg",
+  "alt": "GVO Body Set, Top by GVO Sound"
+ },
+ "/shop/gvo-body-set-bottoms": {
+  "route": "product-gvo-body-set-bottoms",
+  "title": "GVO Body Set, Bottoms | GVO Sound Apparel",
+  "desc": "GVO Body Set, Bottoms by GVO Sound, $15.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-body-set-bottoms.jpg",
+  "alt": "GVO Body Set, Bottoms by GVO Sound"
+ },
+ "/shop/gvo-beanie": {
+  "route": "product-gvo-beanie",
+  "title": "GVO Beanie | GVO Sound Apparel",
+  "desc": "GVO Beanie by GVO Sound, $10.00. Designed in Annapolis, MD. Ship it or pick it up at the studio on Gibralter Ave.",
+  "image": "/og/shop-gvo-beanie.jpg",
+  "alt": "GVO Beanie by GVO Sound"
+ },
+ "/music/ride-for-me": {
+  "route": "music/ride-for-me",
+  "title": "Ride for Me by David Correy & Flawless Breezyy | Stream it | GVO Sound",
+  "desc": "Stream Ride for Me by David Correy & Flawless Breezyy, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-ride-for-me.jpg",
+  "alt": "Ride for Me by David Correy & Flawless Breezyy, cover art"
+ },
+ "/music/im-from-the-a": {
+  "route": "music/im-from-the-a",
+  "title": "I'M FROM THE A! by Flawless Breezyy | Stream it | GVO Sound",
+  "desc": "Stream I'M FROM THE A! by Flawless Breezyy, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-im-from-the-a.jpg",
+  "alt": "I'M FROM THE A! by Flawless Breezyy, cover art"
+ },
+ "/music/wont-change": {
+  "route": "music/wont-change",
+  "title": "Wont Change by Flawless Breezyy, Only1BamaBoy | Stream it | GVO Sound",
+  "desc": "Stream Wont Change by Flawless Breezyy, Only1BamaBoy, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-wont-change.jpg",
+  "alt": "Wont Change by Flawless Breezyy, Only1BamaBoy, cover art"
+ },
+ "/music/you-said": {
+  "route": "music/you-said",
+  "title": "You Said! by Flawless Breezyy, BoobBlack | Stream it | GVO Sound",
+  "desc": "Stream You Said! by Flawless Breezyy, BoobBlack, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-you-said.jpg",
+  "alt": "You Said! by Flawless Breezyy, BoobBlack, cover art"
+ },
+ "/music/need-to-know": {
+  "route": "music/need-to-know",
+  "title": "Need to know by A. Brooks & Flawless Breezyy | Stream it | GVO Sound",
+  "desc": "Stream Need to know by A. Brooks & Flawless Breezyy, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-need-to-know.jpg",
+  "alt": "Need to know by A. Brooks & Flawless Breezyy, cover art"
+ },
+ "/music/savage": {
+  "route": "music/savage",
+  "title": "Savage! by Flawless Breezyy | Stream it | GVO Sound",
+  "desc": "Stream Savage! by Flawless Breezyy, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-savage.jpg",
+  "alt": "Savage! by Flawless Breezyy, cover art"
+ },
+ "/music/sixteen": {
+  "route": "music/sixteen",
+  "title": "SIXTEEN by Flawless Breezyy | Stream it | GVO Sound",
+  "desc": "Stream SIXTEEN by Flawless Breezyy, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-sixteen.jpg",
+  "alt": "SIXTEEN by Flawless Breezyy, cover art"
+ },
+ "/music/holy-father": {
+  "route": "music/holy-father",
+  "title": "Holy Father by Mannywellz | Stream it | GVO Sound",
+  "desc": "Stream Holy Father by Mannywellz, recorded at GVO Sound in Annapolis, MD. Listen on Spotify or pick your app: Apple Music, Amazon, TIDAL and more.",
+  "image": "/og/music-holy-father.jpg",
+  "alt": "Holy Father by Mannywellz, cover art"
+ }
+}
