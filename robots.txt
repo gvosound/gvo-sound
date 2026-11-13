@@ -1,7 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /review/
-Disallow: /team/
-Disallow: /photographers/
 Disallow: /sms-alerts
 Disallow: /docs/

@@ -28,6 +28,13 @@ const PAGES = {
   shop: { route: 'shop', img: 'lounge', eb: 'GVO apparel', h: ['The', '~Rack.'], fs: 96, sub: 'Designed in Annapolis. Ship it, or pick it up at the studio.', alt: 'The GVO Sound shop at the studio' },
 };
 
+// Previews for pages outside the main site (no clean link, not in pages.json). The page sets its own og tags.
+const EXTRA = {
+  team: { img: 'photo_cyc', eb: 'For the GVO team', h: ['Rates.', 'Hours.', '~Bookings.'], sub: 'Photographers and videographers: update your info for gvosound.com.', alt: 'The GVO Sound photo studio' },
+};
+// ONLY=team npm run build draws just that preview and leaves the rest of /og alone.
+const ONLY = process.env.ONLY ? process.env.ONLY.split(',') : null;
+
 const fileUrl = f => 'file://' + f;
 function imgUrl(n) {
   if (n.startsWith('src/')) return fileUrl(path.join(__dirname, n));
@@ -128,6 +135,9 @@ function twoLines(name) {
       { path: m.path, route: 'music/' + s.id, title: m.title, desc: m.desc, alt: `${s.t} by ${s.a}, cover art` }]);
   }
 
+  for (const [k, c] of Object.entries(EXTRA)) jobs.push([k, c, null]);
+  if (ONLY) jobs.splice(0, jobs.length, ...jobs.filter(j => ONLY.includes(j[0])));
+
   const pg = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
   const tmp = path.join(__dirname, '.card.html');
   const pages = {};
@@ -140,10 +150,11 @@ function twoLines(name) {
     await pg.evaluate(() => { const h = document.querySelector('h1'), m = document.querySelector('.mid'); let fs = parseFloat(getComputedStyle(h).fontSize);
       while ((h.scrollWidth > h.clientWidth + 1 || m.scrollHeight > m.clientHeight + 1) && fs > 36) { fs -= 2; h.style.fontSize = fs + 'px'; } });
     await pg.screenshot({ path: path.join(OUT, k + '.jpg'), type: 'jpeg', quality: 84 });
+    if (!meta) continue;
     pages[meta.path] = { route: meta.route, title: meta.title, desc: meta.desc, image: '/og/' + k + '.jpg', alt: meta.alt };
   }
   fs.unlinkSync(tmp);
-  fs.writeFileSync(path.join(OUT, 'pages.json'), JSON.stringify(pages, null, 1) + '\n');
+  if (!ONLY) fs.writeFileSync(path.join(OUT, 'pages.json'), JSON.stringify(pages, null, 1) + '\n');
   await browser.close();
   console.log(jobs.length + ' previews written to /og');
 })();
