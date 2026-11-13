@@ -213,7 +213,7 @@ function val(k){const q=QS.find(x=>x.key===k);if(!q)return'';
  if(q.type==='one'){const r=fm.querySelector(`input[name="${k}"]:checked`);return r?r.value:''}
  if(q.type==='check')return fm.elements[k].checked?'Yes':'No';
  return fm.elements[k].value.trim()}
-const matches=(c,a)=>{const v=a[c.key]||'';if(c.is)return c.is.includes(v);if(c.not)return!c.not.includes(v);if(c.has)return v.split(', ').includes(c.has);return true};
+const matches=(c,a)=>{if(c.any)return c.any.some(x=>matches(x,a));if(c.all)return c.all.every(x=>matches(x,a));const v=a[c.key]||'';if(c.is)return c.is.includes(v);if(c.not)return!c.not.includes(v);if(c.has)return v.split(', ').includes(c.has);return true};
 const shown=(q,a)=>!q.show||matches(q.show,a);
 const needed=(q,a)=>!!q.required||(!!q.requiredWhen&&matches(q.requiredWhen,a));
 function problem(q,v,req){

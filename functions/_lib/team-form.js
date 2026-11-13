@@ -9,13 +9,14 @@
 //   type       text | email | tel | url | money (per: 'hr' adds /hr) | number | long | one (pick one) | many (pick any) | check | sign
 //   required   true unless the question is optional
 //   options    for one and many: plain text, or { v, note } to explain a choice under it
-//   show       only asked when another answer matches: { key, is: [...] } or { key, has: 'option' } or { key, not: [...] }
+//   show       only asked when another answer matches: { key, is: [...] } or { key, has: 'option' } or { key, not: [...] },
+//              or several at once: { any: [ ... ] } / { all: [ ... ] }
 //   requiredWhen  optional until another answer matches (same shape as show)
 //   section note  a short line under a section title; section show hides the whole section
 //   hint, placeholder, half (sits beside the next half field on wide screens), checked (check starts ticked)
 
 export const TEAM_FORM = {
-  version: 6,
+  version: 7,
   role: 'photo-video',
   title: 'Your rates and how clients reach you',
   intro: 'Your answers set the photo and video prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes.',
@@ -74,6 +75,12 @@ export const TEAM_FORM = {
         { v: 'Through GVO', note: 'Clients pick you when they book the photo studio on gvosound.com. They pay GVO for the room and pay you directly for the shoot.' },
         { v: 'Directly with me', note: 'Your profile shows how to reach you. You and the client set up the shoot, and the client books the room on gvosound.com.' },
       ] },
+      { key: 'square', label: "Are you set up in GVO's Square account?", hint: 'The times you set in Square are the times clients can book you on gvosound.com, and your upcoming appointments show in the Square app.', type: 'one', required: true,
+        show: { any: [{ key: 'bookvia', is: ['Through GVO'] }, { key: 'holiday', is: ['Yes', 'Maybe'] }] }, sheet: 'Set up in Square', options: [
+        { v: 'Yes', note: 'I can set my hours and see my appointments in the Square app.' },
+        { v: 'No', note: 'GVO will send a Square invite to the email you gave above.' },
+        { v: 'Not sure', note: 'GVO will check and help you get set up.' },
+      ] },
       { key: 'contactby', label: 'How clients should reach you', type: 'many', required: true, show: { key: 'bookvia', is: ['Directly with me'] }, options: ['Instagram DM', 'Text', 'Call', 'Email', 'Booking link', 'Website'], sheet: 'Clients reach them by' },
       { key: 'public', label: 'OK to show your phone or email on your profile?', type: 'one', required: true, show: { key: 'bookvia', is: ['Directly with me'] }, options: ['Yes', 'No'], sheet: 'Contact info public' },
       { key: 'booking', label: 'Your booking link', type: 'url', required: true, show: { key: 'contactby', has: 'Booking link' }, placeholder: 'yourbookingsite.com', sheet: 'Booking link' },
@@ -98,6 +105,8 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const digits = s => String(s || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
 
 const matches = (c, a) => {
+  if (c.any) return c.any.some(x => matches(x, a));
+  if (c.all) return c.all.every(x => matches(x, a));
   const v = a[c.key] || '';
   if (c.is) return c.is.includes(v);
   if (c.not) return !c.not.includes(v);
