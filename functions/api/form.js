@@ -40,7 +40,7 @@ const TEAM_ONE = {
   video: ['Yes', 'No'], public: ['Yes', 'No'],
   minimum: ['1 hour', '2 hours', 'No minimum'],
   delivery: ['1–3 days', '4–7 days', '1–2 weeks'],
-  deposit: ['No deposit', '25%', '50%', 'Paid in full upfront'],
+  deposit: ['No deposit', '25%', '50%', 'Full upfront'],
   holiday: ['Yes', 'Maybe', 'No'],
   notice: ['Same day', '24 hours', '2–3 days', '1 week'],
   monthly: ['1–3', '4–8', '9 or more', 'As many as possible'],

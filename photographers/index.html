@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#07060a" media="(prefers-color-scheme: dark)">
@@ -45,7 +45,13 @@ input:focus,textarea:focus{outline:none;border-color:var(--lav)}
 .pills{display:flex;flex-wrap:wrap;gap:8px}
 .pills label{cursor:pointer}
 .pills input{position:absolute;opacity:0;pointer-events:none}
-.pills span{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;background:var(--field)}
+.pills span{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:15px;background:var(--field);text-align:center;line-height:1.25;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+@media(hover:hover){.pills label:hover span{border-color:var(--lav)}}
+.pills input[type=checkbox]:checked+span::before{content:"✓";font-weight:700}
+.seg{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:8px;max-width:560px}
+.seg span{border-radius:12px;padding:9px 10px}
+.seg.wrap4{--n:4}
+@media(max-width:560px){.seg.wrap4{--n:2}}
 .pills input:checked+span{background:var(--lav);border-color:var(--lav);color:var(--ink);font-weight:600}
 .pills input:focus-visible+span{outline:2px solid var(--lav);outline-offset:2px}
 .special{border:1px solid var(--lav);border-radius:14px;padding:18px;background:var(--lavsoft);display:grid;gap:14px}
@@ -56,6 +62,12 @@ input:focus,textarea:focus{outline:none;border-color:var(--lav)}
 @media(max-width:560px){.deal{grid-template-columns:repeat(2,1fr)}}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .submit{margin-top:40px;display:grid;gap:12px}
+.q{scroll-margin-top:90px}
+@media(max-width:560px){button[type=submit]{justify-self:stretch;padding:16px}.wrap{padding:28px 18px 64px}fieldset{margin-top:34px}}
+input:focus-visible,textarea:focus-visible{box-shadow:0 0 0 3px var(--lavsoft)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.progress{padding-top:max(12px,env(safe-area-inset-top))}
+.restored{font-size:13px;color:var(--mute);margin:10px 0 0}.restored button{background:none;border:0;color:var(--lav);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
 button[type=submit]{justify-self:start;font:700 16px var(--display);background:var(--lav);color:var(--ink);border:0;border-radius:999px;padding:13px 26px;cursor:pointer}
 button[type=submit]:disabled{opacity:.6;cursor:default}
 .err{color:var(--err);margin:0;font-size:15px}
@@ -85,22 +97,24 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
 <p class="lede">Your answers set the photo prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes. Every question is required unless it says optional.</p>
 <div class="private"><b>Who sees this:</b> Cory and the GVO team only. Nothing goes on gvosound.com unless you say yes to it below.</div>
 
-<div class="progress" aria-hidden="true"><div class="row"><span id="pc">0 of 0 answered</span></div><div class="track"><i id="pb"></i></div></div>
+<div class="progress"><div class="row"><span id="pc" aria-live="polite">0 of 0 answered</span></div><div class="track"><i id="pb"></i></div><p class="restored" id="restored" hidden>Picked up where you left off. <button type="button" id="clear">Start over</button></p></div>
 
 <form id="f" novalidate>
 <fieldset>
 <legend><span class="n">1</span><h2>About you</h2></legend>
-<label class="q" data-q="name"><span>Your name</span><input type="text" name="name" autocomplete="name"></label>
-<label class="q" data-q="ig"><span>Instagram</span><input type="text" name="ig" placeholder="@yourhandle" autocapitalize="off" autocorrect="off"></label>
 <div class="two">
-<label class="q" data-q="phone"><span>Phone</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel"></label>
-<label class="q" data-q="email"><span>Email</span><input type="email" name="email" autocomplete="email" autocapitalize="off"></label>
+<label class="q" data-q="name"><span>Your name</span><input type="text" name="name" autocomplete="name" enterkeyhint="next"></label>
+<label class="q" data-q="ig"><span>Instagram</span><input type="text" name="ig" placeholder="@yourhandle" autocapitalize="off" autocorrect="off" enterkeyhint="next"></label>
+</div>
+<div class="two">
+<label class="q" data-q="phone"><span>Phone</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="(443) 555-0123" enterkeyhint="next"></label>
+<label class="q" data-q="email"><span>Email</span><input type="email" name="email" autocomplete="email" autocapitalize="off" enterkeyhint="next"></label>
 </div>
 </fieldset>
 
 <fieldset>
 <legend><span class="n">2</span><h2>What you shoot</h2></legend>
-<div class="q" data-q="shoots"><span class="lbl">Tap everything you shoot</span>
+<div class="q" data-q="shoots"><span class="lbl">Shoot types <span class="opt">pick all that apply</span></span>
 <div class="pills" data-multi="shoots">
 <label><input type="checkbox" value="Artist and music promo"><span>Artist and music promo</span></label>
 <label><input type="checkbox" value="Portraits and headshots"><span>Portraits and headshots</span></label>
@@ -112,22 +126,22 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
 <label><input type="checkbox" value="Behind-the-scenes content"><span>Behind-the-scenes content</span></label>
 </div></div>
 <div class="q" data-q="video"><span class="lbl">Do you shoot video too?</span>
-<div class="pills"><label><input type="radio" name="video" value="Yes"><span>Yes</span></label><label><input type="radio" name="video" value="No"><span>No</span></label></div></div>
+<div class="pills seg" style="--n:2"><label><input type="radio" name="video" value="Yes"><span>Yes</span></label><label><input type="radio" name="video" value="No"><span>No</span></label></div></div>
 </fieldset>
 
 <fieldset>
 <legend><span class="n">3</span><h2>Pricing</h2></legend>
 <div class="two">
-<label class="q" data-q="rate"><span>Your hourly rate in the GVO studio</span><span class="money"><b>$</b><input type="text" name="rate" inputmode="decimal" placeholder="0"><i>/hr</i></span></label>
-<label class="q" data-q="perhour"><span>Edited photos per hour</span><input type="text" name="perhour" inputmode="numeric" placeholder="15"></label>
+<label class="q" data-q="rate"><span>Your hourly rate in the GVO studio</span><span class="money"><b>$</b><input type="text" name="rate" inputmode="decimal" placeholder="0" enterkeyhint="next"><i>/hr</i></span></label>
+<label class="q" data-q="perhour"><span>Edited photos per hour</span><input type="text" name="perhour" inputmode="numeric" placeholder="15" enterkeyhint="next"></label>
 </div>
 <div class="q" data-q="minimum"><span class="lbl">Minimum booking</span>
-<div class="pills"><label><input type="radio" name="minimum" value="1 hour"><span>1 hour</span></label><label><input type="radio" name="minimum" value="2 hours"><span>2 hours</span></label><label><input type="radio" name="minimum" value="No minimum"><span>No minimum</span></label></div></div>
+<div class="pills seg" style="--n:3"><label><input type="radio" name="minimum" value="1 hour"><span>1 hour</span></label><label><input type="radio" name="minimum" value="2 hours"><span>2 hours</span></label><label><input type="radio" name="minimum" value="No minimum"><span>No minimum</span></label></div></div>
 <div class="q" data-q="delivery"><span class="lbl">How fast clients get their photos</span>
-<div class="pills"><label><input type="radio" name="delivery" value="1–3 days"><span>1–3 days</span></label><label><input type="radio" name="delivery" value="4–7 days"><span>4–7 days</span></label><label><input type="radio" name="delivery" value="1–2 weeks"><span>1–2 weeks</span></label></div></div>
+<div class="pills seg" style="--n:3"><label><input type="radio" name="delivery" value="1–3 days"><span>1–3 days</span></label><label><input type="radio" name="delivery" value="4–7 days"><span>4–7 days</span></label><label><input type="radio" name="delivery" value="1–2 weeks"><span>1–2 weeks</span></label></div></div>
 <div class="q" data-q="deposit"><span class="lbl">Deposit</span>
-<div class="pills"><label><input type="radio" name="deposit" value="No deposit"><span>No deposit</span></label><label><input type="radio" name="deposit" value="25%"><span>25%</span></label><label><input type="radio" name="deposit" value="50%"><span>50%</span></label><label><input type="radio" name="deposit" value="Paid in full upfront"><span>Paid in full upfront</span></label></div></div>
-<div class="q" data-q="payment"><span class="lbl">How clients pay you</span>
+<div class="pills seg wrap4"><label><input type="radio" name="deposit" value="No deposit"><span>No deposit</span></label><label><input type="radio" name="deposit" value="25%"><span>25%</span></label><label><input type="radio" name="deposit" value="50%"><span>50%</span></label><label><input type="radio" name="deposit" value="Full upfront"><span>Full upfront</span></label></div></div>
+<div class="q" data-q="payment"><span class="lbl">How clients pay you <span class="opt">pick all that apply</span></span>
 <div class="pills" data-multi="payment">
 <label><input type="checkbox" value="Cash App"><span>Cash App</span></label>
 <label><input type="checkbox" value="Zelle"><span>Zelle</span></label>
@@ -150,14 +164,14 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
 <div><b>$100</b><small>You get</small></div>
 </div>
 <div class="q" data-q="holiday"><span class="lbl">Want to shoot holiday specials?</span>
-<div class="pills"><label><input type="radio" name="holiday" value="Yes"><span>Yes</span></label><label><input type="radio" name="holiday" value="Maybe"><span>Maybe</span></label><label><input type="radio" name="holiday" value="No"><span>No</span></label></div></div>
+<div class="pills seg" style="--n:3"><label><input type="radio" name="holiday" value="Yes"><span>Yes</span></label><label><input type="radio" name="holiday" value="Maybe"><span>Maybe</span></label><label><input type="radio" name="holiday" value="No"><span>No</span></label></div></div>
 <label class="q" data-q="holidaynotes" data-if="holiday"><span>Days and times you can take them</span><input type="text" name="holidaynotes" placeholder="Weekends, weeknights after 5"></label>
 </div>
 </fieldset>
 
 <fieldset>
 <legend><span class="n">5</span><h2>Availability</h2></legend>
-<div class="q" data-q="days"><span class="lbl">When you're usually free</span>
+<div class="q" data-q="days"><span class="lbl">When you're usually free <span class="opt">pick all that apply</span></span>
 <div class="pills" data-multi="days">
 <label><input type="checkbox" value="Weekdays"><span>Weekdays</span></label>
 <label><input type="checkbox" value="Weeknights"><span>Weeknights</span></label>
@@ -165,20 +179,20 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
 <label><input type="checkbox" value="Sundays"><span>Sundays</span></label>
 </div></div>
 <div class="q" data-q="notice"><span class="lbl">Notice you need</span>
-<div class="pills"><label><input type="radio" name="notice" value="Same day"><span>Same day</span></label><label><input type="radio" name="notice" value="24 hours"><span>24 hours</span></label><label><input type="radio" name="notice" value="2–3 days"><span>2–3 days</span></label><label><input type="radio" name="notice" value="1 week"><span>1 week</span></label></div></div>
+<div class="pills seg wrap4"><label><input type="radio" name="notice" value="Same day"><span>Same day</span></label><label><input type="radio" name="notice" value="24 hours"><span>24 hours</span></label><label><input type="radio" name="notice" value="2–3 days"><span>2–3 days</span></label><label><input type="radio" name="notice" value="1 week"><span>1 week</span></label></div></div>
 <div class="q" data-q="monthly"><span class="lbl">GVO shoots you want a month</span>
-<div class="pills"><label><input type="radio" name="monthly" value="1–3"><span>1–3</span></label><label><input type="radio" name="monthly" value="4–8"><span>4–8</span></label><label><input type="radio" name="monthly" value="9 or more"><span>9 or more</span></label><label><input type="radio" name="monthly" value="As many as possible"><span>As many as possible</span></label></div></div>
+<div class="pills seg wrap4"><label><input type="radio" name="monthly" value="1–3"><span>1–3</span></label><label><input type="radio" name="monthly" value="4–8"><span>4–8</span></label><label><input type="radio" name="monthly" value="9 or more"><span>9 or more</span></label><label><input type="radio" name="monthly" value="As many as possible"><span>As many as possible</span></label></div></div>
 </fieldset>
 
 <fieldset>
 <legend><span class="n">6</span><h2>Clients and the website</h2></legend>
 <div class="q" data-q="listing"><span class="lbl">Should GVO list you on gvosound.com?</span>
-<div class="pills">
+<div class="pills seg" style="--n:3">
 <label><input type="radio" name="listing" value="Yes, clients contact me"><span>Yes, clients contact me</span></label>
 <label><input type="radio" name="listing" value="Yes, bookings go through GVO"><span>Yes, bookings go through GVO</span></label>
 <label><input type="radio" name="listing" value="Not right now"><span>Not right now</span></label>
 </div></div>
-<div class="q" data-q="contactby" data-if="listing"><span class="lbl">How clients should reach you</span>
+<div class="q" data-q="contactby" data-if="listing"><span class="lbl">How clients should reach you <span class="opt">pick all that apply</span></span>
 <div class="pills" data-multi="contactby">
 <label><input type="checkbox" value="Instagram DM"><span>Instagram DM</span></label>
 <label><input type="checkbox" value="Text"><span>Text</span></label>
@@ -187,14 +201,14 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
 <label><input type="checkbox" value="Booking link"><span>Booking link</span></label>
 </div></div>
 <div class="q" data-q="public" data-if="listing"><span class="lbl">OK to show your phone or email on the site?</span>
-<div class="pills"><label><input type="radio" name="public" value="Yes"><span>Yes</span></label><label><input type="radio" name="public" value="No"><span>No</span></label></div></div>
+<div class="pills seg" style="--n:2"><label><input type="radio" name="public" value="Yes"><span>Yes</span></label><label><input type="radio" name="public" value="No"><span>No</span></label></div></div>
 <label class="q" data-q="booking" data-if="booking"><span>Your booking link</span><input type="url" name="booking" placeholder="yourbookingsite.com" autocapitalize="off" autocorrect="off"></label>
 </fieldset>
 
 <fieldset>
 <legend><span class="n">7</span><h2>Using your work</h2></legend>
 <div class="q" data-q="usage"><span class="lbl">Can GVO use photos from studio shoots on its site and in ads, with credit to you?</span>
-<div class="pills"><label><input type="radio" name="usage" value="Yes"><span>Yes</span></label><label><input type="radio" name="usage" value="Ask me first"><span>Ask me first</span></label><label><input type="radio" name="usage" value="No"><span>No</span></label></div></div>
+<div class="pills seg" style="--n:3"><label><input type="radio" name="usage" value="Yes"><span>Yes</span></label><label><input type="radio" name="usage" value="Ask me first"><span>Ask me first</span></label><label><input type="radio" name="usage" value="No"><span>No</span></label></div></div>
 <label class="q" data-q="credit" data-if="usage"><span>How the credit should read</span><input type="text" name="credit" placeholder="Photo by @yourhandle"></label>
 <label class="q"><span>Anything else GVO should know <span class="opt">optional</span></span><textarea name="notes"></textarea></label>
 </fieldset>
@@ -237,7 +251,7 @@ function check(k,rule){const v=val(k);if(!v)return'Answer this';if(rule){const o
 function paint(){
  fm.querySelectorAll('[data-if]').forEach(el=>{el.hidden=!shows[el.dataset.if]()});
  const list=active();let done=0;
- list.forEach(([k,rule])=>{const m=check(k,rule);if(!m)done++;const q=Q(k);q.classList.toggle('miss',tried&&!!m);let w=q.querySelector('.why');
+ list.forEach(([k,rule])=>{const m=check(k,rule);if(!m)done++;const q=Q(k);q.classList.toggle('miss',tried&&!!m);q.querySelectorAll('input,textarea').forEach(i=>i.toggleAttribute('aria-invalid',tried&&!!m));let w=q.querySelector('.why');
   if(tried&&m){if(!w){w=document.createElement('p');w.className='why';q.appendChild(w)}w.textContent=m}else if(w)w.remove()});
  document.getElementById('pc').textContent=`${done} of ${list.length} answered`;
  document.getElementById('pb').style.width=(list.length?done/list.length*100:0)+'%';
@@ -246,7 +260,23 @@ function paint(){
 // Prefill the photo credit from the Instagram handle
 fm.elements.ig.addEventListener('blur',()=>{const h=fm.elements.ig.value.trim().replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[/?#].*$/,'').replace(/^@?/,'@');
  if(h.length>1){fm.elements.ig.value=h;if(!fm.elements.credit.value)fm.elements.credit.value='Photo by '+h;paint()}});
-fm.addEventListener('input',paint);fm.addEventListener('change',paint);
+// Keep a draft on this device so a closed tab or a phone call doesn't lose answers
+const KEY='gvo-photographer-draft';
+const store={get(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}},set(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}},clear(){try{localStorage.removeItem(KEY)}catch(e){}}};
+function snapshot(){const d={};fm.querySelectorAll('input[name],textarea[name]').forEach(i=>{if(i.name==='website')return;if(i.type==='radio'){if(i.checked)d[i.name]=i.value}else d[i.name]=i.value});
+ fm.querySelectorAll('[data-multi]').forEach(g=>d[g.dataset.multi]=[...g.querySelectorAll('input:checked')].map(i=>i.value));return d}
+function restore(d){fm.querySelectorAll('input[name],textarea[name]').forEach(i=>{if(!(i.name in d))return;if(i.type==='radio')i.checked=d[i.name]===i.value;else i.value=d[i.name]});
+ fm.querySelectorAll('[data-multi]').forEach(g=>g.querySelectorAll('input').forEach(i=>i.checked=(d[g.dataset.multi]||[]).includes(i.value)))}
+const draft=store.get();if(draft&&Object.values(draft).some(v=>Array.isArray(v)?v.length:v)){restore(draft);document.getElementById('restored').hidden=false}
+document.getElementById('clear').addEventListener('click',()=>{store.clear();fm.reset();tried=false;err.hidden=true;document.getElementById('restored').hidden=true;paint();window.scrollTo({top:0})});
+let saveT;const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>store.set(snapshot()),300)};
+// Phone formats itself as (443) 555-0123
+fm.elements.phone.addEventListener('blur',()=>{const d=digits(fm.elements.phone.value);if(d.length===10)fm.elements.phone.value=`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`});
+// Enter in a one-line field moves to the next field instead of sending early
+fm.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.target.tagName!=='INPUT'||['radio','checkbox','submit'].includes(e.target.type))return;e.preventDefault();
+ const all=[...fm.querySelectorAll('input[type=text],input[type=tel],input[type=email],input[type=url],textarea')].filter(i=>i.offsetParent&&i.name!=='website');
+ const n=all[all.indexOf(e.target)+1];if(n)n.focus();else e.target.blur()});
+fm.addEventListener('input',()=>{paint();save()});fm.addEventListener('change',()=>{paint();save()});
 // Cloudflare Turnstile, same as the main site: only when a site key is set
 fetch('/api/config').then(r=>r.json()).then(c=>{if(!c.turnstileSiteKey)return;
  const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;
@@ -267,7 +297,7 @@ fm.addEventListener('submit',async e=>{
   const r=await fetch('/api/form',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:'team',fields,ts,hp:fm.website.value,t:Date.now()-t0})});
   const j=await r.json().catch(()=>({}));
   if(!r.ok||!j.ok)throw new Error(j.error||'That did not send. Try again, or text (443) 292-6753.');
-  fm.hidden=true;document.querySelector('.progress').hidden=true;const d=document.getElementById('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
+  store.clear();fm.hidden=true;document.querySelector('.progress').hidden=true;const d=document.getElementById('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
  }catch(x){show(x.message)}
  finally{btn.disabled=false;btn.textContent='Send to GVO';if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
 });
