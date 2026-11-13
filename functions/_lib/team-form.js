@@ -24,7 +24,7 @@ export const TEAM_FORM = {
     lines: [
       'Your answers are confidential. Only GVO Sound management and staff review them, and they are used to set photo and video pricing, schedule shoots and route client bookings.',
       'Nothing you share is published on gvosound.com without your consent, given in the Clients and the website section.',
-      'To update or remove your information, contact the studio at (443) 292-6753.',
+      'Each person submits this form once. To update or remove your information, contact the studio at (443) 292-6753.',
     ],
   },
   sections: [
@@ -131,8 +131,9 @@ export function checkTeam(raw, clean) {
   a.role = TEAM_FORM.role;
   a.signed = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' }) + ' ET';
   a.formversion = String(TEAM_FORM.version);
+  a.sid = clean(String((raw && raw.sid) || ''), 40).replace(/[^\w-]/g, '');
   // [key, sheet column header, question as asked]. The sheet uses the first two; the confirmation email the third.
-  const columns = [['role', 'Role']].concat(ALL.map(q => [q.key, q.sheet || q.label, q.label]), [['signed', 'Signed at'], ['formversion', 'Form version']]);
+  const columns = [['role', 'Role']].concat(ALL.map(q => [q.key, q.sheet || q.label, q.label]), [['signed', 'Signed at'], ['formversion', 'Form version'], ['sid', 'Submission ID']]);
   return { fields: a, columns };
 }
 

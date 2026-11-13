@@ -277,8 +277,8 @@ export function formConfirmation(cfg, form, f, columns) {
     // Team info form: a record of every answer they gave, in the form's own words (columns from team-form.js)
     subject = 'Your GVO Sound team info, for your records';
     intro = `Thanks for sending your rates and details to GVO Sound. Here is a copy of everything you submitted, signed ${f.signed}. Keep it for your records.`;
-    close = `Need to change something? Send the form again at <a href="${esc(cfg.site)}/team/" style="color:${C.text};">gvosound.com/team</a>, or call or text <a href="sms:${STUDIO.tel}" style="color:${C.text};">${STUDIO.phone}</a>.`;
-    closeText = `Need to change something? Send the form again at gvosound.com/team, or call or text ${STUDIO.phone}.`;
+    close = `Need to change something? Call or text the studio at <a href="sms:${STUDIO.tel}" style="color:${C.text};">${STUDIO.phone}</a>.`;
+    closeText = `Need to change something? Call or text the studio at ${STUDIO.phone}.`;
   } else return null;
 
   const skip = ['role', 'formversion', 'signed', 'agree'];

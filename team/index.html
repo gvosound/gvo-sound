@@ -162,7 +162,7 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
  <div class="done" id="done" hidden tabindex="-1" role="status">
   <div class="eyebrow">Sent</div>
   <h2>Thanks. GVO has your info.</h2>
-  <p>Cory or the team will reach out if anything needs a follow-up. To change an answer later, send this form again or text (443) 292-6753.</p>
+  <p>Cory or the team will reach out if anything needs a follow-up. To change an answer later, call or text (443) 292-6753.</p>
   <p id="copy" hidden style="margin-top:10px">A copy of your answers is on its way to your email for your records.</p>
  </div>
 </main>
@@ -175,7 +175,9 @@ const fm=$('f'),err=$('err'),btn=fm.querySelector('[type=submit]');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const digits=s=>String(s).replace(/\D/g,'').replace(/^1(?=\d{10}$)/,'');
 const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-let F,QS=[],tried=false,wid=null;const t0=Date.now();
+let F,QS=[],tried=false,wid=null,busy=false;const t0=Date.now();
+// One id per visit: if a send is retried, the sheet recognizes it and never adds a second row
+const SID=(()=>{try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2)}})();
 
 function field(q){
  const ph=q.placeholder?` placeholder="${esc(q.placeholder)}"`:'';
@@ -275,20 +277,22 @@ function wire(){
 }
 const show=m=>{err.textContent=m;err.hidden=false};
 async function send(e){
- e.preventDefault();err.hidden=true;tried=true;
+ e.preventDefault();if(busy)return;err.hidden=true;tried=true;
  const missing=paint();
  if(missing.length){show(missing.length===1?'1 question still needs an answer.':`${missing.length} questions still need an answer.`);
   const el=Q(missing[0].key);el.scrollIntoView({behavior:'smooth',block:'center'});const i=el.querySelector('input[type=text],input[type=email],input[type=tel],input[type=url],textarea');if(i)setTimeout(()=>i.focus({preventScroll:true}),400);return}
  const a={};QS.forEach(q=>a[q.key]=val(q.key));const fields={};QS.forEach(q=>fields[q.key]=shown(q,a)?a[q.key]:'');
  let ts='';if(wid!=null&&window.turnstile){ts=window.turnstile.getResponse(wid)||'';if(!ts)return show('One second, checking you are not a bot. Try again in a moment.')}
- btn.disabled=true;btn.textContent='Sending…';
+ busy=true;btn.disabled=true;btn.textContent='Sending…';
+ fields.sid=SID;
  try{
   const r=await fetch('/api/form',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:'team',fields,ts,hp:fm.website_hp.value,t:Date.now()-t0})});
   const j=await r.json().catch(()=>({}));
+  if(j.code==='DUPLICATE'){store.clear();show(j.error);btn.hidden=true;return}
   if(!r.ok||!j.ok)throw new Error(j.error||'That did not send. Try again, or text (443) 292-6753.');
   store.clear();if(j.confirmation==='sent')$('copy').hidden=false;fm.hidden=true;$('progress').hidden=true;$('nav').hidden=true;const d=$('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
  }catch(x){show(x.message)}
- finally{btn.disabled=false;btn.textContent='Sign and send to GVO';if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
+ finally{busy=false;btn.disabled=false;btn.textContent='Sign and send to GVO';if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
 }
 fetch('/api/form?schema=team').then(r=>r.json()).then(j=>{if(!j.ok)throw 0;F=j.form;build();$('loading').remove();fm.hidden=false;wire();paint()})
  .catch(()=>{$('loading').textContent='The form did not load. Refresh the page, or call or text the studio at (443) 292-6753.';$('pc').textContent=''});

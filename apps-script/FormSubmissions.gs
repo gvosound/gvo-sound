@@ -81,6 +81,11 @@ function doPost(e) {
   let row;
   try {
     const sheet = SpreadsheetApp.getActive().getSheetByName(form.tab) || makeTab(form, body.columns);
+    if (form.dynamic) {
+      const dup = findSent(sheet, f);
+      if (dup) return out(dup.sid && dup.sid === f.sid ? { ok: true, row: dup.row, recent: 99, repeat: true }
+        : { ok: false, code: 'DUPLICATE', when: dup.when });
+    }
     // Leading ' keeps the sheet from turning text like 2/14 or +1410 into dates or formulas.
     const cell = v => v == null || v === '' ? '' : "'" + String(v).slice(0, 2000);
     const values = form.dynamic && Array.isArray(body.columns) ? dynamicRow(sheet, body.columns, f, cell)
@@ -125,6 +130,30 @@ function makeTab(form, columns) {
   }
   sh.setFrozenRows(2);
   return sh;
+}
+
+// One submission per person on the team form: a row with the same email or phone already counts.
+// Returns { row, when, sid } for the first match, or null. Column positions come from the key notes on row 2.
+function findSent(sheet, f) {
+  const last = sheet.getLastRow(), width = sheet.getLastColumn();
+  if (last < 3 || width < 2) return null;
+  const notes = sheet.getRange(2, 1, 1, width).getNotes()[0];
+  const col = k => notes.indexOf(k);
+  const ce = col('email'), cp = col('phone'), cs = col('sid');
+  const digits = s => String(s || '').replace(/\D/g, '').slice(-10);
+  const email = String(f.email || '').trim().toLowerCase(), phone = digits(f.phone);
+  const v = x => String(x == null ? '' : x).replace(/^'/, '').trim(); // the sheet hides the leading ' we write
+  const rows = sheet.getRange(3, 1, last - 2, width).getValues();
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i];
+    const sameEmail = ce >= 0 && email && v(r[ce]).toLowerCase() === email;
+    const samePhone = cp >= 0 && phone.length === 10 && digits(r[cp]) === phone;
+    if (sameEmail || samePhone) {
+      const when = r[0] instanceof Date ? Utilities.formatDate(r[0], 'America/New_York', 'MMM d, yyyy') : '';
+      return { row: i + 3, when: when, sid: cs >= 0 ? v(r[cs]) : '' };
+    }
+  }
+  return null;
 }
 
 // Forms whose questions can change: each header cell on row 2 carries its question key as a note.

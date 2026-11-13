@@ -112,6 +112,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
     });
     const t = await r.text();
     try { saved = JSON.parse(t); } catch (e) { saved = {}; }
+    if (saved.code === 'DUPLICATE') {
+      return json({ ok: false, code: 'DUPLICATE', error: `You already sent your info${saved.when ? ' on ' + saved.when : ''}. To change something, call or text the studio at (443) 292-6753.` }, 409);
+    }
     if (!saved.ok) { console.log('form script error', r.status, t.slice(0, 300)); throw new Error('script'); }
   } catch (e) {
     return json({ ok: false, error: 'That did not send. Try again, or call or text the studio at (443) 292-6753.' }, 502);
