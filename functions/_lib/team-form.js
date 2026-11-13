@@ -8,13 +8,13 @@
 //   label      what the page asks; sheet  the column header (defaults to label)
 //   type       text | email | tel | url | money | number | long | one (pick one) | many (pick any) | check | sign
 //   required   true unless the question is optional
-//   options    for one and many
+//   options    for one and many: plain text, or { v, note } to explain a choice under it
 //   show       only asked when another answer matches: { key, is: [...] } or { key, has: 'option' } or { key, not: [...] }
 //   requiredWhen  optional until another answer matches (same shape as show)
 //   hint, placeholder, half (sits beside the next half field on wide screens), checked (check starts ticked)
 
 export const TEAM_FORM = {
-  version: 2,
+  version: 3,
   role: 'photographer',
   title: 'Your rates and how clients reach you',
   intro: 'Your answers set the photo prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes.',
@@ -55,9 +55,14 @@ export const TEAM_FORM = {
       { key: 'monthly', label: 'GVO shoots you want a month', type: 'one', required: true, options: ['1–3', '4–8', '9 or more', 'As many as possible'], sheet: 'GVO shoots a month' },
     ] },
     { title: 'Clients and the website', questions: [
-      { key: 'listing', label: 'Should GVO list you on gvosound.com?', type: 'one', required: true, options: ['Yes, clients contact me', 'Yes, bookings go through GVO', 'Not right now'], sheet: 'On gvosound.com' },
-      { key: 'contactby', label: 'How clients should reach you', type: 'many', required: true, show: { key: 'listing', is: ['Yes, clients contact me'] }, options: ['Instagram DM', 'Text', 'Call', 'Email', 'Booking link', 'Website'], sheet: 'Clients reach them by' },
-      { key: 'public', label: 'OK to show your phone or email on the site?', type: 'one', required: true, show: { key: 'listing', is: ['Yes, clients contact me'] }, options: ['Yes', 'No'], sheet: 'Contact info public' },
+      { key: 'profile', label: 'Want a profile on gvosound.com?', hint: "Your name, Instagram and the shoots you do, on GVO's photo studio page.", type: 'one', required: true, options: ['Yes', 'Not right now'], sheet: 'Profile on site' },
+      { key: 'bookvia', label: 'How should clients book you?', type: 'one', required: true, show: { key: 'profile', is: ['Yes'] }, sheet: 'Clients book', options: [
+        { v: 'Through GVO', note: 'Clients pick you when they book the photo studio on gvosound.com. GVO sends you the booking.' },
+        { v: 'Directly with me', note: 'Your profile shows how to reach you, and you set up the shoot yourself.' },
+        { v: 'Either way', note: 'Clients can book you with the studio or reach out to you.' },
+      ] },
+      { key: 'contactby', label: 'How clients should reach you', type: 'many', required: true, show: { key: 'bookvia', is: ['Directly with me', 'Either way'] }, options: ['Instagram DM', 'Text', 'Call', 'Email', 'Booking link', 'Website'], sheet: 'Clients reach them by' },
+      { key: 'public', label: 'OK to show your phone or email on your profile?', type: 'one', required: true, show: { key: 'bookvia', is: ['Directly with me', 'Either way'] }, options: ['Yes', 'No'], sheet: 'Contact info public' },
       { key: 'booking', label: 'Your booking link', type: 'url', required: true, show: { key: 'contactby', has: 'Booking link' }, placeholder: 'yourbookingsite.com', sheet: 'Booking link' },
     ] },
     { title: 'Using your work', questions: [
@@ -73,6 +78,7 @@ export const TEAM_FORM = {
 };
 
 const ALL = TEAM_FORM.sections.flatMap(s => s.questions);
+const opts = q => (q.options || []).map(o => (typeof o === 'string' ? o : o.v));
 const MAX = { long: 1500, text: 120, url: 300, email: 120, tel: 30, money: 12, number: 4, one: 60, many: 300, check: 4, sign: 120 };
 const URL_RE = /^https:\/\/[^\s/$.?#][^\s]*\.[^\s]+$/i;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -102,8 +108,8 @@ export function checkTeam(raw, clean) {
     const v = a[q.key];
     if (needed(q, a) && (!v || (q.type === 'check' && v !== 'Yes'))) return { error: `Answer "${q.label}" before sending.` };
     if (!v) continue;
-    if (q.type === 'one' && !q.options.includes(v)) return { error: 'Pick an answer from the list.' };
-    if (q.type === 'many' && v.split(', ').some(x => !q.options.includes(x))) return { error: 'Pick answers from the list.' };
+    if (q.type === 'one' && !opts(q).includes(v)) return { error: 'Pick an answer from the list.' };
+    if (q.type === 'many' && v.split(', ').some(x => !opts(q).includes(x))) return { error: 'Pick answers from the list.' };
     if (q.type === 'email' && !EMAIL.test(v)) return { error: 'Check the email address.' };
     if (q.type === 'tel') { const d = digits(v); if (d.length !== 10) return { error: 'Add a 10-digit phone number.' }; a[q.key] = `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`; }
     if (q.type === 'url') { const u = /^https?:\/\//i.test(v) ? v.replace(/^http:/i, 'https:') : 'https://' + v; if (!URL_RE.test(u)) return { error: `Check the link for "${q.label}".` }; a[q.key] = u; }

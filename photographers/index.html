@@ -58,7 +58,20 @@ section.sec:first-child{padding-top:8px}
 .lbl{font-weight:600;font-size:15px;line-height:1.35}
 .req{color:var(--lav);margin-left:2px}
 .tag{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
-.hint{color:var(--mute);font-size:13px;font-weight:400}
+.hint{color:var(--mute);font-size:13px;font-weight:400;display:block;margin-top:2px}
+.lbl .hint.inline{display:inline;margin:0}
+.cards{display:grid;gap:8px}
+@media(min-width:760px){.cards{grid-template-columns:repeat(3,1fr)}}
+.opt-card{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.opt-card input{position:absolute;opacity:0;pointer-events:none}
+.opt-card span{display:grid;gap:4px;height:100%;border:1px solid var(--line);border-radius:12px;padding:13px 14px 13px 44px;background:var(--field);position:relative;transition:border-color .15s,background .15s}
+.opt-card span::before{content:"";box-sizing:border-box;position:absolute;left:14px;top:15px;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--mute)}
+.opt-card b{font-weight:600;font-size:15px}.opt-card small{color:var(--mute);font-size:13px;line-height:1.4}
+@media(hover:hover){.opt-card:hover span{border-color:var(--lav)}}
+.opt-card input:checked+span{border-color:var(--lav);background:var(--lavsoft)}
+.opt-card input:checked+span::before{border-color:var(--lav);background:var(--lav);box-shadow:inset 0 0 0 3px var(--field)}
+.opt-card input:focus-visible+span{outline:2px solid var(--lav);outline-offset:2px}
+.q.miss .opt-card span{border-color:var(--err)}
 input[type=text],input[type=email],input[type=tel],input[type=url],textarea{width:100%;font:inherit;font-size:16px;color:var(--bone);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:12px 13px;min-height:48px}
 textarea{min-height:92px;resize:vertical}
 input:focus,textarea:focus{outline:none;border-color:var(--lav);box-shadow:0 0 0 3px var(--lavsoft)}
@@ -157,11 +170,12 @@ function field(q){
  const ph=q.placeholder?` placeholder="${esc(q.placeholder)}"`:'';
  const hint=q.hint?` <span class="hint">${esc(q.hint)}</span>`:'';
  const mark=q.required?'<span class="req" aria-hidden="true">*</span>':q.requiredWhen?'<span class="req" data-req hidden aria-hidden="true">*</span><span class="tag" data-opt>Optional</span>':'<span class="tag">Optional</span>';
- const lbl=`<span class="lbl">${esc(q.label)}${mark}${q.type==='many'?' <span class="hint">pick all that apply</span>':''}${hint}</span>`;
+ const lbl=`<span class="lbl">${esc(q.label)}${mark}${q.type==='many'?' <span class="hint inline">pick all that apply</span>':''}${hint}</span>`;
  const at=`class="q${q.half?' half':''}" data-q="${q.key}"`;
  const io=`name="${q.key}"${q.required?' aria-required="true"':''}`;
  switch(q.type){
-  case 'one':{const n=q.options.length,seg=n<=4&&q.options.every(o=>o.length<=16);
+  case 'one':{if(q.options.some(o=>typeof o!=='string'))return `<div ${at} role="radiogroup" aria-label="${esc(q.label)}">${lbl}<div class="cards">${q.options.map(o=>`<label class="opt-card"><input type="radio" name="${q.key}" value="${esc(o.v)}"><span><b>${esc(o.v)}</b>${o.note?`<small>${esc(o.note)}</small>`:''}</span></label>`).join('')}</div></div>`;
+   const n=q.options.length,seg=n<=4&&q.options.every(o=>o.length<=16);
    return `<div ${at} role="radiogroup" aria-label="${esc(q.label)}">${lbl}<div class="pills${seg?' seg'+(n>=4?' w4':''):''}" style="--n:${n}">${q.options.map(o=>`<label><input type="radio" name="${q.key}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div></div>`}
   case 'many':return `<div ${at} role="group" aria-label="${esc(q.label)}">${lbl}<div class="pills" data-multi="${q.key}">${q.options.map(o=>`<label><input type="checkbox" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div></div>`;
   case 'check':return `<div ${at}><label class="check"><input type="checkbox" ${io}${q.checked?' checked':''}><span>${esc(q.label)}${q.required?'<span class="req" aria-hidden="true">*</span>':''}</span></label></div>`;
