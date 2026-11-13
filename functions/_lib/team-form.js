@@ -6,7 +6,7 @@
 // Question fields
 //   key        sheet column id, stable forever
 //   label      what the page asks; sheet  the column header (defaults to label)
-//   type       text | email | tel | url | money | number | long | one (pick one) | many (pick any) | check | sign
+//   type       text | email | tel | url | money (per: 'hr' adds /hr) | number | long | one (pick one) | many (pick any) | check | sign
 //   required   true unless the question is optional
 //   options    for one and many: plain text, or { v, note } to explain a choice under it
 //   show       only asked when another answer matches: { key, is: [...] } or { key, has: 'option' } or { key, not: [...] }
@@ -15,7 +15,7 @@
 //   hint, placeholder, half (sits beside the next half field on wide screens), checked (check starts ticked)
 
 export const TEAM_FORM = {
-  version: 5,
+  version: 6,
   role: 'photo-video',
   title: 'Your rates and how clients reach you',
   intro: 'Your answers set the photo and video prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes.',
@@ -42,15 +42,19 @@ export const TEAM_FORM = {
       { key: 'shoots', label: 'Shoot types', type: 'many', required: true, options: ['Artist and music promo', 'Portraits and headshots', 'Brand and product', 'Grads', 'Maternity', 'Couples', 'Events', 'Music videos', 'Behind-the-scenes content', 'Other'] },
       { key: 'shootsother', label: 'Other shoot types', type: 'text', required: true, show: { key: 'shoots', has: 'Other' }, placeholder: 'Pets, real estate, food', sheet: 'Other shoot types' },
     ] },
-    { title: 'Pricing', note: 'Clients pay GVO for the studio room only. Your rate is between you and the client, and they pay you directly.', questions: [
-      { key: 'rate', label: 'Your hourly rate, paid to you', type: 'money', required: true, half: true, sheet: 'Studio rate' },
-      { key: 'perhour', label: 'Edited photos per hour', type: 'number', required: true, half: true, placeholder: '15', show: { key: 'services', not: ['', 'Video only'] }, sheet: 'Edited photos per hour' },
+    { title: 'Pricing', note: 'Clients pay GVO for the studio room only. Your prices are between you and the client, and they pay you directly. Share them the way you actually charge.', questions: [
+      { key: 'pricing', label: 'How do you price your work?', type: 'many', required: true, options: ['Hourly rate', 'Packages', 'Starting price', 'Quote per project'], sheet: 'Prices by' },
+      { key: 'rate', label: 'Your hourly rate', type: 'money', per: 'hr', required: true, half: true, show: { key: 'pricing', has: 'Hourly rate' }, sheet: 'Hourly rate' },
+      { key: 'minimum', label: 'Minimum booking', type: 'one', required: true, show: { key: 'pricing', has: 'Hourly rate' }, options: ['1 hour', '2 hours', 'No minimum'] },
+      { key: 'startat', label: 'Your starting price', hint: 'The lowest price a client pays you for a shoot.', type: 'money', required: true, half: true, show: { key: 'pricing', has: 'Starting price' }, sheet: 'Starting price' },
+      { key: 'pkglist', label: 'Your packages', hint: 'One per line: name, what is included, price.', type: 'long', required: true, show: { key: 'pricing', has: 'Packages' }, placeholder: 'Basic: 1 hr, 15 edited photos, $___\nFull: 2 hrs, 40 edited photos, $___', sheet: 'Packages' },
+      { key: 'quoterange', label: 'Typical project range', hint: 'Helps GVO tell clients what to expect.', type: 'text', show: { key: 'pricing', has: 'Quote per project' }, placeholder: '$300–$1,200 depending on scope', sheet: 'Typical project range' },
+      { key: 'perhour', label: 'Edited photos per hour of shooting', type: 'number', required: true, half: true, placeholder: '15', show: { key: 'services', not: ['', 'Video only'] }, sheet: 'Edited photos per hour' },
       { key: 'videoout', label: 'What clients get from a video shoot', type: 'text', required: true, show: { key: 'services', is: ['Video only', 'Photo and video'] }, placeholder: '1 edited 60-second reel per hour', sheet: 'Video deliverables' },
-      { key: 'minimum', label: 'Minimum booking', type: 'one', required: true, options: ['1 hour', '2 hours', 'No minimum'] },
       { key: 'delivery', label: 'How fast clients get their finished work', type: 'one', required: true, options: ['1–3 days', '4–7 days', '1–2 weeks'], sheet: 'Delivery time' },
       { key: 'deposit', label: 'Deposit', type: 'one', required: true, options: ['No deposit', '25%', '50%', 'Full upfront'] },
       { key: 'payment', label: 'How clients pay you', hint: 'GVO does not collect your fee.', type: 'many', required: true, options: ['Cash App', 'Zelle', 'Venmo', 'Apple Pay', 'Card', 'Cash'], sheet: 'Gets paid by' },
-      { key: 'packages', label: 'Packages or extra costs', type: 'long', placeholder: '2 hrs, 30 edits, $___ · rush delivery +$___ · on location $___/hr', sheet: 'Packages and extras' },
+      { key: 'extras', label: 'Extra costs', type: 'long', placeholder: 'Rush delivery +$___ · extra edits $___ each · on location $___/hr', sheet: 'Extra costs' },
     ] },
     { title: 'Holiday photo special', show: { key: 'services', not: ['', 'Video only'] }, special: {
         text: 'A quick seasonal shoot in the GVO photo studio, Nov 23 to Dec 23. This one works differently from your regular shoots: the client pays GVO one price for the room and the photos, and GVO pays you $100 per shoot.',
@@ -67,12 +71,11 @@ export const TEAM_FORM = {
     { title: 'Clients and the website', questions: [
       { key: 'profile', label: 'Want a profile on gvosound.com?', hint: "Your name, Instagram and the shoots you do, on gvosound.com.", type: 'one', required: true, options: ['Yes', 'Not right now'], sheet: 'Profile on site' },
       { key: 'bookvia', label: 'How should clients book you?', type: 'one', required: true, show: { key: 'profile', is: ['Yes'] }, sheet: 'Clients book', options: [
-        { v: 'Through GVO', note: 'Clients pick you when they book the photo studio on gvosound.com. They pay GVO for the room and pay you directly for the shoot. GVO sends you the booking.' },
-        { v: 'Directly with me', note: 'Your profile shows how to reach you, and you set up the shoot yourself.' },
-        { v: 'Either way', note: 'Clients can book you with the studio or reach out to you.' },
+        { v: 'Through GVO', note: 'Clients pick you when they book the photo studio on gvosound.com. They pay GVO for the room and pay you directly for the shoot.' },
+        { v: 'Directly with me', note: 'Your profile shows how to reach you. You and the client set up the shoot, and the client books the room on gvosound.com.' },
       ] },
-      { key: 'contactby', label: 'How clients should reach you', type: 'many', required: true, show: { key: 'bookvia', is: ['Directly with me', 'Either way'] }, options: ['Instagram DM', 'Text', 'Call', 'Email', 'Booking link', 'Website'], sheet: 'Clients reach them by' },
-      { key: 'public', label: 'OK to show your phone or email on your profile?', type: 'one', required: true, show: { key: 'bookvia', is: ['Directly with me', 'Either way'] }, options: ['Yes', 'No'], sheet: 'Contact info public' },
+      { key: 'contactby', label: 'How clients should reach you', type: 'many', required: true, show: { key: 'bookvia', is: ['Directly with me'] }, options: ['Instagram DM', 'Text', 'Call', 'Email', 'Booking link', 'Website'], sheet: 'Clients reach them by' },
+      { key: 'public', label: 'OK to show your phone or email on your profile?', type: 'one', required: true, show: { key: 'bookvia', is: ['Directly with me'] }, options: ['Yes', 'No'], sheet: 'Contact info public' },
       { key: 'booking', label: 'Your booking link', type: 'url', required: true, show: { key: 'contactby', has: 'Booking link' }, placeholder: 'yourbookingsite.com', sheet: 'Booking link' },
     ] },
     { title: 'Using your work', questions: [
@@ -109,7 +112,7 @@ export function checkTeam(raw, clean) {
   const a = {};
   for (const q of ALL) {
     let v = raw && raw[q.key] != null ? String(raw[q.key]) : '';
-    v = q.type === 'long' ? clean(v.replace(/\r?\n/g, ' '), MAX.long) : clean(v, MAX[q.type] || 120);
+    v = q.type === 'long' ? clean(v.replace(/\s*\r?\n+\s*/g, '; '), MAX.long) : clean(v, MAX[q.type] || 120);
     if (q.type === 'check') v = v === 'Yes' ? 'Yes' : 'No';
     a[q.key] = v;
   }
@@ -123,7 +126,7 @@ export function checkTeam(raw, clean) {
     if (q.type === 'email' && !EMAIL.test(v)) return { error: 'Check the email address.' };
     if (q.type === 'tel') { const d = digits(v); if (d.length !== 10) return { error: 'Add a 10-digit phone number.' }; a[q.key] = `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`; }
     if (q.type === 'url') { const u = /^https?:\/\//i.test(v) ? v.replace(/^http:/i, 'https:') : 'https://' + v; if (!URL_RE.test(u)) return { error: `Check the link for "${q.label}".` }; a[q.key] = u; }
-    if (q.type === 'money') { const m = v.match(/^\$?\s*(\d{1,4})(?:\.\d{1,2})?\s*$/); if (!m || +m[1] < 1) return { error: 'Add your hourly rate as a number.' }; a[q.key] = '$' + m[1] + '/hr'; }
+    if (q.type === 'money') { const m = v.replace(/,/g, '').match(/^\$?\s*(\d{1,5})(?:\.\d{1,2})?\s*$/); if (!m || +m[1] < 1) return { error: `Add a number for "${q.label}".` }; a[q.key] = '$' + Number(m[1]).toLocaleString('en-US') + (q.per ? '/' + q.per : ''); }
     if (q.type === 'number' && (!/^\d{1,3}$/.test(v) || +v < 1)) return { error: `Add a number for "${q.label}".` };
     if (q.type === 'sign' && v.replace(/[^a-z]/gi, '').length < 2) return { error: 'Type your full name to sign.' };
   }

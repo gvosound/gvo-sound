@@ -66,7 +66,7 @@ section.sec:first-child{padding-top:8px}
 .hint{color:var(--mute);font-size:13px;font-weight:400;display:block;margin-top:2px}
 .lbl .hint.inline{display:inline;margin:0}
 .cards{display:grid;gap:8px}
-@media(min-width:760px){.cards{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:760px){.cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
 .opt-card{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .opt-card input{position:absolute;opacity:0;pointer-events:none}
 .opt-card span{display:grid;gap:4px;height:100%;border:1px solid var(--line);border-radius:12px;padding:13px 14px 13px 44px;background:var(--field);position:relative;transition:border-color .15s,background .15s}
@@ -193,7 +193,7 @@ function field(q){
   case 'many':return `<div ${at} role="group" aria-label="${esc(q.label)}">${lbl}<div class="pills" data-multi="${q.key}">${q.options.map(o=>`<label><input type="checkbox" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div></div>`;
   case 'check':return `<div ${at}><label class="check"><input type="checkbox" ${io}${q.checked?' checked':''}><span>${esc(q.label)}${q.required?'<span class="req" aria-hidden="true">*</span>':''}</span></label></div>`;
   case 'long':return `<label ${at}>${lbl}<textarea ${io}${ph}></textarea></label>`;
-  case 'money':return `<label ${at}>${lbl}<span class="money"><b>$</b><input type="text" inputmode="decimal" ${io} placeholder="0" enterkeyhint="next"><i>/hr</i></span></label>`;
+  case 'money':return `<label ${at}>${lbl}<span class="money"><b>$</b><input type="text" inputmode="decimal" ${io} placeholder="0" enterkeyhint="next">${q.per?`<i>/${esc(q.per)}</i>`:''}</span></label>`;
   case 'sign':return `<label ${at}>${lbl}<input type="text" ${io} autocomplete="name" enterkeyhint="done" placeholder="Full name"><div class="sigbox" aria-hidden="true"><div class="sigline" data-sig></div><div class="sigmeta"><span>Signed electronically</span><span>${today}</span></div></div></label>`;
   default:{const t={email:'email',tel:'tel',url:'url'}[q.type]||'text',im={tel:' inputmode="tel"',number:' inputmode="numeric"',email:' inputmode="email"',url:' inputmode="url"'}[q.type]||'';
    const ac=q.autocomplete?` autocomplete="${q.autocomplete}"`:q.type==='tel'?' autocomplete="tel"':q.type==='email'?' autocomplete="email"':'';
@@ -221,7 +221,7 @@ function problem(q,v,req){
  if(q.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))return'Check the email address';
  if(q.type==='tel'&&digits(v).length!==10)return'Add a 10-digit phone number';
  if(q.type==='url'&&!/^(https?:\/\/)?[^\s.]+\.[^\s]{2,}$/i.test(v))return'Check the link';
- if(q.type==='money'&&!(/^\$?\s*\d{1,4}(\.\d{1,2})?$/.test(v)&&parseFloat(v.replace('$',''))>=1))return'Add a number, like 75';
+ if(q.type==='money'){const m=v.replace(/,/g,'').match(/^\$?\s*(\d{1,5})(\.\d{1,2})?$/);if(!m||+m[1]<1)return'Add a number, like 75'}
  if(q.type==='number'&&!(/^\d{1,3}$/.test(v)&&+v>=1))return'Add a number, like 15';
  if(q.type==='sign'&&v.replace(/[^a-z]/gi,'').length<2)return'Type your full name to sign';
  return''}
