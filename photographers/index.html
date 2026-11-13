@@ -32,6 +32,11 @@ body{margin:0;background:var(--ink);color:var(--bone);font:16px/1.55 var(--displ
 h1{font-weight:800;font-size:clamp(32px,4.4vw,48px);line-height:1.04;letter-spacing:-.02em;margin:10px 0 14px}
 .lede{color:var(--mute);margin:0 0 16px}
 .card{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:14px 16px;font-size:15px;margin:0 0 12px}
+.notice{border:1px solid var(--line);border-top:3px solid var(--lav);background:var(--panel);border-radius:10px;padding:16px 18px 14px;margin:0 0 14px}
+.nhead{display:flex;align-items:center;gap:8px;font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--lav);margin-bottom:10px}
+.notice p{margin:0 0 8px;font-size:14px;line-height:1.55;color:var(--bone)}
+.notice p+p{color:var(--mute)}
+.nfoot{border-top:1px solid var(--line);margin-top:10px;padding-top:9px;font:500 11px var(--mono);letter-spacing:.04em;color:var(--mute)}
 .key{font-size:14px;color:var(--mute);margin:0 0 4px}.key b{color:var(--lav)}
 .progress{position:sticky;top:0;z-index:4;background:var(--ink);padding:12px 0 12px;border-bottom:1px solid var(--line);margin-top:6px}
 @media(min-width:1000px){.progress{position:static;border:0;padding:8px 0 0}}
@@ -131,7 +136,11 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
  <div class="eyebrow">GVO Sound · Team info</div>
  <h1 id="title">Your rates and how clients reach you</h1>
  <p class="lede" id="intro"></p>
- <div class="card"><b>Who sees this:</b> <span id="privacy"></span></div>
+ <section class="notice" aria-labelledby="ntitle">
+  <div class="nhead"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span id="ntitle">Privacy notice</span></div>
+  <div id="privacy"></div>
+  <div class="nfoot">GVO Sound · 109 Gibralter Ave, Annapolis, MD</div>
+ </section>
  <p class="key"><b>*</b> Required. Questions marked <span class="tag" style="margin:0">Optional</span> can be skipped.</p>
  <div class="progress" id="progress"><div class="row"><span id="pc" aria-live="polite">Loading…</span></div><div class="track"><i id="pb"></i></div>
  <p class="restored" id="restored" hidden>Picked up where you left off. <button type="button" class="linkbtn" id="clear">Start over</button></p></div>
@@ -190,7 +199,7 @@ function field(q){
  }
 }
 function build(){
- $('title').textContent=F.title;$('intro').textContent=F.intro;$('privacy').textContent=F.privacy;document.title='GVO Sound · '+F.title;
+ $('title').textContent=F.title;$('intro').textContent=F.intro;const pv=typeof F.privacy==='string'?{title:'Privacy notice',lines:[F.privacy]}:F.privacy;$('ntitle').textContent=pv.title;$('privacy').innerHTML=pv.lines.map(l=>`<p>${esc(l)}</p>`).join('');document.title='GVO Sound · '+F.title;
  $('sections').innerHTML=F.sections.map((s,i)=>`<section class="sec" id="s${i+1}"><div class="sechead"><span class="n">${i+1}</span><h2>${esc(s.title)}</h2></div>${s.note?`<p class="card secnote">${esc(s.note)}</p>`:''}${s.special?`<div class="special"><p>${esc(s.special.text)}</p><div class="deal">${s.special.deal.map(d=>`<div><b>${esc(d[0])}</b><small>${esc(d[1])}</small></div>`).join('')}</div></div>`:''}<div class="grid">${s.questions.map(field).join('')}</div></section>`).join('');
  $('nav').innerHTML=F.sections.map((s,i)=>`<li><a href="#s${i+1}" data-nav="${i}"><span class="dot">${i+1}</span>${esc(s.title)}</a></li>`).join('');
  QS=F.sections.flatMap((s,i)=>s.questions.map(q=>({...q,sec:i})));

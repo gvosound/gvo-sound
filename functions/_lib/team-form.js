@@ -19,7 +19,14 @@ export const TEAM_FORM = {
   role: 'photographer',
   title: 'Your rates and how clients reach you',
   intro: 'Your answers set the photo prices clients see and decide how bookings reach you. Mostly taps, about 3 minutes.',
-  privacy: 'Cory and the GVO team only. Nothing goes on gvosound.com unless you say yes to it below.',
+  privacy: {
+    title: 'Privacy notice',
+    lines: [
+      'Your answers are confidential. Only GVO Sound management and staff review them, and they are used to set photo pricing, schedule shoots and route client bookings.',
+      'Nothing you share is published on gvosound.com without your consent, given in the Clients and the website section.',
+      'To update or remove your information, contact the studio at (443) 292-6753.',
+    ],
+  },
   sections: [
     { title: 'About you', questions: [
       { key: 'name', label: 'Full name', type: 'text', required: true, half: true, autocomplete: 'name' },
