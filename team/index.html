@@ -139,7 +139,7 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
  <section class="notice" aria-labelledby="ntitle">
   <div class="nhead"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span id="ntitle">Privacy notice</span></div>
   <div id="privacy"></div>
-  <div class="nfoot">GVO Sound · 109 Gibralter Ave, Annapolis, MD</div>
+  <div class="nfoot">GVO Sound LLC · 109 Gibralter Ave, Annapolis, MD</div>
  </section>
  <p class="key"><b>*</b> Required. Questions marked <span class="tag" style="margin:0">Optional</span> can be skipped.</p>
  <div class="progress" id="progress"><div class="row"><span id="pc" aria-live="polite">Loading…</span></div><div class="track"><i id="pb"></i></div>
@@ -163,6 +163,7 @@ button[type=submit]:disabled{opacity:.6;cursor:default}
   <div class="eyebrow">Sent</div>
   <h2>Thanks. GVO has your info.</h2>
   <p>Cory or the team will reach out if anything needs a follow-up. To change an answer later, send this form again or text (443) 292-6753.</p>
+  <p id="copy" hidden style="margin-top:10px">A copy of your answers is on its way to your email for your records.</p>
  </div>
 </main>
 </div></div>
@@ -285,7 +286,7 @@ async function send(e){
   const r=await fetch('/api/form',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:'team',fields,ts,hp:fm.website_hp.value,t:Date.now()-t0})});
   const j=await r.json().catch(()=>({}));
   if(!r.ok||!j.ok)throw new Error(j.error||'That did not send. Try again, or text (443) 292-6753.');
-  store.clear();fm.hidden=true;$('progress').hidden=true;$('nav').hidden=true;const d=$('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
+  store.clear();if(j.confirmation==='sent')$('copy').hidden=false;fm.hidden=true;$('progress').hidden=true;$('nav').hidden=true;const d=$('done');d.hidden=false;d.focus();window.scrollTo({top:0,behavior:'smooth'});
  }catch(x){show(x.message)}
  finally{btn.disabled=false;btn.textContent='Sign and send to GVO';if(wid!=null&&window.turnstile)try{window.turnstile.reset(wid)}catch(e){}}
 }

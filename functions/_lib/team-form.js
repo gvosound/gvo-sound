@@ -131,7 +131,8 @@ export function checkTeam(raw, clean) {
   a.role = TEAM_FORM.role;
   a.signed = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' }) + ' ET';
   a.formversion = String(TEAM_FORM.version);
-  const columns = [['role', 'Role']].concat(ALL.map(q => [q.key, q.sheet || q.label]), [['signed', 'Signed at'], ['formversion', 'Form version']]);
+  // [key, sheet column header, question as asked]. The sheet uses the first two; the confirmation email the third.
+  const columns = [['role', 'Role']].concat(ALL.map(q => [q.key, q.sheet || q.label, q.label]), [['signed', 'Signed at'], ['formversion', 'Form version']]);
   return { fields: a, columns };
 }
 

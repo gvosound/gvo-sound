@@ -242,10 +242,10 @@ const FORM_LABELS = {
 const TRIP_PHRASE = { "Valentine's cruise": "the Valentine's cruise", 'Next group trip': 'the next group trip', 'Private trip': 'a private trip', 'Custom itinerary': 'a custom itinerary' };
 
 function answers(form, f) {
-  return (FORM_LABELS[form] || []).filter(([k]) => f[k]).map(([k, l]) => [l, String(f[k])]);
+  return (FORM_LABELS[form] || []).filter(([k]) => f[k]).map(([k, l, asked]) => [asked || l, String(f[k])]);
 }
 
-export function formConfirmation(cfg, form, f) {
+export function formConfirmation(cfg, form, f, columns) {
   const first = String(f.name || f.artist || '').trim().split(/\s+/)[0];
   const hi = first ? `Hi ${first},` : '';
   const call = (lead) => `${lead} Call or text <a href="sms:${STUDIO.tel}" style="color:${C.text};">${STUDIO.phone}</a>.`;
@@ -273,15 +273,26 @@ export function formConfirmation(cfg, form, f) {
     subject = "You're on the list for the Africa trip";
     intro = "You're on the list for the GVO Sound group trip to Africa. When the dates are set, you get one email with the details. That's all this list is for.";
     close = 'Want off the list? Reply "remove" and you\'re out.'; closeText = close;
+  } else if (form === 'team') {
+    // Team info form: a record of every answer they gave, in the form's own words (columns from team-form.js)
+    subject = 'Your GVO Sound team info, for your records';
+    intro = `Thanks for sending your rates and details to GVO Sound. Here is a copy of everything you submitted, signed ${f.signed}. Keep it for your records.`;
+    close = `Need to change something? Send the form again at <a href="${esc(cfg.site)}/team/" style="color:${C.text};">gvosound.com/team</a>, or call or text <a href="sms:${STUDIO.tel}" style="color:${C.text};">${STUDIO.phone}</a>.`;
+    closeText = `Need to change something? Send the form again at gvosound.com/team, or call or text ${STUDIO.phone}.`;
   } else return null;
 
-  const ans = answers(form, form === 'notify' ? { contact: f.contact } : f);
+  const skip = ['role', 'formversion', 'signed', 'agree'];
+  const ans = form === 'team'
+    ? (columns || []).filter(([k]) => f[k] && !skip.includes(k)).map(([k, l, asked]) => [asked || l, String(f[k])])
+    : answers(form, form === 'notify' ? { contact: f.contact } : f);
+  // Team answers have long questions, so each one stacks: the question, then the answer under it.
+  const stack = ([l, v]) => `<tr><td style="padding:9px 0;border-bottom:1px solid ${C.line};vertical-align:top;"><div style="font-size:12px;line-height:1.4;color:${C.mute};">${esc(l)}</div><div style="font-size:14px;line-height:1.45;margin-top:2px;">${esc(v).replace(/\n/g, '<br>')}</div></td></tr>`;
   const row = ([l, v]) => `<tr><td style="padding:7px 12px 7px 0;border-bottom:1px solid ${C.line};color:${C.mute};white-space:nowrap;vertical-align:top;">${esc(l)}</td><td style="padding:7px 0;border-bottom:1px solid ${C.line};vertical-align:top;">${esc(v).replace(/\n/g, '<br>')}</td></tr>`;
   const body = [
     hi ? p(esc(hi)) : '',
     p(esc(intro)),
     label('What you sent'),
-    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;">${ans.map(row).join('')}</table>`,
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;">${ans.map(form === 'team' ? stack : row).join('')}</table>`,
     close ? p(close, 'margin-top:18px;') : '',
   ].join('\n');
   const text = [hi, intro, '', 'What you sent', ...ans.map(([l, v]) => `${l}: ${v.replace(/\n/g, ', ')}`), '', closeText,

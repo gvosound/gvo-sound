@@ -126,7 +126,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     else {
       confirmation = 'sent';
       const mail = (async () => {
-        const msg = formConfirmation(emailCfg(env, new URL(request.url).origin), b.form, f);
+        const msg = formConfirmation(emailCfg(env, new URL(request.url).origin), b.form, f, columns);
         if (msg) await sendEmail(env, msg);
       })().catch(e => console.log('confirmation error', e && e.message));
       if (waitUntil) waitUntil(mail); else await mail;
