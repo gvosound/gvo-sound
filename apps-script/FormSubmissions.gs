@@ -58,7 +58,7 @@ const LABELS = { name: 'Name', phone: 'Phone', email: 'Email', type: 'Type', det
   links: 'Links', ig: 'Instagram', tiktok: 'TikTok', yt: 'YouTube', gvo: 'Recorded at GVO', engineer: 'GVO engineer or producer',
   notes: 'Anything else', list: 'List', contact: 'Email or phone', who: 'From', item: 'About', answer: 'Answer',
   shootname: 'Shoots as', portfolio: 'Portfolio', shoots: 'Shoots', video: 'Shoots video', rate: 'Studio rate',
-  minimum: 'Minimum booking', packages: 'Packages', perhour: 'Edited photos per hour', delivery: 'Delivery time',
+  minimum: 'Minimum booking', packages: 'Packages and extras', perhour: 'Edited photos per hour', delivery: 'Delivery time',
   extras: 'Extra costs', deposit: 'Deposit', location: 'Location and event rates', payment: 'Gets paid by',
   holiday: 'Holiday special', holidaynotes: 'Holiday availability', days: 'Usually free', notice: 'Notice needed',
   monthly: 'GVO shoots a month', listing: 'On gvosound.com', contactby: 'Clients reach them by', booking: 'Booking link',

@@ -26,19 +26,32 @@ const SPEC = {
   music:  { artist: [100, 1], email: [120, 1], title: [150, 1], type: [30, 0], links: [1600, 1], ig: [80, 0], tiktok: [80, 0], yt: [300, 0], gvo: [10, 0], engineer: [100, 0], notes: [1000, 0] },
   notify: { list: [40, 1], contact: [120, 1] },
   review: { who: [60, 0], item: [200, 1], answer: [40, 0], notes: [2000, 0] }, // the shop review page at /review/
-  // The team-only photographer info page at /photographers/
+  // The team-only photographer info page at /photographers/. Unused keys (shootname, portfolio, extras, location)
+  // stay so the sheet's columns keep lining up with older rows.
   team:   { name: [100, 1], shootname: [100, 0], ig: [80, 1], portfolio: [300, 0], phone: [30, 1], email: [120, 1],
-            shoots: [400, 1], video: [10, 0], rate: [120, 1], minimum: [80, 0], packages: [1500, 0], perhour: [80, 0],
-            delivery: [80, 0], extras: [800, 0], deposit: [200, 0], location: [400, 0], payment: [200, 0],
-            holiday: [10, 1], holidaynotes: [400, 0], days: [400, 0], notice: [80, 0], monthly: [40, 0],
+            shoots: [400, 1], video: [10, 1], rate: [20, 1], minimum: [40, 1], packages: [1500, 0], perhour: [10, 1],
+            delivery: [40, 1], extras: [800, 0], deposit: [40, 1], location: [400, 0], payment: [200, 1],
+            holiday: [10, 1], holidaynotes: [400, 0], days: [200, 1], notice: [40, 1], monthly: [40, 1],
             listing: [60, 1], contactby: [200, 0], booking: [300, 0], public: [10, 0],
             usage: [20, 1], credit: [120, 0], notes: [2000, 0] },
 };
-const TEAM_CHOICES = {
+// Answers the photographer page offers. Anything else is refused. Keep in step with photographers/index.html.
+const TEAM_ONE = {
   video: ['Yes', 'No'], public: ['Yes', 'No'],
+  minimum: ['1 hour', '2 hours', 'No minimum'],
+  delivery: ['1–3 days', '4–7 days', '1–2 weeks'],
+  deposit: ['No deposit', '25%', '50%', 'Paid in full upfront'],
   holiday: ['Yes', 'Maybe', 'No'],
+  notice: ['Same day', '24 hours', '2–3 days', '1 week'],
+  monthly: ['1–3', '4–8', '9 or more', 'As many as possible'],
   listing: ['Yes, clients contact me', 'Yes, bookings go through GVO', 'Not right now'],
   usage: ['Yes', 'Ask me first', 'No'],
+};
+const TEAM_MANY = {
+  shoots: ['Artist and music promo', 'Portraits and headshots', 'Brand and product', 'Grads', 'Maternity', 'Couples', 'Events', 'Behind-the-scenes content'],
+  payment: ['Cash App', 'Zelle', 'Venmo', 'Apple Pay', 'Card', 'Cash'],
+  days: ['Weekdays', 'Weeknights', 'Saturdays', 'Sundays'],
+  contactby: ['Instagram DM', 'Text', 'Call', 'Email', 'Booking link'],
 };
 const withHttps = s => !s ? '' : /^https?:\/\//i.test(s) ? s.replace(/^http:/i, 'https:') : 'https://' + s;
 const LISTS = ['Next event', 'Africa trip'];
@@ -97,13 +110,24 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (!EMAIL.test(f.contact)) f.contact = fmtPhone(f.contact);
   }
   if (b.form === 'team') {
-    for (const [k, list] of Object.entries(TEAM_CHOICES)) if (f[k] && !list.includes(f[k])) return bad('Pick an answer from the list.');
+    const pick = 'Pick an answer from the list.';
+    for (const [k, list] of Object.entries(TEAM_ONE)) if (f[k] && !list.includes(f[k])) return bad(pick);
+    for (const [k, list] of Object.entries(TEAM_MANY)) if (f[k] && f[k].split(', ').some(x => !list.includes(x))) return bad(pick);
     f.ig = handle(f.ig.replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i, ''));
-    for (const k of ['portfolio', 'booking']) {
-      f[k] = withHttps(f[k]);
-      if (f[k] && !URL_RE.test(f[k])) return bad('Check the ' + (k === 'portfolio' ? 'portfolio' : 'booking') + ' link.');
-    }
-    if (f.holiday !== 'Yes' && f.holiday !== 'Maybe') f.holidaynotes = '';
+    const rate = f.rate.match(/^\$?\s*(\d{1,4})(?:\.\d{1,2})?\s*$/);
+    if (!rate || +rate[1] < 1) return bad('Add your hourly rate as a number.');
+    f.rate = '$' + rate[1] + '/hr';
+    if (!/^\d{1,3}$/.test(f.perhour) || +f.perhour < 1) return bad('Add how many edited photos per hour as a number.');
+    if (f.holiday === 'Yes' || f.holiday === 'Maybe') { if (!f.holidaynotes) return bad('Add the days and times you can take holiday shoots.'); }
+    else f.holidaynotes = '';
+    if (f.listing === 'Yes, clients contact me') {
+      if (!f.contactby || !f.public) return bad('Say how clients should reach you.');
+      f.booking = withHttps(f.booking);
+      if (f.booking && !URL_RE.test(f.booking)) return bad('Check the booking link.');
+    } else { f.contactby = ''; f.public = ''; f.booking = ''; }
+    if (f.usage === 'No') f.credit = '';
+    else if (!f.credit) return bad('Add how your photo credit should read.');
+    f.shootname = ''; f.portfolio = ''; f.extras = ''; f.location = '';
   }
   if (f.pax && !/^\d{1,3}$/.test(f.pax)) return bad('Travelers should be a number.');
   if (b.form === 'review' && !f.answer && !f.notes) return bad('Pick an answer or add a note.');
