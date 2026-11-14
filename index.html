@@ -645,6 +645,7 @@ footer.site{border-top:1px solid var(--line);background:var(--ink-2);padding-blo
 .link{display:inline-flex;align-items:center;min-height:44px}
 .copy button{padding:12px 14px;min-width:60px;min-height:42px}
 .member .cap a{padding-block:8px;margin-block:-6px}
+.member .cap a.bk{color:var(--bone)}.member .cap a.bk:hover{color:var(--lav)}
 input[type=range]{height:40px}
 .slot{padding:12px 0}
 .sz.c{padding:12px 14px}
@@ -1575,9 +1576,9 @@ const TEAM=[
  {n:'Dym Archives',r:'Photographer',ig:'dymarchives',img:'t_dym',g:'photo'},
  {n:'Smooth',r:'Photographer',ig:'smoozus',img:'t_smooth',g:'photo'},
  {n:'JCX Beats',r:'Engineer · Producer',ig:'jcxbeats_',img:'t_jcx',g:'rec'},
- {n:'KingMAG Prod',r:'Video · Content',ig:'kingmagprod',img:'t_mike',g:'pod'},
+ {n:'Michael Agbeja',r:'Photo · Video',ig:'kingmagprod',img:'t_mike-v2',g:'photo',also:'pod',bk:'https://kingmagproductions.as.me/'},
  {n:'Bob Almighty',r:'Video · Content',ig:'bobalmighty',img:'t_bob',g:'pod'},
- {n:'ShotbyNa',r:'Photographer',ig:'shotbyna',img:'t_shotbyna',g:'photo',also:'pod'},
+ {n:'ShotByNa',r:'Photo · Video',ig:'shotbyna',img:'t_shotbyna',g:'photo',also:'pod'},
  {n:'El (RvreForm)',r:'Photographer',ig:'rvre.form',img:'t_el',g:'photo',also:'pod'},
  {n:'Ike',r:'Sound engineer',img:'t_ike',g:'rec'},
  {n:'AurahBeats',r:'Sound engineer',ig:'aurahbeats',img:'t_aurah',g:'rec'},
@@ -2061,7 +2062,7 @@ function seoNote(meta){return note('SEO · this page',`<dl class="seo"><dt>URL</
 const crumbs=list=>`<ol class="crumbs" aria-label="Breadcrumb">${list.map(([l,h],i)=>i<list.length-1?`<li><a href="${h}">${l}</a></li>`:`<li aria-current="page">${l}</li>`).join('')}</ol>`;
 const prodCard=p=>{const badge=p.s?`<span class="badge sale">${Math.round((1-p.s/p.p)*100)}% off</span>`:p.flag?`<span class="badge">${p.flag}</span>`:'';const colors=(p.o.find(o=>o.t==='Color')||{v:[]}).v.length;
  return `<a class="prod rv" href="#product-${p.id}"><div class="pic">${badge}${p.img.length?imgT(sm(p.img[0]),p.n)+(p.img[1]?imgT(sm(p.img[1]),'',1,'b'):''):'<div class="nophoto"><span class="mark"></span><small>Photo coming</small></div>'}</div><div class="meta"><span class="name">${p.n}${colors>1||isLtd(p)?`<small class="cols">${[colors>1?colors+' colors':'',isLtd(p)?'<span class="ltd">Limited</span>':''].filter(Boolean).join(' · ')}</small>`:''}</span><span class="price">${p.s?`<s>${m2(p.p)}</s><span class="now">${m2(p.s)}</span>`:m2(p.p)}</span></div></a>`};
-const memberCard=m=>`<figure class="member" data-g="${m.g}${m.also?' '+m.also:''}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span>${m.ig?`<a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a>`:''}</figcaption></figure>`;
+const memberCard=m=>`<figure class="member" data-g="${m.g}${m.also?' '+m.also:''}">${m.img?imgT(m.img,`${m.n}, ${m.r} at GVO Sound`):'<div class="mk"><span class="mark"></span></div>'}${m.own?'<span class="owner">Founder</span>':''}<figcaption class="cap"><b>${m.n}</b><span>${m.r}</span>${m.ig?`<a href="https://www.instagram.com/${m.ig}/" target="_blank" rel="noopener">@${m.ig}</a>`:''}${m.bk?`<a class="bk" href="${m.bk}" target="_blank" rel="noopener">Book with ${m.n.split(' ')[0]} →</a>`:''}</figcaption></figure>`;
 const doorHTML=()=>`<div class="door rv" id="visit"><div class="door-ph">${imgT('pod_3','The GVO studio floor with the GVO logo wall')}</div><div class="door-info">
  <div><h3>Pull up</h3><p class="addr">109 Gibralter Ave<br>Annapolis, MD 21401</p><p style="margin:12px 0 0"><a class="link" href="https://maps.google.com/?q=109+Gibralter+Ave+Annapolis+MD+21401" target="_blank" rel="noopener">Open in Maps →</a></p></div>
  <div><h3>Studio</h3><p class="hrs-big">Open 24/7</p><p class="hrs-note">By appointment only. Book at least 2 hours ahead.</p><h3 style="margin-top:20px">Shop in person</h3><table class="hours">${hoursRows()}</table><p class="hrs-note">Shop hours can change, so check <a class="link" href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">@gvosound.clothing</a> before you come. <a class="link" href="#shop">Shop online 24/7 →</a></p></div>
