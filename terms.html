@@ -37,6 +37,22 @@ ul{padding-left:1.2em}
 li{margin-bottom:6px}
 .quote{border-left:3px solid var(--lav);padding:4px 0 4px 16px;margin:0 0 14px}
 address{font-style:normal}
+.skip{position:fixed;left:16px;top:-60px;z-index:10;background:var(--lav);color:#100c24;padding:10px 14px;border-radius:4px;font:700 .8rem var(--mono);text-decoration:none}
+.skip:focus{top:calc(12px + env(safe-area-inset-top,0px))}
+main:focus{outline:0}
+:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+.a11y-bar{background:#14111a;border-bottom:1px solid var(--line);text-align:center;padding:12px 16px;margin:-28px 0 28px;font:500 .85rem/1.5 var(--body);color:var(--bone)}
+.a11y-bar a{color:var(--bone);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.wrap.wide{max-width:1040px}
+.hero-p{font-size:1.15rem;color:var(--bone);max-width:62ch;margin:0 0 8px}
+.a11y{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:start}
+.help{position:sticky;top:24px;border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:22px 22px 18px;margin-top:40px}
+.help h2{margin:0 0 10px}
+.help p{font-size:.95rem}
+.help .btns{display:grid;gap:10px;margin-top:16px}
+.help .btns a{display:flex;align-items:center;justify-content:center;min-height:46px;border:1px solid var(--line);border-radius:4px;font:600 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--bone);text-align:center;padding:8px 10px}
+.help .btns a.lav{background:var(--lav);border-color:var(--lav);color:#100c24}
+@media (max-width:860px){.a11y{grid-template-columns:1fr;gap:0}.help{position:static}}
 .facts{border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:18px 20px;margin:0 0 14px}
 .facts p{margin:0 0 10px;display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:2px 12px;align-items:baseline}.facts p:last-child{margin:0}
 .facts b{color:var(--mute);font:600 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase}
@@ -48,8 +64,9 @@ footer nav{display:flex;gap:18px;flex-wrap:wrap}
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <header><div class="wrap"><a class="logo" href="/" aria-label="GVO Sound home"><span class="mark"></span></a><a class="home" href="/">Back to home</a></div></header>
-<main><div class="wrap">
+<main id="main" tabindex="-1"><div class="wrap">
 <p class="eyebrow">GVO Sound LLC</p>
 <h1>Terms of service</h1>
 <p class="updated">Last updated: November 2, 2026</p>
@@ -85,6 +102,6 @@ footer nav{display:flex;gap:18px;flex-wrap:wrap}
 <h2>Contact</h2>
 <address>GVO Sound LLC<br>109 Gibralter Ave<br>Annapolis, MD 21401<br><a href="mailto:gvosoundllc@gmail.com">gvosoundllc@gmail.com</a><br><a href="tel:+14432926753">(443) 292-6753</a></address>
 </div></main>
-<footer><div class="wrap"><span>GVO Sound LLC · 109 Gibralter Ave, Annapolis, MD 21401 · (443) 292-6753</span><nav aria-label="Legal"><a href="/">Home</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav></div></footer>
+<footer><p class="a11y-bar">We want this site to work for everyone. <a href="/accessibility">Read the accessibility statement</a></p><div class="wrap"><span>GVO Sound LLC · 109 Gibralter Ave, Annapolis, MD 21401 · (443) 292-6753</span><nav aria-label="Legal"><a href="/">Home</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a></nav></div></footer>
 </body>
 </html>

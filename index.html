@@ -44,7 +44,7 @@
   --lav:#b9b2ff;
   --lav-deep:#6f68c9;
   --lav-ink:#120f26;
-  --tag:#e4342c;
+  --tag:#d0302a;
   --ok:#86dba3;
   --display:"Archivo","Arial Black",Impact,sans-serif;
   --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -217,17 +217,17 @@ main{min-height:60vh}
 /* room accordion (home) */
 .rooms{display:flex;gap:10px;height:600px}
 .room{position:relative;flex:1;min-width:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--panel);transition:flex .7s var(--ease);cursor:pointer}
-.room[aria-expanded="true"]{flex:3.2;cursor:default}
+.room[data-open="true"]{flex:3.2;cursor:default}
 .room img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease),filter .7s}
-.room[aria-expanded="false"] img{filter:grayscale(1) brightness(.5)}
+.room[data-open="false"] img{filter:grayscale(1) brightness(.5)}
 .room:hover img{transform:scale(1.04)}
 .room::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,6,10,.15),rgba(7,6,10,.2) 30%,rgba(7,6,10,.94))}
-.room-label{position:absolute;left:20px;bottom:20px;z-index:2;display:grid;gap:8px;transition:opacity .4s}
+.room-label{position:absolute;left:20px;bottom:20px;z-index:2;display:grid;gap:8px;transition:opacity .4s;background:none;border:0;padding:0;margin:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
 .room-label small{font:600 .75rem var(--mono);letter-spacing:.14em;color:var(--lav);text-transform:uppercase}
 .room-label b{font:900 1.7rem/.95 var(--display);font-stretch:110%;text-transform:uppercase}
-.room[aria-expanded="true"] .room-label{opacity:0}
+.room[data-open="true"] .room-label{opacity:0}
 .room-body{position:absolute;inset:auto 0 0 0;z-index:2;padding:clamp(20px,3vw,36px);display:grid;grid-template-columns:1.25fr 1fr;gap:20px 36px;align-items:end;opacity:0;transform:translateY(20px);transition:opacity .5s .25s,transform .6s .25s var(--ease);pointer-events:none}
-.room[aria-expanded="true"] .room-body{opacity:1;transform:none;pointer-events:auto}
+.room[data-open="true"] .room-body{opacity:1;transform:none;pointer-events:auto}
 .room-body>div{display:grid;gap:14px;min-width:0}
 .room{container-type:inline-size}
 .room-body h3{font-size:clamp(1.9rem,6.4cqi,3.2rem);font-stretch:125%;overflow-wrap:break-word}
@@ -242,10 +242,10 @@ main{min-height:60vh}
 @media (max-width:900px){
   .rooms{flex-direction:column;height:auto}
   .room{flex:none;height:108px;transition:height .6s var(--ease)}
-  .room[aria-expanded="false"] .room-label{left:18px;right:18px;bottom:50%;transform:translateY(50%);gap:0}
-  .room[aria-expanded="false"] .room-label small{display:none}
-  .room[aria-expanded="false"] .room-label b{font-size:clamp(1.25rem,6vw,1.6rem);line-height:1}
-  .room[aria-expanded="true"]{flex:none;height:600px}
+  .room[data-open="false"] .room-label{left:18px;right:18px;bottom:50%;transform:translateY(50%);gap:0}
+  .room[data-open="false"] .room-label small{display:none}
+  .room[data-open="false"] .room-label b{font-size:clamp(1.25rem,6vw,1.6rem);line-height:1}
+  .room[data-open="true"]{flex:none;height:600px}
   .room-body{grid-template-columns:1fr}
 }
 
@@ -278,7 +278,7 @@ main{min-height:60vh}
 .member:hover img{filter:none;transform:scale(1.04)}
 .member .mk{position:absolute;inset:0;display:grid;place-items:center;background:var(--ink-2)}
 .member .mk .mark{width:58%;background:var(--lav)}
-.member .cap{position:absolute;inset:auto 0 0;padding:44px 14px 14px;background:linear-gradient(180deg,transparent,rgba(7,6,10,.94));display:grid;gap:4px}
+.member .cap{position:absolute;inset:auto 0 0;padding:44px 14px 12px;background:linear-gradient(180deg,transparent,rgba(7,6,10,.94));display:grid;gap:2px}
 .member .cap b{font:900 1.1rem/1 var(--display);font-stretch:110%;text-transform:uppercase}
 .member .cap span{font:.75rem var(--mono);color:var(--lav);text-transform:uppercase;letter-spacing:.1em}
 .member .cap a{font:.75rem var(--mono);color:var(--mute);text-decoration:none;justify-self:start}
@@ -446,7 +446,8 @@ input[type=range]{width:100%;accent-color:var(--lav);height:28px}
 .act{padding:0 20px 20px;display:grid;gap:10px}
 .act .btn-lav{background:var(--ink);color:var(--bone)}
 .act .btn-lav:hover{background:var(--lav-deep)}
-.fine{font-size:.75rem;color:#6b6475;margin:0}
+.fine{font-size:.75rem;color:var(--mute);margin:0}
+.tot .fine,.act .fine{color:#57515f}
 .steps .fine,.drawer .fine,.dark-fine{color:var(--mute)}
 .barcode{height:34px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px,var(--ink) 8px 11px,transparent 11px 12px);opacity:.85}
 .confirm{padding:24px 20px;display:grid;gap:12px;text-align:center}
@@ -603,6 +604,8 @@ a.mcred:hover{text-decoration:underline}
 .slogan span{display:block}
 .slogan span:nth-child(2){color:transparent;-webkit-text-stroke:1.5px var(--lav)}
 footer.site{border-top:1px solid var(--line);background:var(--ink-2);padding-block:48px 28px;margin-top:40px}
+footer.site .a11y-bar{margin:-48px 0 40px;padding:12px 16px;background:#1b1822;border-bottom:1px solid var(--line);text-align:center;font:500 .85rem/1.5 var(--body);color:var(--bone)}
+footer.site .a11y-bar a{color:var(--bone);font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .fgrid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px}
 @media (max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
 .fgrid h4{font:600 .75rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--lav);margin:0 0 14px}
@@ -644,7 +647,7 @@ footer.site{border-top:1px solid var(--line);background:var(--ink-2);padding-blo
 .crumbs a{display:inline-block;padding-block:12px;margin-block:-12px}
 .link{display:inline-flex;align-items:center;min-height:44px}
 .copy button{padding:12px 14px;min-width:60px;min-height:42px}
-.member .cap a{padding-block:8px;margin-block:-6px}
+.member .cap a{padding-block:2px;display:inline-flex;align-items:center;min-height:24px}
 .member .cap a.bk{color:var(--bone)}.member .cap a.bk:hover{color:var(--lav)}
 input[type=range]{height:40px}
 .slot{padding:12px 0}
@@ -939,6 +942,7 @@ button.link{background:none;border:0;padding:0;font:inherit;color:inherit;text-d
 .art b{font:800 1.05rem var(--display);font-stretch:110%;text-transform:uppercase;display:block}
 .art small{color:var(--mute);font-size:.85rem;display:block;margin:2px 0 6px}
 .art-l{display:flex;flex-wrap:wrap;gap:6px 14px}
+.art-follow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:0 0 18px}.art-follow .eyebrow{margin:0}.art-follow .art-l a{display:inline-flex;align-items:center;min-height:24px}
 .lnk-btn{background:none;border:0;padding:6px 0;margin:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--lav);cursor:pointer}
 .lnk-btn:hover{color:var(--bone)}
 .asong .lnk-btn{font:600 .68rem var(--mono);letter-spacing:.1em;padding:0}
@@ -1524,6 +1528,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
 <main id="main" tabindex="-1"></main>
 
 <footer class="site">
+  <p class="a11y-bar">We want this site to work for everyone. <a href="/accessibility">Read the accessibility statement</a></p>
   <div class="wrap">
     <div class="fgrid">
       <div><span class="mark"></span>
@@ -1535,7 +1540,7 @@ body:has(.pb:not([hidden])) .notes-toggle{bottom:96px}
       <div><h4>Shop</h4><ul><li><a href="#shop">All apparel</a></li><li><a href="#product-world-tour-cheetah-hoodie">Cheetah Hoodie</a></li><li><a href="#product-gvo-x-ace-distressed-tee">GVO x Ace Tee</a></li><li><a href="#product-gvo-beanie">GVO Beanie</a></li></ul></div>
       <div><h4>Follow</h4><ul><li><a href="https://www.instagram.com/gvo.sound/" target="_blank" rel="noopener">Instagram @gvo.sound</a></li><li><a href="https://www.instagram.com/gvosound.events/" target="_blank" rel="noopener">GVO Events</a></li><li><a href="https://www.instagram.com/gvosound.clothing/" target="_blank" rel="noopener">GVO Clothing</a></li><li><a href="https://www.instagram.com/gvosound.travel/" target="_blank" rel="noopener">GVO Travel</a></li><li><a href="https://open.spotify.com/artist/5eZfmZxf0hNUuC3GERdI2A" target="_blank" rel="noopener">Spotify</a></li><li><a href="https://www.youtube.com/channel/UCnQbijTwH-IBE78-YIRVHcA" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://www.facebook.com/profile.php?id=100092699790819" target="_blank" rel="noopener">Facebook</a></li></ul></div>
     </div>
-    <div class="fbase"><span>GVO Sound LLC · Good Vibes Only · Annapolis, MD · Est. 2020</span><span class="f-legal"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></span><span class="by-sc">Site by <img src="img/siani-creates.png" alt="Siani Creates" width="35" height="13"></span></div>
+    <div class="fbase"><span>GVO Sound LLC · Good Vibes Only · Annapolis, MD · Est. 2020</span><span class="f-legal"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a></span><span class="by-sc">Site by <img src="img/siani-creates.png" alt="Siani Creates" width="35" height="13"></span></div>
   </div>
 </footer>
 
@@ -1759,7 +1764,7 @@ function tripMap(){const pins=tripPins(),[hx,hy]=mapXY(HOME_PIN.ll),pos=spreadPi
   <span class="tmap-home" style="left:${hx}%;top:${hy}%" title="Home base: GVO Sound, Annapolis"><i></i><em>Home</em></span>
   ${pins.map((pin,i)=>{const [x,y]=pos[i];return `<button type="button" class="tmap-pin${pin.next?' next':''}" style="left:${x}%;top:${y}%" data-pin="${i}" aria-label="${esc(pin.p)}${pin.next?', next trip':''}" aria-pressed="false"><i></i></button>`}).join('')}
  </div></div><div class="tmap-card" id="tmapCard" aria-live="polite" hidden></div>
- <div class="tmap-list" role="list">${pins.map((pin,i)=>`<button type="button" class="chip${pin.next?' next':''}" data-pin="${i}" aria-pressed="false">${esc(pin.p)}${pin.next?' · next':pin.n>1?' <small>×'+pin.n+'</small>':''}</button>`).join('')}</div>
+ <div class="tmap-list" role="group" aria-label="Places GVO has traveled">${pins.map((pin,i)=>`<button type="button" class="chip${pin.next?' next':''}" data-pin="${i}" aria-pressed="false">${esc(pin.p)}${pin.next?' · next':pin.n>1?' <small>×'+pin.n+'</small>':''}</button>`).join('')}</div>
  <p class="tmap-key"><span><i class="k1"></i>Been</span><span><i class="k2"></i>Next</span><span><i class="k3"></i>Home base</span></p></div>`}
 function wireMap(root){const m=$('.tmap',root);if(!m)return;const pins=tripPins(),card=$('#tmapCard',m);
  const pick=i=>{const on=i!=null&&card.dataset.i!==String(i);$$('[data-pin]',m).forEach(b=>b.setAttribute('aria-pressed',String(on&&b.dataset.pin===String(i))));
@@ -2099,9 +2104,9 @@ function viewHome(){
 
  <section id="rooms"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Three studios · one address</span><h2>The studios</h2></div><p class="lede">Recording: 2–12 hour sessions. Photo: 2–5 hours. Content: quoted per project.</p></div>
-  <div class="rooms" id="roomsEl">${Object.entries(ROOMS).map(([slug,r],i)=>`<div class="room" role="button" tabindex="0" aria-expanded="${i===0}" data-slug="${slug}">
+  <div class="rooms" id="roomsEl">${Object.entries(ROOMS).map(([slug,r],i)=>`<div class="room" data-open="${i===0}" data-slug="${slug}">
    ${imgT(r.card||r.img,r.cardAlt||'')}
-   <div class="room-label"><small>${({rec:'Engineer and mix included',photo:'Lit, soundproofed, ready to shoot',pod:'Podcasts, voiceovers, video'})[r.k]}</small><b>${r.h1.replace(' in Annapolis','')}</b></div>
+   <button type="button" class="room-label" aria-expanded="${i===0}"${i===0?' tabindex="-1"':''}><small>${({rec:'Engineer and mix included',photo:'Lit, soundproofed, ready to shoot',pod:'Podcasts, voiceovers, video'})[r.k]}</small><b>${r.h1.replace(' in Annapolis','')}</b></button>
    <div class="room-body"><div><span class="eyebrow">${({rec:'Engineer and mix included',photo:'Lit, soundproofed, ready to shoot',pod:'Podcasts, voiceovers, video'})[r.k]}</span><h3>${r.h1.replace(' in Annapolis','')}</h3><p>${r.lede}</p></div>
     <div><div class="mini-rates">${r.facts.slice(0,3).map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}</div>
     <div class="row"><a class="btn btn-lav" href="#${slug}">See the ${r.short.toLowerCase()} studio</a>${r.k!=='pod'?`<a class="btn btn-ghost" href="#book" data-preset="${r.k}">Book</a>`:`<a class="btn btn-ghost" href="#${slug}?to=desk">Request a quote</a>`}</div></div></div></div>`).join('')}</div>
@@ -2143,7 +2148,7 @@ const POD_DAY=[["vid/reel_content-day-bts.mp4","vid/reel_content-day-bts.webp","
 // Every clip in this row was shot in the GVO studio. The four apparel shoots show the crew's work for GVO's own line.
 // On set: the two shoot clips, then the @gvo.sound reels the team approved for the podcast page, in one swipe row.
 const podDay=()=>`<section class="pday"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot in this room</span><h2>On set</h2><p class="lede">Bring your own crew, or add GVO's. Our videographers and editors are available to shoot and cut it.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Request a quote</a>${NAV}</div></div>
- <div class="pday-row">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, content studio at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}<span class="pday-ig" data-igpod></span></div></div></section>`;
+ <div class="pday-row" tabindex="0" role="region" aria-label="Podcast day clips">${POD_DAY.map(([f,poster,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="${poster}" data-src="${f}" aria-label="${esc(t)}, content studio at GVO Sound"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}${musicUI(f)}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}<span class="pday-ig" data-igpod></span></div></div></section>`;
 // Shot here: Skandle's BagBoy Network (Cory: almost every episode filmed at GVO, from a couple hundred subscribers
 // to 100K+; the channel showed 128K on Oct 29, 2026).
 const BAGBOY=[{id:'JoAuWwjZyT4',t:'100 million views, talking to my son',s:'BagBoy Network'},{id:'KgY4zWyNDrY',t:'The Zen Martin Show, #3',s:'BagBoy Network'}];
@@ -2154,7 +2159,7 @@ const PARTNERS=[
  {n:'6THNBRHD',url:'https://6thnbrhd.com',cta:'Shop 6THNBRHD',lede:'Campaign spots Flawless and GVO shot and cut for 6THNBRHD.',clips:[['reel_6thnbrhd-1','Breaking All The Rules set'],['reel_6thnbrhd-2','Street spot, orange set']]}
 ];
 const partnerSec=p=>`<section class="pday partner"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Content partner</span><h2>${esc(p.n)}</h2><p class="lede">${esc(p.lede)}</p></div><div class="row-end">${ext(p.url,p.cta,'btn btn-ghost')}${NAV}</div></div>
- <div class="pday-row">${p.clips.map(([k,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="vid/${k}.webp" data-src="vid/${k}.mp4" aria-label="${esc(t)}, made by GVO Sound for ${esc(p.n)}"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}</div></div></section>`;
+ <div class="pday-row" tabindex="0" role="region" aria-label="Clips">${p.clips.map(([k,t])=>`<figure class="worn-t pday-t"><div class="worn-m"><video class="wv" muted loop playsinline preload="none" poster="vid/${k}.webp" data-src="vid/${k}.mp4" aria-label="${esc(t)}, made by GVO Sound for ${esc(p.n)}"></video>${reduce?'<button type="button" class="vplay" aria-label="Play the video"></button>':''}</div><figcaption><b>${esc(t)}</b><span class="worn-s"><a href="#desk">Request a quote</a><span aria-hidden="true">→</span></span></figcaption></figure>`).join('')}</div></div></section>`;
 // GVO's own campaigns: shot by the GVO team. Each entry shows as a band on the shop (shop:1) and,
 // with studio:1, on the photo studio page as proof of the team's work. Add a campaign = one entry + photos in img/.
 const CAMPAIGNS=[
@@ -2165,7 +2170,7 @@ const CAMPAIGNS=[
   studio:['j_5322','j_5367','j_5385','j_5530','j_5537','j_5571','j_5578','j_5584']}
 ];
 const campBy=c=>c.by.map(([n,h])=>`<a href="https://www.instagram.com/${h}/" target="_blank" rel="noopener">${esc(n)}</a>`).join(' and ');
-const campRow=(c,list)=>`<div class="pday-row camp-row">${list.map((f,i)=>`<figure class="worn-t camp-t"><div class="worn-m">${imgT(f,`${c.n} campaign by GVO Sound, photo ${i+1}`)}</div></figure>`).join('')}</div>`;
+const campRow=(c,list)=>`<div class="pday-row camp-row" tabindex="0" role="region" aria-label="${esc(c.n)} campaign photos">${list.map((f,i)=>`<figure class="worn-t camp-t"><div class="worn-m">${imgT(f,`${c.n} campaign by GVO Sound, photo ${i+1}`)}</div></figure>`).join('')}</div>`;
 const campShop=c=>`<section class="camp"><div class="sec-head"><div class="hd"><span class="eyebrow">The campaign</span><h2>${esc(c.n)}</h2><p class="lede">${esc(c.lede)} Photos by ${campBy(c)} of the GVO team.</p></div><div class="row-end"><a class="btn btn-lav" href="#product-${c.prod}">Shop the jersey</a>${NAV}</div></div>${campRow(c,c.shop)}</section>`;
 const campStudio=c=>`<section class="pday camp-studio"><div class="wrap"><div class="sec-head"><div class="hd"><span class="eyebrow">Shot by the GVO team</span><h2>${esc(c.n)}</h2><p class="lede">${esc(c.where)} for GVO's ${esc(c.n)} campaign. Photos by ${campBy(c)}. Book a GVO photographer for your own shoot, in this room or out in the world.</p></div><div class="row-end"><a class="btn btn-lav" href="#desk">Book a photographer</a>${NAV}</div></div>${campRow(c,c.studio)}</div></section>`;
 const podIgTile=p=>`<figure class="worn-t pday-t pday-igt"><div class="worn-m">${igTile(p)}</div><figcaption><b>${esc(String(p.alt||'Podcast clip').slice(0,60))}</b><span class="worn-s"><a href="${esc(p.link)}" target="_blank" rel="noopener">Reel on @gvo.sound</a><span aria-hidden="true">→</span></span></figcaption></figure>`;
@@ -2244,8 +2249,8 @@ function viewMusic(slug){
  </div></section>
  <section style="background:var(--ink-2)" id="artists"><div class="wrap">
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">From the GVO family</span><h2>Studio artists</h2><p class="lede">Artists who record and perform at GVO. Pick one to hear their music.</p></div><div class="row-end">${NAV}</div></div>
-  <div class="fam" role="tablist" aria-label="Studio artists">${ARTISTS.map((a,i)=>`<div class="art" role="tab" tabindex="0" aria-selected="${i===0}" aria-controls="artp${i}" data-art="${i}"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small>${artLinks(a)}</div></div>`).join('')}</div>
-  ${ARTISTS.map((a,i)=>`<div class="art-panel" id="artp${i}" role="tabpanel" data-artp="${i}"${i?' hidden':''}>${i===0?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · The catalog</span><small>Flawless owns GVO and records here. Press play on any cover for a preview.</small><div class="igb-nav cat-nav"><button type="button" data-cats="-1" aria-label="Scroll back">←</button><button type="button" data-cats="1" aria-label="Scroll forward">→</button></div></div>
+  <div class="fam" role="tablist" aria-label="Studio artists">${ARTISTS.map((a,i)=>`<div class="art" role="tab" tabindex="0" aria-selected="${i===0}" aria-controls="artp${i}" data-art="${i}"><span class="cv">${imgT(a.img,a.n)}</span><div><b>${a.n}</b><small>${a.r}</small></div></div>`).join('')}</div>
+  ${ARTISTS.map((a,i)=>`<div class="art-panel" id="artp${i}" role="tabpanel" aria-label="${esc(a.n)}" data-artp="${i}"${i?' hidden':''}><div class="art-follow"><span class="eyebrow">Follow ${esc(a.n)}</span>${artLinks(a)}</div>${i===0?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · The catalog</span><small>Flawless owns GVO and records here. Press play on any cover for a preview.</small><div class="igb-nav cat-nav"><button type="button" data-cats="-1" aria-label="Scroll back">←</button><button type="button" data-cats="1" aria-label="Scroll forward">→</button></div></div>
   <div class="cat" id="cat">${REL.map(x=>`<div class="rel rv"${x.id===f.id?' aria-current="true"':''}><div class="cvw"><a class="cv" href="#music/${x.id}" aria-label="Feature ${x.t} at the top">${imgT(x.c,`${x.t} cover art`)}${x.id===f.id?'<span class="on">Featured</span>':''}</a>${pvBtn(x)}</div><a class="rel-t" href="#music/${x.id}"><b>${x.t}</b><small>${x.a}</small></a><div class="ln">${ext(spUrl(x),SPIC+'Spotify')}<span aria-hidden="true">·</span>${lsnBtn(x.sp)}</div></div>`).join('')}</div></div>`:a.live?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · Live at GVO</span></div><div class="sess">${vCard(a.live)}</div></div>`:a.songs?`<div class="art-songs"><div class="hd"><span class="eyebrow">${esc(a.n)} · Recorded at GVO</span><small>${a.songs.length} songs from ${esc(a.songsFrom)}</small></div><div class="art-songs-r">${a.songs.map(([t,id])=>`<div class="asong"><span class="cv">${imgT(a.cover,`${t} cover art`)}</span><div><b>${esc(t)}</b><span>${ext(SPO+'track/'+id,'Spotify')}${lsnBtn(id)}</span></div></div>`).join('')}</div></div>`:`<p class="art-none">${a.r}. Listen to ${esc(a.n)} on ${ext(SPO+a.sp,'Spotify')}.</p>`}<div class="art-strip" data-vids-artist="${esc(a.n)}" hidden></div></div>`).join('')}
   <div class="submit rv"><div><span class="eyebrow">Made music at GVO?</span><h3>Get your song on this page</h3><p>Send your links from any platform, a single or a whole project. The team reviews every submission before anything goes live.</p></div>
    <form id="subForm" novalidate>
@@ -2506,8 +2511,8 @@ function viewFit(){
   <div class="sec-head rv"><div class="hd"><span class="eyebrow">Style it before you buy it</span><h2>Build a fit</h2></div><p class="lede">Mix real GVO pieces into one outfit. Tap a tab to swap a piece, swipe a garment on the board, or shuffle until it clicks. Then add the whole fit to your bag.</p></div>
   <div class="fit">
    <div class="fit-stage">
-    <div class="fb" id="fitBoard" role="img" aria-label="">
-     <span class="fb-tag">GVO Fit · <b id="fitNo">01</b></span><span class="fb-mark mark" aria-hidden="true"></span>
+    <div class="fb" id="fitBoard" role="group" aria-label="Your fit">
+     <span class="fb-tag">GVO Fit · <b id="fitNo">1</b></span><span class="fb-mark mark" aria-hidden="true"></span>
      ${['bottom','top','layer','hat'].map(k=>`<button type="button" class="fz fz-${k}" data-fz="${k}" aria-label="${FIT_SLOTS.find(x=>x.k===k).l}: swipe or tap to change"><img alt="" draggable="false"></button>`).join('')}
     </div>
    </div>
@@ -2568,7 +2573,7 @@ function mountFit(){
    if(o&&img.dataset.f!==o.f){img.dataset.f=o.f;img.src=`img/fit_${o.f}.webp`;img.alt=fitName(o);const d=dirs[sl.k]||0;img.classList.remove('in-l','in-r','in');void img.offsetWidth;img.classList.add(d<0?'in-l':d>0?'in-r':'in')}
   });
   const pcs=fitSummary();bd.setAttribute('aria-label','Outfit: '+pcs.map(fitName).join(', '));
-  $('#fitNo',main).textContent=String(fitN).padStart(2,'0');
+  $('#fitNo',main).textContent=String(fitN);
   // tab + options
   $$('[data-ftab]',main).forEach(b=>b.setAttribute('aria-selected',b.dataset.ftab===fitTab));
   const sl=FIT_SLOTS.find(x=>x.k===fitTab),o=fitOpt(fitTab);
@@ -2921,8 +2926,10 @@ function wireHome(){
   else if(matchMedia('(min-width:980px)').matches)go($('.reel-vid',main))}
  // accordion
  const rooms=$('#roomsEl');
- rooms.addEventListener('click',e=>{if(e.target.closest('a'))return;const el=e.target.closest('.room');if(el&&el.getAttribute('aria-expanded')!=='true')$$('.room',rooms).forEach(x=>x.setAttribute('aria-expanded',x===el))});
- rooms.addEventListener('keydown',e=>{const el=e.target.closest('.room');if(el&&e.target===el&&(e.key==='Enter'||e.key===' ')){e.preventDefault();el.click()}});
+ // Each studio card opens with its own button (the label); a click anywhere on a closed card does the same.
+ rooms.addEventListener('click',e=>{if(e.target.closest('a'))return;const el=e.target.closest('.room');if(!el||el.dataset.open==='true')return;const viaKey=e.target.closest('.room-label');
+  $$('.room',rooms).forEach(x=>{const on=x===el,b=$('.room-label',x);x.dataset.open=on;b.setAttribute('aria-expanded',on);if(on)b.setAttribute('tabindex','-1');else b.removeAttribute('tabindex')});
+  if(viaKey&&e.detail===0){const l=$('.room-body a',el);if(l)l.focus()}});
  // reel
  const reel=$('#reel');
  $$('[data-reel]',main).forEach(b=>b.onclick=()=>reel.scrollBy({left:reel.clientWidth*.8*b.dataset.reel,behavior:'smooth'}));
@@ -3455,7 +3462,7 @@ function mountQuote(host,switcher){
  $('#qtype').onclick=e=>{const b=e.target.closest('[data-t]');if(b){t=b.dataset.t;rT()}};
  // Crew: the sheet has no crew column yet, so the choice rides at the top of the details.
  const crews=['I need a GVO crew','I\'m bringing my own crew'];let crew='';
- const rC=()=>$('#qcrew').innerHTML=crews.map(x=>`<button type="button" class="chip" role="radio" aria-checked="${x===crew}" aria-pressed="${x===crew}" data-c="${esc(x)}">${esc(x)}</button>`).join('');rC();
+ const rC=()=>$('#qcrew').innerHTML=crews.map(x=>`<button type="button" class="chip" role="radio" aria-checked="${x===crew}" data-c="${esc(x)}">${esc(x)}</button>`).join('');rC();
  $('#qcrew').onclick=e=>{const b=e.target.closest('[data-c]');if(b){crew=b.dataset.c;rC()}};
  if(switcher)$('#qSwitch').onclick=e=>{const b=e.target.closest('[data-room]');if(!b||b.dataset.room==='pod')return;B.room=b.dataset.room;mountDesk(host,b.dataset.room)};
  armForm($('#qform'));$('#qform').onsubmit=async e=>{e.preventDefault();const fm=e.target,ph=$('#q-phone').value.trim();if(!$('#q-name').value.trim()||!ph){toast('Add your name and phone so the team can call you');return}
@@ -3554,6 +3561,8 @@ function openMenu(){$('#sheet').hidden=false;$('#openMenu').setAttribute('aria-e
 function closeMenu(){$('#sheet').hidden=true;$('#openMenu').setAttribute('aria-expanded','false')}
 $('#openMenu').onclick=openMenu;$('#closeMenu').onclick=closeMenu;$('#sheet').addEventListener('click',e=>{if(e.target.closest('a'))closeMenu()});
 addEventListener('keydown',e=>{if(e.key==='Escape'){closeCart();closeMenu()}});
+// Skip link: move focus to the page content without touching the hash router.
+$('.skip').addEventListener('click',e=>{e.preventDefault();main.focus({preventScroll:true});main.scrollIntoView({behavior:'auto'})});
 const bar=$('#topbar'),prog=$('#progress');
 const onScroll=()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;bar.classList.toggle('solid',y>40);prog.style.transform=`scaleX(${h>0?y/h:0})`};
 addEventListener('scroll',onScroll,{passive:true});

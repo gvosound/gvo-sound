@@ -1,4 +1,4 @@
-# Builds the static legal pages (privacy.html, terms.html, sms-alerts.html) from one template.
+# Builds the static pages (privacy.html, terms.html, sms-alerts.html, accessibility.html) from one template.
 # They are real files so /privacy, /terms and /sms-alerts load as their own pages, without the hash router.
 # Run: python3 legal-src/build.py
 import os, html
@@ -35,6 +35,22 @@ ul{padding-left:1.2em}
 li{margin-bottom:6px}
 .quote{border-left:3px solid var(--lav);padding:4px 0 4px 16px;margin:0 0 14px}
 address{font-style:normal}
+.skip{position:fixed;left:16px;top:-60px;z-index:10;background:var(--lav);color:#100c24;padding:10px 14px;border-radius:4px;font:700 .8rem var(--mono);text-decoration:none}
+.skip:focus{top:calc(12px + env(safe-area-inset-top,0px))}
+main:focus{outline:0}
+:focus-visible{outline:2px solid var(--lav);outline-offset:3px}
+.a11y-bar{background:#14111a;border-bottom:1px solid var(--line);text-align:center;padding:12px 16px;margin:-28px 0 28px;font:500 .85rem/1.5 var(--body);color:var(--bone)}
+.a11y-bar a{color:var(--bone);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.wrap.wide{max-width:1040px}
+.hero-p{font-size:1.15rem;color:var(--bone);max-width:62ch;margin:0 0 8px}
+.a11y{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:start}
+.help{position:sticky;top:24px;border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:22px 22px 18px;margin-top:40px}
+.help h2{margin:0 0 10px}
+.help p{font-size:.95rem}
+.help .btns{display:grid;gap:10px;margin-top:16px}
+.help .btns a{display:flex;align-items:center;justify-content:center;min-height:46px;border:1px solid var(--line);border-radius:4px;font:600 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--bone);text-align:center;padding:8px 10px}
+.help .btns a.lav{background:var(--lav);border-color:var(--lav);color:#100c24}
+@media (max-width:860px){.a11y{grid-template-columns:1fr;gap:0}.help{position:static}}
 .facts{border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:18px 20px;margin:0 0 14px}
 .facts p{margin:0 0 10px;display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:2px 12px;align-items:baseline}.facts p:last-child{margin:0}
 .facts b{color:var(--mute);font:600 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase}
@@ -45,7 +61,7 @@ footer a{color:var(--mute)}
 footer nav{display:flex;gap:18px;flex-wrap:wrap}
 """
 
-def page(slug, title, desc, eyebrow, h1, body, index=True, updated=None):
+def page(slug, title, desc, eyebrow, h1, body, index=True, updated=None, wide=False, lede='', reviewed=None):
     canon = f'https://gvosound.com/{slug}'
     robots = '' if index else '\n<meta name="robots" content="noindex">'
     return f"""<!doctype html>
@@ -65,14 +81,15 @@ def page(slug, title, desc, eyebrow, h1, body, index=True, updated=None):
 <style>{CSS}</style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <header><div class="wrap"><a class="logo" href="/" aria-label="GVO Sound home"><span class="mark"></span></a><a class="home" href="/">Back to home</a></div></header>
-<main><div class="wrap">
+<main id="main" tabindex="-1"><div class="wrap{' wide' if wide else ''}">
 <p class="eyebrow">{eyebrow}</p>
 <h1>{h1}</h1>
-<p class="updated">Last updated: {updated or UPDATED}</p>
+{f'<p class="hero-p">{lede}</p>' if lede else ''}<p class="updated">{'Last reviewed: ' + reviewed if reviewed else 'Last updated: ' + (updated or UPDATED)}</p>
 {body.strip()}
 </div></main>
-<footer><div class="wrap"><span>GVO Sound LLC · 109 Gibralter Ave, Annapolis, MD 21401 · {PHONE}</span><nav aria-label="Legal"><a href="/">Home</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav></div></footer>
+<footer><p class="a11y-bar">We want this site to work for everyone. <a href="/accessibility">Read the accessibility statement</a></p><div class="wrap"><span>GVO Sound LLC · 109 Gibralter Ave, Annapolis, MD 21401 · {PHONE}</span><nav aria-label="Legal"><a href="/">Home</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/accessibility">Accessibility</a></nav></div></footer>
 </body>
 </html>
 """
@@ -177,6 +194,37 @@ terms = page('terms', 'Terms of Service | GVO Sound', 'Terms for studio bookings
 <address>{ADDR}<br>{MAIL}<br>{CALL}</address>
 """)
 
-for name, doc in [('sms-alerts', sms), ('privacy', privacy), ('terms', terms)]:
+access = page('accessibility', 'Accessibility | GVO Sound', 'How gvosound.com works with screen readers, keyboards, magnification and voice control, and how to reach GVO Sound if something on the site gets in your way.',
+  'Accessibility', 'Good vibes, open to everyone', f"""
+<div class="a11y"><div>
+<h2>The standard</h2>
+<p>We build gvosound.com to WCAG 2.2 Level AA. Every page is tested with automated accessibility checks, then by hand with a keyboard and a screen reader before changes go live.</p>
+<h2>What's built in</h2>
+<ul>
+<li>A "Skip to content" link is the first thing a keyboard reaches on every page.</li>
+<li>Everything works from a keyboard, including the studio cards, the booking desk, search, the bag and checkout. Whatever has focus gets a lavender outline.</li>
+<li>Search, the bag, checkout and pop-ups are announced as dialogs with names, and close with the Escape key.</li>
+<li>Screen readers hear booking and checkout errors as they happen, and the studio artist picker works as a set of tabs.</li>
+<li>Photos carry text descriptions. Video clips are silent, so no sound plays without you choosing it.</li>
+<li>Text meets AA contrast against GVO's dark background.</li>
+<li>If your device is set to reduce motion, the homepage and studio videos are replaced with still photos and the animations stop.</li>
+<li>On phones, a bar at the bottom calls or texts the studio in one tap, and addresses open directions in Google Maps.</li>
+<li>Forms say exactly what's missing, like "Add your street address," and move you to that field.</li>
+</ul>
+<h2>Still being worked on</h2>
+<ul>
+<li>Some content comes from other companies and works the way they built it: Square's card payment fields, Instagram posts, YouTube sessions, Spotify and Apple Music players, Eventbrite tickets and Google Maps.</li>
+<li>The studio walkthrough and session clips have no captions or audio description. They're silent, and each studio page describes the room, the gear and the rates in text.</li>
+<li>Pins on the travel map are small. The list of places under the map opens each one, and works with a keyboard.</li>
+</ul>
+</div>
+<aside class="help" aria-labelledby="helpT">
+<h2 id="helpT">Something not working?</h2>
+<p>Tell us what happened and where on the site. We'll help you book a session, place an order or get what you came for another way.</p>
+<div class="btns"><a class="lav" href="mailto:{EMAIL}?subject=Accessibility%20on%20gvosound.com">Email {EMAIL}</a><a href="tel:{TEL}">Call {PHONE}</a><a href="sms:{TEL}">Text {PHONE}</a></div>
+</aside></div>
+""", wide=True, reviewed='November 2026', lede="gvosound.com should work for you whether you use a screen reader, a keyboard, magnification or voice control, to book a session, buy apparel, find the next party or stream music recorded here.")
+
+for name, doc in [('sms-alerts', sms), ('privacy', privacy), ('terms', terms), ('accessibility', access)]:
     open(os.path.join(ROOT, name + '.html'), 'w').write(doc)
     print('wrote', name + '.html')
