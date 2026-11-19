@@ -45,7 +45,7 @@ footer a{color:var(--mute)}
 footer nav{display:flex;gap:18px;flex-wrap:wrap}
 """
 
-def page(slug, title, desc, eyebrow, h1, body, index=True):
+def page(slug, title, desc, eyebrow, h1, body, index=True, updated=None):
     canon = f'https://gvosound.com/{slug}'
     robots = '' if index else '\n<meta name="robots" content="noindex">'
     return f"""<!doctype html>
@@ -69,7 +69,7 @@ def page(slug, title, desc, eyebrow, h1, body, index=True):
 <main><div class="wrap">
 <p class="eyebrow">{eyebrow}</p>
 <h1>{h1}</h1>
-<p class="updated">Last updated: {UPDATED}</p>
+<p class="updated">Last updated: {updated or UPDATED}</p>
 {body.strip()}
 </div></main>
 <footer><div class="wrap"><span>GVO Sound LLC · 109 Gibralter Ave, Annapolis, MD 21401 · {PHONE}</span><nav aria-label="Legal"><a href="/">Home</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav></div></footer>
@@ -101,6 +101,10 @@ sms = page('sms-alerts', 'SMS Booking Alerts | GVO Sound', 'GVO Sound booking al
 <li>The customer's first name and phone number</li>
 <li>The amount paid</li>
 </ul>
+<h2 id="opt-in">How staff sign up</h2>
+<p>Staff opt in verbally. Before a number is added, the GVO Sound manager reads this script to the staff member, in person or on a call:</p>
+<blockquote>"GVO Sound LLC can text you an alert each time a customer books a studio session on gvosound.com. It's one text per booking, with the session, the date and time, the customer's first name and phone number, and the amount paid. Message and data rates may apply. Reply STOP at any time to stop, or HELP for help. Do you agree to get these booking alerts at this number?"</blockquote>
+<p>A number is added only after the staff member says yes. The manager records their name, the number and the date they agreed. The first alert they receive includes "Reply STOP to opt out."</p>
 <h2>How often</h2>
 <p>One message per booking. Message and data rates may apply.</p>
 <h2>What this program does not send</h2>
@@ -111,7 +115,7 @@ sms = page('sms-alerts', 'SMS Booking Alerts | GVO Sound', 'GVO Sound booking al
 <p>Read how GVO Sound handles information in the <a href="/privacy">privacy policy</a>, and the program terms in the <a href="/terms">terms of service</a>.</p>
 <h2>Contact</h2>
 <address>{ADDR}<br>{MAIL}<br>{CALL}</address>
-""", index=False)
+""", index=False, updated='November 19, 2026')
 
 privacy = page('privacy', 'Privacy Policy | GVO Sound', 'How GVO Sound LLC collects, uses and protects information from bookings, shop orders and forms on gvosound.com.',
   'GVO Sound LLC', 'Privacy policy', f"""
