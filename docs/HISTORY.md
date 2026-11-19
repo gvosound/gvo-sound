@@ -13,6 +13,7 @@ Built by Siani Butler (Siani Creates) for GVO Sound LLC, Cory McGhee's studio at
 | Oct 29 | BagBoy Network row, crew wording, beanie colors |
 | Nov 2 | Launch on gvosound.com: noindex removed, nameservers through Porkbun to Cloudflare. Studio artists. Booking alert emails, after the first live booking reached no one. Privacy, terms and SMS alerts pages for Twilio. "PAID ONLINE" seller note |
 | Nov 3 | Live Google rating (Places) and sheet-picked reviews, after the Business Profile API was declined twice |
+| Nov 19 | Accessibility statement at /accessibility and the footer accessibility bar, after fixing the WCAG 2.2 AA issues axe found. Cory approved the statement verbally on Nov 19 |
 
 ## Decisions and why
 
