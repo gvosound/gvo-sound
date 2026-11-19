@@ -8,6 +8,7 @@ import { sq, cfg, json, fail, readBody, idem, money, cents, clean, findOrCreateC
 import { loadCatalog } from '../_lib/catalog.js';
 import { shopLines, summarize, contactOf, badRequest, shopIndex } from '../_lib/orders.js';
 import { emailCfg, sendEmail, bookingAlert } from '../_lib/email.js';
+import { bookingSms, smsCfg } from '../_lib/sms.js';
 import { serviceOf, bookingOrder, searchSlots, teamNames, allowedTeam, roomBookings, roomFull, roomOf, LEAD_MS, MAX_PEOPLE, inHolidayWindow } from '../_lib/booking.js';
 
 const ET = { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
@@ -127,6 +128,10 @@ export async function onRequestPost({ request, env, waitUntil }) {
       console.log(r && r.ok ? 'booking alert sent' : 'booking alert not sent', ref);
     })().catch(e => console.log('booking alert error', ref, e && e.message));
     if (waitUntil) waitUntil(mail); else await mail;
+    // Staff text for the same booking (functions/_lib/sms.js). Also after the response, never blocking.
+    const text = bookingSms(env, { session: s.name, when, contact, total, ref, status: booking.status })
+      .catch(e => console.log('booking text error', ref, e && e.message));
+    if (waitUntil) waitUntil(text); else await text;
     return json({
       ok: true,
       bookingId: booking.id,
@@ -147,9 +152,16 @@ export async function onRequestPost({ request, env, waitUntil }) {
 // plus the Square settings that decide whether a web booking is accepted. No customer phone numbers or emails.
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
-  if (url.searchParams.get('debug') !== 'recent') return json({ ok: false, error: 'Not found' }, 404);
+  const dbg = url.searchParams.get('debug');
+  if (dbg !== 'recent' && dbg !== 'sms') return json({ ok: false, error: 'Not found' }, 404);
   const key = url.searchParams.get('key') || '';
   if (!env.DEBUG_KEY || !(await sameKey(key, env.DEBUG_KEY))) return json({ ok: false, error: 'Forbidden' }, 403);
+  // ?debug=sms: sends one sample booking text to every BOOKING_SMS_TO number and shows Twilio's answer.
+  if (dbg === 'sms') {
+    if (!smsCfg(env)) return json({ ok: false, error: 'Twilio settings not complete: need TWILIO_ACCOUNT_SID, TWILIO_API_KEY + TWILIO_API_SECRET (or TWILIO_AUTH_TOKEN), TWILIO_FROM and BOOKING_SMS_TO' }, 200, { 'Cache-Control': 'no-store' });
+    const sent = await bookingSms(env, { session: 'TEST, 2 Hour Recording Session', when: new Date().toLocaleString('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }), contact: { name: 'Test', phone: '(443) 292-6753' }, total: 0, ref: 'BK-TEST', status: 'ACCEPTED' });
+    return json({ ok: sent.every(x => x.ok), sent }, 200, { 'Cache-Control': 'no-store' });
+  }
   try {
     const { locationId } = cfg(env);
     const safe = p => sq(env, 'GET', p).catch(e => ({ error: (e && e.message) || 'failed' }));

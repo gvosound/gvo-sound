@@ -71,6 +71,8 @@ Fixes for what has gone wrong before or is likely to. Newest lessons first in ea
 
 | Symptom | Fix |
 | --- | --- |
+| No texts at all | Function logs say "booking text skipped: Twilio settings not complete": a Twilio secret is missing. `/api/book?debug=sms&key=DEBUG_KEY` sends a sample text and shows Twilio's answer |
 | No texts, error 30032 | Toll-free number not verified yet |
+| Error 21610 for one person | They replied STOP. They text START to the toll-free number to get alerts again |
 | Verification rejected, error 30915 | Registered as a sole proprietor; GVO Sound LLC must be the LLC business type with its EIN |
 | Texts stop later | Balance ran out. Add funds or turn on auto-recharge |

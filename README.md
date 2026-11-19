@@ -50,6 +50,10 @@ Settings, in Pages > Settings > Variables and Secrets, for Production and Previe
 | `SHOP_SINCE` | Optional | Items created in Square on or after this date are the Wix items. Defaults to `2026-10-20` |
 | `SHOP_ITEM_IDS` | Optional | Comma list of Square item IDs. When set, only these sell on the site |
 | `RESEND_API_KEY` | Secret | Resend API key for confirmation emails. Without it, orders still work and no email is sent |
+| `TWILIO_ACCOUNT_SID`, `TWILIO_API_KEY`, `TWILIO_API_SECRET` | Secret | Twilio account SID and a Standard API key (SK…) with its secret. `TWILIO_AUTH_TOKEN` works instead of the key pair. Used only for staff booking texts |
+| `TWILIO_FROM` | Secret | The verified toll-free number texts come from: `+18773025139` |
+| `BOOKING_SMS_TO` | Secret | Staff mobile numbers that get a text per booking, comma separated (`+14435550101,+14105550102`). Each person must have agreed to get them, per gvosound.com/sms-alerts |
+| `DEBUG_KEY` | Secret | Opens the team-only views `/api/book?debug=recent` and `/api/book?debug=sms` (sends a sample booking text) |
 | `EMAIL_FROM` | Optional | Sender for shop orders. Defaults to `GVO Sound Clothing <clothing@gvosound.com>` |
 | `EMAIL_FROM_INFO` | Optional | Sender for form confirmations and studio notes. Defaults to `GVO Sound <info@gvosound.com>` |
 | `TURNSTILE_SITE_KEY` | Text | Cloudflare Turnstile site key (public). Shows the bot check on every form |

@@ -20,7 +20,7 @@ Browser ── index.html (hash-routed views) ──┐
                                             ├── /api/ig ──► graph.facebook.com ── cached 1 h, last good list in KV (IG_KV)
                                             └── /api/reviews ──► Places API (New) 24 h + Apps Script "reviews" action 1 h
 Emails: functions/_lib/email.js ──► Resend (from clothing@ and info@)
-Texts:  booking alerts ──► Twilio (pending toll-free verification as of Nov 4, 2026)
+Texts:  functions/_lib/sms.js ──► Twilio (one staff text per booking, from the toll-free number, to BOOKING_SMS_TO)
 ```
 
 ## Files
