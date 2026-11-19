@@ -395,6 +395,11 @@ main{min-height:60vh}
 .opt small{color:var(--mute);font-size:.8rem}
 .opt[aria-pressed="true"]{border-color:var(--lav);box-shadow:inset 0 0 0 1px var(--lav)}
 .opt.plain .tx{padding:13px}
+/* Engineers and photographers: a round headshot beside the name, so the whole face shows. */
+.opt[data-staff]:not(.plain){grid-template-columns:auto minmax(0,1fr);align-items:center}
+.opt[data-staff] .ph{width:64px;height:64px;margin:12px 0 12px 12px;border-radius:50%;flex:none}
+.opt[data-staff] .ph img{object-position:center 22%}
+@media (max-width:560px){.opt[data-staff]:not(.plain){grid-template-columns:1fr;align-items:start}.opt[data-staff] .ph{width:56px;height:56px;margin:12px 0 0 11px}.opt[data-staff] .tx{padding-top:8px}}
 .fader-top{display:flex;justify-content:space-between;align-items:baseline}
 .fader-top b{font:900 2.6rem/1 var(--display);font-stretch:115%}
 .fader-top span{font:600 1.05rem var(--mono);color:var(--lav)}
@@ -1581,7 +1586,7 @@ const TEAM=[
  {n:'Dym Archives',r:'Photographer',ig:'dymarchives',img:'t_dym',g:'photo'},
  {n:'Smooth',r:'Photographer',ig:'smoozus',img:'t_smooth',g:'photo'},
  {n:'JCX Beats',r:'Engineer · Producer',ig:'jcxbeats_',img:'t_jcx',g:'rec'},
- {n:'Michael Agbeja',r:'Photo · Video',ig:'kingmagprod',img:'t_mike-v2',g:'photo',also:'pod',bk:'https://kingmagproductions.as.me/'},
+ {n:'Michael Agbeja',aka:'KingMag Prod',r:'Photo · Video',ig:'kingmagprod',img:'t_mike-v2',g:'photo',also:'pod',bk:'https://kingmagproductions.as.me/'},
  {n:'Bob Almighty',r:'Video · Content',ig:'bobalmighty',img:'t_bob',g:'pod'},
  {n:'ShotByNa',r:'Photo · Video',ig:'shotbyna',img:'t_shotbyna',g:'photo',also:'pod'},
  {n:'El (RvreForm)',r:'Photographer',ig:'rvre.form',img:'t_el',g:'photo',also:'pod'},
@@ -3149,7 +3154,8 @@ function loadSlots(force){
   BK.slots[key]={busy:0,at:Date.now(),byDay,mins:j.mins,err:''};
  }).catch(e=>{BK.slots[key]={busy:0,at:0,byDay:null,err:e.message}}).finally(()=>{if(slotKey()===key)renderBook()});
 }
-const teamPic=n=>{const t=TEAM.find(m=>{const a=m.n.toLowerCase(),b=String(n).toLowerCase();return a===b||b.startsWith(a.split(' ')[0])||a.startsWith(b.split(' ')[0])});return t||null};
+// Square's display names can differ from the site's (aka): KingMag Prod in Square is Michael Agbeja here.
+const teamPic=n=>{const b=String(n).toLowerCase().trim();const t=TEAM.find(m=>m.aka&&m.aka.toLowerCase()===b)||TEAM.find(m=>{const a=m.n.toLowerCase();return a===b||b.startsWith(a.split(' ')[0])||a.startsWith(b.split(' ')[0])});return t||null};
 /* step labels: "Step 2 of 5", counting only the steps showing */
 function numberSteps(host){const st=$$('.step',host).filter(x=>!x.hidden&&$('[data-num]',x));st.forEach((x,i)=>{$('[data-num]',x).innerHTML=`Step <b>${i+1}</b>${st.length>1?` of ${st.length}`:''}`})}
 const DESK_HTML=`<div class="desk"><div class="steps">
